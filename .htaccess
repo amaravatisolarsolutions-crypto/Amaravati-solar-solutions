@@ -1,15 +1,18 @@
-# Disable directory listing
 Options -Indexes
-
-# Set directory index
 DirectoryIndex index.html
 
-# Fallback: if static file exists in frontend/.output/public, serve it directly
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
 
-    RewriteCond %{DOCUMENT_ROOT}/frontend/.output/public%{REQUEST_URI} -f
-    RewriteRule ^(.*)$ /frontend/.output/public/$1 [L]
-</IfModule>
+    # Serve existing files and directories directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
+    # SPA Fallback: if not an existing file, route to /index.html
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
+</IfModule>

@@ -10,7 +10,7 @@
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",
     "postinstall": "npm --prefix frontend install --include=dev",
-    "build": "npm --prefix frontend install --include=dev && npm --prefix frontend run build",
+    "build": "npm --prefix frontend install --include=dev && npm --prefix frontend run build && node scripts/build-static.js",
     "build:frontend": "npm --prefix frontend run build",
     "start": "node frontend/.output/server/index.mjs",
     "preview": "npm --prefix frontend run preview",
