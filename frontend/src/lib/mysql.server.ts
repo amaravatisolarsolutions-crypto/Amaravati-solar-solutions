@@ -149,10 +149,14 @@ export async function autoMigrate() {
   let connection;
   try {
     connection = await p.getConnection();
+    const env = process.env;
+    const dbName = env["DB_NAME"] || env["DATABASE_NAME"] || "u236567282_Amaravthisolar";
+    console.log(`[Auto-Migration] Running table check on ${dbName}...`);
+
     for (const tableDef of SCHEMA_DEFINITIONS) {
       const [tables]: [any[], any] = await connection.query(
-        `SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?`,
-        [tableDef.name]
+        `SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?`,
+        [dbName, tableDef.name]
       );
 
       if (tables.length === 0) {
@@ -167,24 +171,27 @@ export async function autoMigrate() {
             ${columnSqls.join(",\n            ")}
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         `);
+        console.log(`[Auto-Migration] Created table ${tableDef.name}`);
       } else {
         const [existingCols]: [any[], any] = await connection.query(
-          `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?`,
-          [tableDef.name]
+          `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?`,
+          [dbName, tableDef.name]
         );
         const existingColNames = new Set(existingCols.map((c: any) => c.COLUMN_NAME.toLowerCase()));
 
         for (const [colName, colType] of Object.entries(tableDef.columns)) {
           if (!existingColNames.has(colName.toLowerCase())) {
             await connection.query(`ALTER TABLE \`${tableDef.name}\` ADD COLUMN \`${colName}\` ${colType};`);
+            console.log(`[Auto-Migration] Added column ${colName} to ${tableDef.name}`);
           }
         }
       }
     }
     isSchemaInitialized = true;
+    console.log("[Auto-Migration] All tables verified successfully.");
     return true;
-  } catch (err) {
-    console.warn("[MySQL Frontend Auto-Migrate] Notice:", err);
+  } catch (err: any) {
+    console.warn("[MySQL Frontend Auto-Migrate] Notice:", err?.message || err);
     return false;
   } finally {
     if (connection) connection.release();

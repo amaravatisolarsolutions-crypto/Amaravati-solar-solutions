@@ -44,8 +44,49 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+let liveDbInitialized = false;
+async function triggerLiveDatabaseAutoMigration() {
+  if (liveDbInitialized) return;
+  liveDbInitialized = true;
+  try {
+    const { autoMigrate } = await import("./lib/mysql.server");
+    await autoMigrate();
+  } catch (err) {
+    console.warn("[Live Database Init Notice]", err);
+  }
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    // Automatically initialize/verify database tables on live server
+    triggerLiveDatabaseAutoMigration().catch(() => {});
+
+    // Explicit webhook/endpoint to create or verify live database tables anytime
+    const url = new URL(request.url);
+    if (url.pathname === "/api/init-db" || url.pathname === "/api/migrate") {
+      try {
+        const { autoMigrate, SCHEMA_DEFINITIONS } = await import("./lib/mysql.server");
+        const success = await autoMigrate();
+        return new Response(
+          JSON.stringify({
+            success,
+            message: "Live MySQL database tables and columns created successfully!",
+            tables: SCHEMA_DEFINITIONS.map((t) => t.name),
+            timestamp: new Date().toISOString(),
+          }),
+          { status: 200, headers: { "content-type": "application/json" } }
+        );
+      } catch (err: any) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: err?.message || String(err),
+          }),
+          { status: 500, headers: { "content-type": "application/json" } }
+        );
+      }
+    }
+
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
