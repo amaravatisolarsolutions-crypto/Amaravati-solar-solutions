@@ -29,13 +29,14 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 // -------------------------------------------------------------------------
 if ($uri === '/api/debug-files') {
     header('Content-Type: application/json');
-    $pub = __DIR__ . '/frontend/.output/public';
+    $dist = __DIR__ . '/frontend/dist';
     echo json_encode([
         '__DIR__' => __DIR__,
-        'public_dir' => $pub,
-        'public_files' => is_dir($pub) ? scandir($pub) : [],
-        'has_contact_dir' => is_dir($pub . '/contact'),
-        'contact_dir_files' => is_dir($pub . '/contact') ? scandir($pub . '/contact') : []
+        'dist_exists' => is_dir($dist),
+        'dist_files' => is_dir($dist) ? scandir($dist) : [],
+        'contact_html_dist' => file_exists($dist . '/contact/index.html'),
+        'admin_html_dist' => file_exists($dist . '/admin/index.html'),
+        'root_html_dist' => file_exists($dist . '/index.html')
     ], JSON_PRETTY_PRINT);
     exit;
 }
@@ -259,6 +260,7 @@ if (strpos($uri, '/api/') === 0) {
 // 3. Static Asset Delivery (CSS, JS, Images, Fonts)
 // -------------------------------------------------------------------------
 $assetRoots = [
+    __DIR__ . '/frontend/dist',
     __DIR__ . '/frontend/.output/public',
     __DIR__ . '/frontend/public',
     __DIR__
@@ -302,8 +304,12 @@ foreach ($assetRoots as $root) {
 // -------------------------------------------------------------------------
 $routePath = trim($cleanUri, '/');
 $htmlCandidates = [
+    __DIR__ . '/frontend/dist/' . $routePath . '/index.html',
+    __DIR__ . '/frontend/dist/' . $routePath . '.html',
+    __DIR__ . '/frontend/dist/' . ($routePath ? '' : 'index.html'),
     __DIR__ . '/frontend/.output/public/' . $routePath . '/index.html',
     __DIR__ . '/frontend/.output/public/' . $routePath . '.html',
+    __DIR__ . '/frontend/dist/index.html',
     __DIR__ . '/frontend/.output/public/index.html'
 ];
 
@@ -319,7 +325,7 @@ foreach ($htmlCandidates as $htmlFile) {
 // -------------------------------------------------------------------------
 // 5. Fallback HTML Application Renderer with TanStack Start Bootstrap
 // -------------------------------------------------------------------------
-$assetsDir = __DIR__ . '/frontend/.output/public/assets';
+$assetsDir = is_dir(__DIR__ . '/frontend/dist/assets') ? (__DIR__ . '/frontend/dist/assets') : (__DIR__ . '/frontend/.output/public/assets');
 $cssFiles = glob($assetsDir . '/*.css') ?: [];
 $jsFiles  = glob($assetsDir . '/index-*.js') ?: (glob($assetsDir . '/*.js') ?: []);
 

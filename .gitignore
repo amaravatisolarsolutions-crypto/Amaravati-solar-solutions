@@ -12,6 +12,8 @@ yarn-error.log*
 # Build outputs
 dist
 dist-ssr
+!frontend/dist/
+!frontend/dist/**
 .output/*
 !.output/public/
 frontend/.output/*

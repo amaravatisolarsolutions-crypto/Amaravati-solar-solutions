@@ -15,6 +15,22 @@ const routes = [
   '/admin/login'
 ];
 
+function copyFolderRecursiveSync(source, target) {
+  if (!fs.existsSync(source)) return;
+  if (!fs.existsSync(target)) fs.mkdirSync(target, { recursive: true });
+
+  const files = fs.readdirSync(source, { withFileTypes: true });
+  for (const file of files) {
+    const curSource = path.join(source, file.name);
+    const curTarget = path.join(target, file.name);
+    if (file.isDirectory()) {
+      copyFolderRecursiveSync(curSource, curTarget);
+    } else {
+      fs.copyFileSync(curSource, curTarget);
+    }
+  }
+}
+
 async function runPrerender() {
   const port = '3099';
   console.log('[Prerender] Starting temporary Nitro SSR server on port ' + port + '...');
@@ -31,21 +47,35 @@ async function runPrerender() {
       serverStarted = true;
       setTimeout(async () => {
         try {
+          const distDir = path.join(__dirname, '../frontend/dist');
+          const outputPubDir = path.join(__dirname, '../frontend/.output/public');
+
+          // Copy all public static assets to dist first
+          copyFolderRecursiveSync(outputPubDir, distDir);
+
           for (const route of routes) {
             const url = `http://localhost:${port}${route}`;
             const res = await fetch(url);
             if (res.ok) {
               const html = await res.text();
               const cleanPath = route === '/' ? 'index.html' : path.join(route.replace(/^\//, ''), 'index.html');
-              const fullOut = path.join(__dirname, '../frontend/.output/public', cleanPath);
-              fs.mkdirSync(path.dirname(fullOut), { recursive: true });
-              fs.writeFileSync(fullOut, html, 'utf8');
-              console.log(`[Prerender] ✓ ${route} -> ${cleanPath} (${html.length} bytes)`);
+              
+              // Write to frontend/dist/ (visible, non-hidden for Hostinger)
+              const distOut = path.join(distDir, cleanPath);
+              fs.mkdirSync(path.dirname(distOut), { recursive: true });
+              fs.writeFileSync(distOut, html, 'utf8');
+
+              // Also write to frontend/.output/public/
+              const outputOut = path.join(outputPubDir, cleanPath);
+              fs.mkdirSync(path.dirname(outputOut), { recursive: true });
+              fs.writeFileSync(outputOut, html, 'utf8');
+
+              console.log(`[Prerender] ✓ ${route} -> frontend/dist/${cleanPath} (${html.length} bytes)`);
             } else {
               console.warn(`[Prerender] ✗ ${route} returned status ${res.status}`);
             }
           }
-          console.log('[Prerender] Complete: All routes prerendered successfully.');
+          console.log('[Prerender] Complete: All routes prerendered into frontend/dist successfully.');
         } catch (err) {
           console.error('[Prerender] Error during rendering:', err);
         } finally {
@@ -73,4 +103,3 @@ async function runPrerender() {
 }
 
 runPrerender();
-
