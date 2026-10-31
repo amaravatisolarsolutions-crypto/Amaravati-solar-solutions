@@ -29,14 +29,13 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 // -------------------------------------------------------------------------
 if ($uri === '/api/debug-files') {
     header('Content-Type: application/json');
+    $pub = __DIR__ . '/frontend/.output/public';
     echo json_encode([
         '__DIR__' => __DIR__,
-        'frontend_exists' => is_dir(__DIR__ . '/frontend'),
-        'output_exists' => is_dir(__DIR__ . '/frontend/.output'),
-        'public_exists' => is_dir(__DIR__ . '/frontend/.output/public'),
-        'contact_html' => file_exists(__DIR__ . '/frontend/.output/public/contact/index.html'),
-        'root_html' => file_exists(__DIR__ . '/frontend/.output/public/index.html'),
-        'files_in_frontend' => is_dir(__DIR__ . '/frontend') ? scandir(__DIR__ . '/frontend') : []
+        'public_dir' => $pub,
+        'public_files' => is_dir($pub) ? scandir($pub) : [],
+        'has_contact_dir' => is_dir($pub . '/contact'),
+        'contact_dir_files' => is_dir($pub . '/contact') ? scandir($pub . '/contact') : []
     ], JSON_PRETTY_PRINT);
     exit;
 }
