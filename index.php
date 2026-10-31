@@ -27,6 +27,20 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 // -------------------------------------------------------------------------
 // 1. API: Database Initialization / Verification Webhook
 // -------------------------------------------------------------------------
+if ($uri === '/api/debug-files') {
+    header('Content-Type: application/json');
+    echo json_encode([
+        '__DIR__' => __DIR__,
+        'frontend_exists' => is_dir(__DIR__ . '/frontend'),
+        'output_exists' => is_dir(__DIR__ . '/frontend/.output'),
+        'public_exists' => is_dir(__DIR__ . '/frontend/.output/public'),
+        'contact_html' => file_exists(__DIR__ . '/frontend/.output/public/contact/index.html'),
+        'root_html' => file_exists(__DIR__ . '/frontend/.output/public/index.html'),
+        'files_in_frontend' => is_dir(__DIR__ . '/frontend') ? scandir(__DIR__ . '/frontend') : []
+    ], JSON_PRETTY_PRINT);
+    exit;
+}
+
 if ($uri === '/api/init-db' || $uri === '/setup-db.php' || $uri === '/migrate') {
     header('Content-Type: application/json; charset=utf-8');
     header('Access-Control-Allow-Origin: *');
