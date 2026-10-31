@@ -67,7 +67,7 @@ const FEATURE_HIGHLIGHTS = [
     line2: "Solar Systems",
     href: "#on-grid",
     icon: () => (
-      <svg className="size-8 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="3" width="20" height="11" rx="1.5" />
         <line x1="2" y1="8.5" x2="22" y2="8.5" />
         <line x1="8.5" y1="3" x2="8.5" y2="14" />
@@ -82,7 +82,7 @@ const FEATURE_HIGHLIGHTS = [
     line2: "Solar Systems",
     href: "#off-grid",
     icon: () => (
-      <svg className="size-8 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <rect x="5" y="6" width="14" height="15" rx="2" />
         <line x1="9" y1="2" x2="15" y2="2" />
         <line x1="9" y1="2" x2="9" y2="6" />
@@ -97,7 +97,7 @@ const FEATURE_HIGHLIGHTS = [
     line2: "Solar Systems",
     href: "#hybrid",
     icon: () => (
-      <svg className="size-8 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="3.5" />
         <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
         <path d="M5 5l2.2 2.2M16.8 16.8L19 19M5 19l2.2-2.2M16.8 7.2L19 5" />
@@ -109,7 +109,7 @@ const FEATURE_HIGHLIGHTS = [
     line2: "Process",
     href: "#how-it-works",
     icon: () => (
-      <svg className="size-8 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
         <path d="M3 3v5h5" />
         <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
@@ -123,7 +123,7 @@ const FEATURE_HIGHLIGHTS = [
     line2: "AMC Support",
     href: "#about",
     icon: () => (
-      <svg className="size-8 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         <circle cx="12" cy="11" r="3" />
         <path d="M12 9.5v1.5l1 1" />
@@ -135,7 +135,7 @@ const FEATURE_HIGHLIGHTS = [
     line2: "Lifetime",
     href: "#about",
     icon: () => (
-      <svg className="size-8 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         <path d="M12 7.5l1.3 2.6 2.9.4-2.1 2 .5 2.9-2.6-1.4-2.6 1.4.5-2.9-2.1-2 2.9-.4z" />
       </svg>
@@ -168,9 +168,9 @@ function Index() {
       </div>
 
       {/* QUICK HIGHLIGHT FEATURES ROW (MATCHING SCREENSHOT) */}
-      <section className="bg-slate-50/60 sm:bg-slate-50/70 border-b border-slate-200/80 pt-3 pb-5 sm:py-5">
-        <div className="container-site px-3 sm:px-4">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+      <section className="bg-slate-50/60 sm:bg-slate-50/70 border-b border-slate-200/80 py-2 sm:py-5">
+        <div className="container-site px-2.5 sm:px-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
             {FEATURE_HIGHLIGHTS.map((item, idx) => (
               <a
                 key={idx}
@@ -182,12 +182,12 @@ function Index() {
                     scrollToTarget(targetId);
                   }
                 }}
-                className="group flex flex-col items-center justify-center rounded-[22px] border border-slate-200/90 bg-white py-5 sm:py-6 px-3 text-center shadow-[0_2px_12px_rgba(8,43,76,0.05)] transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-[#D9531E]/40 select-none cursor-pointer"
+                className="group flex flex-col items-center justify-center rounded-2xl sm:rounded-[22px] border border-slate-200/90 bg-white py-2.5 sm:py-6 px-2 text-center shadow-[0_1px_6px_rgba(8,43,76,0.04)] sm:shadow-[0_2px_12px_rgba(8,43,76,0.05)] transition-all duration-300 hover:-translate-y-0.5 sm:hover:-translate-y-1 hover:shadow-md hover:border-[#D9531E]/40 select-none cursor-pointer"
               >
-                <div className="flex size-9 sm:size-10 items-center justify-center text-[#D9531E] transition-transform duration-300 group-hover:scale-110">
+                <div className="flex size-6 sm:size-10 items-center justify-center text-[#D9531E] transition-transform duration-300 group-hover:scale-110">
                   <item.icon />
                 </div>
-                <div className="mt-2.5 text-[13px] sm:text-sm font-bold text-[#082B4C] leading-snug group-hover:text-[#D9531E] transition-colors">
+                <div className="mt-1 sm:mt-2.5 text-[11px] sm:text-sm font-bold text-[#082B4C] leading-tight group-hover:text-[#D9531E] transition-colors">
                   <div>{item.line1}</div>
                   <div>{item.line2}</div>
                 </div>

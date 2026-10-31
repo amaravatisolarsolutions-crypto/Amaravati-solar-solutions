@@ -32,7 +32,7 @@ export function HeroCarousel() {
 
   return (
     <section
-      className="relative h-[215px] sm:h-[62svh] sm:min-h-[400px] sm:max-h-[530px] overflow-hidden bg-navy touch-pan-y select-none"
+      className="relative h-[148px] sm:h-[62svh] sm:min-h-[400px] sm:max-h-[530px] overflow-hidden bg-navy touch-pan-y select-none"
       aria-roledescription="carousel"
       aria-label="Solar solutions"
       onMouseEnter={() => setPaused(true)}
@@ -76,19 +76,19 @@ export function HeroCarousel() {
             className={cn("h-full w-full object-cover transition-transform duration-[6000ms] ease-out", i === index ? "scale-105" : "scale-100")}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/85 to-navy/40 sm:bg-hero-overlay" />
-          <div className="absolute inset-0 flex items-center sm:items-start pt-0 sm:pt-8 md:pt-10 pb-6 sm:pb-8">
-            <div className="container-site px-4 sm:px-6">
+          <div className="absolute inset-0 flex items-center sm:items-start pt-0 sm:pt-8 md:pt-10 pb-4 sm:pb-8">
+            <div className="container-site px-3.5 sm:px-6">
               {i === index && (
                 <div className="max-w-[285px] sm:max-w-2xl">
-                  <p className="eyebrow animate-rise text-gold text-[10px] sm:text-xs font-bold uppercase tracking-wider">{s.tag}</p>
-                  <h1 className="animate-rise mt-0.5 sm:mt-1.5 text-lg sm:text-4xl lg:text-5xl font-extrabold leading-tight text-white line-clamp-2" style={{ animationDelay: "80ms" }}>
+                  <p className="eyebrow animate-rise text-gold text-[9px] sm:text-xs font-bold uppercase tracking-wider">{s.tag}</p>
+                  <h1 className="animate-rise mt-0.5 sm:mt-1.5 text-[15px] sm:text-4xl lg:text-5xl font-extrabold leading-tight text-white line-clamp-1 sm:line-clamp-2" style={{ animationDelay: "80ms" }}>
                     {s.title}
                   </h1>
-                  <p className="animate-rise mt-1 sm:mt-2 max-w-[280px] sm:max-w-xl text-[11px] sm:text-sm md:text-base text-white/85 line-clamp-1 sm:line-clamp-none leading-tight sm:leading-relaxed" style={{ animationDelay: "160ms" }}>
+                  <p className="animate-rise mt-0.5 sm:mt-2 max-w-[270px] sm:max-w-xl text-[10px] sm:text-sm md:text-base text-white/85 line-clamp-1 sm:line-clamp-none leading-tight sm:leading-relaxed" style={{ animationDelay: "160ms" }}>
                     {s.text}
                   </p>
-                  <div className="animate-rise mt-2.5 sm:mt-3.5 flex items-center gap-2 sm:gap-3" style={{ animationDelay: "240ms" }}>
-                    <Button asChild variant="cta" className="h-7 sm:h-10 px-3.5 sm:px-5 text-[11px] sm:text-sm font-bold rounded-full sm:rounded-md shadow-xs">
+                  <div className="animate-rise mt-2 sm:mt-3.5 flex items-center gap-2 sm:gap-3" style={{ animationDelay: "240ms" }}>
+                    <Button asChild variant="cta" className="h-6 sm:h-10 px-3 sm:px-5 text-[10px] sm:text-sm font-bold rounded-full sm:rounded-md shadow-xs">
                       <Link to={s.ctas[0].to}>{s.ctas[0].label}</Link>
                     </Button>
                     <Button asChild variant="heroOutline" className="hidden sm:inline-flex h-10 px-5 text-sm font-bold">
@@ -102,9 +102,9 @@ export function HeroCarousel() {
         </div>
       ))}
 
-      <div className="absolute inset-x-0 bottom-2.5 sm:bottom-3 z-10 pointer-events-auto">
+      <div className="absolute inset-x-0 bottom-1.5 sm:bottom-3 z-10 pointer-events-auto">
         <div className="container-site flex items-center justify-center sm:justify-between gap-4">
-          <div className="flex items-center gap-1.5 sm:gap-2.5">
+          <div className="flex items-center gap-1 sm:gap-2.5">
             {SLIDES.map((s, i) => (
               <button
                 key={s.tag}
@@ -114,7 +114,7 @@ export function HeroCarousel() {
                 aria-current={i === index}
                 className={cn(
                   "group relative h-1 sm:h-1.5 overflow-hidden rounded-full bg-navy-foreground/30 transition-all duration-300 cursor-pointer",
-                  i === index ? "w-5 sm:w-12 bg-white" : "w-2 sm:w-8 hover:bg-white/60"
+                  i === index ? "w-4 sm:w-12 bg-white" : "w-1.5 sm:w-8 hover:bg-white/60"
                 )}
               >
                 {i === index && (
