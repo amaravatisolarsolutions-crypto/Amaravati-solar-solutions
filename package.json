@@ -7,8 +7,10 @@
     "dev": "npm --prefix frontend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",
-    "build": "npm --prefix frontend run build",
+    "postinstall": "npm --prefix frontend install --include=dev",
+    "build": "npm --prefix frontend install --include=dev && npm --prefix frontend run build",
     "build:frontend": "npm --prefix frontend run build",
+    "start": "node frontend/.output/server/index.mjs",
     "preview": "npm --prefix frontend run preview",
     "lint": "npm --prefix frontend run lint",
     "test": "npm --prefix frontend run test"
