@@ -32,7 +32,7 @@ export function HeroCarousel() {
 
   return (
     <section
-      className="relative h-[200px] xs:h-[220px] sm:h-[280px] md:h-[62svh] md:min-h-[420px] md:max-h-[530px] overflow-hidden bg-navy touch-pan-y"
+      className="relative h-[215px] sm:h-[62svh] sm:min-h-[400px] sm:max-h-[530px] overflow-hidden bg-navy touch-pan-y select-none"
       aria-roledescription="carousel"
       aria-label="Solar solutions"
       onMouseEnter={() => setPaused(true)}
@@ -75,23 +75,23 @@ export function HeroCarousel() {
             loading={i === 0 ? "eager" : "lazy"}
             className={cn("h-full w-full object-cover transition-transform duration-[6000ms] ease-out", i === index ? "scale-105" : "scale-100")}
           />
-          <div className="absolute inset-0 bg-hero-overlay" />
-          <div className="absolute inset-0 flex items-center pt-2 sm:pt-6 md:pt-10 pb-4 sm:pb-8">
-            <div className="container-site w-full">
+          <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/85 to-navy/40 sm:bg-hero-overlay" />
+          <div className="absolute inset-0 flex items-center sm:items-start pt-0 sm:pt-8 md:pt-10 pb-6 sm:pb-8">
+            <div className="container-site px-4 sm:px-6">
               {i === index && (
-                <div className="max-w-2xl">
+                <div className="max-w-[285px] sm:max-w-2xl">
                   <p className="eyebrow animate-rise text-gold text-[10px] sm:text-xs font-bold uppercase tracking-wider">{s.tag}</p>
-                  <h1 className="animate-rise mt-1 text-base xs:text-lg sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-navy-foreground max-w-[90%] sm:max-w-none" style={{ animationDelay: "80ms" }}>
+                  <h1 className="animate-rise mt-0.5 sm:mt-1.5 text-lg sm:text-4xl lg:text-5xl font-extrabold leading-tight text-white line-clamp-2" style={{ animationDelay: "80ms" }}>
                     {s.title}
                   </h1>
-                  <p className="animate-rise mt-1 text-[11px] sm:text-sm md:text-base text-navy-foreground/85 leading-snug sm:leading-relaxed line-clamp-1 sm:line-clamp-none max-w-xl" style={{ animationDelay: "160ms" }}>
+                  <p className="animate-rise mt-1 sm:mt-2 max-w-[280px] sm:max-w-xl text-[11px] sm:text-sm md:text-base text-white/85 line-clamp-1 sm:line-clamp-none leading-tight sm:leading-relaxed" style={{ animationDelay: "160ms" }}>
                     {s.text}
                   </p>
-                  <div className="animate-rise mt-2 sm:mt-3.5 flex flex-wrap items-center gap-2 sm:gap-3" style={{ animationDelay: "240ms" }}>
-                    <Button asChild variant="cta" className="h-7 sm:h-9 md:h-10 text-[11px] sm:text-sm px-3 sm:px-5 rounded-full font-bold shadow-sm">
+                  <div className="animate-rise mt-2.5 sm:mt-3.5 flex items-center gap-2 sm:gap-3" style={{ animationDelay: "240ms" }}>
+                    <Button asChild variant="cta" className="h-7 sm:h-10 px-3.5 sm:px-5 text-[11px] sm:text-sm font-bold rounded-full sm:rounded-md shadow-xs">
                       <Link to={s.ctas[0].to}>{s.ctas[0].label}</Link>
                     </Button>
-                    <Button asChild variant="heroOutline" className="hidden xs:inline-flex h-7 sm:h-9 md:h-10 text-[11px] sm:text-sm px-3 sm:px-5 rounded-full font-medium">
+                    <Button asChild variant="heroOutline" className="hidden sm:inline-flex h-10 px-5 text-sm font-bold">
                       <Link to={s.ctas[1].to}>{s.ctas[1].label}</Link>
                     </Button>
                   </div>
@@ -102,8 +102,8 @@ export function HeroCarousel() {
         </div>
       ))}
 
-      <div className="absolute inset-x-0 bottom-2 sm:bottom-3">
-        <div className="container-site flex items-center justify-center md:justify-between gap-4">
+      <div className="absolute inset-x-0 bottom-2.5 sm:bottom-3 z-10 pointer-events-auto">
+        <div className="container-site flex items-center justify-center sm:justify-between gap-4">
           <div className="flex items-center gap-1.5 sm:gap-2.5">
             {SLIDES.map((s, i) => (
               <button
@@ -112,7 +112,10 @@ export function HeroCarousel() {
                 onClick={() => go(i)}
                 aria-label={`Go to slide ${i + 1}: ${s.tag}`}
                 aria-current={i === index}
-                className="group relative h-1 sm:h-1.5 w-6 sm:w-10 overflow-hidden rounded-full bg-navy-foreground/35"
+                className={cn(
+                  "group relative h-1 sm:h-1.5 overflow-hidden rounded-full bg-navy-foreground/30 transition-all duration-300 cursor-pointer",
+                  i === index ? "w-5 sm:w-12 bg-white" : "w-2 sm:w-8 hover:bg-white/60"
+                )}
               >
                 {i === index && (
                   <span key={`${index}-${paused}`} className={cn("absolute inset-0 bg-primary", paused ? "" : "animate-progress")} />
@@ -120,7 +123,7 @@ export function HeroCarousel() {
               </button>
             ))}
           </div>
-          <div className="hidden md:flex gap-2">
+          <div className="hidden sm:flex gap-2">
             <button
               type="button"
               onClick={() => go(index - 1)}
