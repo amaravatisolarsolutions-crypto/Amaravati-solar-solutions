@@ -339,12 +339,18 @@ function seedInitialData($mysqli) {
 
     // Default services if empty
     $svcCheck = $mysqli->query("SELECT id FROM `services` LIMIT 1");
-    if ($svcCheck && $svcCheck->num_rows === 0) {
+    if ($svcCheck && $svcCheck->num_rows < 10) {
         $services = [
-            ['svc-1', 'Residential Rooftop Solar', 1, 'SOLAR', 'Complete rooftop solar installation for homes with high efficiency panels and net-metering support.', '/assets/hero-residential-D28_GEsT.jpg'],
-            ['svc-2', 'Commercial & Industrial Solar', 2, 'SOLAR', 'Custom turnkey solar plants for factories, offices, and commercial establishments with maximum ROI.', '/assets/hero-commercial-C_m7ud18.jpg'],
-            ['svc-3', 'Solar Water Pumping', 3, 'AGRICULTURE', 'Reliable DC and AC solar water pumps for agriculture and remote farm irrigation.', '/assets/hero-industrial-DBI3n6Ha.jpg'],
-            ['svc-4', 'Operations & Maintenance (O&M)', 4, 'SERVICES', 'Comprehensive preventive maintenance, cleaning, inverter inspection and performance tracking.', '/assets/installation-Cc7xU_Ew.jpg']
+            ['svc-1', 'Residential Rooftop Solar', 1, 'SOLAR', 'Designed to help homeowners reduce electricity costs and generate clean, renewable energy from their own rooftop.', '/assets/hero-residential-D28_GEsT.jpg'],
+            ['svc-2', 'Commercial & Industrial Solar', 2, 'SOLAR', 'Efficient solar power solutions for industries, factories, hospitals, educational institutions, office buildings, hotels, warehouses, and commercial spaces.', '/assets/hero-commercial-C_m7ud18.jpg'],
+            ['svc-3', 'Ground Mounted Solar Power Plants', 3, 'SOLAR', 'Complete EPC solutions for MW-scale solar projects including design, engineering, procurement, installation, testing, and commissioning.', '/assets/solar-farm-BOHTUAgk.jpg'],
+            ['svc-4', 'On-Grid Solar Systems', 4, 'SOLAR', 'Grid-tied solar systems that sync seamlessly with utility power, lowering electricity bills through net metering credits.', '/assets/solar-hyderabad-rooftop-DRo-ta6t.jpg'],
+            ['svc-5', 'Off-Grid Solar Systems', 5, 'SOLAR', 'Independent solar power systems equipped with advanced battery energy storage for farmhouses, remote areas, and outage protection.', '/assets/hero-future-Bhbvz5Ay.jpg'],
+            ['svc-6', 'Hybrid Solar Systems', 6, 'SOLAR', 'Smart multi-mode systems delivering the economic savings of grid export alongside battery storage backup during power cuts.', '/assets/installation-Cc7xU_Ew.jpg'],
+            ['svc-7', 'HT / LT Substation & Transformer Works', 7, 'ELECTRICAL', 'Complete electrical infrastructure installation, HT yard switchgear commissioning, power transformer erection, and statutory inspections.', '/assets/hero-industrial-DBI3n6Ha.jpg'],
+            ['svc-8', 'Solar Water Pumping', 8, 'AGRICULTURE', 'Reliable DC and AC solar water pumps for agriculture, borewells, and remote farm irrigation.', '/assets/hero-industrial-DBI3n6Ha.jpg'],
+            ['svc-9', 'EV Charging Infrastructure', 9, 'EV CHARGING', 'Commercial and residential EV charging stations powered by smart solar integration for green mobility.', '/assets/solar-carport-DLxQdB2g.jpg'],
+            ['svc-10', 'Operations & Maintenance (O&M)', 10, 'MAINTENANCE / AMC', 'Comprehensive preventive maintenance, cleaning, thermal drone imaging, inverter inspection, and 24/7 performance tracking.', '/assets/installation-Cc7xU_Ew.jpg']
         ];
         $stmt = $mysqli->prepare("INSERT IGNORE INTO `services` (`id`, `title`, `service_order`, `category`, `description`, `image`, `status`) VALUES (?, ?, ?, ?, ?, ?, 'Active')");
         if ($stmt) {
@@ -354,6 +360,72 @@ function seedInitialData($mysqli) {
             }
             $stmt->close();
         }
+    }
+
+    // Default projects if empty
+    $projCheck = $mysqli->query("SELECT id FROM `projects` LIMIT 1");
+    if ($projCheck && $projCheck->num_rows === 0) {
+        $projects = [
+            ['p0', 'Roof Top solar power plant', 'Commercial', 'Commercial Rooftop Facility', '75KWP', 'Hyderabad', '/assets/solar-hyderabad-rooftop-DRo-ta6t.jpg', '75 kWp high-yield commercial rooftop solar power plant installed in Hyderabad with elevated structure and DISCOM net-metering synchronization.', 'Completed'],
+            ['p1', '10 kW Residential Rooftop Solar', 'Residential', 'Private Residence', '10 kW', 'Amaravati', '/assets/hero-residential-D28_GEsT.jpg', 'High-efficiency 10 kW rooftop solar installation with smart net-metering.', 'Completed'],
+            ['p2', '50 kW Commercial Warehouse Solar', 'Commercial', 'Logistics Warehouse', '50 kW', 'Vijayawada', '/assets/hero-commercial-C_m7ud18.jpg', '50 kW grid-tied solar setup cutting industrial daytime power tariffs.', 'Completed'],
+            ['p3', '25 kW Hospital Solar Backup', 'Healthcare', 'Multi-Specialty Hospital', '25 kW', 'Guntur', '/assets/hero-future-Bhbvz5Ay.jpg', 'Uninterrupted healthcare power with hybrid solar & lithium battery bank.', 'Completed'],
+            ['p4', '100 kW Industrial Manufacturing Solar', 'Industrial', 'Steel Processing Unit', '100 kW', 'Autonagar Industrial Area', '/assets/hero-industrial-DBI3n6Ha.jpg', 'Massive 100 kW manufacturing facility solar plant delivering peak industrial ROI.', 'Completed'],
+            ['p5', '5 HP Solar Agricultural Water Pump', 'Agriculture', 'Farm Cooperative', '5 HP', 'Tenali Rural', '/assets/solar-panels-array-BYmL5U4a.jpg', 'Solar submersible borewell pump delivering continuous drip irrigation.', 'Completed'],
+            ['p6', 'Commercial Solar Carport Canopy', 'Commercial', 'Corporate Tech Park', '30 kW', 'Gannavaram', '/assets/solar-carport-DLxQdB2g.jpg', 'Dual-purpose solar carport structure providing shade and clean electricity.', 'Completed']
+        ];
+        $pStmt = $mysqli->prepare("INSERT IGNORE INTO `projects` (`id`, `title`, `category`, `client`, `capacity`, `location`, `image`, `description`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        if ($pStmt) {
+            foreach ($projects as $p) {
+                $pStmt->bind_param("sssssssss", $p[0], $p[1], $p[2], $p[3], $p[4], $p[5], $p[6], $p[7], $p[8]);
+                $pStmt->execute();
+            }
+            $pStmt->close();
+        }
+    }
+
+    // Default quotations if empty
+    $quotCheck = $mysqli->query("SELECT id FROM `quotations` LIMIT 1");
+    if ($quotCheck && $quotCheck->num_rows === 0) {
+        $q1Items = json_encode([
+            ["id" => "1", "description" => "Solar PV Module (Mono PERC)", "specification" => "545W Tier-1 Bifacial", "qty" => 6, "unitPrice" => 15000, "amount" => 90000],
+            ["id" => "2", "description" => "Grid-Tie Solar Inverter", "specification" => "3.3kW Single Phase IP65", "qty" => 1, "unitPrice" => 38000, "amount" => 38000],
+            ["id" => "3", "description" => "Mounting Structure", "specification" => "Pre-fab Hot Dip Galvanized - 6ft", "qty" => 1, "unitPrice" => 22000, "amount" => 22000],
+            ["id" => "4", "description" => "AC/DC Distribution Box & Cabling", "specification" => "SPD, MCB, 4 sq.mm Solar DC Cable", "qty" => 1, "unitPrice" => 16000, "amount" => 16000],
+            ["id" => "5", "description" => "Net Metering, Liaison & Commissioning", "specification" => "APCPDCL CEIG Approval & Sync", "qty" => 1, "unitPrice" => 14000, "amount" => 14000]
+        ]);
+        $q1Site = json_encode([
+            "housingType" => "Independent",
+            "subsidyType" => "Subsidy National DBT",
+            "noOfFloors" => "G+1",
+            "sanctionedPhase" => "Single Phase",
+            "sanctionedLoad" => "3 kW",
+            "cluster" => "Vijayawada Urban",
+            "discom" => "APCPDCL",
+            "roofType" => "RCC",
+            "structureType" => "Pre fab - 6ft",
+            "noOfModules" => 6,
+            "overhangPossibility" => "No",
+            "overhangSide" => "",
+            "amc" => "Included",
+            "loadChange" => "No",
+            "phaseChange" => "No",
+            "nameChange" => "No",
+            "paymentMode" => "Direct",
+            "totalPrice" => 210000,
+            "discount" => 0,
+            "finalPrice" => 210000,
+            "terms" => [
+                "Price includes GST, transportation, and complete turnkey installation.",
+                "5 Years comprehensive on-site warranty on complete system.",
+                "Net-metering subsidy of ₹78,000 under PM Surya Ghar DBT scheme credited directly to bank account.",
+                "Panel performance warranty: 25 years linear output guarantee.",
+                "Payment terms: 20% advance booking, 60% on material delivery, 20% after installation & commissioning."
+            ]
+        ]);
+        $escItems = $mysqli->real_escape_string($q1Items);
+        $escSite = $mysqli->real_escape_string($q1Site);
+        $mysqli->query("INSERT IGNORE INTO `quotations` (`id`, `quotation_no`, `date`, `valid_upto`, `customer_name`, `customer_phone`, `customer_address`, `system_capacity`, `housing_type`, `subsidy_type`, `items_json`, `site_details_json`, `subtotal`, `gst_amount`, `total_amount`, `subsidy_amount`, `from_hand`, `status`) VALUES ('quot-1', 'QT-2026-001', '2026-10-31', '2026-11-15', 'K. V. Rao', '+91 98480 12345', 'Plot 42, Gayatri Nagar, Vijayawada - 520008', '3 kW Rooftop Solar', 'Independent', 'Subsidy National DBT', '{$escItems}', '{$escSite}', 180000.00, 30000.00, 210000.00, 78000.00, 132000.00, 'Approved')");
     }
 }
 

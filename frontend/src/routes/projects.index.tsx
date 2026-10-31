@@ -1,8 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
-import { PROJECTS, type ProjectCategory } from "@/lib/site-data";
+import { useEffect, useState } from "react";
+import { PROJECTS, type Project, type ProjectCategory } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
+import commercial from "@/assets/hero-commercial.jpg";
+import residential from "@/assets/hero-residential.jpg";
+import industrial from "@/assets/hero-industrial.jpg";
+import future from "@/assets/hero-future.jpg";
+import installation from "@/assets/installation.jpg";
+import solarHyderabadRooftop from "@/assets/solar-hyderabad-rooftop.jpg";
+import solarPanelsArray from "@/assets/solar-panels-array.jpg";
 
 export const Route = createFileRoute("/projects/")({
   head: () => ({
@@ -20,7 +27,57 @@ const FILTERS: ("All" | ProjectCategory)[] = ["All", "Residential", "Commercial"
 
 function Projects() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
-  const list = filter === "All" ? PROJECTS : PROJECTS.filter((p) => p.category === filter);
+  const [projectList, setProjectList] = useState<Project[]>(PROJECTS);
+
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d?.success && Array.isArray(d.data) && d.data.length > 0) {
+          const mapped: Project[] = d.data.map((p: any) => {
+            let img = p.image || commercial;
+            const imgStr = String(p.image || "");
+            if (imgStr.includes("rooftop") || imgStr.includes("hyderabad")) img = solarHyderabadRooftop;
+            else if (imgStr.includes("residential")) img = residential;
+            else if (imgStr.includes("commercial")) img = commercial;
+            else if (imgStr.includes("future")) img = future;
+            else if (imgStr.includes("industrial")) img = industrial;
+            else if (imgStr.includes("array") || imgStr.includes("panels")) img = solarPanelsArray;
+            else if (imgStr.includes("installation")) img = installation;
+
+            return {
+              id: String(p.id),
+              slug: String(p.id),
+              title: p.title || "Solar Project",
+              category: (p.category as any) || "Commercial",
+              image: img,
+              images: [img],
+              summary: p.description || "",
+              placeholder: false,
+              capacity: p.capacity || "",
+              location: p.location || "Andhra Pradesh",
+              clientType: p.client || "",
+              completionTime: "Standard",
+              annualGeneration: "",
+              co2Saved: "",
+              savings: "",
+              overview: p.description || "",
+              systemDetails: {
+                panelType: "Tier-1 Mono PERC High Efficiency Modules",
+                inverterType: "Three-Phase Smart Grid-Tie Inverter",
+                mountingStructure: "Hot-Dip Galvanized Structure",
+                monitoring: "Cloud WiFi Remote Telemetry",
+                warranty: "25-Year Performance Guarantee",
+              },
+            };
+          });
+          setProjectList(mapped);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const list = filter === "All" ? projectList : projectList.filter((p) => p.category === filter);
 
   return (
     <section className="container-site pt-4 sm:pt-6 md:pt-8 pb-12 md:pb-16">

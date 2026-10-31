@@ -141,6 +141,27 @@ if (strpos($uri, '/api/') === 0) {
             $mysqli->close();
             exit;
         }
+
+        if ($method === 'DELETE') {
+            $id = trim($_GET['id'] ?? ($_GET['reference'] ?? ''));
+            if (!$id) {
+                $raw = file_get_contents('php://input');
+                $data = json_decode($raw, true) ?: [];
+                $id = trim($data['id'] ?? ($data['reference'] ?? ''));
+            }
+            if ($id) {
+                $stmt = $mysqli->prepare("DELETE FROM `demo_bookings` WHERE `reference` = ? OR `id` = ?");
+                $stmt->bind_param("ss", $id, $id);
+                $stmt->execute();
+                $stmt->close();
+                echo json_encode(['success' => true, 'message' => 'Booking deleted']);
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid ID or reference']);
+            }
+            $mysqli->close();
+            exit;
+        }
     }
 
     // --- Enquiries Endpoint ---
@@ -231,26 +252,263 @@ if (strpos($uri, '/api/') === 0) {
 
     // --- Services Endpoint ---
     if ($uri === '/api/services') {
-        $res = $mysqli->query("SELECT * FROM `services` WHERE `status` = 'Active' ORDER BY `service_order` ASC");
-        $rows = [];
-        while ($r = $res->fetch_assoc()) {
-            $rows[] = $r;
+        if ($method === 'GET') {
+            $statusFilter = isset($_GET['all']) ? "" : "WHERE `status` = 'Active' OR `status` IS NULL";
+            $res = $mysqli->query("SELECT * FROM `services` {$statusFilter} ORDER BY `service_order` ASC, `id` ASC");
+            if (!$res) {
+                $res = $mysqli->query("SELECT * FROM `services` ORDER BY `service_order` ASC, `id` ASC");
+            }
+            $rows = [];
+            if ($res) {
+                while ($r = $res->fetch_assoc()) {
+                    $rows[] = $r;
+                }
+            }
+            echo json_encode(['success' => true, 'data' => $rows]);
+            $mysqli->close();
+            exit;
         }
-        echo json_encode(['success' => true, 'data' => $rows]);
-        $mysqli->close();
-        exit;
+
+        if ($method === 'POST' || $method === 'PUT') {
+            $raw = file_get_contents('php://input');
+            $data = json_decode($raw, true) ?: $_POST;
+            $id = trim($data['id'] ?? ('svc-' . time()));
+            $title = trim($data['title'] ?? '');
+            $order = (int)($data['service_order'] ?? ($data['order'] ?? 1));
+            $category = trim($data['category'] ?? 'SOLAR');
+            $description = trim($data['description'] ?? '');
+            $image = trim($data['image'] ?? '');
+            $status = trim($data['status'] ?? 'Active');
+
+            if (!$title) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Title is required.']);
+                $mysqli->close();
+                exit;
+            }
+
+            $stmt = $mysqli->prepare("INSERT INTO `services` (`id`, `title`, `service_order`, `category`, `description`, `image`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `service_order` = VALUES(`service_order`), `category` = VALUES(`category`), `description` = VALUES(`description`), `image` = VALUES(`image`), `status` = VALUES(`status`)");
+            $stmt->bind_param("ssissss", $id, $title, $order, $category, $description, $image, $status);
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'id' => $id, 'message' => 'Service saved successfully']);
+            } else {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'error' => $stmt->error]);
+            }
+            $stmt->close();
+            $mysqli->close();
+            exit;
+        }
+
+        if ($method === 'DELETE') {
+            $id = trim($_GET['id'] ?? '');
+            if (!$id) {
+                $raw = file_get_contents('php://input');
+                $data = json_decode($raw, true) ?: [];
+                $id = trim($data['id'] ?? '');
+            }
+            if ($id) {
+                $stmt = $mysqli->prepare("DELETE FROM `services` WHERE `id` = ?");
+                $stmt->bind_param("s", $id);
+                $stmt->execute();
+                $stmt->close();
+                echo json_encode(['success' => true, 'message' => 'Service deleted']);
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid service ID']);
+            }
+            $mysqli->close();
+            exit;
+        }
     }
 
     // --- Projects Endpoint ---
     if ($uri === '/api/projects') {
-        $res = $mysqli->query("SELECT * FROM `projects` ORDER BY `id` DESC");
-        $rows = [];
-        while ($r = $res->fetch_assoc()) {
-            $rows[] = $r;
+        if ($method === 'GET') {
+            $res = $mysqli->query("SELECT * FROM `projects` ORDER BY `created_at` DESC, `id` ASC");
+            $rows = [];
+            if ($res) {
+                while ($r = $res->fetch_assoc()) {
+                    $rows[] = $r;
+                }
+            }
+            echo json_encode(['success' => true, 'data' => $rows]);
+            $mysqli->close();
+            exit;
         }
-        echo json_encode(['success' => true, 'data' => $rows]);
-        $mysqli->close();
-        exit;
+
+        if ($method === 'POST' || $method === 'PUT') {
+            $raw = file_get_contents('php://input');
+            $data = json_decode($raw, true) ?: $_POST;
+            $id = trim($data['id'] ?? ('p-' . time()));
+            $title = trim($data['title'] ?? '');
+            $category = trim($data['category'] ?? 'Residential');
+            $client = trim($data['client'] ?? '');
+            $capacity = trim($data['capacity'] ?? '');
+            $location = trim($data['location'] ?? '');
+            $image = trim($data['image'] ?? '');
+            $description = trim($data['description'] ?? '');
+            $status = trim($data['status'] ?? 'Completed');
+
+            if (!$title) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Title is required.']);
+                $mysqli->close();
+                exit;
+            }
+
+            $stmt = $mysqli->prepare("INSERT INTO `projects` (`id`, `title`, `category`, `client`, `capacity`, `location`, `image`, `description`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `category` = VALUES(`category`), `client` = VALUES(`client`), `capacity` = VALUES(`capacity`), `location` = VALUES(`location`), `image` = VALUES(`image`), `description` = VALUES(`description`), `status` = VALUES(`status`)");
+            $stmt->bind_param("sssssssss", $id, $title, $category, $client, $capacity, $location, $image, $description, $status);
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'id' => $id, 'message' => 'Project saved successfully']);
+            } else {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'error' => $stmt->error]);
+            }
+            $stmt->close();
+            $mysqli->close();
+            exit;
+        }
+
+        if ($method === 'DELETE') {
+            $id = trim($_GET['id'] ?? '');
+            if (!$id) {
+                $raw = file_get_contents('php://input');
+                $data = json_decode($raw, true) ?: [];
+                $id = trim($data['id'] ?? '');
+            }
+            if ($id) {
+                $stmt = $mysqli->prepare("DELETE FROM `projects` WHERE `id` = ?");
+                $stmt->bind_param("s", $id);
+                $stmt->execute();
+                $stmt->close();
+                echo json_encode(['success' => true, 'message' => 'Project deleted']);
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid project ID']);
+            }
+            $mysqli->close();
+            exit;
+        }
+    }
+
+    // --- Quotations Endpoint ---
+    if ($uri === '/api/quotations') {
+        if ($method === 'GET') {
+            $res = $mysqli->query("SELECT * FROM `quotations` ORDER BY `created_at` DESC, `id` DESC");
+            $rows = [];
+            if ($res) {
+                while ($r = $res->fetch_assoc()) {
+                    $rows[] = $r;
+                }
+            }
+            echo json_encode(['success' => true, 'data' => $rows]);
+            $mysqli->close();
+            exit;
+        }
+
+        if ($method === 'POST' || $method === 'PUT') {
+            $raw = file_get_contents('php://input');
+            $data = json_decode($raw, true) ?: $_POST;
+
+            $id = trim($data['id'] ?? ('quot-' . time()));
+            $quotNo = trim($data['quotationNo'] ?? ($data['quotation_no'] ?? ('QT-' . date('Ymd') . '-' . substr(bin2hex(random_bytes(2)), 0, 4))));
+            $date = trim($data['date'] ?? date('Y-m-d'));
+            $validUpto = trim($data['validUpto'] ?? ($data['valid_upto'] ?? date('Y-m-d', strtotime('+15 days'))));
+            $customerName = trim($data['customerName'] ?? ($data['customer_name'] ?? ''));
+            $customerPhone = trim($data['customerPhone'] ?? ($data['customer_phone'] ?? ''));
+            $customerAddress = trim($data['customerAddress'] ?? ($data['customer_address'] ?? ''));
+            $systemCapacity = trim($data['systemCapacity'] ?? ($data['system_capacity'] ?? ''));
+            $housingType = trim($data['housingType'] ?? ($data['housing_type'] ?? ''));
+            $subsidyType = trim($data['subsidyType'] ?? ($data['subsidy_type'] ?? ''));
+            $itemsJson = is_array($data['items'] ?? null) ? json_encode($data['items']) : ($data['items_json'] ?? '[]');
+
+            $siteDetails = [
+                'noOfFloors' => $data['noOfFloors'] ?? '',
+                'sanctionedPhase' => $data['sanctionedPhase'] ?? '',
+                'sanctionedLoad' => $data['sanctionedLoad'] ?? '',
+                'cluster' => $data['cluster'] ?? '',
+                'discom' => $data['discom'] ?? '',
+                'roofType' => $data['roofType'] ?? '',
+                'structureType' => $data['structureType'] ?? '',
+                'noOfModules' => $data['noOfModules'] ?? 0,
+                'overhangPossibility' => $data['overhangPossibility'] ?? '',
+                'overhangSide' => $data['overhangSide'] ?? '',
+                'amc' => $data['amc'] ?? '',
+                'loadChange' => $data['loadChange'] ?? '',
+                'phaseChange' => $data['phaseChange'] ?? '',
+                'nameChange' => $data['nameChange'] ?? '',
+                'paymentMode' => $data['paymentMode'] ?? '',
+                'totalPrice' => $data['totalPrice'] ?? 0,
+                'discount' => $data['discount'] ?? 0,
+                'finalPrice' => $data['finalPrice'] ?? 0,
+                'terms' => $data['terms'] ?? []
+            ];
+            $siteDetailsJson = json_encode($siteDetails);
+
+            $subtotal = (float)($data['subtotal'] ?? 0);
+            $gstAmount = (float)($data['gstAmount'] ?? ($data['gst_amount'] ?? 0));
+            $totalAmount = (float)($data['totalAmount'] ?? ($data['total_amount'] ?? 0));
+            $subsidyAmount = (float)($data['subsidyAmount'] ?? ($data['subsidy_amount'] ?? 0));
+            $fromHand = (float)($data['fromHand'] ?? ($data['from_hand'] ?? 0));
+            $status = trim($data['status'] ?? 'Pending');
+
+            $stmt = $mysqli->prepare("INSERT INTO `quotations` (`id`, `quotation_no`, `date`, `valid_upto`, `customer_name`, `customer_phone`, `customer_address`, `system_capacity`, `housing_type`, `subsidy_type`, `items_json`, `site_details_json`, `subtotal`, `gst_amount`, `total_amount`, `subsidy_amount`, `from_hand`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `customer_name` = VALUES(`customer_name`), `customer_phone` = VALUES(`customer_phone`), `customer_address` = VALUES(`customer_address`), `system_capacity` = VALUES(`system_capacity`), `housing_type` = VALUES(`housing_type`), `subsidy_type` = VALUES(`subsidy_type`), `items_json` = VALUES(`items_json`), `site_details_json` = VALUES(`site_details_json`), `subtotal` = VALUES(`subtotal`), `gst_amount` = VALUES(`gst_amount`), `total_amount` = VALUES(`total_amount`), `subsidy_amount` = VALUES(`subsidy_amount`), `from_hand` = VALUES(`from_hand`), `status` = VALUES(`status`), `date` = VALUES(`date`), `valid_upto` = VALUES(`valid_upto`)");
+            $stmt->bind_param("ssssssssssssddddds", $id, $quotNo, $date, $validUpto, $customerName, $customerPhone, $customerAddress, $systemCapacity, $housingType, $subsidyType, $itemsJson, $siteDetailsJson, $subtotal, $gstAmount, $totalAmount, $subsidyAmount, $fromHand, $status);
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'id' => $id, 'quotation_no' => $quotNo, 'message' => 'Quotation saved successfully']);
+            } else {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'error' => $stmt->error]);
+            }
+            $stmt->close();
+            $mysqli->close();
+            exit;
+        }
+
+        if ($method === 'PATCH') {
+            $raw = file_get_contents('php://input');
+            $data = json_decode($raw, true) ?: $_POST;
+            $id = trim($data['id'] ?? ($data['quotation_no'] ?? ''));
+            $status = trim($data['status'] ?? 'Pending');
+
+            if ($id) {
+                $stmt = $mysqli->prepare("UPDATE `quotations` SET `status` = ? WHERE `id` = ? OR `quotation_no` = ?");
+                $stmt->bind_param("sss", $status, $id, $id);
+                $stmt->execute();
+                $stmt->close();
+                echo json_encode(['success' => true, 'message' => 'Quotation status updated']);
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid ID']);
+            }
+            $mysqli->close();
+            exit;
+        }
+
+        if ($method === 'DELETE') {
+            $id = trim($_GET['id'] ?? '');
+            if (!$id) {
+                $raw = file_get_contents('php://input');
+                $data = json_decode($raw, true) ?: [];
+                $id = trim($data['id'] ?? ($data['quotation_no'] ?? ''));
+            }
+            if ($id) {
+                $stmt = $mysqli->prepare("DELETE FROM `quotations` WHERE `id` = ? OR `quotation_no` = ?");
+                $stmt->bind_param("ss", $id, $id);
+                $stmt->execute();
+                $stmt->close();
+                echo json_encode(['success' => true, 'message' => 'Quotation deleted']);
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid ID']);
+            }
+            $mysqli->close();
+            exit;
+        }
     }
 
     // --- Admin Authentication & 2-Factor OTP Endpoints ---

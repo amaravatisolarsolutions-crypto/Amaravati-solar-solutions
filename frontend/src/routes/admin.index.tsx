@@ -396,62 +396,29 @@ function AdminDashboard() {
 
       const savedServices = localStorage.getItem("amaravati_admin_services");
       if (savedServices) {
-        setServices(JSON.parse(savedServices));
-      } else {
-        localStorage.setItem("amaravati_admin_services", JSON.stringify(DEFAULT_SERVICES));
+        try { setServices(JSON.parse(savedServices)); } catch {}
       }
 
       const savedProjects = localStorage.getItem("amaravati_admin_projects");
       if (savedProjects) {
-        setProjects(JSON.parse(savedProjects));
+        try { setProjects(JSON.parse(savedProjects)); } catch {}
       }
 
       const savedInquiries = localStorage.getItem("amaravati_admin_inquiries");
       if (savedInquiries) {
-        setInquiries(JSON.parse(savedInquiries));
-      } else {
-        localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(DEFAULT_INQUIRIES));
+        try { setInquiries(JSON.parse(savedInquiries)); } catch {}
       }
-
-      // Fetch live enquiries and bookings from Hostinger MySQL
-      fetchLiveInquiries();
 
       const savedQuotations = localStorage.getItem("amaravati_admin_quotations");
       if (savedQuotations) {
-        try {
-          const parsed = JSON.parse(savedQuotations);
-          const migrated: AdminQuotation[] = parsed.map((q: any) => ({
-            housingType: "Independent",
-            subsidyType: "Subsidy National DBT",
-            noOfFloors: "G+1",
-            sanctionedPhase: "Single Phase",
-            sanctionedLoad: "3 kW",
-            cluster: "Vijayawada Urban",
-            discom: "APCPDCL",
-            roofType: "RCC",
-            structureType: "Pre fab - 6ft",
-            noOfModules: 6,
-            overhangPossibility: "No",
-            overhangSide: "",
-            amc: "Included",
-            loadChange: "No",
-            phaseChange: "No",
-            nameChange: "No",
-            paymentMode: "Direct",
-            totalPrice: q.totalPrice || q.totalAmount || 210000,
-            discount: q.discount || 0,
-            finalPrice: q.finalPrice || q.totalAmount || 210000,
-            subsidyAmount: q.subsidyAmount !== undefined ? q.subsidyAmount : (q.subsidyType === "Non- Subsidy" ? 0 : 78000),
-            fromHand: q.fromHand !== undefined ? q.fromHand : Math.max(0, (q.finalPrice || q.totalAmount || 210000) - (q.subsidyType === "Non- Subsidy" ? 0 : 78000)),
-            ...q,
-          }));
-          setQuotations(migrated);
-        } catch {
-          setQuotations(DEFAULT_QUOTATIONS);
-        }
-      } else {
-        localStorage.setItem("amaravati_admin_quotations", JSON.stringify(DEFAULT_QUOTATIONS));
+        try { setQuotations(JSON.parse(savedQuotations)); } catch {}
       }
+
+      // Fetch all live data directly from Hostinger MySQL Database!
+      fetchLiveServices();
+      fetchLiveProjects();
+      fetchLiveQuotations();
+      fetchLiveInquiries();
     } catch (e) {
       console.warn("Storage hydration error", e);
     }
@@ -473,84 +440,154 @@ function AdminDashboard() {
     navigate({ to: "/admin/login" });
   };
 
-  const handleRefreshData = () => {
-    showToast("Data refreshed successfully!");
-  };
+  // 1. Fetch Live Services from MySQL Database
+  const fetchLiveServices = async () => {
+    try {
+      const res = await fetch("/api/services?all=1").then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      if (res?.success && Array.isArray(res.data) && res.data.length > 0) {
+        const liveServices: AdminService[] = res.data.map((s: any, idx: number) => {
+          let resolvedImage = s.image || residential;
+          const imgStr = String(s.image || "");
+          if (imgStr.includes("residential")) resolvedImage = residential;
+          else if (imgStr.includes("commercial")) resolvedImage = commercial;
+          else if (imgStr.includes("industrial")) resolvedImage = industrial;
+          else if (imgStr.includes("future")) resolvedImage = future;
+          else if (imgStr.includes("installation")) resolvedImage = installation;
+          else if (imgStr.includes("farm")) resolvedImage = solarFarm;
+          else if (imgStr.includes("rooftop") || imgStr.includes("hyderabad")) resolvedImage = solarHyderabadRooftop;
+          else if (imgStr.includes("array") || imgStr.includes("panels")) resolvedImage = solarPanelsArray;
 
-  // Quotation CRUD handlers
-  const handleSaveQuotation = (quotationData: Omit<AdminQuotation, "id"> & { id?: string | undefined }) => {
-    let updated: AdminQuotation[];
-    if (quotationData.id) {
-      updated = quotations.map((q) => (q.id === quotationData.id ? ({ ...q, ...quotationData } as AdminQuotation) : q));
-      showToast("Quotation updated successfully!");
-    } else {
-      const newQuot: AdminQuotation = {
-        ...quotationData,
-        id: `quot-${Date.now()}`,
-      };
-      updated = [newQuot, ...quotations];
-      showToast("New quotation generated successfully!");
-    }
-    setQuotations(updated);
-    localStorage.setItem("amaravati_admin_quotations", JSON.stringify(updated));
-    setIsQuotationModalOpen(false);
-  };
-
-  const handleDeleteQuotation = (id: string, quotationNo: string) => {
-    if (confirm(`Are you sure you want to delete quotation "${quotationNo}"?`)) {
-      const updated = quotations.filter((q) => q.id !== id);
-      setQuotations(updated);
-      localStorage.setItem("amaravati_admin_quotations", JSON.stringify(updated));
-      showToast("Quotation deleted.");
-    }
-  };
-
-  const handleUpdateQuotationStatus = (id: string, status: "Pending" | "Sent" | "Approved") => {
-    const updated = quotations.map((q) => (q.id === id ? { ...q, status } : q));
-    setQuotations(updated);
-    localStorage.setItem("amaravati_admin_quotations", JSON.stringify(updated));
-    showToast(`Quotation status updated to ${status}`);
-  };
-
-  // Service CRUD handlers
-  const handleSaveService = (serviceData: Omit<AdminService, "id"> & { id?: string | undefined }) => {
-    let updated: AdminService[];
-    if (serviceData.id) {
-      updated = services.map((s) => (s.id === serviceData.id ? ({ ...s, ...serviceData } as AdminService) : s));
-      showToast("Service updated successfully!");
-    } else {
-      const newService: AdminService = {
-        ...serviceData,
-        id: `s-${Date.now()}`,
-      };
-      updated = [newService, ...services];
-      showToast("New service added successfully!");
-    }
-    setServices(updated);
-    localStorage.setItem("amaravati_admin_services", JSON.stringify(updated));
-    setIsServiceModalOpen(false);
-    setEditingService(null);
-  };
-
-  const handleDeleteService = (id: string, title: string) => {
-    if (confirm(`Are you sure you want to delete "${title}"?`)) {
-      const updated = services.filter((s) => s.id !== id);
-      setServices(updated);
-      localStorage.setItem("amaravati_admin_services", JSON.stringify(updated));
-      showToast("Service deleted.");
+          return {
+            id: String(s.id),
+            title: s.title || "Solar Service",
+            order: parseInt(s.service_order) || idx + 1,
+            category: (s.category as any) || "SOLAR",
+            description: s.description || "",
+            image: resolvedImage,
+          };
+        });
+        setServices(liveServices);
+        try { localStorage.setItem("amaravati_admin_services", JSON.stringify(liveServices)); } catch {}
+      }
+    } catch (e) {
+      console.warn("Could not fetch live services:", e);
     }
   };
 
-  // Project CRUD handlers
-  const handleDeleteProject = (id: string, title: string) => {
-    if (confirm(`Are you sure you want to remove project "${title}"?`)) {
-      const updated = projects.filter((p) => p.id !== id);
-      setProjects(updated);
-      localStorage.setItem("amaravati_admin_projects", JSON.stringify(updated));
-      showToast("Project removed.");
+  // 2. Fetch Live Projects from MySQL Database
+  const fetchLiveProjects = async () => {
+    try {
+      const res = await fetch("/api/projects").then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      if (res?.success && Array.isArray(res.data) && res.data.length > 0) {
+        const liveProjects: Project[] = res.data.map((p: any) => {
+          let resolvedImage = p.image || commercial;
+          const imgStr = String(p.image || "");
+          if (imgStr.includes("rooftop") || imgStr.includes("hyderabad")) resolvedImage = solarHyderabadRooftop;
+          else if (imgStr.includes("residential")) resolvedImage = residential;
+          else if (imgStr.includes("commercial")) resolvedImage = commercial;
+          else if (imgStr.includes("future")) resolvedImage = future;
+          else if (imgStr.includes("industrial")) resolvedImage = industrial;
+          else if (imgStr.includes("array") || imgStr.includes("panels")) resolvedImage = solarPanelsArray;
+          else if (imgStr.includes("installation")) resolvedImage = installation;
+
+          return {
+            id: String(p.id),
+            slug: String(p.id),
+            title: p.title || "Solar Project",
+            category: (p.category as any) || "Commercial",
+            image: resolvedImage,
+            images: [resolvedImage],
+            summary: p.description || "",
+            placeholder: false,
+            capacity: p.capacity || "",
+            location: p.location || "Andhra Pradesh",
+            clientType: p.client || "",
+            completionTime: "Standard",
+            annualGeneration: "",
+            co2Saved: "",
+            savings: "",
+            overview: p.description || "",
+            systemDetails: {
+              panelType: "Tier-1 Mono PERC High Efficiency Modules",
+              inverterType: "Three-Phase Smart Grid-Tie Inverter",
+              mountingStructure: "Hot-Dip Galvanized Structure",
+              monitoring: "Cloud WiFi Remote Telemetry",
+              warranty: "25-Year Performance Guarantee",
+            },
+          };
+        });
+        setProjects(liveProjects);
+        try { localStorage.setItem("amaravati_admin_projects", JSON.stringify(liveProjects)); } catch {}
+      }
+    } catch (e) {
+      console.warn("Could not fetch live projects:", e);
     }
   };
 
+  // 3. Fetch Live Quotations from MySQL Database
+  const fetchLiveQuotations = async () => {
+    try {
+      const res = await fetch("/api/quotations").then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      if (res?.success && Array.isArray(res.data) && res.data.length > 0) {
+        const liveQuotations: AdminQuotation[] = res.data.map((q: any) => {
+          let items: any[] = [];
+          try {
+            items = typeof q.items_json === "string" ? JSON.parse(q.items_json) : (q.items_json || []);
+          } catch {}
+
+          let siteDetails: any = {};
+          try {
+            siteDetails = typeof q.site_details_json === "string" ? JSON.parse(q.site_details_json) : (q.site_details_json || {});
+          } catch {}
+
+          return {
+            id: String(q.id),
+            quotationNo: q.quotation_no || "QT-2026-001",
+            date: q.date || "",
+            validUpto: q.valid_upto || "",
+            customerName: q.customer_name || "",
+            customerPhone: q.customer_phone || "",
+            customerAddress: q.customer_address || "",
+            systemCapacity: q.system_capacity || "",
+            housingType: q.housing_type || siteDetails.housingType || "Independent",
+            subsidyType: q.subsidy_type || siteDetails.subsidyType || "Subsidy National DBT",
+            noOfFloors: siteDetails.noOfFloors || "G+1",
+            sanctionedPhase: siteDetails.sanctionedPhase || "Single Phase",
+            sanctionedLoad: siteDetails.sanctionedLoad || "3 kW",
+            cluster: siteDetails.cluster || "Vijayawada Urban",
+            discom: siteDetails.discom || "APCPDCL",
+            roofType: siteDetails.roofType || "RCC",
+            structureType: siteDetails.structureType || "Pre fab - 6ft",
+            noOfModules: siteDetails.noOfModules || 6,
+            overhangPossibility: siteDetails.overhangPossibility || "No",
+            overhangSide: siteDetails.overhangSide || "",
+            amc: siteDetails.amc || "Included",
+            loadChange: siteDetails.loadChange || "No",
+            phaseChange: siteDetails.phaseChange || "No",
+            nameChange: siteDetails.nameChange || "No",
+            paymentMode: siteDetails.paymentMode || "Direct",
+            totalPrice: siteDetails.totalPrice || parseFloat(q.total_amount) || 0,
+            discount: siteDetails.discount || 0,
+            finalPrice: siteDetails.finalPrice || parseFloat(q.total_amount) || 0,
+            subsidyAmount: parseFloat(q.subsidy_amount) || 0,
+            fromHand: parseFloat(q.from_hand) || 0,
+            items: Array.isArray(items) && items.length > 0 ? items : (DEFAULT_QUOTATIONS[0]?.items || []),
+            subtotal: parseFloat(q.subtotal) || 0,
+            gstAmount: parseFloat(q.gst_amount) || 0,
+            totalAmount: parseFloat(q.total_amount) || 0,
+            terms: siteDetails.terms || (DEFAULT_QUOTATIONS[0]?.terms || []),
+            status: (q.status as any) || "Pending",
+          };
+        });
+        setQuotations(liveQuotations);
+        try { localStorage.setItem("amaravati_admin_quotations", JSON.stringify(liveQuotations)); } catch {}
+      }
+    } catch (e) {
+      console.warn("Could not fetch live quotations:", e);
+    }
+  };
+
+  // 4. Fetch Live Inquiries & Bookings from MySQL Database
   const fetchLiveInquiries = async () => {
     try {
       const [enqRes, bookRes] = await Promise.all([
@@ -594,10 +631,168 @@ function AdminDashboard() {
 
       if (liveItems.length > 0) {
         setInquiries(liveItems);
-        localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(liveItems));
+        try { localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(liveItems)); } catch {}
       }
     } catch (e) {
       console.warn("Could not fetch live enquiries:", e);
+    }
+  };
+
+  // Sync / Refresh All Live Data from MySQL Database
+  const handleRefreshData = async () => {
+    showToast("Fetching live data from MySQL database...");
+    await Promise.all([
+      fetchLiveServices(),
+      fetchLiveProjects(),
+      fetchLiveQuotations(),
+      fetchLiveInquiries(),
+    ]);
+    showToast("All data synchronized with live MySQL database!");
+  };
+
+  // Quotation CRUD handlers with MySQL Sync
+  const handleSaveQuotation = async (quotationData: Omit<AdminQuotation, "id"> & { id?: string | undefined }) => {
+    const targetId = quotationData.id || `quot-${Date.now()}`;
+    const newQuot: AdminQuotation = {
+      ...quotationData,
+      id: targetId,
+    };
+
+    let updated: AdminQuotation[];
+    if (quotationData.id) {
+      updated = quotations.map((q) => (q.id === quotationData.id ? newQuot : q));
+      showToast("Quotation updated successfully!");
+    } else {
+      updated = [newQuot, ...quotations];
+      showToast("New quotation generated successfully!");
+    }
+    setQuotations(updated);
+    try { localStorage.setItem("amaravati_admin_quotations", JSON.stringify(updated)); } catch {}
+    setIsQuotationModalOpen(false);
+
+    // Save to MySQL
+    try {
+      await fetch("/api/quotations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newQuot),
+      });
+      fetchLiveQuotations();
+    } catch (err) {
+      console.warn("Failed to persist quotation to MySQL:", err);
+    }
+  };
+
+  const handleDeleteQuotation = async (id: string, quotationNo: string) => {
+    if (confirm(`Are you sure you want to delete quotation "${quotationNo}"?`)) {
+      const updated = quotations.filter((q) => q.id !== id);
+      setQuotations(updated);
+      try { localStorage.setItem("amaravati_admin_quotations", JSON.stringify(updated)); } catch {}
+      showToast("Quotation deleted.");
+
+      // Sync deletion to MySQL
+      try {
+        await fetch(`/api/quotations?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+        fetchLiveQuotations();
+      } catch (err) {
+        console.warn("Failed to delete quotation from MySQL:", err);
+      }
+    }
+  };
+
+  const handleUpdateQuotationStatus = async (id: string, status: "Pending" | "Sent" | "Approved") => {
+    const updated = quotations.map((q) => (q.id === id ? { ...q, status } : q));
+    setQuotations(updated);
+    try { localStorage.setItem("amaravati_admin_quotations", JSON.stringify(updated)); } catch {}
+    showToast(`Quotation status updated to ${status}`);
+
+    // Sync status to MySQL
+    try {
+      await fetch("/api/quotations", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status }),
+      });
+    } catch (err) {
+      console.warn("Failed to update status in MySQL:", err);
+    }
+  };
+
+  // Service CRUD handlers with MySQL Sync
+  const handleSaveService = async (serviceData: Omit<AdminService, "id"> & { id?: string | undefined }) => {
+    const targetId = serviceData.id || `svc-${Date.now()}`;
+    const payload = {
+      id: targetId,
+      title: serviceData.title,
+      order: serviceData.order,
+      category: serviceData.category,
+      description: serviceData.description,
+      image: typeof serviceData.image === "string" ? serviceData.image : "/assets/hero-residential-D28_GEsT.jpg",
+      status: "Active",
+    };
+
+    let updated: AdminService[];
+    if (serviceData.id) {
+      updated = services.map((s) => (s.id === serviceData.id ? ({ ...s, ...serviceData } as AdminService) : s));
+      showToast("Service updated successfully!");
+    } else {
+      const newService: AdminService = {
+        ...serviceData,
+        id: targetId,
+      };
+      updated = [newService, ...services];
+      showToast("New service added successfully!");
+    }
+    setServices(updated);
+    try { localStorage.setItem("amaravati_admin_services", JSON.stringify(updated)); } catch {}
+    setIsServiceModalOpen(false);
+    setEditingService(null);
+
+    // Save to MySQL
+    try {
+      await fetch("/api/services", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      fetchLiveServices();
+    } catch (err) {
+      console.warn("Failed to save service to MySQL:", err);
+    }
+  };
+
+  const handleDeleteService = async (id: string, title: string) => {
+    if (confirm(`Are you sure you want to delete "${title}"?`)) {
+      const updated = services.filter((s) => s.id !== id);
+      setServices(updated);
+      try { localStorage.setItem("amaravati_admin_services", JSON.stringify(updated)); } catch {}
+      showToast("Service deleted.");
+
+      // Sync deletion to MySQL
+      try {
+        await fetch(`/api/services?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+        fetchLiveServices();
+      } catch (err) {
+        console.warn("Failed to delete service from MySQL:", err);
+      }
+    }
+  };
+
+  // Project CRUD handlers with MySQL Sync
+  const handleDeleteProject = async (id: string, title: string) => {
+    if (confirm(`Are you sure you want to remove project "${title}"?`)) {
+      const updated = projects.filter((p) => p.id !== id);
+      setProjects(updated);
+      try { localStorage.setItem("amaravati_admin_projects", JSON.stringify(updated)); } catch {}
+      showToast("Project removed.");
+
+      // Sync deletion to MySQL
+      try {
+        await fetch(`/api/projects?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+        fetchLiveProjects();
+      } catch (err) {
+        console.warn("Failed to delete project from MySQL:", err);
+      }
     }
   };
 
@@ -629,12 +824,15 @@ function AdminDashboard() {
     if (confirm("Delete this customer inquiry record?")) {
       const updated = inquiries.filter((inq) => inq.id !== id);
       setInquiries(updated);
-      localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(updated));
+      try { localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(updated)); } catch {}
       showToast("Inquiry deleted.");
 
       // Sync deletion to MySQL
       if (!id.startsWith("b-")) {
         fetch(`/api/enquiries?id=${encodeURIComponent(id)}`, { method: "DELETE" }).catch(() => {});
+      } else {
+        const ref = id.replace(/^b-/, "");
+        fetch(`/api/bookings?reference=${encodeURIComponent(ref)}`, { method: "DELETE" }).catch(() => {});
       }
     }
   };
