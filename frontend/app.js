@@ -21,3 +21,4 @@ if (target) {
   console.error(`[Hostinger Starter] Server bundle not found in ${candidate1} or ${candidate2}`);
   process.exit(1);
 }
+

@@ -13,3 +13,4 @@ DirectoryIndex index.html index.js server.js app.js
     RewriteCond %{DOCUMENT_ROOT}/frontend/.output/public/$1 -f
     RewriteRule ^(.*)$ frontend/.output/public/$1 [L]
 </IfModule>
+
