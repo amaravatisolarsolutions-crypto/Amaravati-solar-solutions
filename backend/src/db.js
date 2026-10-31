@@ -4,9 +4,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const dbHost = (process.env.DB_HOST || process.env.HOST || "localhost").toLowerCase();
-const dbUser = process.env.DB_USER || process.env.USERNAME || process.env.DB_USERNAME || "u236567282_Amaravthisolar";
+const rawDbUser = process.env.DB_USER || process.env.USERNAME || process.env.DB_USERNAME || "u236567282_Amaravthisolar";
+const dbUser = rawDbUser.toLowerCase() === "u236567282_amaravthisolar" ? "u236567282_Amaravthisolar" : rawDbUser;
 const dbPassword = process.env.DB_PASSWORD || process.env.PASSWORD || "Amaravathi@123";
-const dbName = process.env.DB_NAME || process.env.DATABASE_NAME || "u236567282_Amaravthisolar";
+const rawDbName = process.env.DB_NAME || process.env.DATABASE_NAME || "u236567282_Amaravthisolar";
+const dbName = rawDbName.toLowerCase() === "u236567282_amaravthisolar" ? "u236567282_Amaravthisolar" : rawDbName;
 const dbPort = Number(process.env.DB_PORT || (process.env.PORT === "3306" ? 3306 : null) || 3306);
 
 export const pool = mysql.createPool({

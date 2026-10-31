@@ -1,0 +1,27 @@
+# Amaravati Solar Solutions - LiteSpeed / Apache Routing
+DirectoryIndex index.php index.html
+
+# Disable directory browsing to prevent 403 Forbidden
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # If the requested static file exists in frontend/.output/public, pass through to index.php
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Route all requests to index.php
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Ensure correct MIME types for assets
+<IfModule mod_mime.c>
+    AddType text/css .css
+    AddType application/javascript .js
+    AddType application/javascript .mjs
+    AddType image/svg+xml .svg
+    AddType image/webp .webp
+    AddType font/woff2 .woff2
+</IfModule>

@@ -7,9 +7,11 @@ export function getMySqlPool(): mysql.Pool | null {
 
   const env = process.env;
   const host = (env["DB_HOST"] || env["HOST"] || "localhost").toLowerCase();
-  const user = env["DB_USER"] || env["USERNAME"] || env["DB_USERNAME"] || "u236567282_Amaravthisolar";
+  const rawUser = env["DB_USER"] || env["USERNAME"] || env["DB_USERNAME"] || "u236567282_Amaravthisolar";
+  const user = rawUser.toLowerCase() === "u236567282_amaravthisolar" ? "u236567282_Amaravthisolar" : rawUser;
   const password = env["DB_PASSWORD"] || env["PASSWORD"] || "Amaravathi@123";
-  const database = env["DB_NAME"] || env["DATABASE_NAME"] || "u236567282_Amaravthisolar";
+  const rawDb = env["DB_NAME"] || env["DATABASE_NAME"] || "u236567282_Amaravthisolar";
+  const database = rawDb.toLowerCase() === "u236567282_amaravthisolar" ? "u236567282_Amaravthisolar" : rawDb;
   const port = Number(env["DB_PORT"] || (env["PORT"] === "3306" ? 3306 : null) || 3306);
 
   try {
