@@ -247,9 +247,16 @@ function Index() {
             className="max-w-none flex-1"
             titleClassName="whitespace-normal md:whitespace-nowrap"
           />
-          <p className="text-xs text-muted-foreground whitespace-normal md:whitespace-nowrap pb-1">
-            Customised rooftop solar installations: On-Grid, Off-Grid, and Hybrid architectures for homes & businesses.
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <p className="text-xs text-muted-foreground whitespace-normal md:whitespace-nowrap pb-1">
+              Customised rooftop solar installations: On-Grid, Off-Grid, and Hybrid architectures for homes & businesses.
+            </p>
+            <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex shrink-0 border-navy text-navy hover:bg-navy hover:text-white transition-all text-xs font-bold">
+              <Link to="/services">
+                View All Services <ArrowRight className="size-3.5 ml-1" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -414,6 +421,15 @@ function Index() {
               Smart 24/7 Power Security
             </span>
           </div>
+        </div>
+
+        {/* View All Services Button */}
+        <div className="mt-6 flex justify-center">
+          <Button asChild variant="cta" size="default" className="shadow-md">
+            <Link to="/services">
+              View All Services & Solutions <ArrowRight className="size-4 ml-1" />
+            </Link>
+          </Button>
         </div>
       </section>
 
