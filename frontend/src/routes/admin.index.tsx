@@ -413,6 +413,9 @@ function AdminDashboard() {
         localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(DEFAULT_INQUIRIES));
       }
 
+      // Fetch live enquiries and bookings from Hostinger MySQL
+      fetchLiveInquiries();
+
       const savedQuotations = localStorage.getItem("amaravati_admin_quotations");
       if (savedQuotations) {
         try {
@@ -548,12 +551,78 @@ function AdminDashboard() {
     }
   };
 
+  const fetchLiveInquiries = async () => {
+    try {
+      const [enqRes, bookRes] = await Promise.all([
+        fetch("/api/enquiries").then((r) => (r.ok ? r.json() : null)).catch(() => null),
+        fetch("/api/bookings").then((r) => (r.ok ? r.json() : null)).catch(() => null),
+      ]);
+
+      const liveItems: AdminInquiry[] = [];
+
+      if (enqRes?.success && Array.isArray(enqRes.data)) {
+        enqRes.data.forEach((r: any) => {
+          liveItems.push({
+            id: String(r.id),
+            name: r.full_name || "Customer",
+            phone: r.phone || "",
+            email: r.email || "",
+            service: r.service || "Solar Enquiry",
+            location: r.city || "Amaravati",
+            date: r.created_at ? new Date(r.created_at).toLocaleDateString() + ", " + new Date(r.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recent",
+            status: (r.status as any) || "New",
+            notes: r.message || "",
+          });
+        });
+      }
+
+      if (bookRes?.success && Array.isArray(bookRes.data)) {
+        bookRes.data.forEach((r: any) => {
+          liveItems.push({
+            id: "b-" + (r.reference || r.id),
+            name: r.full_name || "Customer",
+            phone: r.phone || "",
+            email: r.email || "",
+            service: "Demo: " + (r.solution || "Rooftop Solar") + " (" + (r.property_type || "House") + ")",
+            location: (r.city || "Amaravati") + (r.preferred_date ? " [" + r.preferred_date + "]" : ""),
+            date: r.created_at ? new Date(r.created_at).toLocaleDateString() + ", " + new Date(r.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recent",
+            status: r.status === "completed" ? "Completed" : r.status === "contacted" ? "Contacted" : "New",
+            notes: "Ref: " + (r.reference || "") + (r.requirements ? " | " + r.requirements : ""),
+          });
+        });
+      }
+
+      if (liveItems.length > 0) {
+        setInquiries(liveItems);
+        localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(liveItems));
+      }
+    } catch (e) {
+      console.warn("Could not fetch live enquiries:", e);
+    }
+  };
+
   // Inquiry Status handler
   const handleUpdateInquiryStatus = (id: string, status: "New" | "Contacted" | "Completed") => {
     const updated = inquiries.map((inq) => (inq.id === id ? { ...inq, status } : inq));
     setInquiries(updated);
     localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(updated));
     showToast(`Inquiry marked as ${status}`);
+
+    // Sync to MySQL
+    if (id.startsWith("b-")) {
+      const ref = id.replace("b-", "");
+      fetch("/api/bookings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reference: ref, status: status.toLowerCase() }),
+      }).catch(() => {});
+    } else {
+      fetch("/api/enquiries", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: Number(id), status }),
+      }).catch(() => {});
+    }
   };
 
   const handleDeleteInquiry = (id: string) => {
@@ -562,6 +631,11 @@ function AdminDashboard() {
       setInquiries(updated);
       localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(updated));
       showToast("Inquiry deleted.");
+
+      // Sync deletion to MySQL
+      if (!id.startsWith("b-")) {
+        fetch(`/api/enquiries?id=${encodeURIComponent(id)}`, { method: "DELETE" }).catch(() => {});
+      }
     }
   };
 

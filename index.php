@@ -108,6 +108,25 @@ if (strpos($uri, '/api/') === 0) {
             $mysqli->close();
             exit;
         }
+
+        if ($method === 'PUT' || $method === 'PATCH') {
+            $raw = file_get_contents('php://input');
+            $data = json_decode($raw, true) ?: $_POST;
+            $ref = trim($data['reference'] ?? ($data['id'] ?? ''));
+            $status = trim($data['status'] ?? 'pending');
+            if ($ref) {
+                $stmt = $mysqli->prepare("UPDATE `demo_bookings` SET `status` = ? WHERE `reference` = ? OR `id` = ?");
+                $stmt->bind_param("sss", $status, $ref, $ref);
+                $stmt->execute();
+                $stmt->close();
+                echo json_encode(['success' => true, 'message' => 'Booking updated']);
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid reference']);
+            }
+            $mysqli->close();
+            exit;
+        }
     }
 
     // --- Enquiries Endpoint ---
@@ -151,6 +170,46 @@ if (strpos($uri, '/api/') === 0) {
                 $rows[] = $r;
             }
             echo json_encode(['success' => true, 'data' => $rows]);
+            $mysqli->close();
+            exit;
+        }
+
+        if ($method === 'PUT' || $method === 'PATCH') {
+            $raw = file_get_contents('php://input');
+            $data = json_decode($raw, true) ?: $_POST;
+            $id = (int)($data['id'] ?? 0);
+            $status = trim($data['status'] ?? 'New');
+            if ($id > 0) {
+                $stmt = $mysqli->prepare("UPDATE `enquiries` SET `status` = ? WHERE `id` = ?");
+                $stmt->bind_param("si", $status, $id);
+                $stmt->execute();
+                $stmt->close();
+                echo json_encode(['success' => true, 'message' => 'Status updated']);
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid ID']);
+            }
+            $mysqli->close();
+            exit;
+        }
+
+        if ($method === 'DELETE') {
+            $id = (int)($_GET['id'] ?? 0);
+            if (!$id) {
+                $raw = file_get_contents('php://input');
+                $data = json_decode($raw, true) ?: [];
+                $id = (int)($data['id'] ?? 0);
+            }
+            if ($id > 0) {
+                $stmt = $mysqli->prepare("DELETE FROM `enquiries` WHERE `id` = ?");
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                $stmt->close();
+                echo json_encode(['success' => true, 'message' => 'Enquiry deleted']);
+            } else {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Invalid ID']);
+            }
             $mysqli->close();
             exit;
         }

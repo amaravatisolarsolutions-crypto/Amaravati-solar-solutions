@@ -26,7 +26,15 @@ export function EnquiryForm() {
     setErrors({});
     setStatus("sending");
     try {
-      await send({ data: parsed.data });
+      const res = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(parsed.data),
+      });
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || "Failed to submit enquiry. Please try again.");
+      }
       setStatus("done");
       form.reset();
     } catch (err) {

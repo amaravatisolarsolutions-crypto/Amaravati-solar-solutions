@@ -30,8 +30,17 @@ export function BookingForm() {
     setErrors({});
     setStatus("sending");
     try {
-      const res = await send({ data: parsed.data });
-      setReference(res.reference);
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(parsed.data),
+      });
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || "Failed to book consultation. Please try again.");
+      }
+      const data = await res.json();
+      setReference(data.reference || "BK-" + Date.now().toString().slice(-6));
       setStatus("done");
       form.reset();
     } catch (err) {
