@@ -5,20 +5,29 @@
 // =========================================================================
 
 /**
- * Attempts connection with multiple candidate usernames/db names
- * to account for case sensitivity on Hostinger Linux MySQL servers.
+ * Attempts connection with multiple candidate usernames, passwords, and db names
+ * to account for typos, case sensitivity, and Hostinger Unix socket routing.
  */
 function getDatabaseConnection() {
+    // On Hostinger Linux, 'localhost' uses the local UNIX socket (which is permitted),
+    // whereas TCP 127.0.0.1:3306 is blocked by firewall (EPERM / Operation not permitted).
     $hostCandidates = ['localhost', '127.0.0.1'];
-    $port = (int)(getenv('DB_PORT') ?: (getenv('PORT') === '3306' ? 3306 : 3306));
-    $pass = getenv('DB_PASSWORD') ?: (getenv('PASSWORD') ?: 'Amaravathi@123');
+    $port = 3306;
+
+    // Notice: Hostinger screenshot shows 'Amaravthi@123' (no 'a' between v and t)
+    // while some envs have 'Amaravathi@123' (with 'a'). We test both!
+    $passCandidates = array_values(array_unique(array_filter([
+        'Amaravthi@123',
+        'Amaravathi@123',
+        getenv('DB_PASSWORD'),
+        getenv('PASSWORD')
+    ])));
 
     $userCandidates = array_values(array_unique(array_filter([
         'u236567282_Amaravthisolar',
         'u236567282_amaravthisolar',
         getenv('DB_USER'),
         getenv('USERNAME'),
-        getenv('DB_USERNAME'),
         strtolower(getenv('DB_USER') ?: ''),
         strtolower(getenv('USERNAME') ?: '')
     ])));
@@ -32,35 +41,54 @@ function getDatabaseConnection() {
         strtolower(getenv('DATABASE_NAME') ?: '')
     ])));
 
-    $lastError = 'No connection attempted';
+    $attemptsLog = [];
 
     foreach ($hostCandidates as $h) {
         foreach ($userCandidates as $u) {
-            foreach ($dbCandidates as $d) {
-                try {
-                    $mysqli = @new mysqli($h, $u, $pass, $d, $port);
-                    if (!$mysqli->connect_error) {
-                        $mysqli->set_charset("utf8mb4");
-                        return [
-                            'success' => true,
-                            'mysqli' => $mysqli,
+            foreach ($passCandidates as $p) {
+                foreach ($dbCandidates as $d) {
+                    try {
+                        // Suppress warnings with @, but catch exceptions
+                        $mysqli = @new mysqli($h, $u, $p, $d, $port);
+                        if (!$mysqli->connect_error) {
+                            $mysqli->set_charset("utf8mb4");
+                            return [
+                                'success' => true,
+                                'mysqli' => $mysqli,
+                                'host' => $h,
+                                'user' => $u,
+                                'database' => $d,
+                                'attempts' => $attemptsLog
+                            ];
+                        }
+                        $attemptsLog[] = [
                             'host' => $h,
                             'user' => $u,
-                            'database' => $d
+                            'pass_mask' => substr($p, 0, 4) . '***',
+                            'db' => $d,
+                            'error' => $mysqli->connect_error
+                        ];
+                    } catch (\Throwable $t) {
+                        $attemptsLog[] = [
+                            'host' => $h,
+                            'user' => $u,
+                            'pass_mask' => substr($p, 0, 4) . '***',
+                            'db' => $d,
+                            'error' => $t->getMessage()
                         ];
                     }
-                    $lastError = $mysqli->connect_error;
-                } catch (\Throwable $t) {
-                    $lastError = $t->getMessage();
                 }
             }
         }
     }
 
+    $lastError = !empty($attemptsLog) ? end($attemptsLog)['error'] : 'No attempts made';
+
     return [
         'success' => false,
         'mysqli' => null,
-        'error' => $lastError
+        'error' => $lastError,
+        'attempts' => $attemptsLog
     ];
 }
 
@@ -189,7 +217,8 @@ function runAutoMigration() {
     if (!$connRes['success']) {
         return [
             'success' => false,
-            'error' => $connRes['error']
+            'error' => $connRes['error'],
+            'attempts' => $connRes['attempts'] ?? []
         ];
     }
 
