@@ -5,11 +5,12 @@ let pool: mysql.Pool | null = null;
 export function getMySqlPool(): mysql.Pool | null {
   if (pool) return pool;
 
-  const host = (process.env.DB_HOST || process.env.HOST || "localhost").toLowerCase();
-  const user = process.env.DB_USER || process.env.USERNAME || process.env.DB_USERNAME || "u236567282_Amaravthisolar";
-  const password = process.env.DB_PASSWORD || process.env.PASSWORD || "Amaravathi@123";
-  const database = process.env.DB_NAME || process.env.DATABASE_NAME || "u236567282_Amaravthisolar";
-  const port = Number(process.env.DB_PORT || (process.env.PORT === "3306" ? 3306 : null) || 3306);
+  const env = process.env;
+  const host = (env["DB_HOST"] || env["HOST"] || "localhost").toLowerCase();
+  const user = env["DB_USER"] || env["USERNAME"] || env["DB_USERNAME"] || "u236567282_Amaravthisolar";
+  const password = env["DB_PASSWORD"] || env["PASSWORD"] || "Amaravathi@123";
+  const database = env["DB_NAME"] || env["DATABASE_NAME"] || "u236567282_Amaravthisolar";
+  const port = Number(env["DB_PORT"] || (env["PORT"] === "3306" ? 3306 : null) || 3306);
 
   try {
     pool = mysql.createPool({
