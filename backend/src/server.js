@@ -14,7 +14,8 @@ import {
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+// HTTP server port: uses PORT unless set to 3306 (which is reserved for MySQL)
+const PORT = process.env.APP_PORT || (process.env.PORT && process.env.PORT !== "3306" ? process.env.PORT : 5000);
 
 app.use(cors());
 app.use(express.json());

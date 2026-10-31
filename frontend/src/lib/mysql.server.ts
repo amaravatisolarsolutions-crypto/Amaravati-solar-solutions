@@ -5,11 +5,11 @@ let pool: mysql.Pool | null = null;
 export function getMySqlPool(): mysql.Pool | null {
   if (pool) return pool;
 
-  const host = process.env.DB_HOST || "localhost";
-  const user = process.env.DB_USER || "u236567282_Amaravthisolar";
-  const password = process.env.DB_PASSWORD || "Amaravthi@123";
-  const database = process.env.DB_NAME || "u236567282_Amaravthisolar";
-  const port = Number(process.env.DB_PORT) || 3306;
+  const host = (process.env.DB_HOST || process.env.HOST || "localhost").toLowerCase();
+  const user = process.env.DB_USER || process.env.USERNAME || process.env.DB_USERNAME || "u236567282_Amaravthisolar";
+  const password = process.env.DB_PASSWORD || process.env.PASSWORD || "Amaravathi@123";
+  const database = process.env.DB_NAME || process.env.DATABASE_NAME || "u236567282_Amaravthisolar";
+  const port = Number(process.env.DB_PORT || (process.env.PORT === "3306" ? 3306 : null) || 3306);
 
   try {
     pool = mysql.createPool({

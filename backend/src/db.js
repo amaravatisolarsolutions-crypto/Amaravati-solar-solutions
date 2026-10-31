@@ -3,12 +3,18 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const dbHost = (process.env.DB_HOST || process.env.HOST || "localhost").toLowerCase();
+const dbUser = process.env.DB_USER || process.env.USERNAME || process.env.DB_USERNAME || "u236567282_Amaravthisolar";
+const dbPassword = process.env.DB_PASSWORD || process.env.PASSWORD || "Amaravathi@123";
+const dbName = process.env.DB_NAME || process.env.DATABASE_NAME || "u236567282_Amaravthisolar";
+const dbPort = Number(process.env.DB_PORT || (process.env.PORT === "3306" ? 3306 : null) || 3306);
+
 export const pool = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "u236567282_Amaravthisolar",
-  password: process.env.DB_PASSWORD || "Amaravthi@123",
-  database: process.env.DB_NAME || "u236567282_Amaravthisolar",
-  port: Number(process.env.DB_PORT) || 3306,
+  host: dbHost,
+  user: dbUser,
+  password: dbPassword,
+  database: dbName,
+  port: dbPort,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -140,7 +146,7 @@ export async function syncDatabaseSchema() {
   let connection;
   try {
     connection = await pool.getConnection();
-    console.log(`[Auto-Migration] Running schema check on database: ${process.env.DB_NAME || "u236567282_Amaravthisolar"}`);
+    console.log(`[Auto-Migration] Running schema check on database: ${dbName}`);
 
     for (const tableDef of SCHEMA_DEFINITIONS) {
       // 1. Check if table exists

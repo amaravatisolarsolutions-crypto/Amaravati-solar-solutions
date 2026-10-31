@@ -17,3 +17,4 @@ syncDatabaseSchema()
     pool.end().catch(() => {});
     process.exit(0);
   });
+
