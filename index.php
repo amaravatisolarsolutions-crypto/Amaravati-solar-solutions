@@ -226,8 +226,26 @@ foreach ($assetRoots as $root) {
 }
 
 // -------------------------------------------------------------------------
-// 4. Dynamic HTML Application Renderer
-// Discovers built CSS and JS bundles from frontend/.output/public/assets
+// 4. Serve Pre-Rendered Full SSR HTML Pages (Fast & Hydration-Safe)
+// -------------------------------------------------------------------------
+$routePath = trim($cleanUri, '/');
+$htmlCandidates = [
+    __DIR__ . '/frontend/.output/public/' . $routePath . '/index.html',
+    __DIR__ . '/frontend/.output/public/' . $routePath . '.html',
+    __DIR__ . '/frontend/.output/public/index.html'
+];
+
+foreach ($htmlCandidates as $htmlFile) {
+    if (file_exists($htmlFile) && is_file($htmlFile) && filesize($htmlFile) > 100) {
+        header('Content-Type: text/html; charset=UTF-8');
+        header('Cache-Control: public, max-age=3600');
+        readfile($htmlFile);
+        exit;
+    }
+}
+
+// -------------------------------------------------------------------------
+// 5. Fallback HTML Application Renderer with TanStack Start Bootstrap
 // -------------------------------------------------------------------------
 $assetsDir = __DIR__ . '/frontend/.output/public/assets';
 $cssFiles = glob($assetsDir . '/*.css') ?: [];
@@ -256,6 +274,12 @@ header('Cache-Control: no-cache, must-revalidate');
 </head>
 <body class="bg-background text-foreground antialiased">
     <div id="root"></div>
+    <script data-tsr-stream-part="">
+    (self.$R=self.$R||{})["tsr"]=[];
+    self.$_TSR={h(){this.hydrated=!0,this.c()},e(){this.streamEnded=!0,this.c()},c(){this.hydrated&&this.streamEnded&&(delete self.$_TSR,delete self.$R.tsr)},p(e){this.initialized?e():this.buffer.push(e)},buffer:[]};
+    $_TSR.router=($R=>$R[0]={manifest:$R[1]={routes:{__root__:{scripts:[{attrs:{type:"module",async:!0,src:"<?php echo $jsUrl; ?>"}}]}}},matches:[{i:"__root__ ",s:"success",ssr:!0}]})($R["tsr"]);
+    $_TSR.e();
+    </script>
     <?php if ($jsUrl): ?>
     <script type="module" src="<?php echo htmlspecialchars($jsUrl); ?>"></script>
     <?php endif; ?>

@@ -12,7 +12,11 @@ yarn-error.log*
 # Build outputs
 dist
 dist-ssr
-.output
+.output/*
+!.output/public/
+frontend/.output/*
+!frontend/.output/public/
+!frontend/.output/public/**
 .vinxi
 .tanstack/**
 .nitro
