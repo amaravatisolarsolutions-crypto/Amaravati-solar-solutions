@@ -2,6 +2,8 @@
   "name": "screenshot-exact-match",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
+  "main": "index.js",
   "description": "Amaravati Solar Solutions - Screenshot Exact Match",
   "scripts": {
     "dev": "npm --prefix frontend run dev",

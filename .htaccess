@@ -1,0 +1,15 @@
+DirectoryIndex index.html index.js server.js app.js
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Serve existing files directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Serve static assets from frontend/.output/public if available
+    RewriteCond %{DOCUMENT_ROOT}/frontend/.output/public/$1 -f
+    RewriteRule ^(.*)$ frontend/.output/public/$1 [L]
+</IfModule>
