@@ -1,0 +1,14 @@
+# Disable directory listing
+Options -Indexes
+
+# Set directory index
+DirectoryIndex index.html
+
+# Fallback: if static file exists in frontend/.output/public, serve it directly
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    RewriteCond %{DOCUMENT_ROOT}/frontend/.output/public%{REQUEST_URI} -f
+    RewriteRule ^(.*)$ /frontend/.output/public/$1 [L]
+</IfModule>
