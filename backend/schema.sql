@@ -1,11 +1,7 @@
 -- =============================================================
 -- Amaravati Solar Solutions - Master Database Schema
 -- Hostinger MySQL Database: u236567282_Amaravthisolar
--- All tables & columns are automatically created & synced on deployment
 -- =============================================================
-
-CREATE DATABASE IF NOT EXISTS `u236567282_Amaravthisolar` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `u236567282_Amaravthisolar`;
 
 -- 1. Enquiries Table
 CREATE TABLE IF NOT EXISTS `enquiries` (

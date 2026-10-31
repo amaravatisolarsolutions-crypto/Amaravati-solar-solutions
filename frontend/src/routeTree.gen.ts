@@ -16,6 +16,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SetupDbRouteImport } from './routes/setup-db'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -57,6 +58,11 @@ const LoginRoute = LoginRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetupDbRoute = SetupDbRouteImport.update({
+  id: '/setup-db',
+  path: '/setup-db',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
+  '/setup-db': typeof SetupDbRoute
   '/terms': typeof TermsRoute
   '/admin/login': typeof AdminLoginRoute
   '/projects/$id': typeof ProjectsIdRoute
@@ -119,6 +126,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
+  '/setup-db': typeof SetupDbRoute
   '/terms': typeof TermsRoute
   '/admin/login': typeof AdminLoginRoute
   '/projects/$id': typeof ProjectsIdRoute
@@ -136,6 +144,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
+  '/setup-db': typeof SetupDbRoute
   '/terms': typeof TermsRoute
   '/admin/login': typeof AdminLoginRoute
   '/projects/$id': typeof ProjectsIdRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/login'
     | '/privacy'
+    | '/setup-db'
     | '/terms'
     | '/admin/login'
     | '/projects/$id'
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/login'
     | '/privacy'
+    | '/setup-db'
     | '/terms'
     | '/admin/login'
     | '/projects/$id'
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/login'
     | '/privacy'
+    | '/setup-db'
     | '/terms'
     | '/admin/login'
     | '/projects/$id'
@@ -203,6 +215,7 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
+  SetupDbRoute: typeof SetupDbRoute
   TermsRoute: typeof TermsRoute
   AdminLoginRoute: typeof AdminLoginRoute
   ProjectsIdRoute: typeof ProjectsIdRoute
@@ -261,6 +274,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/setup-db': {
+      id: '/setup-db'
+      path: '/setup-db'
+      fullPath: '/setup-db'
+      preLoaderRoute: typeof SetupDbRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -323,6 +343,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
+  SetupDbRoute: SetupDbRoute,
   TermsRoute: TermsRoute,
   AdminLoginRoute: AdminLoginRoute,
   ProjectsIdRoute: ProjectsIdRoute,
