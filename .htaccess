@@ -12,3 +12,4 @@ DirectoryIndex index.html
     RewriteCond %{DOCUMENT_ROOT}/frontend/.output/public%{REQUEST_URI} -f
     RewriteRule ^(.*)$ /frontend/.output/public/$1 [L]
 </IfModule>
+
