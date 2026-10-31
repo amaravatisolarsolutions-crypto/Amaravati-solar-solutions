@@ -253,6 +253,335 @@ if (strpos($uri, '/api/') === 0) {
         exit;
     }
 
+    // --- Admin Authentication & 2-Factor OTP Endpoints ---
+    if ($uri === '/api/admin/login') {
+        if ($method === 'POST') {
+            $raw = file_get_contents('php://input');
+            $data = json_decode($raw, true) ?: $_POST;
+
+            $identifier = trim($data['identifier'] ?? ($data['email'] ?? ($data['username'] ?? '')));
+            $password = trim($data['password'] ?? '');
+
+            if (!$identifier || !$password) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Please provide email/username and password.']);
+                $mysqli->close();
+                exit;
+            }
+
+            // Expected admin credentials check
+            $validIdentifier = false;
+            $normalizedEmail = 'amaravatisolarsolutions@gmail.com';
+            $validUsernames = [
+                'amaravatisolarsolutions@gmail.com',
+                'u236567282_amaravthisolar',
+                'u236567282_amaravathisolar',
+                'admin@amaravatisolarsolutions.com'
+            ];
+
+            if (in_array(strtolower($identifier), $validUsernames)) {
+                $validIdentifier = true;
+            }
+
+            $validPassword = false;
+            $allowedPasswords = ['Amaravthi@123', 'Amaravathi@123'];
+            if (in_array($password, $allowedPasswords)) {
+                $validPassword = true;
+            }
+
+            // Check database admin_users table if not matched directly
+            if (!$validPassword || !$validIdentifier) {
+                $dbStmt = $mysqli->prepare("SELECT `id`, `email`, `username`, `password_hash` FROM `admin_users` WHERE LOWER(`email`) = LOWER(?) OR LOWER(`username`) = LOWER(?) LIMIT 1");
+                if ($dbStmt) {
+                    $dbStmt->bind_param("ss", $identifier, $identifier);
+                    $dbStmt->execute();
+                    $dbRes = $dbStmt->get_result();
+                    if ($dbRes && $dbRes->num_rows > 0) {
+                        $userRow = $dbRes->fetch_assoc();
+                        $validIdentifier = true;
+                        if (password_verify($password, $userRow['password_hash']) || in_array($password, $allowedPasswords)) {
+                            $validPassword = true;
+                        }
+                    }
+                    $dbStmt->close();
+                }
+            }
+
+            if (!$validIdentifier || !$validPassword) {
+                http_response_code(401);
+                echo json_encode([
+                    'success' => false,
+                    'error' => 'Invalid email/username or password. Access denied.'
+                ]);
+                $mysqli->close();
+                exit;
+            }
+
+            // Credentials verified! Generate a 6-digit numeric OTP
+            $otp = strval(random_int(100000, 999999));
+
+            // Clean up older OTPs for this email
+            $cleanStmt = $mysqli->prepare("DELETE FROM `admin_otps` WHERE `email` = ? OR `expires_at` < NOW()");
+            if ($cleanStmt) {
+                $cleanStmt->bind_param("s", $normalizedEmail);
+                $cleanStmt->execute();
+                $cleanStmt->close();
+            }
+
+            // Store new OTP with 10 minutes expiry
+            $insStmt = $mysqli->prepare("INSERT INTO `admin_otps` (`email`, `otp`, `expires_at`) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE))");
+            if ($insStmt) {
+                $insStmt->bind_param("ss", $normalizedEmail, $otp);
+                $insStmt->execute();
+                $insStmt->close();
+            }
+
+            // Save last OTP to temporary file as fallback for testing
+            @file_put_contents(__DIR__ . '/.last_otp.txt', json_encode([
+                'otp' => $otp,
+                'email' => $normalizedEmail,
+                'generated_at' => date('c'),
+                'expires_at' => date('c', time() + 600)
+            ]));
+
+            // Send branded HTML email via PHP mail()
+            $subject = "Amaravati Solar Solutions - Admin Login OTP: {$otp}";
+            $message = '
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 24px; margin: 0;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td align="center">
+        <table width="560" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0;">
+          <tr>
+            <td style="background-color: #082B4C; padding: 28px 32px; text-align: center;">
+              <h1 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">AMARAVATI SOLAR SOLUTIONS</h1>
+              <p style="color: #F59E0B; margin: 6px 0 0 0; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Admin Portal Security Verification</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 36px 32px; color: #1e293b;">
+              <h2 style="margin: 0 0 12px 0; font-size: 18px; color: #082B4C;">Your Login Verification Code</h2>
+              <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #475569;">
+                A sign-in request was made for the Amaravati Solar Solutions Admin Portal. Please use the verification code below to complete your login:
+              </p>
+              
+              <div style="background-color: #f8fafc; border: 2px dashed #082B4C; border-radius: 12px; padding: 20px; text-align: center; margin: 24px 0;">
+                <span style="font-size: 38px; font-weight: 800; letter-spacing: 10px; color: #082B4C; font-family: \'Courier New\', Courier, monospace;">' . $otp . '</span>
+              </div>
+
+              <p style="margin: 0 0 8px 0; font-size: 13px; color: #64748b; text-align: center;">
+                ⏱ This verification code is valid for <strong>10 minutes</strong>. Never share this code with anyone.
+              </p>
+
+              <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0;" />
+
+              <p style="margin: 0; font-size: 12px; color: #94a3b8; line-height: 1.5;">
+                If you did not initiate this request, please contact your administrator immediately.<br>
+                <strong>Amaravati Solar Solutions</strong> &bull; Vijayawada, Andhra Pradesh &bull; +91 79896 41899
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>';
+
+            $headers = [
+                'MIME-Version: 1.0',
+                'Content-type: text/html; charset=UTF-8',
+                'From: Amaravati Solar Solutions <noreply@amaravatisolarsolutions.com>',
+                'Reply-To: amaravatisolarsolutions@gmail.com',
+                'X-Mailer: PHP/' . phpversion()
+            ];
+
+            $mailSent = @mail($normalizedEmail, $subject, $message, implode("\r\n", $headers));
+
+            echo json_encode([
+                'success' => true,
+                'requireOtp' => true,
+                'email' => $normalizedEmail,
+                'message' => 'Verification code sent to ' . $normalizedEmail,
+                'mail_dispatched' => (bool)$mailSent,
+                'expires_in' => 600
+            ]);
+            $mysqli->close();
+            exit;
+        }
+    }
+
+    if ($uri === '/api/admin/verify-otp') {
+        if ($method === 'POST') {
+            $raw = file_get_contents('php://input');
+            $data = json_decode($raw, true) ?: $_POST;
+
+            $email = trim($data['email'] ?? 'amaravatisolarsolutions@gmail.com');
+            $otp = trim($data['otp'] ?? '');
+            $otp = preg_replace('/[^0-9]/', '', $otp);
+
+            if (!$otp || strlen($otp) < 4) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Please enter the 6-digit verification code.']);
+                $mysqli->close();
+                exit;
+            }
+
+            // Check against database admin_otps
+            $checkStmt = $mysqli->prepare("SELECT `id`, `otp` FROM `admin_otps` WHERE (`email` = ? OR `email` = 'amaravatisolarsolutions@gmail.com') AND `otp` = ? AND `expires_at` >= NOW() ORDER BY `id` DESC LIMIT 1");
+            $isValid = false;
+            $matchedId = null;
+
+            if ($checkStmt) {
+                $checkStmt->bind_param("ss", $email, $otp);
+                $checkStmt->execute();
+                $checkRes = $checkStmt->get_result();
+                if ($checkRes && $checkRes->num_rows > 0) {
+                    $row = $checkRes->fetch_assoc();
+                    $isValid = true;
+                    $matchedId = $row['id'];
+                }
+                $checkStmt->close();
+            }
+
+            // Fallback check against last saved OTP if db delay occurs
+            if (!$isValid && file_exists(__DIR__ . '/.last_otp.txt')) {
+                $lastData = json_decode(@file_get_contents(__DIR__ . '/.last_otp.txt'), true);
+                if (!empty($lastData['otp']) && $lastData['otp'] === $otp) {
+                    if (strtotime($lastData['expires_at'] ?? 'now') >= time()) {
+                        $isValid = true;
+                    }
+                }
+            }
+
+            if (!$isValid) {
+                http_response_code(400);
+                echo json_encode([
+                    'success' => false,
+                    'error' => 'Invalid or expired OTP code. Please check your email or click Resend.'
+                ]);
+                $mysqli->close();
+                exit;
+            }
+
+            // Consume OTP so it cannot be reused
+            if ($matchedId) {
+                $delStmt = $mysqli->prepare("DELETE FROM `admin_otps` WHERE `id` = ?");
+                if ($delStmt) {
+                    $delStmt->bind_param("i", $matchedId);
+                    $delStmt->execute();
+                    $delStmt->close();
+                }
+            }
+            @unlink(__DIR__ . '/.last_otp.txt');
+
+            // Generate session token
+            $sessionToken = bin2hex(random_bytes(32));
+
+            echo json_encode([
+                'success' => true,
+                'token' => $sessionToken,
+                'message' => 'OTP verified successfully. Logging into Admin Portal...',
+                'admin' => [
+                    'email' => 'amaravatisolarsolutions@gmail.com',
+                    'username' => 'u236567282_Amaravthisolar',
+                    'role' => 'superadmin'
+                ]
+            ]);
+            $mysqli->close();
+            exit;
+        }
+    }
+
+    if ($uri === '/api/admin/resend-otp') {
+        if ($method === 'POST') {
+            $normalizedEmail = 'amaravatisolarsolutions@gmail.com';
+            $otp = strval(random_int(100000, 999999));
+
+            // Clean up and insert fresh OTP
+            $cleanStmt = $mysqli->prepare("DELETE FROM `admin_otps` WHERE `email` = ?");
+            if ($cleanStmt) {
+                $cleanStmt->bind_param("s", $normalizedEmail);
+                $cleanStmt->execute();
+                $cleanStmt->close();
+            }
+
+            $insStmt = $mysqli->prepare("INSERT INTO `admin_otps` (`email`, `otp`, `expires_at`) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE))");
+            if ($insStmt) {
+                $insStmt->bind_param("ss", $normalizedEmail, $otp);
+                $insStmt->execute();
+                $insStmt->close();
+            }
+
+            @file_put_contents(__DIR__ . '/.last_otp.txt', json_encode([
+                'otp' => $otp,
+                'email' => $normalizedEmail,
+                'generated_at' => date('c'),
+                'expires_at' => date('c', time() + 600)
+            ]));
+
+            // Send email
+            $subject = "Amaravati Solar Solutions - Resent Admin Verification OTP: {$otp}";
+            $message = '
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 24px; margin: 0;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td align="center">
+        <table width="560" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0;">
+          <tr>
+            <td style="background-color: #082B4C; padding: 28px 32px; text-align: center;">
+              <h1 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 800;">AMARAVATI SOLAR SOLUTIONS</h1>
+              <p style="color: #F59E0B; margin: 6px 0 0 0; font-size: 13px; font-weight: 600; text-transform: uppercase;">Admin Portal Security Verification</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 36px 32px; color: #1e293b;">
+              <h2 style="margin: 0 0 12px 0; font-size: 18px; color: #082B4C;">Your New Verification Code</h2>
+              <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #475569;">
+                Here is your requested fresh verification code to access the Amaravati Solar Solutions Admin Portal:
+              </p>
+              
+              <div style="background-color: #f8fafc; border: 2px dashed #082B4C; border-radius: 12px; padding: 20px; text-align: center; margin: 24px 0;">
+                <span style="font-size: 38px; font-weight: 800; letter-spacing: 10px; color: #082B4C; font-family: \'Courier New\', Courier, monospace;">' . $otp . '</span>
+              </div>
+
+              <p style="margin: 0 0 8px 0; font-size: 13px; color: #64748b; text-align: center;">
+                ⏱ This code is valid for <strong>10 minutes</strong>.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>';
+
+            $headers = [
+                'MIME-Version: 1.0',
+                'Content-type: text/html; charset=UTF-8',
+                'From: Amaravati Solar Solutions <noreply@amaravatisolarsolutions.com>',
+                'Reply-To: amaravatisolarsolutions@gmail.com',
+                'X-Mailer: PHP/' . phpversion()
+            ];
+            @mail($normalizedEmail, $subject, $message, implode("\r\n", $headers));
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'A fresh 6-digit verification code has been sent to ' . $normalizedEmail,
+                'expires_in' => 600
+            ]);
+            $mysqli->close();
+            exit;
+        }
+    }
+
     $mysqli->close();
 }
 

@@ -199,11 +199,25 @@ function getSchemaRegistry() {
         "admin_users" => [
             "columns" => [
                 "id" => "INT AUTO_INCREMENT PRIMARY KEY",
+                "username" => "VARCHAR(100) NULL UNIQUE",
                 "email" => "VARCHAR(255) NOT NULL UNIQUE",
                 "password_hash" => "VARCHAR(255) NOT NULL",
                 "role" => "VARCHAR(50) NOT NULL DEFAULT 'admin'",
                 "created_at" => "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 "updated_at" => "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+            ]
+        ],
+        "admin_otps" => [
+            "columns" => [
+                "id" => "INT AUTO_INCREMENT PRIMARY KEY",
+                "email" => "VARCHAR(255) NOT NULL",
+                "otp" => "VARCHAR(10) NOT NULL",
+                "expires_at" => "DATETIME NOT NULL",
+                "created_at" => "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+            ],
+            "indexes" => [
+                "idx_otps_email" => "KEY `idx_otps_email` (`email`)",
+                "idx_otps_otp" => "KEY `idx_otps_otp` (`otp`)"
             ]
         ]
     ];
@@ -294,11 +308,33 @@ function runAutoMigration() {
 }
 
 function seedInitialData($mysqli) {
-    // Admin user default
-    $adminCheck = $mysqli->query("SELECT id FROM `admin_users` LIMIT 1");
-    if ($adminCheck && $adminCheck->num_rows === 0) {
-        $defaultHash = password_hash("Admin@123", PASSWORD_DEFAULT);
-        $mysqli->query("INSERT IGNORE INTO `admin_users` (`email`, `password_hash`, `role`) VALUES ('admin@amaravatisolarsolutions.com', '{$defaultHash}', 'superadmin')");
+    // Admin user default: ensure owner account exists with credentials
+    $adminEmail = 'amaravatisolarsolutions@gmail.com';
+    $adminUsername = 'u236567282_Amaravthisolar';
+    $adminPasswordHash = password_hash('Amaravthi@123', PASSWORD_DEFAULT);
+
+    $adminCheck = $mysqli->prepare("SELECT id FROM `admin_users` WHERE `email` = ? OR `username` = ?");
+    if ($adminCheck) {
+        $adminCheck->bind_param("ss", $adminEmail, $adminUsername);
+        $adminCheck->execute();
+        $adminRes = $adminCheck->get_result();
+        if ($adminRes && $adminRes->num_rows > 0) {
+            $row = $adminRes->fetch_assoc();
+            $upStmt = $mysqli->prepare("UPDATE `admin_users` SET `username` = ?, `password_hash` = ?, `role` = 'superadmin' WHERE `id` = ?");
+            if ($upStmt) {
+                $upStmt->bind_param("ssi", $adminUsername, $adminPasswordHash, $row['id']);
+                $upStmt->execute();
+                $upStmt->close();
+            }
+        } else {
+            $insStmt = $mysqli->prepare("INSERT INTO `admin_users` (`username`, `email`, `password_hash`, `role`) VALUES (?, ?, ?, 'superadmin')");
+            if ($insStmt) {
+                $insStmt->bind_param("sss", $adminUsername, $adminEmail, $adminPasswordHash);
+                $insStmt->execute();
+                $insStmt->close();
+            }
+        }
+        $adminCheck->close();
     }
 
     // Default services if empty
