@@ -11,8 +11,9 @@
 // Include database auto-migrator
 require_once __DIR__ . '/backend/setup-db.php';
 
-// Auto-run schema migration once per deployment or on demand
-$dbFlag = __DIR__ . '/.db_synced_v1';
+// Auto-run schema migration on every new deployment (tracks file modification time)
+$dbVersion = @filemtime(__DIR__ . '/backend/setup-db.php') ?: 1;
+$dbFlag = __DIR__ . '/.db_synced_' . $dbVersion;
 if (!file_exists($dbFlag)) {
     $res = runAutoMigration();
     if ($res['success']) {
