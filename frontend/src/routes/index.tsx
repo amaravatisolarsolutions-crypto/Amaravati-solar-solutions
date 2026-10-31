@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { HeroCarousel } from "@/components/site/HeroCarousel";
 import { SectionHeading } from "@/components/site/Sections";
 import { PROJECTS, type ProjectCategory } from "@/lib/site-data";
+import { scrollToTarget } from "@/lib/scroll-utils";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -167,21 +168,27 @@ function Index() {
       </div>
 
       {/* QUICK HIGHLIGHT FEATURES ROW (MATCHING SCREENSHOT) */}
-      <section className="bg-slate-50/70 border-b border-slate-200/80 py-4 sm:py-5">
+      <section className="bg-slate-50/80 border-b border-slate-200/80 py-3.5 sm:py-5">
         <div className="container-site">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             {FEATURE_HIGHLIGHTS.map((item, idx) => (
               <a
                 key={idx}
                 href={item.href}
-                className="group flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 text-center shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-primary/40 select-none cursor-pointer"
+                onClick={(e) => {
+                  if (item.href.startsWith("#")) {
+                    e.preventDefault();
+                    scrollToTarget(item.href.replace("#", ""));
+                  }
+                }}
+                className="group flex flex-col items-center justify-center rounded-3xl border border-slate-200/90 bg-white p-4 sm:p-5 text-center shadow-[0_3px_14px_rgba(8,43,76,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-primary/40 select-none cursor-pointer min-h-[135px] sm:min-h-[145px]"
               >
                 <div className="flex size-10 sm:size-11 items-center justify-center transition-transform duration-300 group-hover:scale-110">
                   <item.icon />
                 </div>
-                <div className="mt-2 text-xs sm:text-sm font-extrabold text-[#082B4C] leading-snug group-hover:text-primary transition-colors">
-                  <div>{item.line1}</div>
-                  <div>{item.line2}</div>
+                <div className="mt-2.5 text-xs sm:text-sm font-bold text-[#082B4C] leading-snug group-hover:text-primary transition-colors">
+                  <span className="block">{item.line1}</span>
+                  <span className="block">{item.line2}</span>
                 </div>
               </a>
             ))}

@@ -32,7 +32,7 @@ export function HeroCarousel() {
 
   return (
     <section
-      className="relative h-[62svh] min-h-[400px] max-h-[530px] overflow-hidden bg-navy touch-pan-y"
+      className="relative h-[200px] xs:h-[220px] sm:h-[280px] md:h-[62svh] md:min-h-[420px] md:max-h-[530px] overflow-hidden bg-navy touch-pan-y"
       aria-roledescription="carousel"
       aria-label="Solar solutions"
       onMouseEnter={() => setPaused(true)}
@@ -76,20 +76,24 @@ export function HeroCarousel() {
             className={cn("h-full w-full object-cover transition-transform duration-[6000ms] ease-out", i === index ? "scale-105" : "scale-100")}
           />
           <div className="absolute inset-0 bg-hero-overlay" />
-          <div className="absolute inset-0 flex items-start pt-6 sm:pt-8 md:pt-10 pb-8">
-            <div className="container-site">
+          <div className="absolute inset-0 flex items-center pt-2 sm:pt-6 md:pt-10 pb-4 sm:pb-8">
+            <div className="container-site w-full">
               {i === index && (
                 <div className="max-w-2xl">
-                  <p className="eyebrow animate-rise text-gold text-xs">{s.tag}</p>
-                  <h1 className="animate-rise mt-1.5 text-2xl sm:text-4xl lg:text-5xl font-extrabold leading-[1.15] text-navy-foreground break-words" style={{ animationDelay: "80ms" }}>
+                  <p className="eyebrow animate-rise text-gold text-[10px] sm:text-xs font-bold uppercase tracking-wider">{s.tag}</p>
+                  <h1 className="animate-rise mt-1 text-base xs:text-lg sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-navy-foreground max-w-[90%] sm:max-w-none" style={{ animationDelay: "80ms" }}>
                     {s.title}
                   </h1>
-                  <p className="animate-rise mt-2 max-w-xl text-xs sm:text-sm md:text-base text-navy-foreground/85 leading-relaxed" style={{ animationDelay: "160ms" }}>
+                  <p className="animate-rise mt-1 text-[11px] sm:text-sm md:text-base text-navy-foreground/85 leading-snug sm:leading-relaxed line-clamp-1 sm:line-clamp-none max-w-xl" style={{ animationDelay: "160ms" }}>
                     {s.text}
                   </p>
-                  <div className="animate-rise mt-3.5 flex flex-wrap gap-3" style={{ animationDelay: "240ms" }}>
-                    <Button asChild variant="cta" size="default"><Link to={s.ctas[0].to}>{s.ctas[0].label}</Link></Button>
-                    <Button asChild variant="heroOutline" size="default"><Link to={s.ctas[1].to}>{s.ctas[1].label}</Link></Button>
+                  <div className="animate-rise mt-2 sm:mt-3.5 flex flex-wrap items-center gap-2 sm:gap-3" style={{ animationDelay: "240ms" }}>
+                    <Button asChild variant="cta" className="h-7 sm:h-9 md:h-10 text-[11px] sm:text-sm px-3 sm:px-5 rounded-full font-bold shadow-sm">
+                      <Link to={s.ctas[0].to}>{s.ctas[0].label}</Link>
+                    </Button>
+                    <Button asChild variant="heroOutline" className="hidden xs:inline-flex h-7 sm:h-9 md:h-10 text-[11px] sm:text-sm px-3 sm:px-5 rounded-full font-medium">
+                      <Link to={s.ctas[1].to}>{s.ctas[1].label}</Link>
+                    </Button>
                   </div>
                 </div>
               )}
@@ -98,9 +102,9 @@ export function HeroCarousel() {
         </div>
       ))}
 
-      <div className="absolute inset-x-0 bottom-3">
-        <div className="container-site flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
+      <div className="absolute inset-x-0 bottom-2 sm:bottom-3">
+        <div className="container-site flex items-center justify-center md:justify-between gap-4">
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
             {SLIDES.map((s, i) => (
               <button
                 key={s.tag}
@@ -108,7 +112,7 @@ export function HeroCarousel() {
                 onClick={() => go(i)}
                 aria-label={`Go to slide ${i + 1}: ${s.tag}`}
                 aria-current={i === index}
-                className="group relative h-1.5 w-8 overflow-hidden rounded-full bg-navy-foreground/30 sm:w-12"
+                className="group relative h-1 sm:h-1.5 w-6 sm:w-10 overflow-hidden rounded-full bg-navy-foreground/35"
               >
                 {i === index && (
                   <span key={`${index}-${paused}`} className={cn("absolute inset-0 bg-primary", paused ? "" : "animate-progress")} />
@@ -116,7 +120,7 @@ export function HeroCarousel() {
               </button>
             ))}
           </div>
-          <div className="flex gap-2">
+          <div className="hidden md:flex gap-2">
             <button
               type="button"
               onClick={() => go(index - 1)}
