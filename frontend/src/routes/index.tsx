@@ -239,21 +239,23 @@ function Index() {
       </section>
 
       {/* Solutions Header - Side Heading matching Featured projects style */}
-      <div className="container-site pt-3 pb-1">
-        <div className="flex flex-col justify-between gap-2 border-b border-slate-100/80 pb-2 md:flex-row md:items-end">
-          <SectionHeading
-            eyebrow="PRODUCTS"
-            title="Rooftop Solar Solutions"
-            className="max-w-none flex-1"
-            titleClassName="whitespace-normal md:whitespace-nowrap"
-          />
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <p className="text-xs text-muted-foreground whitespace-normal md:whitespace-nowrap pb-1">
+      <div className="container-site pt-5 pb-2">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-200/90 pb-3">
+          <div>
+            <SectionHeading
+              eyebrow="PRODUCTS & SOLUTIONS"
+              title="Rooftop Solar Solutions"
+              className="max-w-none"
+            />
+            <p className="text-xs md:text-sm text-muted-foreground mt-0.5">
               Customised rooftop solar installations: On-Grid, Off-Grid, and Hybrid architectures for homes & businesses.
             </p>
-            <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex shrink-0 border-navy text-navy hover:bg-navy hover:text-white transition-all text-xs font-bold">
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <Button asChild className="bg-[#082B4C] hover:bg-[#0c3963] text-white font-bold text-xs md:text-sm px-4 py-2 rounded-lg shadow-sm transition-all hover:shadow hover:scale-[1.02] active:scale-98">
               <Link to="/services">
-                View All Services <ArrowRight className="size-3.5 ml-1" />
+                <span>View All Services</span>
+                <ArrowRight className="size-3.5 ml-1.5" />
               </Link>
             </Button>
           </div>

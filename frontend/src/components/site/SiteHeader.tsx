@@ -116,7 +116,7 @@ export function SiteHeader() {
       return;
     }
 
-    if (item.to === "/contact" || item.to === "/about" || item.to === "/projects") {
+    if (item.to === "/contact" || item.to === "/about" || item.to === "/projects" || item.to === "/services") {
       e.preventDefault();
       setOpen(false);
       navigate({ to: item.to });

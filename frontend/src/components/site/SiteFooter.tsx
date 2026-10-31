@@ -175,6 +175,11 @@ export function SiteFooter() {
                 </li>
               );
             })}
+            <li className="pt-1 border-t border-navy-foreground/15 mt-2">
+              <Link to="/services" className="font-bold text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1 text-xs">
+                View All Services (10+) →
+              </Link>
+            </li>
           </ul>
         </div>
         <div>

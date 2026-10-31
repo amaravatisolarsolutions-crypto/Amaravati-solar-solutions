@@ -47,6 +47,7 @@ export const COMPANY = {
 export const NAV = [
   { label: "Home", to: "/", targetId: "home" },
   { label: "About Us", to: "/about", targetId: "about" },
+  { label: "Services", to: "/services" },
   { label: "On-Grid", to: "/#on-grid", targetId: "on-grid" },
   { label: "Off-Grid", to: "/#off-grid", targetId: "off-grid" },
   { label: "Hybrid", to: "/#hybrid", targetId: "hybrid" },
