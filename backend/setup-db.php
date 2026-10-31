@@ -11,7 +11,7 @@
 function getDatabaseConnection() {
     // On Hostinger Linux, 'localhost' uses the local UNIX socket (which is permitted),
     // whereas TCP 127.0.0.1:3306 is blocked by firewall (EPERM / Operation not permitted).
-    $hostCandidates = ['localhost', '127.0.0.1'];
+    $hostCandidates = ['localhost', 'auth-db1991.hstgr.io', '127.0.0.1'];
     $port = 3306;
 
     // Notice: Hostinger screenshot shows 'Amaravthi@123' (no 'a' between v and t)
