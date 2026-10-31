@@ -1,0 +1,16 @@
+{
+  "name": "screenshot-exact-match",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Amaravati Solar Solutions - Screenshot Exact Match",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build": "npm --prefix frontend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "lint": "npm --prefix frontend run lint",
+    "test": "npm --prefix frontend run test"
+  }
+}
