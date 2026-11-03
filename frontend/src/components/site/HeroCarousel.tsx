@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import heroBannerMain from "@/assets/hero-banner-main.jpg";
+import heroBannerMain from "@/assets/hero-banner-main.png";
 import commercial from "@/assets/hero-commercial.jpg";
 import industrial from "@/assets/hero-industrial.jpg";
 import future from "@/assets/hero-future.jpg";
