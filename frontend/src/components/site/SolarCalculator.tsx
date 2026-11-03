@@ -397,3 +397,4 @@ export function SolarCalculator({ className, onApplyPlan }: SolarCalculatorProps
     </div>
   );
 }
+

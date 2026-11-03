@@ -94,17 +94,20 @@ function Contact() {
   ];
 
   return (
-    <div className="bg-slate-50/60 pt-3 sm:pt-5 pb-10 md:pb-14 space-y-6 sm:space-y-8">
-      {/* 1. Solar Calculator Card - Matching User's Image */}
-      <section className="container-site">
-        <SolarCalculator onApplyPlan={handleApplyPlan} />
-      </section>
-
-      {/* 2. Send an Enquiry Form & Office Details */}
+    <div className="bg-slate-50/60 pt-3 sm:pt-5 pb-10 md:pb-14 space-y-8 sm:space-y-10">
+      {/* 1. Send an Enquiry Form & Office Details - First Section */}
       <section id="enquiry-section" className="container-site grid gap-6 sm:gap-8 lg:grid-cols-[3fr_2fr]">
         <div id="enquiry-form-card" className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-6 shadow-xs scroll-mt-24">
-          <h2 className="text-xl sm:text-2xl font-extrabold text-[#0c2340]">Send an enquiry</h2>
-          <p className="mt-1 text-xs text-muted-foreground">All fields except message are required.</p>
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-[#0c2340]">Send an enquiry</h1>
+            <a
+              href="#solar-calculator-section"
+              className="inline-flex items-center gap-1 text-xs font-bold text-[#B83A16] hover:underline"
+            >
+              <span>Calculate Solar Plan ↓</span>
+            </a>
+          </div>
+          <p className="text-xs text-muted-foreground">All fields except message are required.</p>
           <div className="mt-4 sm:mt-5">
             <EnquiryForm initialService={initialService} initialMessage={initialMessage} />
           </div>
@@ -167,6 +170,11 @@ function Contact() {
             </div>
           </div>
         </aside>
+      </section>
+
+      {/* 2. Solar Calculator Section - Positioned Below */}
+      <section id="solar-calculator-section" className="container-site scroll-mt-24">
+        <SolarCalculator onApplyPlan={handleApplyPlan} />
       </section>
     </div>
   );
