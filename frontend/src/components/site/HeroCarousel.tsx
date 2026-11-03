@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import residential from "@/assets/hero-residential.jpg";
+import heroBannerMain from "@/assets/hero-banner-main.jpg";
 import commercial from "@/assets/hero-commercial.jpg";
 import industrial from "@/assets/hero-industrial.jpg";
 import future from "@/assets/hero-future.jpg";
@@ -9,8 +9,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type Cta = { label: string; to: "/contact" | "/services" | "/book-a-demo" };
-const SLIDES: { tag: string; title: string; text: string; image: string; ctas: [Cta, Cta] }[] = [
-  { tag: "Residential Solar", title: "Clean Energy. Brighter Tomorrow.", text: "Power your home with smart, reliable, and sustainable solar energy solutions.", image: residential, ctas: [{ label: "Get Free Consultation", to: "/book-a-demo" }, { label: "Explore Solutions", to: "/services" }] },
+const SLIDES: { tag: string; title: string; text: string; image: string; ctas: [Cta, Cta]; isCustomBanner?: boolean }[] = [
+  {
+    tag: "Complete Solar Solutions",
+    title: "One Solar Partner for All Your Energy Needs",
+    text: "Residential • Commercial • Industrial • Agricultural",
+    image: heroBannerMain,
+    ctas: [{ label: "Get a Free Site Assessment", to: "/book-a-demo" }, { label: "Our Solar Solutions", to: "/services" }],
+    isCustomBanner: true,
+  },
   { tag: "Commercial Solar", title: "Power Your Business with Solar.", text: "Reduce electricity expenses and move towards a smarter energy future.", image: commercial, ctas: [{ label: "Explore Commercial Solar", to: "/services" }, { label: "Book a Demo", to: "/book-a-demo" }] },
   { tag: "Industrial Solar", title: "Smarter Energy for a Stronger Industry.", text: "Scalable solar power solutions designed for industrial and manufacturing facilities.", image: industrial, ctas: [{ label: "Our Services", to: "/services" }, { label: "Request a Quote", to: "/contact" }] },
   { tag: "Sustainable Future", title: "Make the Switch to Solar.", text: "Discover a cleaner, more efficient way to power your everyday life.", image: future, ctas: [{ label: "Start Your Solar Journey", to: "/book-a-demo" }, { label: "Contact Us", to: "/contact" }] },
@@ -67,44 +74,98 @@ export function HeroCarousel() {
           aria-roledescription="slide"
           aria-label={`${i + 1} of ${SLIDES.length}`}
         >
-          <img
-            src={s.image}
-            alt=""
-            width={1920}
-            height={1088}
-            loading={i === 0 ? "eager" : "lazy"}
-            className={cn("h-full w-full object-cover transition-transform duration-[6000ms] ease-out", i === index ? "scale-105" : "scale-100")}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/35 sm:bg-hero-overlay" />
-          <div className="absolute inset-0 flex items-start pt-3 sm:pt-5 md:pt-6 lg:pt-8 pb-12 sm:pb-16">
-            <div className="container-site px-4 sm:px-6">
-              {i === index && (
-                <div className="max-w-[320px] sm:max-w-2xl lg:max-w-3xl">
-                  <p className="eyebrow animate-rise text-gold text-[10px] sm:text-xs md:text-sm font-extrabold uppercase tracking-widest">{s.tag}</p>
-                  <h1 className="animate-rise mt-1 sm:mt-2 text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] text-white" style={{ animationDelay: "80ms" }}>
-                    {s.title}
-                  </h1>
-                  <p className="animate-rise mt-2 sm:mt-3 max-w-[300px] sm:max-w-xl text-xs sm:text-base md:text-lg text-white/90 leading-normal sm:leading-relaxed" style={{ animationDelay: "160ms" }}>
-                    {s.text}
-                  </p>
-                  <div className="animate-rise mt-4 sm:mt-6 flex items-center gap-2.5 sm:gap-4" style={{ animationDelay: "240ms" }}>
-                    <Button asChild variant="cta" className="h-9 sm:h-12 px-5 sm:px-7 text-xs sm:text-base font-bold rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white shadow-md hover:scale-105 active:scale-95 transition-all">
-                      <Link to={s.ctas[0].to}>{s.ctas[0].label}</Link>
-                    </Button>
-                    <Button asChild variant="heroOutline" className="hidden sm:inline-flex h-12 px-7 text-base font-bold rounded-[30px] border-white/50 text-white backdrop-blur-sm hover:bg-[#A33112] hover:border-[#A33112] active:scale-95 transition-all">
-                      <Link to={s.ctas[1].to}>{s.ctas[1].label}</Link>
-                    </Button>
-                  </div>
+          {s.isCustomBanner ? (
+            <div className="relative h-full w-full flex items-center justify-center bg-[#e4f1fb] overflow-hidden">
+              {/* Blurred background ambience to match exact colors seamlessly */}
+              <img
+                src={s.image}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover blur-2xl scale-110 opacity-75 pointer-events-none"
+                aria-hidden="true"
+              />
+              
+              {/* Crisp, undistorted banner fitting the viewport without any crop */}
+              <div className="relative h-full w-full flex items-center justify-center p-0 z-10">
+                <div className="relative aspect-[2/1] max-h-full max-w-full w-auto h-auto flex items-center justify-center shadow-xs">
+                  <img
+                    src={s.image}
+                    alt="One Solar Partner for All Your Energy Needs - Complete Solar Solutions"
+                    width={1024}
+                    height={512}
+                    loading="eager"
+                    className="h-full w-full object-contain pointer-events-auto select-none"
+                  />
+                  
+                  {/* Interactive Hotspots for the two buttons drawn inside the banner */}
+                  <Link
+                    to="/book-a-demo"
+                    className="absolute cursor-pointer rounded-full transition-all hover:bg-white/10 active:scale-95"
+                    style={{
+                      left: "4.7%",
+                      top: "71.9%",
+                      width: "23.4%",
+                      height: "9.0%",
+                    }}
+                    title="Get a Free Site Assessment"
+                    aria-label="Get a Free Site Assessment"
+                  />
+                  <Link
+                    to="/services"
+                    className="absolute cursor-pointer rounded-full transition-all hover:bg-primary/10 active:scale-95"
+                    style={{
+                      left: "29.5%",
+                      top: "71.9%",
+                      width: "17.2%",
+                      height: "9.0%",
+                    }}
+                    title="Our Solar Solutions"
+                    aria-label="Our Solar Solutions"
+                  />
                 </div>
-              )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <>
+              <img
+                src={s.image}
+                alt=""
+                width={1920}
+                height={1088}
+                loading="lazy"
+                className={cn("h-full w-full object-cover transition-transform duration-[6000ms] ease-out", i === index ? "scale-105" : "scale-100")}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/35 sm:bg-hero-overlay" />
+              <div className="absolute inset-0 flex items-start pt-3 sm:pt-5 md:pt-6 lg:pt-8 pb-12 sm:pb-16">
+                <div className="container-site px-4 sm:px-6">
+                  {i === index && (
+                    <div className="max-w-[320px] sm:max-w-2xl lg:max-w-3xl">
+                      <p className="eyebrow animate-rise text-gold text-[10px] sm:text-xs md:text-sm font-extrabold uppercase tracking-widest">{s.tag}</p>
+                      <h1 className="animate-rise mt-1 sm:mt-2 text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] text-white" style={{ animationDelay: "80ms" }}>
+                        {s.title}
+                      </h1>
+                      <p className="animate-rise mt-2 sm:mt-3 max-w-[300px] sm:max-w-xl text-xs sm:text-base md:text-lg text-white/90 leading-normal sm:leading-relaxed" style={{ animationDelay: "160ms" }}>
+                        {s.text}
+                      </p>
+                      <div className="animate-rise mt-4 sm:mt-6 flex items-center gap-2.5 sm:gap-4" style={{ animationDelay: "240ms" }}>
+                        <Button asChild variant="cta" className="h-9 sm:h-12 px-5 sm:px-7 text-xs sm:text-base font-bold rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white shadow-md hover:scale-105 active:scale-95 transition-all">
+                          <Link to={s.ctas[0].to}>{s.ctas[0].label}</Link>
+                        </Button>
+                        <Button asChild variant="heroOutline" className="hidden sm:inline-flex h-12 px-7 text-base font-bold rounded-[30px] border-white/50 text-white backdrop-blur-sm hover:bg-[#A33112] hover:border-[#A33112] active:scale-95 transition-all">
+                          <Link to={s.ctas[1].to}>{s.ctas[1].label}</Link>
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       ))}
 
-      <div className="absolute inset-x-0 bottom-4 sm:bottom-6 lg:bottom-8 z-10 pointer-events-auto">
+      <div className="absolute inset-x-0 bottom-4 sm:bottom-6 lg:bottom-8 z-20 pointer-events-auto">
         <div className="container-site flex items-center justify-center sm:justify-between gap-4">
-          <div className="flex items-center gap-1 sm:gap-2.5">
+          <div className="flex items-center gap-1 sm:gap-2.5 bg-black/20 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/20">
             {SLIDES.map((s, i) => (
               <button
                 key={s.tag}
@@ -113,12 +174,12 @@ export function HeroCarousel() {
                 aria-label={`Go to slide ${i + 1}: ${s.tag}`}
                 aria-current={i === index}
                 className={cn(
-                  "group relative h-1 sm:h-1.5 overflow-hidden rounded-full bg-navy-foreground/30 transition-all duration-300 cursor-pointer",
-                  i === index ? "w-4 sm:w-12 bg-white" : "w-1.5 sm:w-8 hover:bg-white/60"
+                  "group relative h-1 sm:h-1.5 overflow-hidden rounded-full transition-all duration-300 cursor-pointer",
+                  i === index ? "w-4 sm:w-12 bg-white shadow-xs" : "w-1.5 sm:w-8 bg-white/40 hover:bg-white/70"
                 )}
               >
                 {i === index && (
-                  <span key={`${index}-${paused}`} className={cn("absolute inset-0 bg-primary", paused ? "" : "animate-progress")} />
+                  <span key={`${index}-${paused}`} className={cn("absolute inset-0 bg-[#B83A16]", paused ? "" : "animate-progress")} />
                 )}
               </button>
             ))}
@@ -128,7 +189,7 @@ export function HeroCarousel() {
               type="button"
               onClick={() => go(index - 1)}
               aria-label="Previous slide"
-              className="grid size-9 place-items-center rounded-full border border-navy-foreground/30 text-navy-foreground backdrop-blur hover:bg-navy-foreground/15 active:scale-90 transition-all cursor-pointer select-none"
+              className="grid size-9 place-items-center rounded-full border border-white/30 text-white bg-black/25 backdrop-blur-sm hover:bg-black/40 active:scale-90 transition-all cursor-pointer select-none shadow-sm"
             >
               <ChevronLeft className="size-4" />
             </button>
@@ -136,7 +197,7 @@ export function HeroCarousel() {
               type="button"
               onClick={() => go(index + 1)}
               aria-label="Next slide"
-              className="grid size-9 place-items-center rounded-full border border-navy-foreground/30 text-navy-foreground backdrop-blur hover:bg-navy-foreground/15 active:scale-90 transition-all cursor-pointer select-none"
+              className="grid size-9 place-items-center rounded-full border border-white/30 text-white bg-black/25 backdrop-blur-sm hover:bg-black/40 active:scale-90 transition-all cursor-pointer select-none shadow-sm"
             >
               <ChevronRight className="size-4" />
             </button>
