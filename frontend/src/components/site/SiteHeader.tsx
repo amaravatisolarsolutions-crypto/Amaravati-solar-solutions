@@ -1,18 +1,11 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
-  ArrowRight,
-  Battery,
-  Building2,
   ChevronDown,
   Clock,
-  Factory,
   Headphones,
-  Home,
   Mail,
   Menu,
   Phone,
-  PlugZap,
-  SlidersHorizontal,
   Sparkles,
   X,
 } from "lucide-react";
@@ -23,63 +16,15 @@ import { scrollToTarget } from "@/lib/scroll-utils";
 import { cn } from "@/lib/utils";
 
 export const SERVICE_SECTORS = [
-  {
-    title: "Residential Solar",
-    sector: "residential",
-    subtitle: "Rooftop solar for homes & villas (PM Surya Ghar)",
-    tag: "PM Surya Ghar",
-    icon: Home,
-    accent: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-  },
-  {
-    title: "Commercial Solar",
-    sector: "commercial",
-    subtitle: "Turnkey solar for offices, schools & hospitals",
-    tag: "Accelerated ROI",
-    icon: Building2,
-    accent: "text-[#087FC1] bg-sky-500/10 border-sky-500/20",
-  },
-  {
-    title: "Industrial Solar",
-    sector: "industrial",
-    subtitle: "High-capacity MW plants & PEB metal sheds",
-    tag: "Turnkey MW",
-    icon: Factory,
-    accent: "text-[#082B4C] bg-navy/10 border-navy/20",
-  },
+  { title: "Residential", sector: "residential" },
+  { title: "Commercial", sector: "commercial" },
+  { title: "Industrial", sector: "industrial" },
 ] as const;
 
 export const SOLAR_SOLUTIONS = [
-  {
-    title: "On - Grid Rooftop Solar",
-    shortTitle: "On-Grid",
-    targetId: "on-grid",
-    to: "/#on-grid",
-    subtitle: "Cut bills up to 90% with net-metering & zero battery costs",
-    tag: "Net-Metering",
-    icon: PlugZap,
-    accent: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-  },
-  {
-    title: "Off - Grid Rooftop Solar",
-    shortTitle: "Off-Grid",
-    targetId: "off-grid",
-    to: "/#off-grid",
-    subtitle: "100% self-reliance with high-capacity battery night backup",
-    tag: "100% Independence",
-    icon: Battery,
-    accent: "text-[#087FC1] bg-sky-500/10 border-sky-500/20",
-  },
-  {
-    title: "Hybrid Rooftop Solar",
-    shortTitle: "Hybrid",
-    targetId: "hybrid",
-    to: "/#hybrid",
-    subtitle: "24/7 power security with smart automatic battery switchover",
-    tag: "24/7 Power",
-    icon: SlidersHorizontal,
-    accent: "text-emerald-600 bg-emerald-500/10 border-emerald-500/20",
-  },
+  { title: "On-Grid", targetId: "on-grid", to: "/#on-grid" },
+  { title: "Off-Grid", targetId: "off-grid", to: "/#off-grid" },
+  { title: "Hybrid", targetId: "hybrid", to: "/#hybrid" },
 ] as const;
 
 export function SiteHeader() {
@@ -369,7 +314,7 @@ export function SiteHeader() {
                       />
                     </a>
 
-                    {/* Premium Hover Dropdown Menu */}
+                    {/* Premium Sleek Hover Dropdown Menu */}
                     <div
                       className={cn(
                         "absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 transition-all duration-200",
@@ -378,54 +323,25 @@ export function SiteHeader() {
                           : "opacity-0 -translate-y-1.5 pointer-events-none invisible"
                       )}
                     >
-                      <div className="w-[310px] rounded-2xl bg-white/95 backdrop-blur-xl p-2 shadow-[0_20px_50px_rgba(8,43,76,0.20)] border border-slate-200/90 divide-y divide-slate-100">
-                        <div className="space-y-1 p-1">
-                          {SERVICE_SECTORS.map((sec) => {
-                            const Icon = sec.icon;
-                            return (
-                              <a
-                                key={sec.sector}
-                                href={`/services?category=${sec.sector}`}
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setServicesDropdownOpen(false);
-                                  navigate({
-                                    to: "/services",
-                                    search: { category: sec.sector } as any,
-                                  });
-                                }}
-                                className="flex items-center gap-3 p-2.5 rounded-xl transition-all duration-150 hover:bg-slate-50 active:scale-[0.98] group/item cursor-pointer text-left"
-                              >
-                                <div className={cn("grid size-9 shrink-0 place-items-center rounded-xl border transition-transform duration-200 group-hover/item:scale-105", sec.accent)}>
-                                  <Icon className="size-4.5" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center justify-between gap-1">
-                                    <span className="text-[13px] font-bold text-[#082B4C] group-hover/item:text-primary transition-colors">
-                                      {sec.title}
-                                    </span>
-                                    <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600 group-hover/item:bg-primary/10 group-hover/item:text-primary transition-colors shrink-0">
-                                      {sec.tag}
-                                    </span>
-                                  </div>
-                                  <p className="text-[11px] text-slate-500 leading-tight truncate mt-0.5">
-                                    {sec.subtitle}
-                                  </p>
-                                </div>
-                              </a>
-                            );
-                          })}
-                        </div>
-
-                        <div className="pt-2 pb-1 px-1">
-                          <Link
-                            to="/services"
-                            onClick={() => setServicesDropdownOpen(false)}
-                            className="flex items-center justify-between w-full px-3 py-1.5 rounded-xl text-xs font-bold text-[#082B4C] hover:bg-primary/10 hover:text-primary transition-all group/all"
-                          >
-                            <span>View All Solar Services</span>
-                            <ArrowRight className="size-3.5 text-primary transition-transform duration-200 group-hover/all:translate-x-1" />
-                          </Link>
+                      <div className="w-[180px] rounded-xl bg-white/95 backdrop-blur-xl p-1.5 shadow-[0_16px_36px_rgba(8,43,76,0.18)] border border-slate-200/90">
+                        <div className="space-y-0.5">
+                          {SERVICE_SECTORS.map((sec) => (
+                            <a
+                              key={sec.sector}
+                              href={`/services?category=${sec.sector}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setServicesDropdownOpen(false);
+                                navigate({
+                                  to: "/services",
+                                  search: { category: sec.sector } as any,
+                                });
+                              }}
+                              className="block w-full px-3.5 py-2 rounded-lg text-[13px] font-bold text-[#082B4C] hover:bg-primary/10 hover:text-primary transition-all duration-150 active:scale-[0.98] cursor-pointer text-left"
+                            >
+                              {sec.title}
+                            </a>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -476,7 +392,7 @@ export function SiteHeader() {
                       />
                     </a>
 
-                    {/* Premium Hover Dropdown Menu */}
+                    {/* Premium Sleek Hover Dropdown Menu */}
                     <div
                       className={cn(
                         "absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 transition-all duration-200",
@@ -485,47 +401,18 @@ export function SiteHeader() {
                           : "opacity-0 -translate-y-1.5 pointer-events-none invisible"
                       )}
                     >
-                      <div className="w-[330px] rounded-2xl bg-white/95 backdrop-blur-xl p-2 shadow-[0_20px_50px_rgba(8,43,76,0.20)] border border-slate-200/90 divide-y divide-slate-100">
-                        <div className="space-y-1 p-1">
-                          {SOLAR_SOLUTIONS.map((sol) => {
-                            const Icon = sol.icon;
-                            return (
-                              <a
-                                key={sol.targetId}
-                                href={sol.to}
-                                onClick={(e) => handleSolutionClick(e, sol)}
-                                className="flex items-center gap-3 p-2.5 rounded-xl transition-all duration-150 hover:bg-slate-50 active:scale-[0.98] group/item cursor-pointer text-left"
-                              >
-                                <div className={cn("grid size-9 shrink-0 place-items-center rounded-xl border transition-transform duration-200 group-hover/item:scale-105", sol.accent)}>
-                                  <Icon className="size-4.5" />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center justify-between gap-1">
-                                    <span className="text-[13px] font-bold text-[#082B4C] group-hover/item:text-primary transition-colors">
-                                      {sol.title}
-                                    </span>
-                                    <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600 group-hover/item:bg-primary/10 group-hover/item:text-primary transition-colors shrink-0">
-                                      {sol.tag}
-                                    </span>
-                                  </div>
-                                  <p className="text-[11px] text-slate-500 leading-tight truncate mt-0.5">
-                                    {sol.subtitle}
-                                  </p>
-                                </div>
-                              </a>
-                            );
-                          })}
-                        </div>
-
-                        <div className="pt-2 pb-1 px-1">
-                          <Link
-                            to="/services"
-                            onClick={() => setSolutionsDropdownOpen(false)}
-                            className="flex items-center justify-between w-full px-3 py-1.5 rounded-xl text-xs font-bold text-[#082B4C] hover:bg-primary/10 hover:text-primary transition-all group/all"
-                          >
-                            <span>Explore All Solar Architecture</span>
-                            <ArrowRight className="size-3.5 text-primary transition-transform duration-200 group-hover/all:translate-x-1" />
-                          </Link>
+                      <div className="w-[170px] rounded-xl bg-white/95 backdrop-blur-xl p-1.5 shadow-[0_16px_36px_rgba(8,43,76,0.18)] border border-slate-200/90">
+                        <div className="space-y-0.5">
+                          {SOLAR_SOLUTIONS.map((sol) => (
+                            <a
+                              key={sol.targetId}
+                              href={sol.to}
+                              onClick={(e) => handleSolutionClick(e, sol)}
+                              className="block w-full px-3.5 py-2 rounded-lg text-[13px] font-bold text-[#082B4C] hover:bg-primary/10 hover:text-primary transition-all duration-150 active:scale-[0.98] cursor-pointer text-left"
+                            >
+                              {sol.title}
+                            </a>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -624,41 +511,33 @@ export function SiteHeader() {
                   {/* Sub-items for Services on mobile */}
                   {item.label === "Services" && (
                     <div className="pl-4 pr-1 py-1 space-y-1 border-l-2 border-primary/20 ml-3.5 my-1">
-                      {SERVICE_SECTORS.map((sec) => {
-                        const Icon = sec.icon;
-                        return (
-                          <Link
-                            key={sec.sector}
-                            to="/services"
-                            search={{ category: sec.sector } as any}
-                            onClick={() => setOpen(false)}
-                            className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors"
-                          >
-                            <Icon className="size-3.5 text-primary shrink-0" />
-                            <span>{sec.title}</span>
-                          </Link>
-                        );
-                      })}
+                      {SERVICE_SECTORS.map((sec) => (
+                        <Link
+                          key={sec.sector}
+                          to="/services"
+                          search={{ category: sec.sector } as any}
+                          onClick={() => setOpen(false)}
+                          className="flex items-center px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors"
+                        >
+                          <span>{sec.title}</span>
+                        </Link>
+                      ))}
                     </div>
                   )}
 
                   {/* Sub-items for Amaravati Solar Solution on mobile */}
                   {item.label === "Amaravati Solar Solution" && (
                     <div className="pl-4 pr-1 py-1 space-y-1 border-l-2 border-primary/20 ml-3.5 my-1">
-                      {SOLAR_SOLUTIONS.map((sol) => {
-                        const Icon = sol.icon;
-                        return (
-                          <a
-                            key={sol.targetId}
-                            href={sol.to}
-                            onClick={(e) => handleSolutionClick(e, sol)}
-                            className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors"
-                          >
-                            <Icon className="size-3.5 text-primary shrink-0" />
-                            <span>{sol.title}</span>
-                          </a>
-                        );
-                      })}
+                      {SOLAR_SOLUTIONS.map((sol) => (
+                        <a
+                          key={sol.targetId}
+                          href={sol.to}
+                          onClick={(e) => handleSolutionClick(e, sol)}
+                          className="flex items-center px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors"
+                        >
+                          <span>{sol.title}</span>
+                        </a>
+                      ))}
                     </div>
                   )}
 
