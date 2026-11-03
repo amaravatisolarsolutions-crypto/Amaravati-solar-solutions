@@ -74,16 +74,16 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     title: "Residential Rooftop Solar (On-Grid)",
     order: 1,
     sector: "residential",
-    sectorLabel: "Residential Solar",
+    sectorLabel: "Residential",
     description:
-      "Engineered for independent houses, villas, and apartments. Synchronizes with APCPDCL/APEPDCL utility grid with bi-directional net-metering. Slash domestic electricity bills by up to 90% without expensive battery replacements.",
+      "Rooftop systems with DISCOM bi-directional net-metering. Cut domestic electricity bills by up to 90% without battery replacements.",
     image: residential,
-    capacity: "3 kW – 15 kW Systems",
+    capacity: "3 kW – 15 kW",
     highlights: [
-      "Up to 90% reduction in monthly electricity bills",
-      "PM Surya Ghar DBT central subsidy up to ₹78,000",
-      "Bi-directional net metering installation & approval",
-      "25-year linear solar panel performance warranty",
+      "Up to 90% bill reduction",
+      "PM Surya Ghar subsidy up to ₹78,000",
+      "Net metering setup & DISCOM approvals",
+      "25-year panel performance warranty",
     ],
   },
   {
@@ -91,16 +91,16 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     title: "Residential Hybrid Solar (Solar + Battery)",
     order: 2,
     sector: "residential",
-    sectorLabel: "Residential Solar",
+    sectorLabel: "Residential",
     description:
-      "Advanced multi-mode power system combining grid-tied bill savings with high-capacity lithium battery energy storage. Delivers silent, automatic millisecond switchover during unpredictable load sheddings and power blackouts.",
+      "Multi-mode solar system with lithium battery storage. Delivers automatic millisecond backup during grid load shedding & outages.",
     image: solarHyderabadRooftop,
     capacity: "5 kW – 20 kW + Battery",
     highlights: [
-      "24/7 uninterrupted power backup for entire home",
-      "Automatic millisecond grid-to-battery switchover",
-      "Net-metering surplus export during sunny peak hours",
-      "Compact, wall-mounted high-cycle lithium batteries",
+      "24/7 uninterrupted power for entire home",
+      "Automatic millisecond power switchover",
+      "Net-metering surplus export during daytime",
+      "Compact wall-mounted lithium batteries",
     ],
   },
   {
@@ -108,16 +108,16 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     title: "Off-Grid Solar for Farmhouses & Villas",
     order: 3,
     sector: "residential",
-    sectorLabel: "Residential Solar",
+    sectorLabel: "Residential",
     description:
-      "100% autonomous solar electrification for luxury farmhouses, gated communities, and remote properties without reliable utility connections. Generates and stores 100% of your power on-site.",
+      "Autonomous solar electrification for luxury farmhouses and gated villas without reliable utility connection. 100% self-reliance.",
     image: future,
     capacity: "3 kW – 25 kW Standalone",
     highlights: [
-      "Complete independence from utility grid tariffs & outages",
-      "Heavy-duty deep cycle tubular or LiFePO4 battery banks",
-      "Smart generator auto-start integration for cloudy days",
-      "Engineered for heavy loads: ACs, pumps & home automation",
+      "100% grid independence & zero bills",
+      "High-capacity night battery backup",
+      "Runs heavy loads: ACs, pumps & appliances",
+      "Smart generator auto-start integration",
     ],
   },
   {
@@ -125,16 +125,16 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     title: "PM Surya Ghar Muft Bijli Yojana Facilitation",
     order: 4,
     sector: "residential",
-    sectorLabel: "Residential Solar",
+    sectorLabel: "Residential",
     description:
-      "Complete white-glove assistance under the national PM Surya Ghar scheme. Our liaisoning team manages the National Portal registration, feasibility sanction, DISCOM inspection, and direct bank account subsidy credit.",
+      "End-to-end liaisoning for Central Government subsidies. We manage national portal registration, DISCOM inspection, and direct DBT transfer.",
     image: installation,
-    capacity: "Up to ₹78,000 Direct Subsidy",
+    capacity: "Up to ₹78,000 Subsidy",
     highlights: [
-      "End-to-end documentation & online portal handling",
-      "DISCOM technical feasibility & meter testing support",
-      "Empanelled vendor certified installation standards",
-      "Direct DBT transfer into homeowner's bank account",
+      "100% portal documentation & sanction",
+      "DISCOM feasibility & bi-directional meter",
+      "Empanelled vendor certified installation",
+      "Direct DBT credit to customer bank account",
     ],
   },
 
@@ -144,50 +144,50 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     title: "Commercial Rooftop Solar for Offices & IT Parks",
     order: 5,
     sector: "commercial",
-    sectorLabel: "Commercial Solar",
+    sectorLabel: "Commercial",
     description:
-      "High-efficiency turnkey solar rooftop installations tailored for corporate buildings, business complexes, shopping malls, and tech parks. Drastically reduce peak daytime commercial tariffs and meet enterprise sustainability targets.",
+      "Turnkey solar rooftop plants engineered for business complexes, IT parks, and retail centers to slash expensive commercial tariffs.",
     image: commercial,
-    capacity: "25 kW – 500 kW Plants",
+    capacity: "25 kW – 500 kW",
     highlights: [
-      "Drastic reduction in high daytime commercial tariffs",
-      "Rapid 3 to 4 year complete capital ROI payback",
-      "40% accelerated tax depreciation under IT Act Sec 32",
-      "Custom elevated canopies preserving rooftop recreation",
+      "Substantial daytime tariff reduction",
+      "Fast 3 to 4 year complete capital ROI",
+      "40% accelerated tax depreciation benefit",
+      "Elevated canopies preserving roof space",
     ],
   },
   {
     id: "svc-comm-2",
-    title: "Institutional Solar for Schools, Colleges & Hospitals",
+    title: "Institutional Solar for Schools & Hospitals",
     order: 6,
     sector: "commercial",
-    sectorLabel: "Commercial Solar",
+    sectorLabel: "Commercial",
     description:
-      "Clean, silent, and highly reliable solar installations for educational campuses, healthcare centers, and nursing homes. Provides stable daytime green power for ICU backups, laboratories, and lecture halls.",
+      "Clean, silent, and highly reliable daytime power for educational campuses, healthcare centers, and nursing homes across AP.",
     image: solarFarm,
-    capacity: "50 kW – 300 kW Plants",
+    capacity: "50 kW – 300 kW",
     highlights: [
-      "Zero noise and zero local carbon emissions",
-      "Critical daytime emergency loads stabilization",
-      "Demonstrates green environmental leadership to students",
-      "Eligible for green building accreditation (IGBC / GRIHA)",
+      "Zero noise & green campus leadership",
+      "Stabilizes critical medical & lab equipment",
+      "Qualifies for IGBC/GRIHA green ratings",
+      "Long-term operational budget protection",
     ],
   },
   {
     id: "svc-comm-3",
-    title: "Commercial Solar Carports & EV Charging Hubs",
+    title: "Commercial Solar Carports & EV Hubs",
     order: 7,
     sector: "commercial",
-    sectorLabel: "Commercial Solar",
+    sectorLabel: "Commercial",
     description:
-      "Transform corporate parking lots into clean energy power generators. High-tensile steel waterproof canopies shade employee and visitor vehicles while supplying power directly into your facility and EV charging stations.",
+      "Turn commercial parking bays into power generators with waterproof steel canopies and integrated Level-2 AC/DC EV charging points.",
     image: solarCarport,
     capacity: "Custom Parking Bays",
     highlights: [
-      "Dual benefit: weather-protected parking + clean electricity",
-      "Integrated Level-2 AC & DC fast EV charging points",
-      "Aesthetic modern architectural steel superstructure",
-      "Branding visibility and customer EV charging monetization",
+      "Dual benefit: car shade + clean electricity",
+      "Integrated fast EV vehicle charging",
+      "Modern architectural steel structure",
+      "Customer charging monetization options",
     ],
   },
   {
@@ -195,86 +195,86 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     title: "Commercial CAPEX & OPEX / PPA Financing",
     order: 8,
     sector: "commercial",
-    sectorLabel: "Commercial Solar",
+    sectorLabel: "Commercial",
     description:
-      "Flexible financing architectures designed for businesses. Choose direct outright purchase (CAPEX) for maximum lifetime returns, or zero-upfront investment OPEX / PPA models where you only pay for the clean power consumed at discounted rates.",
+      "Flexible financing architectures. Choose direct purchase (CAPEX) or zero-investment OPEX / PPA models paying only for units consumed.",
     image: installation,
-    capacity: "Zero-Capex Models Available",
+    capacity: "Zero-Capex Models",
     highlights: [
-      "Zero upfront capital investment options (OPEX model)",
-      "Guaranteed cheaper per-unit power cost than DISCOM tariff",
-      "Bank loan facilitation through IREDA, SIDBI & green funds",
-      "Full performance and uptime guarantees by Amaravati Solar",
+      "Zero upfront capital investment options",
+      "Guaranteed cheaper per-unit power rate",
+      "SIDBI, IREDA & green bank loan tie-ups",
+      "Full performance & generation guarantee",
     ],
   },
 
   // --- INDUSTRIAL SERVICES ---
   {
     id: "svc-ind-1",
-    title: "Megawatt (MW) Scale Ground-Mounted Solar Parks",
+    title: "MW Scale Ground-Mounted Solar Parks",
     order: 9,
     sector: "industrial",
-    sectorLabel: "Industrial Solar",
+    sectorLabel: "Industrial",
     description:
-      "Utility and captive megawatt-scale solar power farms engineered from ground up. Complete turnkey EPC execution including land contour surveying, piling, HT evacuation lines, dedicated switchyards, and statutory CEIG clearances.",
+      "Utility and captive megawatt-scale solar farms with land surveying, piling, HT evacuation lines, switchyards, and CEIG approvals.",
     image: solarFarm,
-    capacity: "1 MW to 25 MW+ Parks",
+    capacity: "1 MW to 25 MW+",
     highlights: [
-      "Complete turnkey EPC: Civil, Structural, Electrical & HT",
-      "Centralized string / central inverter architecture",
-      "Dedicated 11kV/33kV evacuation line & switchyard",
-      "100% CEIG, DISCOM, and TRANSCO approvals managed",
+      "Complete turnkey EPC: Civil & Electrical",
+      "Dedicated 11kV/33kV evacuation switchyard",
+      "100% CEIG, DISCOM & TRANSCO approvals",
+      "High-yield bifacial tracker architectures",
     ],
   },
   {
     id: "svc-ind-2",
-    title: "Industrial PEB Shed & Warehouse Metal Roof Solar",
+    title: "Industrial PEB Shed & Warehouse Solar",
     order: 10,
     sector: "industrial",
-    sectorLabel: "Industrial Solar",
+    sectorLabel: "Industrial",
     description:
-      "Custom non-penetrative solar mounting systems designed specifically for Pre-Engineered Buildings (PEB), trapezoidal sheet roofs, standing seam roofs, and cold storage sheds. 100% leak-proof guaranteed.",
+      "Custom non-penetrative mounting for Pre-Engineered Buildings (PEB) and metal sheet roofs. 100% leak-proof guaranteed.",
     image: industrial,
-    capacity: "100 kW to 2 MW Systems",
+    capacity: "100 kW to 2 MW",
     highlights: [
-      "100% non-penetrative seam clamps — zero roof puncture risk",
-      "Certified structural engineering ensuring wind load safety",
-      "Lightweight, high-yield bifacial and mono-PERC modules",
-      "Supplies heavy daytime motor and manufacturing power",
+      "100% seam clamps — zero roof puncture risk",
+      "Wind-load certified structural engineering",
+      "High-yield Tier-1 mono-PERC modules",
+      "Supplies heavy daytime motor machinery",
     ],
   },
   {
     id: "svc-ind-3",
-    title: "HT / LT Substation, Transformer & Switchgear Works",
+    title: "HT / LT Substation & Transformer Works",
     order: 11,
     sector: "industrial",
-    sectorLabel: "Industrial & Electrical",
+    sectorLabel: "Industrial",
     description:
-      "Specialized high-tension (HT) electrical infrastructure division. Erection, testing, and commissioning of 11kV/33kV power transformers, VCB switchgear panels, HT cable laying, earth mats, and lightning arrestor towers.",
+      "Specialized high-tension electrical division: 11kV/33kV power transformers, VCB switchgear, earth mats, and CEIG liaisoning.",
     image: solarPanelsArray,
-    capacity: "Up to 33 kV Substation EPC",
+    capacity: "Up to 33 kV Substation",
     highlights: [
-      "A-Grade licensed electrical contractor engineering team",
-      "Vacuum Circuit Breaker (VCB) & SF6 breaker panels",
-      "Substation earthing grids & lightning protection systems",
-      "Chief Electrical Inspectorate to Government (CEIG) liaisoning",
+      "A-Grade licensed electrical contractor team",
+      "VCB & SF6 breaker panel installations",
+      "Substation earthing grids & lightning poles",
+      "Chief Electrical Inspector (CEIG) approvals",
     ],
   },
   {
     id: "svc-ind-4",
-    title: "Industrial SCADA Telemetry & Drone Thermography",
+    title: "Industrial SCADA Telemetry & Drone Audits",
     order: 12,
     sector: "industrial",
-    sectorLabel: "Industrial Solar",
+    sectorLabel: "Industrial",
     description:
-      "Enterprise plant supervision and predictive maintenance. Cloud-connected IoT SCADA dashboards stream real-time string voltages, inverter efficiency, and generation logs, supplemented by aerial drone thermal hotspot inspections.",
+      "Enterprise plant supervision. Cloud-connected IoT SCADA dashboards stream real-time string voltages and drone thermal inspections.",
     image: installation,
-    capacity: "Enterprise Plant Analytics",
+    capacity: "Enterprise Analytics",
     highlights: [
-      "24/7 cloud SCADA monitoring with instant fault alerts",
-      "Aerial drone radiometric thermal scans identifying cell defects",
-      "String-level generation tracking and degradation analytics",
-      "Maximum plant uptime and generation yield assurance",
+      "24/7 cloud SCADA monitoring with instant alerts",
+      "Drone thermal scans spotting hot cells",
+      "String-level generation tracking",
+      "Maximizes plant uptime and energy yield",
     ],
   },
 
@@ -286,52 +286,52 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sector: "electrical",
     sectorLabel: "Electrical Works",
     description:
-      "Custom fabrication and on-site commissioning of Power Control Centers (PCC), Motor Control Centers (MCC), and Automatic Power Factor Correction (APFC) panels maintaining near-unity power factor to eliminate DISCOM penalties.",
+      "Custom fabrication and on-site commissioning of PCC, MCC, and APFC panels maintaining power factor near unity to eliminate DISCOM penalties.",
     image: industrial,
-    capacity: "Custom Industrial Ratings",
+    capacity: "Custom Ratings",
     highlights: [
       "Eliminates DISCOM low power factor penalties",
-      "Type-tested sheet steel enclosures with IP54/IP55 protection",
-      "Schneider / ABB / L&T switchgear and protection relays",
-      "Complete electrical drawing, testing and CEIG approval",
+      "IP54/IP55 type-tested sheet steel enclosures",
+      "Schneider / ABB / L&T switchgear components",
+      "Full schematic drafting & statutory testing",
     ],
   },
 
   // --- AGRICULTURE ---
   {
     id: "svc-agri-1",
-    title: "Solar Water Pumping Systems (PM-KUSUM Scheme)",
+    title: "Solar Water Pumping (PM-KUSUM Scheme)",
     order: 14,
     sector: "agriculture",
-    sectorLabel: "Agriculture Solar",
+    sectorLabel: "Agriculture",
     description:
-      "Reliable AC and DC submersible and surface solar water pumps designed for remote agricultural fields, borewells, farm irrigation, and PM-KUSUM government subsidy implementations. Zero diesel or grid bills.",
+      "Reliable AC and DC solar water pumps for borewells and farm irrigation under PM-KUSUM subsidy schemes. Zero diesel or power costs.",
     image: solarPanelsArray,
-    capacity: "3 HP, 5 HP, 7.5 HP & 10 HP Pumps",
+    capacity: "3 HP – 10 HP Pumps",
     highlights: [
-      "Continuous daytime irrigation regardless of power cuts",
-      "Zero diesel recurring expenses and zero grid dependency",
-      "Automatic MPPT solar pump controllers with dry-run sensor",
-      "PM-KUSUM subsidy scheme assistance across Andhra Pradesh",
+      "Continuous daytime irrigation for crops",
+      "Zero recurring diesel or grid costs",
+      "Automatic MPPT controller with dry-run sensor",
+      "PM-KUSUM subsidy guidance across Andhra Pradesh",
     ],
   },
 
   // --- EV & MAINTENANCE ---
   {
     id: "svc-maint-1",
-    title: "Comprehensive Solar O&M & Annual Maintenance (AMC)",
+    title: "Solar O&M & Annual Maintenance (AMC)",
     order: 15,
     sector: "maintenance",
-    sectorLabel: "Maintenance & AMC",
+    sectorLabel: "Maintenance",
     description:
-      "Protect your multi-decade investment with scheduled preventive maintenance. Includes de-mineralized water high-pressure panel washing, string health audits, inverter servicing, and immediate breakdown repairs.",
+      "Protect your investment with preventive care: demineralized water module washing, string audits, and quick breakdown repairs.",
     image: installation,
     capacity: "All kW / MW Systems",
     highlights: [
-      "Scheduled demineralized robotic/pressure module washing",
-      "Electrical torque tightening, inverter & cabling inspections",
-      "Hotspot & degradation diagnostics with thermal imaging",
-      "Guaranteed quick breakdown response within 24 hours",
+      "Scheduled demineralized module washing",
+      "Torque tightening & inverter servicing",
+      "Hotspot detection with thermal diagnostics",
+      "Guaranteed fast 24-hr breakdown response",
     ],
   },
 ];
@@ -357,12 +357,12 @@ const SECTOR_SPOTLIGHTS: Record<string, SectorMeta> = {
     icon: Home,
     title: "Residential Solar Solutions for Homes & Villas",
     description:
-      "Say goodbye to surging domestic electricity bills. Harness clean, abundant sunshine from your own rooftop with custom-engineered On-Grid and Hybrid systems. Avail direct central government DBT subsidies up to ₹78,000 under the PM Surya Ghar Muft Bijli Yojana with seamless APCPDCL / APEPDCL net-metering approvals.",
+      "Cut domestic electricity bills by up to 90% with custom On-Grid and Hybrid rooftop solar. Avail direct DBT central subsidies up to ₹78,000 under PM Surya Ghar with 100% net-metering liaisoning.",
     metrics: [
       { label: "Central DBT Subsidy", value: "Up to ₹78,000" },
       { label: "Power Bill Reduction", value: "Up to 90%" },
       { label: "Performance Warranty", value: "25 Years" },
-      { label: "AP Net-Metering", value: "100% Handled" },
+      { label: "Net-Metering", value: "100% Handled" },
     ],
     accentBorder: "border-amber-500/30",
     accentBg: "from-amber-500/10 via-orange-500/5 to-transparent",
@@ -375,12 +375,12 @@ const SECTOR_SPOTLIGHTS: Record<string, SectorMeta> = {
     icon: Building2,
     title: "Commercial Solar Power for Offices, Schools & Hospitals",
     description:
-      "Transform high daytime commercial power bills into a competitive advantage. Commercial properties across Andhra Pradesh pay premium commercial tariffs; our turnkey solar rooftop systems cut operating overheads drastically and qualify for 40% accelerated tax depreciation in the very first year.",
+      "Slash peak commercial daytime power bills with turnkey solar plants. Benefit from 40% accelerated tax depreciation under IT Act Sec 32 and achieve full capital payback in just 3 to 4 years.",
     metrics: [
       { label: "Tax Depreciation", value: "40% in Year 1" },
       { label: "Payback Period", value: "3 – 4 Years" },
-      { label: "Financing Options", value: "CAPEX & OPEX" },
-      { label: "Daytime Power Offset", value: "Up to 75%" },
+      { label: "Financing Models", value: "CAPEX & OPEX" },
+      { label: "Daytime Offset", value: "Up to 75%" },
     ],
     accentBorder: "border-sky-500/30",
     accentBg: "from-sky-500/10 via-blue-500/5 to-transparent",
@@ -393,12 +393,12 @@ const SECTOR_SPOTLIGHTS: Record<string, SectorMeta> = {
     icon: Factory,
     title: "Industrial Megawatt Solar & PEB Metal Shed Plants",
     description:
-      "Heavy-duty clean power engineering built for manufacturing plants, PEB warehouses, cold storages, spinning mills, and textile hubs. We execute end-to-end multi-MW solar parks, non-penetrative leak-proof sheet installations, HT substations, and complete CEIG statutory clearance.",
+      "Heavy-duty clean power for manufacturing factories, PEB sheds, cold storages, and textile units. Turnkey MW solar farms, leak-proof metal roof mounting, HT switchyards, and 100% CEIG liaisoning.",
     metrics: [
       { label: "Plant Capacities", value: "100 kW to 25 MW+" },
       { label: "Structural Safety", value: "Zero Roof Leakage" },
-      { label: "Statutory Clearances", value: "100% CEIG & DISCOM" },
-      { label: "O&M Supervision", value: "24/7 Cloud SCADA" },
+      { label: "Statutory Approvals", value: "100% CEIG Handled" },
+      { label: "Telemetry", value: "24/7 Cloud SCADA" },
     ],
     accentBorder: "border-navy/30",
     accentBg: "from-[#082B4C]/10 via-[#087FC1]/5 to-transparent",
@@ -420,7 +420,6 @@ function AllServices() {
   const routerSearch = useRouterState({
     select: (s) => (s.location.search as Record<string, string>) || {},
   });
-  const navigate = useNavigate();
 
   // Read URL query parameter: /services?category=residential
   const queryCat = routerSearch.category?.toLowerCase() || "";
@@ -465,43 +464,47 @@ function AllServices() {
   const spotlight = SECTOR_SPOTLIGHTS[selectedCategory];
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20">
-      {/* Top Breadcrumb & Page Header */}
-      <section className="bg-white border-b border-slate-200/80 pt-6 pb-8 md:pt-8 md:pb-10">
+    <div className="min-h-screen bg-slate-50/60 pb-16">
+      {/* Top Breadcrumb & Page Header - Compact & Screen-Fit */}
+      <section className="bg-white border-b border-slate-200/80 pt-3.5 pb-3.5 md:pt-4 md:pb-4 shadow-2xs">
         <div className="container-site">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-navy hover:text-primary transition-colors mb-4"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-navy hover:text-primary transition-colors mb-2"
           >
-            <ArrowLeft className="size-4 text-primary" /> Back to Home
+            <ArrowLeft className="size-3.5 text-primary" /> Back to Home
           </Link>
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div>
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-xs font-bold text-primary mb-2">
-                <Sparkles className="size-3.5" /> RESIDENTIAL • COMMERCIAL • INDUSTRIAL
+              <div className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary mb-1">
+                <Sparkles className="size-3" /> RESIDENTIAL • COMMERCIAL • INDUSTRIAL
               </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#082B4C] tracking-tight">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#082B4C] tracking-tight">
                 Solar & Electrical Engineering Services
               </h1>
-              <p className="mt-2 text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
-                Explore custom solar power plants, central government PM Surya Ghar subsidies, commercial
-                accelerated ROI systems, and industrial MW utility turnkeys across Vijayawada, Guntur & Andhra Pradesh.
+              <p className="mt-0.5 text-xs sm:text-sm text-slate-500 max-w-2xl leading-normal">
+                Explore custom rooftop systems, PM Surya Ghar subsidies, commercial ROI power plants, and industrial MW utility turnkeys.
               </p>
             </div>
 
-            <div className="flex items-center gap-2.5">
-              <Button asChild variant="cta" size="sm" className="shadow-sm">
+            <div className="flex items-center gap-2 shrink-0">
+              <Button asChild variant="cta" size="sm" className="h-8 px-3 text-xs shadow-2xs font-bold">
                 <Link to="/book-a-demo">Book Free Site Visit</Link>
               </Button>
-              <Button asChild variant="outline" size="sm" className="border-navy text-navy hover:bg-navy hover:text-white">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="h-8 px-3 text-xs font-bold border-navy text-navy hover:bg-navy hover:text-white"
+              >
                 <Link to="/contact">Get A Quote</Link>
               </Button>
             </div>
           </div>
 
-          {/* Interactive Sector Filter Pills */}
-          <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Filter Services by Sector">
+          {/* Interactive Sector Filter Pills - Compact */}
+          <div className="mt-3.5 flex flex-wrap gap-1.5 sm:gap-2" role="tablist" aria-label="Filter Services by Sector">
             {TAB_CATEGORIES.map((tab) => {
               const Icon = tab.icon;
               const isSelected = selectedCategory === tab.id;
@@ -513,13 +516,13 @@ function AllServices() {
                   aria-selected={isSelected}
                   onClick={() => handleSelectCategory(tab.id)}
                   className={cn(
-                    "flex items-center gap-2 rounded-full border px-4 py-2 text-xs sm:text-sm font-bold transition-all duration-200 active:scale-95 cursor-pointer select-none",
+                    "flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-all duration-200 active:scale-95 cursor-pointer select-none",
                     isSelected
-                      ? "border-[#082B4C] bg-[#082B4C] text-white shadow-md shadow-navy/15 scale-[1.02]"
+                      ? "border-[#082B4C] bg-[#082B4C] text-white shadow-xs scale-[1.02]"
                       : "border-slate-200 bg-white text-slate-700 hover:border-primary hover:text-primary hover:bg-slate-50"
                   )}
                 >
-                  <Icon className={cn("size-3.5 sm:size-4", isSelected ? "text-amber-400" : "text-slate-400")} />
+                  <Icon className={cn("size-3.5", isSelected ? "text-amber-400" : "text-slate-400")} />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -528,74 +531,76 @@ function AllServices() {
         </div>
       </section>
 
-      {/* Dynamic Sector Spotlight Hero Banner (Shows when Residential, Commercial, or Industrial is selected) */}
+      {/* Dynamic Sector Spotlight Hero Banner - Horizontal, Compact & Screen-Fitting */}
       {spotlight && (
-        <section className="container-site pt-6 pb-2">
+        <section className="container-site pt-3 pb-1">
           <div
             key={spotlight.key}
             className={cn(
-              "relative overflow-hidden rounded-3xl border bg-gradient-to-br p-6 sm:p-8 md:p-10 shadow-lg animate-pop-in",
+              "relative overflow-hidden rounded-2xl border bg-gradient-to-br p-4 sm:p-5 md:p-6 shadow-sm animate-pop-in",
               spotlight.accentBorder,
               spotlight.accentBg,
               "bg-white"
             )}
           >
-            <div className="relative z-10 max-w-4xl">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1 text-xs font-extrabold text-[#082B4C] shadow-sm border border-slate-200/60 mb-3">
-                <spotlight.icon className="size-4 text-primary" />
-                <span>{spotlight.badge}</span>
+            <div className="relative z-10 grid gap-4 lg:grid-cols-12 lg:items-center">
+              {/* Left Column: Sector Info & Direct Actions */}
+              <div className="lg:col-span-7">
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-0.5 text-[11px] font-extrabold text-[#082B4C] shadow-2xs border border-slate-200/80 mb-2">
+                  <spotlight.icon className="size-3.5 text-primary" />
+                  <span>{spotlight.badge}</span>
+                </div>
+
+                <h2 className="text-base sm:text-lg md:text-xl font-black text-[#082B4C] tracking-tight">
+                  {spotlight.title}
+                </h2>
+
+                <p className="mt-1 text-xs text-slate-600 leading-relaxed max-w-2xl">
+                  {spotlight.description}
+                </p>
+
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <Button asChild variant="cta" size="sm" className="h-7 sm:h-8 px-3 text-xs shadow-2xs font-bold">
+                    <Link to="/book-a-demo">Book Free Survey</Link>
+                  </Button>
+                  <a
+                    href="tel:+917989641899"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-2.5 py-1 text-xs font-bold text-[#082B4C] hover:bg-slate-50 transition-colors shadow-2xs h-7 sm:h-8"
+                  >
+                    <Phone className="size-3 text-primary" /> Call: +91 79896 41899
+                  </a>
+                </div>
               </div>
 
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#082B4C] tracking-tight">
-                {spotlight.title}
-              </h2>
-
-              <p className="mt-2.5 text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed max-w-3xl">
-                {spotlight.description}
-              </p>
-
-              {/* Key Metrics / Highlights Grid */}
-              <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+              {/* Right Column: 4 Compact Metric Stat Boxes */}
+              <div className="lg:col-span-5 grid grid-cols-2 gap-2 sm:gap-2.5">
                 {spotlight.metrics.map((m, idx) => (
                   <div
                     key={idx}
-                    className="rounded-2xl border border-slate-200/70 bg-white/90 backdrop-blur p-3 sm:p-4 shadow-sm"
+                    className="rounded-xl border border-slate-200/80 bg-white/95 backdrop-blur p-2.5 shadow-2xs text-left"
                   >
-                    <div className="text-base sm:text-lg md:text-xl font-extrabold text-[#082B4C]">
+                    <div className="text-xs sm:text-sm md:text-base font-extrabold text-[#082B4C] leading-tight">
                       {m.value}
                     </div>
-                    <div className="text-[11px] sm:text-xs font-semibold text-slate-500 mt-0.5">
+                    <div className="text-[10px] sm:text-[11px] font-semibold text-slate-500 mt-0.5 leading-tight">
                       {m.label}
                     </div>
                   </div>
                 ))}
-              </div>
-
-              {/* Direct Consultation Actions */}
-              <div className="mt-6 flex flex-wrap items-center gap-3">
-                <Button asChild variant="cta" size="sm" className="shadow-md">
-                  <Link to="/book-a-demo">Book Free Site Survey</Link>
-                </Button>
-                <a
-                  href="tel:+917989641899"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs sm:text-sm font-bold text-[#082B4C] hover:bg-slate-50 transition-colors shadow-xs"
-                >
-                  <Phone className="size-4 text-primary" /> Call: +91 79896 41899
-                </a>
               </div>
             </div>
           </div>
         </section>
       )}
 
-      {/* Services Grid Section with Premium Pop Animation */}
-      <section className="container-site py-8 md:py-10">
-        <div className="flex items-center justify-between mb-6">
+      {/* Services Grid Section with Compact Cards & Screen-Fitting Layout */}
+      <section className="container-site py-4 sm:py-6">
+        <div className="flex items-center justify-between mb-3">
           <div>
-            <h3 className="text-lg sm:text-xl font-extrabold text-[#082B4C]">
+            <h2 className="text-base sm:text-lg font-extrabold text-[#082B4C]">
               {selectedCategory === "all" ? "All Solar & Energy Solutions" : `${spotlight?.name || selectedCategory} Services`}
-            </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            </h2>
+            <p className="text-[11px] text-slate-500 mt-0.5">
               Showing {filteredServices.length} specialized service{filteredServices.length === 1 ? "" : "s"}
             </p>
           </div>
@@ -611,74 +616,74 @@ function AllServices() {
           )}
         </div>
 
-        {/* The Grid re-renders and pops in every time selectedCategory changes */}
-        <div key={selectedCategory} className="grid gap-6 md:gap-8 md:grid-cols-2">
+        {/* Dynamic Compact Grid - 4 Columns on Large Screens to Fit Screen */}
+        <div key={selectedCategory} className="grid gap-3.5 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {filteredServices.map((service, index) => {
             const staggerClass = `pop-stagger-${Math.min((index % 6) + 1, 6)}`;
             return (
               <div
                 key={service.id}
                 className={cn(
-                  "group overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 flex flex-col animate-pop-in",
+                  "group overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-2xs transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col animate-pop-in",
                   staggerClass
                 )}
               >
-                {/* Service Card Image Banner */}
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100">
+                {/* Card Image Banner - Compact Height */}
+                <div className="relative h-36 sm:h-40 w-full overflow-hidden bg-slate-100">
                   <img
                     src={service.image}
                     alt={service.title}
-                    width={1200}
-                    height={675}
+                    width={600}
+                    height={340}
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/20 to-transparent" />
 
-                  <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                    <span className="rounded-full bg-[#082B4C]/90 backdrop-blur px-3 py-1 text-xs font-extrabold text-white shadow-sm border border-white/10">
+                  <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1.5">
+                    <span className="rounded-full bg-[#082B4C]/90 backdrop-blur px-2 py-0.5 text-[10px] font-bold text-white shadow-xs border border-white/10">
                       {service.sectorLabel}
                     </span>
                     {service.capacity && (
-                      <span className="rounded-full bg-amber-500/95 backdrop-blur px-2.5 py-1 text-[11px] font-extrabold text-white shadow-sm">
+                      <span className="rounded-full bg-amber-500/95 backdrop-blur px-2 py-0.5 text-[10px] font-bold text-white shadow-xs">
                         {service.capacity}
                       </span>
                     )}
                   </div>
 
-                  <span className="absolute bottom-3 left-4 text-xs font-semibold text-white/90">
+                  <span className="absolute bottom-2 left-2.5 text-[10px] font-semibold text-white/90">
                     Solution 0{service.order}
                   </span>
                 </div>
 
-                {/* Service Details & Features */}
-                <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+                {/* Card Details & Concise Bullets */}
+                <div className="p-3.5 flex-1 flex flex-col justify-between">
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-black text-[#082B4C] group-hover:text-primary transition-colors">
+                    <h3 className="text-sm sm:text-base font-bold text-[#082B4C] group-hover:text-primary transition-colors leading-snug line-clamp-2">
                       {service.title}
-                    </h2>
-                    <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-slate-600 text-left">
+                    </h3>
+                    <p className="mt-1 text-xs text-slate-600 line-clamp-2 leading-relaxed">
                       {service.description}
                     </p>
 
-                    {/* Highlights Checklist */}
+                    {/* Highlights Bullet List */}
                     {service.highlights && service.highlights.length > 0 && (
-                      <ul className="mt-4 space-y-2 border-t border-slate-100 pt-4 text-xs text-slate-700 font-medium">
+                      <ul className="mt-2.5 pt-2 border-t border-slate-100 space-y-1 text-[11px] text-slate-700 font-medium">
                         {service.highlights.map((h, i) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <CheckCircle2 className="size-4 shrink-0 text-emerald-600 mt-0.5" />
-                            <span className="leading-tight">{h}</span>
+                          <li key={i} className="flex items-start gap-1.5">
+                            <CheckCircle2 className="size-3.5 shrink-0 text-emerald-600 mt-0.5" />
+                            <span className="leading-tight line-clamp-1">{h}</span>
                           </li>
                         ))}
                       </ul>
                     )}
                   </div>
 
-                  {/* Card Action Buttons */}
-                  <div className="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
-                    <Button asChild variant="cta" size="sm" className="text-xs font-bold shadow-xs">
+                  {/* Card Action Buttons - Compact 2-column Grid */}
+                  <div className="mt-3 pt-2.5 border-t border-slate-100 grid grid-cols-2 gap-1.5">
+                    <Button asChild variant="cta" size="sm" className="h-7 text-[11px] font-bold px-1.5 shadow-2xs w-full">
                       <Link to="/book-a-demo">
-                        Book Site Visit <ArrowRight className="size-3.5 ml-1" />
+                        Book Visit <ArrowRight className="size-3 ml-0.5" />
                       </Link>
                     </Button>
 
@@ -686,9 +691,9 @@ function AllServices() {
                       asChild
                       variant="outline"
                       size="sm"
-                      className="text-xs font-bold border-slate-200 text-slate-700 hover:border-navy hover:text-navy"
+                      className="h-7 text-[11px] font-bold px-1.5 border-slate-200 text-slate-700 hover:border-navy hover:text-navy w-full"
                     >
-                      <Link to="/contact">Get Custom Quote</Link>
+                      <Link to="/contact">Get Quote</Link>
                     </Button>
                   </div>
                 </div>
@@ -698,36 +703,36 @@ function AllServices() {
         </div>
 
         {filteredServices.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center text-slate-500">
+          <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500 text-xs">
             No services found in this category.
           </div>
         )}
       </section>
 
-      {/* Bottom Consultation CTA Banner */}
-      <section className="container-site pt-4 pb-8">
-        <div className="rounded-3xl bg-[#082B4C] p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+      {/* Bottom Consultation CTA Banner - Compact & Visible Heading */}
+      <section className="container-site pt-2 pb-6">
+        <div className="rounded-2xl bg-[#082B4C] p-5 sm:p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
           <div className="relative z-10 max-w-2xl">
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 px-3 py-0.5 text-xs font-bold text-amber-300 uppercase tracking-wider">
-              <ShieldCheck className="size-3.5" /> FREE CONSULTATION & DISCOM LIAISONING
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 px-2.5 py-0.5 text-[11px] font-bold text-amber-300 uppercase tracking-wider">
+              <ShieldCheck className="size-3" /> FREE CONSULTATION & DISCOM LIAISONING
             </span>
-            <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+            <h2 className="mt-2 text-lg sm:text-xl md:text-2xl font-black !text-white tracking-tight">
               Ready to power your property with clean solar energy?
             </h2>
-            <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="mt-1.5 text-xs sm:text-sm text-slate-200 leading-relaxed max-w-xl">
               Our certified solar engineers are ready to inspect your site, calculate potential savings, and design a
               tailored turnkey solar plant.
             </p>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Button asChild variant="cta" size="default" className="shadow-md">
+            <div className="mt-4 flex flex-wrap items-center gap-2.5">
+              <Button asChild variant="cta" size="sm" className="h-8 px-4 text-xs font-bold shadow-xs">
                 <Link to="/book-a-demo">Book Free Site Visit</Link>
               </Button>
               <a
                 href="tel:+917989641899"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-white/20 transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-white/20 transition-colors h-8"
               >
-                <Phone className="size-4" /> Call: +91 79896 41899
+                <Phone className="size-3.5" /> Call: +91 79896 41899
               </a>
             </div>
           </div>
