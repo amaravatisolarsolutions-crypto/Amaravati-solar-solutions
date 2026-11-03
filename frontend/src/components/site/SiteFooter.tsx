@@ -90,8 +90,8 @@ export function SiteFooter() {
     <footer className="bg-navy text-navy-foreground/80">
       <div className="container-site grid gap-6 py-8 md:py-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
         <div>
-          <div className="inline-block rounded-lg bg-background p-2">
-            <img src={logo} alt="Amaravati Solar Solutions" width={835} height={565} loading="lazy" className="h-10 sm:h-11 w-auto object-contain" />
+          <div className="inline-block rounded-xl bg-white p-2.5 shadow-sm">
+            <img src={logo} alt="Amaravati Solar Solutions" width={1016} height={307} loading="lazy" className="h-10 sm:h-11 w-auto object-contain" />
           </div>
           <p className="mt-3 text-xs leading-relaxed max-w-xs">
             Smart, reliable and sustainable solar energy solutions for homes, commercial complexes, and industrial installations across India.

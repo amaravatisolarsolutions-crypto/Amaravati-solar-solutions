@@ -207,9 +207,9 @@ function AdminLogin() {
             <img
               src={logo}
               alt="Amaravati Solar Solutions"
-              width={843}
-              height={565}
-              className="h-20 w-auto object-contain"
+              width={1016}
+              height={307}
+              className="h-16 sm:h-20 w-auto object-contain"
             />
           </div>
 

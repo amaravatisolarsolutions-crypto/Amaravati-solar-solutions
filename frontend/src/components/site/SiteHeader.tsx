@@ -208,8 +208,8 @@ export function SiteHeader() {
           <img
             src={logo}
             alt="Amaravati Solar Solutions"
-            width={835}
-            height={565}
+            width={1016}
+            height={307}
             className="h-14 w-auto object-contain md:h-16"
           />
         </Link>

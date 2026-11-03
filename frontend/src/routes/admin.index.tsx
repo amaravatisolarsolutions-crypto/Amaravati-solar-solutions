@@ -892,7 +892,7 @@ function AdminDashboard() {
             </button>
 
             <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
-              <div className="grid size-8 sm:size-9 place-items-center rounded-lg bg-slate-50 border border-slate-200 p-1 shrink-0">
+              <div className="h-8 sm:h-9 w-auto flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 px-2 py-0.5 shrink-0">
                 <img src={logo} alt="Amaravati Solar" className="h-5 sm:h-6 w-auto object-contain" />
               </div>
               <span className="text-xs sm:text-lg font-black tracking-tight text-[#082B4C] uppercase truncate">
@@ -949,7 +949,7 @@ function AdminDashboard() {
         <aside className="hidden lg:flex flex-col w-64 bg-[#082B4C] text-white shrink-0 p-4 border-r border-[#082B4C]">
           {/* Amaravati Panel White Card */}
           <div className="rounded-2xl bg-white p-3.5 flex items-center gap-3 shadow-sm border border-slate-100 text-[#082B4C]">
-            <div className="grid size-10 place-items-center rounded-xl bg-slate-50 border border-slate-200 p-1">
+            <div className="h-10 w-auto flex items-center justify-center rounded-xl bg-slate-50 border border-slate-200 px-2.5 py-1 shrink-0">
               <img src={logo} alt="Logo" className="h-7 w-auto object-contain" />
             </div>
             <div>
@@ -3276,7 +3276,7 @@ function QuotationViewModal({
           {/* Header: Company Details & Quotation Meta Box */}
           <div className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-6 pb-5 sm:pb-6 border-b-2 border-[#082B4C]">
             <div className="flex items-start sm:items-center gap-3">
-              <img src={logo} alt="Amaravati Solar Solutions" className="h-12 sm:h-16 w-auto object-contain shrink-0 mt-1 sm:mt-0" />
+              <img src={logo} alt="Amaravati Solar Solutions" width={1016} height={307} className="h-12 sm:h-16 w-auto object-contain shrink-0 mt-1 sm:mt-0" />
               <div>
                 <h1 className="text-lg sm:text-2xl font-black text-[#082B4C] tracking-tight leading-none uppercase">
                   Amaravati Solar Solutions

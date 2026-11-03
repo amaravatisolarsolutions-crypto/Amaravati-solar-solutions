@@ -58,3 +58,4 @@ export function setupRooftopScrollAnimation() {
     window.removeEventListener("section-scrolled", onScroll);
   };
 }
+

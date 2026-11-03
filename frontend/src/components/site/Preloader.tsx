@@ -80,9 +80,9 @@ export function Preloader() {
           <img
             src={logo}
             alt="Amaravati Solar Solutions"
-            width={835}
-            height={565}
-            className="h-20 w-auto object-contain md:h-24 drop-shadow-md"
+            width={1016}
+            height={307}
+            className="h-16 sm:h-20 w-auto object-contain md:h-24 drop-shadow-md"
             loading="eager"
           />
         </div>
