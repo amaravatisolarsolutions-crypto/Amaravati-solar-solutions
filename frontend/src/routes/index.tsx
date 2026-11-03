@@ -4,19 +4,28 @@ import {
   BadgeCheck,
   Battery,
   CheckCircle2,
+  ChevronRight,
+  ClipboardCheck,
   ClipboardList,
   FileText,
   HardHat,
   Headphones,
+  Laptop,
   PlugZap,
   Settings2,
   SlidersHorizontal,
+  Sparkles,
   Sun,
+  Users,
   Wrench,
 } from "lucide-react";
 import residential from "@/assets/hero-residential.jpg";
 import future from "@/assets/hero-future.jpg";
 import installation from "@/assets/installation.jpg";
+import step1Consultation from "@/assets/process-step-1-consultation.jpg";
+import step2Inspection from "@/assets/process-step-2-inspection.jpg";
+import step3Design from "@/assets/process-step-3-design.jpg";
+import step4Installation from "@/assets/process-step-4-installation.jpg";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeroCarousel } from "@/components/site/HeroCarousel";
@@ -56,11 +65,39 @@ const WHY = [
   { icon: Wrench, title: "Maintenance & Service", text: "Cleaning, checks and technical help when you need it." },
 ];
 
-const STEPS = [
-  { icon: ClipboardList, title: "Book a Consultation", text: "Tell us about your property and energy needs." },
-  { icon: Sun, title: "Site Inspection & Energy Assessment", text: "We visit, survey your roof and study your consumption." },
-  { icon: FileText, title: "Customized Proposal & Quotation", text: "Receive a tailored system design with transparent pricing." },
-  { icon: HardHat, title: "Installation & Ongoing Support", text: "Professional installation followed by continued support." },
+const FOUR_STEP_PROCESS = [
+  {
+    step: "01",
+    title: "Consultation",
+    icon: Users,
+    image: step1Consultation,
+    desc: "Understand your energy needs, power bills & tailor On-Grid, Off-Grid or Hybrid solar options.",
+    highlights: ["Free Technical Guidance", "Transparent ROI Estimation"],
+  },
+  {
+    step: "02",
+    title: "Site Inspection & System Assessment",
+    icon: ClipboardCheck,
+    image: step2Inspection,
+    desc: "Certified solar engineers survey roof tilt, 3D shadow analysis, structure integrity & DISCOM feasibility.",
+    highlights: ["3D Shadow Simulation", "AP Net-Metering Assessment"],
+  },
+  {
+    step: "03",
+    title: "Customized Design & Quotation",
+    icon: Laptop,
+    image: step3Design,
+    desc: "Precision 3D CAD design, Tier-1 solar panel selection, PM Surya Ghar subsidy application & clear contract.",
+    highlights: ["Custom 3D CAD Plan", "Direct DBT Subsidy Filing"],
+  },
+  {
+    step: "04",
+    title: "Installation & Ongoing Support",
+    icon: Wrench,
+    image: step4Installation,
+    desc: "Certified vendor rooftop installation, bidirectional net-meter testing, 25-year warranty & lifetime maintenance.",
+    highlights: ["DISCOM Testing & Handover", "25-Yr Performance Guarantee"],
+  },
 ];
 
 const FEATURE_HIGHLIGHTS = [
@@ -455,34 +492,111 @@ function Index() {
         </div>
       </section>
 
-      {/* HOW IT WORKS PROCESS - Side Heading matching Featured projects style */}
-      <section id="how-it-works" className="bg-surface py-4 md:py-6 scroll-mt-24 sm:scroll-mt-28">
+      {/* OUR 4-STEP PROCESS - Premium Visual Layout matching exact user specifications */}
+      <section id="how-it-works" className="bg-gradient-to-b from-slate-50 via-white to-slate-50 py-8 sm:py-12 md:py-16 scroll-mt-24 sm:scroll-mt-28 overflow-hidden">
         <div className="container-site">
-          <div className="flex flex-col justify-between gap-2 md:flex-row md:items-end">
-            <SectionHeading
-              eyebrow="How it works"
-              title="Our simple four-step process"
-              className="max-w-none flex-1"
-              titleClassName="whitespace-normal md:whitespace-nowrap"
-            />
-            <p className="text-xs text-muted-foreground whitespace-normal md:whitespace-nowrap pb-1">
-              Seamless end-to-end solar execution from consultation to commissioning.
+          {/* Section Header with Curved Orange Swoosh Underline */}
+          <div className="text-center mb-8 sm:mb-12 scroll-pop scroll-pop-1">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#B83A16]/10 px-3.5 py-1 text-xs font-black text-[#B83A16] uppercase tracking-wider mb-2.5">
+              <Sparkles className="size-3.5" /> Seamless End-to-End Execution
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#082B4C] tracking-tight">
+              Our <span className="text-[#B83A16]">4-Step Process</span>
+            </h2>
+            {/* Orange Swoosh Curve */}
+            <div className="relative mx-auto mt-2 h-3 w-40 sm:w-56 overflow-hidden">
+              <svg viewBox="0 0 200 14" fill="none" className="w-full h-full text-[#B83A16]">
+                <path d="M4 11C60 2 140 2 196 11" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+              </svg>
+            </div>
+            <p className="mt-3 text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
+              From your initial site survey to 25 years of clean power generation — clear, engineered, and transparent solar journey.
             </p>
           </div>
-          <ol className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {STEPS.map(({ icon: Icon, title, text }, i) => (
-              <li key={title} className="relative rounded-xl bg-card p-5 shadow-card transition-all duration-300 hover:shadow-lift hover:-translate-y-1 active:scale-[0.98]">
-                <span className="absolute right-4 top-4 text-3xl font-extrabold text-muted">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="grid size-10 place-items-center rounded-lg bg-sun text-primary-foreground">
-                  <Icon className="size-5" />
+
+          {/* 4 Process Cards Grid with Orange Connector Arrows */}
+          <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-3.5 xl:gap-5 items-stretch">
+            {FOUR_STEP_PROCESS.map((item, index) => {
+              const Icon = item.icon;
+              const staggerClass = `scroll-pop-${index + 1}`;
+              return (
+                <div key={item.step} className="relative flex flex-col">
+                  {/* Process Card with Premium Hover Motion */}
+                  <div
+                    className={cn(
+                      "group relative flex-1 flex flex-col overflow-hidden rounded-3xl bg-white border border-slate-200/90 shadow-md transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_22px_45px_rgba(8,43,76,0.18)] hover:border-[#B83A16]/40 scroll-pop",
+                      staggerClass
+                    )}
+                  >
+                    {/* Card Photo Container with Step Pill */}
+                    <div className="relative aspect-[16/11] sm:aspect-[4/3] w-full overflow-hidden bg-slate-900">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        width={800}
+                        height={600}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#082B4C]/80 via-transparent to-black/20 opacity-40 group-hover:opacity-20 transition-opacity duration-300" />
+
+                      {/* Step Indicator Badge */}
+                      <div className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-white/95 backdrop-blur-md px-2.5 py-1 text-xs font-black text-[#082B4C] shadow-md border border-white/60">
+                        <span className="text-[#B83A16] font-black">0{index + 1}</span>
+                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider ml-0.5">Step</span>
+                      </div>
+                    </div>
+
+                    {/* Dark Navy Pill Footer Badge matching exact user screenshot */}
+                    <div className="bg-[#082B4C] p-3.5 sm:p-4 text-white flex items-center gap-3 transition-colors duration-300 group-hover:bg-[#061e35] shrink-0">
+                      <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-white/10 text-white group-hover:bg-[#B83A16] group-hover:scale-110 transition-all duration-300 shadow-2xs">
+                        <Icon className="size-4.5" />
+                      </div>
+                      <div className="h-6 w-[2px] bg-[#B83A16] shrink-0" />
+                      <h3 className="text-xs sm:text-[13.5px] font-extrabold text-white leading-tight line-clamp-2">
+                        {item.title}
+                      </h3>
+                    </div>
+
+                    {/* Detailed Card Body */}
+                    <div className="p-4 flex-1 flex flex-col justify-between bg-white text-xs">
+                      <p className="text-slate-600 leading-relaxed text-left">
+                        {item.desc}
+                      </p>
+                      <ul className="mt-3 pt-2.5 border-t border-slate-100 space-y-1 text-[11px] font-semibold text-slate-700">
+                        {item.highlights.map((h, i) => (
+                          <li key={i} className="flex items-center gap-1.5">
+                            <CheckCircle2 className="size-3 text-emerald-600 shrink-0" />
+                            <span>{h}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Circular Orange Chevron Connector Arrow between steps on large screens */}
+                  {index < FOUR_STEP_PROCESS.length - 1 && (
+                    <div
+                      aria-hidden="true"
+                      className="hidden lg:grid absolute top-[28%] -right-3.5 xl:-right-4 z-20 size-7 xl:size-8 place-items-center rounded-full bg-[#B83A16] text-white shadow-md border-2 border-white pointer-events-none transition-transform duration-300 group-hover:scale-110"
+                    >
+                      <ChevronRight className="size-4" strokeWidth={3} />
+                    </div>
+                  )}
                 </div>
-                <h3 className="mt-4 text-base font-bold text-navy">{title}</h3>
-                <p className="mt-1 text-xs text-muted-foreground text-left md:text-justify">{text}</p>
-              </li>
-            ))}
-          </ol>
+              );
+            })}
+          </div>
+
+          {/* Bottom Action CTA */}
+          <div className="mt-8 sm:mt-10 flex justify-center scroll-pop">
+            <Button asChild variant="cta" size="lg" className="rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white px-8 py-3.5 shadow-md">
+              <Link to="/book-a-demo">
+                <span>Start Your 4-Step Solar Journey</span>
+                <ArrowRight className="size-4 ml-1.5" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
