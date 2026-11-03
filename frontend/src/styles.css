@@ -57,7 +57,7 @@
 }
 
 :root {
-  --radius: 0.875rem;
+  --radius: 30px;
   /* Brand: Primary Navy #082B4C, Brand Accent #B83A16, Solar Gold #F5A623, Secondary Blue #087FC1, Off-White #F7F7F5, Body Text #344054 */
   --background: #FFFFFF;
   --foreground: #344054;
@@ -73,6 +73,7 @@
   --popover: #FFFFFF;
   --popover-foreground: #344054;
   --primary: #B83A16;
+  --primary-hover: #A33112;
   --primary-foreground: #FFFFFF;
   --secondary: #082B4C;
   --secondary-foreground: #FFFFFF;
@@ -138,6 +139,21 @@
       text-align: justify;
       text-justify: inter-word;
     }
+  }
+
+  /* User Defined Button Styling: Background #B83A16, Color #FFFFFF, Border-Radius 30px, Hover #A33112 */
+  button:not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button),
+  .btn-primary,
+  button[type="submit"] {
+    background-color: #B83A16;
+    color: #FFFFFF;
+    border-radius: 30px;
+  }
+
+  button:not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button):hover,
+  .btn-primary:hover,
+  button[type="submit"]:hover {
+    background-color: #A33112;
   }
 }
 

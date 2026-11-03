@@ -168,7 +168,7 @@ export function ProposalForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-[#153e20] px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-md transition-all duration-200 hover:bg-[#0f2e18] hover:shadow-lg active:scale-[0.99] disabled:opacity-60"
+        className="mt-2 flex w-full items-center justify-center gap-2 rounded-[30px] bg-[#B83A16] px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-md transition-all duration-200 hover:bg-[#A33112] hover:shadow-lg active:scale-[0.99] disabled:opacity-60 cursor-pointer"
       >
         {status === "sending" ? (
           <>

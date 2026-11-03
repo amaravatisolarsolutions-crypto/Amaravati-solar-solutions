@@ -448,7 +448,7 @@ export function SiteHeader() {
           {/* CTA Button: Get A Quote */}
           <Link
             to="/book-a-demo"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-4 xl:px-5 py-2 text-xs xl:text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0"
+            className="inline-flex items-center justify-center rounded-[30px] bg-[#B83A16] px-4 xl:px-5 py-2 text-xs xl:text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#A33112] hover:shadow-md hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0"
           >
             Get A Quote
           </Link>
@@ -543,7 +543,7 @@ export function SiteHeader() {
             <Link
               to="/book-a-demo"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-lg bg-primary py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
+              className="mt-2 inline-flex items-center justify-center rounded-[30px] bg-[#B83A16] py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-[#A33112] active:scale-95"
             >
               Get A Quote
             </Link>

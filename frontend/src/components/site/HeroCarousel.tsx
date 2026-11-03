@@ -88,10 +88,10 @@ export function HeroCarousel() {
                     {s.text}
                   </p>
                   <div className="animate-rise mt-4 sm:mt-6 flex items-center gap-2.5 sm:gap-4" style={{ animationDelay: "240ms" }}>
-                    <Button asChild variant="cta" className="h-9 sm:h-12 px-5 sm:px-7 text-xs sm:text-base font-bold rounded-full sm:rounded-lg shadow-md hover:scale-105 active:scale-95 transition-all">
+                    <Button asChild variant="cta" className="h-9 sm:h-12 px-5 sm:px-7 text-xs sm:text-base font-bold rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white shadow-md hover:scale-105 active:scale-95 transition-all">
                       <Link to={s.ctas[0].to}>{s.ctas[0].label}</Link>
                     </Button>
-                    <Button asChild variant="heroOutline" className="hidden sm:inline-flex h-12 px-7 text-base font-bold rounded-lg border-white/50 text-white backdrop-blur-sm hover:bg-white/15 active:scale-95 transition-all">
+                    <Button asChild variant="heroOutline" className="hidden sm:inline-flex h-12 px-7 text-base font-bold rounded-[30px] border-white/50 text-white backdrop-blur-sm hover:bg-[#A33112] hover:border-[#A33112] active:scale-95 transition-all">
                       <Link to={s.ctas[1].to}>{s.ctas[1].label}</Link>
                     </Button>
                   </div>

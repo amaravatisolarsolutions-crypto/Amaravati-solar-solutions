@@ -272,7 +272,7 @@ function Index() {
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <Button asChild className="bg-[#082B4C] hover:bg-[#0c3963] text-white font-bold text-xs md:text-sm px-4 py-2 rounded-lg shadow-sm transition-all hover:shadow hover:scale-[1.02] active:scale-98">
+            <Button asChild variant="cta" className="rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white font-bold text-xs md:text-sm px-5 py-2 shadow-sm transition-all hover:shadow hover:scale-[1.02] active:scale-98">
               <Link to="/services">
                 <span>View All Services</span>
                 <ArrowRight className="size-3.5 ml-1.5" />

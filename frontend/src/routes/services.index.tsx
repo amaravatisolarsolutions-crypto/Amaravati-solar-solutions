@@ -542,12 +542,12 @@ function AllServices() {
                 </p>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
-                  <Button asChild variant="cta" size="sm" className="h-7 sm:h-8 px-3 text-xs shadow-2xs font-bold">
+                  <Button asChild variant="cta" size="sm" className="h-7 sm:h-8 px-4 text-xs shadow-2xs font-bold rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white">
                     <Link to="/book-a-demo">Book Free Survey</Link>
                   </Button>
                   <a
                     href="tel:+917989641899"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-2.5 py-1 text-xs font-bold text-[#082B4C] hover:bg-slate-50 transition-colors shadow-2xs h-7 sm:h-8"
+                    className="inline-flex items-center gap-1.5 rounded-[30px] border border-slate-300 bg-white px-3 py-1 text-xs font-bold text-[#082B4C] hover:bg-slate-50 transition-colors shadow-2xs h-7 sm:h-8"
                   >
                     <Phone className="size-3 text-primary" /> Call: +91 79896 41899
                   </a>
@@ -663,7 +663,7 @@ function AllServices() {
 
                   {/* Card Action Buttons - Compact 2-column Grid */}
                   <div className="mt-3 pt-2.5 border-t border-slate-100 grid grid-cols-2 gap-1.5">
-                    <Button asChild variant="cta" size="sm" className="h-7 text-[11px] font-bold px-1.5 shadow-2xs w-full">
+                    <Button asChild variant="cta" size="sm" className="h-7 text-[11px] font-bold px-2 shadow-2xs w-full rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white">
                       <Link to="/book-a-demo">
                         Book Visit <ArrowRight className="size-3 ml-0.5" />
                       </Link>
@@ -673,7 +673,7 @@ function AllServices() {
                       asChild
                       variant="outline"
                       size="sm"
-                      className="h-7 text-[11px] font-bold px-1.5 border-slate-200 text-slate-700 hover:border-navy hover:text-navy w-full"
+                      className="h-7 text-[11px] font-bold px-2 rounded-[30px] border border-[#B83A16] bg-white text-[#B83A16] hover:bg-[#A33112] hover:text-white hover:border-[#A33112] w-full"
                     >
                       <Link to="/contact">Get Quote</Link>
                     </Button>
@@ -707,12 +707,12 @@ function AllServices() {
             </p>
 
             <div className="mt-4 flex flex-wrap items-center gap-2.5">
-              <Button asChild variant="cta" size="sm" className="h-8 px-4 text-xs font-bold shadow-xs">
+              <Button asChild variant="cta" size="sm" className="h-8 px-5 text-xs font-bold shadow-xs rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white">
                 <Link to="/book-a-demo">Book Free Site Visit</Link>
               </Button>
               <a
                 href="tel:+917989641899"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-white/20 transition-colors h-8"
+                className="inline-flex items-center gap-1.5 rounded-[30px] border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-white/20 transition-colors h-8"
               >
                 <Phone className="size-3.5" /> Call: +91 79896 41899
               </a>
