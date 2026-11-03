@@ -206,7 +206,48 @@
   }
 }
 
+/* =========================================================================
+   Premium Rooftop Solar Scroll Slide Animations
+   Smooth right-to-left and left-to-right transitions on scroll
+   ========================================================================= */
+.slide-rtl,
+.slide-ltr {
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+/* Offset and hidden when animation is initialized on client and element is out of view */
+body.scroll-anim-ready .slide-rtl:not(.in-view) {
+  opacity: 0;
+  transform: translateX(64px);
+  pointer-events: none;
+}
+
+body.scroll-anim-ready .slide-ltr:not(.in-view) {
+  opacity: 0;
+  transform: translateX(-64px);
+  pointer-events: none;
+}
+
+/* In-view state: perfectly positioned and visible */
+body.scroll-anim-ready .slide-rtl.in-view,
+body.scroll-anim-ready .slide-ltr.in-view {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.slide-stagger {
+  transition-delay: 90ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  body.scroll-anim-ready .slide-rtl,
+  body.scroll-anim-ready .slide-ltr {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
