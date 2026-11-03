@@ -8,17 +8,24 @@
 //  4. Frontend SPA / SSR client mounting for all website routes
 // =========================================================================
 
-// Include database auto-migrator
-require_once __DIR__ . '/backend/setup-db.php';
+// Include database auto-migrator safely
+if (file_exists(__DIR__ . '/backend/setup-db.php')) {
+    @require_once __DIR__ . '/backend/setup-db.php';
+}
 
-// Auto-run schema migration on every new deployment (tracks file modification time)
-$dbVersion = @filemtime(__DIR__ . '/backend/setup-db.php') ?: 1;
-$dbFlag = __DIR__ . '/.db_synced_' . $dbVersion;
-if (!file_exists($dbFlag)) {
-    $res = runAutoMigration();
-    if ($res['success']) {
-        @file_put_contents($dbFlag, date('c') . " - Host: " . ($res['host'] ?? '') . " - DB: " . ($res['database'] ?? ''));
+// Auto-run schema migration on every new deployment (tracks file modification time) safely
+try {
+    $dbVersion = @filemtime(__DIR__ . '/backend/setup-db.php') ?: 1;
+    $dbFlag = __DIR__ . '/.db_synced_' . $dbVersion;
+    if (!file_exists($dbFlag) && function_exists('runAutoMigration')) {
+        $res = @runAutoMigration();
+        if (!empty($res['success'])) {
+            @file_put_contents($dbFlag, date('c') . " - Host: " . ($res['host'] ?? '') . " - DB: " . ($res['database'] ?? ''));
+        }
     }
+} catch (\Throwable $e) {
+    // Non-blocking catch to prevent any 500 error on page loads
+    error_log("DB Migration safe notice: " . $e->getMessage());
 }
 
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
@@ -891,6 +898,8 @@ foreach ($assetRoots as $root) {
 // -------------------------------------------------------------------------
 $routePath = trim($cleanUri, '/');
 $htmlCandidates = [
+    __DIR__ . '/' . $routePath . '/index.html',
+    __DIR__ . '/' . $routePath . '.html',
     __DIR__ . '/frontend/dist/' . $routePath . '/index.html',
     __DIR__ . '/frontend/dist/' . $routePath . '.html',
     __DIR__ . '/frontend/dist/' . ($routePath ? '' : 'index.html'),
