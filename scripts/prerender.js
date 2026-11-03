@@ -70,6 +70,13 @@ async function runPrerender() {
               fs.mkdirSync(path.dirname(outputOut), { recursive: true });
               fs.writeFileSync(outputOut, html, 'utf8');
 
+              // Also write to root directory (e.g. root/about/index.html) for native static server fallback
+              if (route !== '/') {
+                const rootOut = path.join(__dirname, '..', cleanPath);
+                fs.mkdirSync(path.dirname(rootOut), { recursive: true });
+                fs.writeFileSync(rootOut, html, 'utf8');
+              }
+
               console.log(`[Prerender] ✓ ${route} -> frontend/dist/${cleanPath} (${html.length} bytes)`);
             } else {
               console.warn(`[Prerender] ✗ ${route} returned status ${res.status}`);

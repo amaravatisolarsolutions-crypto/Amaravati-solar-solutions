@@ -4,15 +4,33 @@ DirectoryIndex index.php index.html
 # Disable directory browsing to prevent 403 Forbidden
 Options -Indexes +FollowSymLinks
 
+# Hostinger 404 Fallback - Always route 404 to index.php instead of Hostinger default error page
+ErrorDocument 404 /index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
 
-    # If the requested static file exists in frontend/.output/public, pass through to index.php
-    RewriteCond %{REQUEST_FILENAME} -f
+    # 1. Pass API requests directly to index.php
+    RewriteRule ^api/ - [L]
+
+    # 2. If the request matches an existing file or directory, serve directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # Route all requests to index.php
+    # 3. If pre-rendered HTML exists in frontend/dist, serve directly
+    RewriteCond %{DOCUMENT_ROOT}/frontend/dist/$1/index.html -f
+    RewriteRule ^(.*)$ frontend/dist/$1/index.html [L]
+
+    RewriteCond %{DOCUMENT_ROOT}/frontend/dist/$1.html -f
+    RewriteRule ^(.*)$ frontend/dist/$1.html [L]
+
+    # 4. If asset exists in frontend/dist, serve directly
+    RewriteCond %{DOCUMENT_ROOT}/frontend/dist/$1 -f
+    RewriteRule ^(.*)$ frontend/dist/$1 [L]
+
+    # 5. Route all remaining requests to index.php
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
@@ -25,4 +43,3 @@ Options -Indexes +FollowSymLinks
     AddType image/webp .webp
     AddType font/woff2 .woff2
 </IfModule>
-
