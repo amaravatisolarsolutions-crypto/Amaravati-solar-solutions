@@ -1,10 +1,50 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Clock, Headphones, Mail, Menu, Phone, X } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  ChevronDown,
+  Clock,
+  Factory,
+  Headphones,
+  Home,
+  Mail,
+  Menu,
+  Phone,
+  Sparkles,
+  X,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import logo from "@/assets/logo.png";
 import { COMPANY, NAV } from "@/lib/site-data";
 import { scrollToTarget } from "@/lib/scroll-utils";
 import { cn } from "@/lib/utils";
+
+export const SERVICE_SECTORS = [
+  {
+    title: "Residential Solar",
+    sector: "residential",
+    subtitle: "Rooftop solar for homes & villas (PM Surya Ghar)",
+    tag: "PM Surya Ghar",
+    icon: Home,
+    accent: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+  },
+  {
+    title: "Commercial Solar",
+    sector: "commercial",
+    subtitle: "Turnkey solar for offices, schools & hospitals",
+    tag: "Accelerated ROI",
+    icon: Building2,
+    accent: "text-[#087FC1] bg-sky-500/10 border-sky-500/20",
+  },
+  {
+    title: "Industrial Solar",
+    sector: "industrial",
+    subtitle: "High-capacity MW plants & PEB metal sheds",
+    tag: "Turnkey MW",
+    icon: Factory,
+    accent: "text-[#082B4C] bg-navy/10 border-navy/20",
+  },
+] as const;
 
 export function SiteHeader() {
   const navigate = useNavigate();
@@ -13,8 +53,10 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("home");
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const isAutoScrollingRef = useRef(false);
   const scrollLockTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const servicesTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // ScrollSpy & sticky shadow
   useEffect(() => {
@@ -221,13 +263,115 @@ export function SiteHeader() {
               const isActive = pathname === "/"
                 ? ("targetId" in item && item.targetId ? activeSection === item.targetId : false)
                 : (item.to === pathname || (item.to !== "/" && pathname.startsWith(item.to)));
+
+              if (item.label === "Services") {
+                return (
+                  <div
+                    key={item.label}
+                    className="relative flex items-center group"
+                    onMouseEnter={() => {
+                      if (servicesTimeoutRef.current) clearTimeout(servicesTimeoutRef.current);
+                      setServicesDropdownOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                      servicesTimeoutRef.current = setTimeout(() => {
+                        setServicesDropdownOpen(false);
+                      }, 180);
+                    }}
+                  >
+                    <a
+                      href={item.to}
+                      onClick={(e) => handleNavClick(e, item)}
+                      className={cn(
+                        "relative px-2.5 xl:px-3 py-1.5 rounded-full text-[13px] xl:text-[14px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1",
+                        isActive
+                          ? "bg-primary/10 text-primary font-bold border border-primary/25 shadow-sm"
+                          : "text-[#0c2340] hover:text-primary hover:bg-slate-100/80"
+                      )}
+                    >
+                      {isActive && (
+                        <span className="size-1.5 rounded-full bg-primary animate-pulse shrink-0" />
+                      )}
+                      <span>{item.label}</span>
+                      <ChevronDown
+                        className={cn(
+                          "size-3.5 text-slate-400 transition-transform duration-200",
+                          servicesDropdownOpen ? "rotate-180 text-primary" : "group-hover:rotate-180 group-hover:text-primary"
+                        )}
+                      />
+                    </a>
+
+                    {/* Premium Hover Dropdown Menu */}
+                    <div
+                      className={cn(
+                        "absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 transition-all duration-200",
+                        servicesDropdownOpen
+                          ? "opacity-100 translate-y-0 pointer-events-auto visible"
+                          : "opacity-0 -translate-y-1.5 pointer-events-none invisible"
+                      )}
+                    >
+                      <div className="w-[310px] rounded-2xl bg-white/95 backdrop-blur-xl p-2 shadow-[0_20px_50px_rgba(8,43,76,0.20)] border border-slate-200/90 divide-y divide-slate-100">
+                        <div className="space-y-1 p-1">
+                          {SERVICE_SECTORS.map((sec) => {
+                            const Icon = sec.icon;
+                            return (
+                              <a
+                                key={sec.sector}
+                                href={`/services?category=${sec.sector}`}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setServicesDropdownOpen(false);
+                                  navigate({
+                                    to: "/services",
+                                    search: { category: sec.sector } as any,
+                                  });
+                                }}
+                                className="flex items-center gap-3 p-2.5 rounded-xl transition-all duration-150 hover:bg-slate-50 active:scale-[0.98] group/item cursor-pointer text-left"
+                              >
+                                <div className={cn("grid size-9 shrink-0 place-items-center rounded-xl border transition-transform duration-200 group-hover/item:scale-105", sec.accent)}>
+                                  <Icon className="size-4.5" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center justify-between gap-1">
+                                    <span className="text-[13px] font-bold text-[#082B4C] group-hover/item:text-primary transition-colors">
+                                      {sec.title}
+                                    </span>
+                                    <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600 group-hover/item:bg-primary/10 group-hover/item:text-primary transition-colors shrink-0">
+                                      {sec.tag}
+                                    </span>
+                                  </div>
+                                  <p className="text-[11px] text-slate-500 leading-tight truncate mt-0.5">
+                                    {sec.subtitle}
+                                  </p>
+                                </div>
+                              </a>
+                            );
+                          })}
+                        </div>
+
+                        <div className="pt-2 pb-1 px-1">
+                          <Link
+                            to="/services"
+                            onClick={() => setServicesDropdownOpen(false)}
+                            className="flex items-center justify-between w-full px-3 py-1.5 rounded-xl text-xs font-bold text-[#082B4C] hover:bg-primary/10 hover:text-primary transition-all group/all"
+                          >
+                            <span>View All Solar Services</span>
+                            <ArrowRight className="size-3.5 text-primary transition-transform duration-200 group-hover/all:translate-x-1" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <div key={item.label} className="flex items-center gap-0.5 xl:gap-1">
                   <a
                     href={item.to}
                     onClick={(e) => handleNavClick(e, item)}
                     className={cn(
-                      "relative px-2.5 xl:px-3.5 py-1.5 rounded-full text-[13px] xl:text-[14px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1.5",
+                      "relative px-2.5 xl:px-3 py-1.5 rounded-full text-[13px] xl:text-[14px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1.5",
                       isActive
                         ? "bg-primary/10 text-primary font-bold border border-primary/25 shadow-sm"
                         : "text-[#0c2340] hover:text-primary hover:bg-slate-100/80"
@@ -295,17 +439,41 @@ export function SiteHeader() {
                     href={item.to}
                     onClick={(e) => handleNavClick(e, item)}
                     className={cn(
-                      "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-all active:scale-[0.98] select-none cursor-pointer",
+                      "flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-all active:scale-[0.98] select-none cursor-pointer",
                       isActive
                         ? "bg-primary/10 text-primary font-bold border border-primary/25 shadow-xs"
                         : "text-[#0c2340] hover:bg-slate-50 hover:text-primary active:bg-slate-100"
                     )}
                   >
-                    {isActive && (
-                      <span className="size-1.5 rounded-full bg-primary animate-pulse shrink-0" />
-                    )}
-                    <span>{item.label}</span>
+                    <div className="flex items-center gap-2">
+                      {isActive && (
+                        <span className="size-1.5 rounded-full bg-primary animate-pulse shrink-0" />
+                      )}
+                      <span>{item.label}</span>
+                    </div>
                   </a>
+
+                  {/* Sub-items for Services on mobile */}
+                  {item.label === "Services" && (
+                    <div className="pl-4 pr-1 py-1 space-y-1 border-l-2 border-primary/20 ml-3.5 my-1">
+                      {SERVICE_SECTORS.map((sec) => {
+                        const Icon = sec.icon;
+                        return (
+                          <Link
+                            key={sec.sector}
+                            to="/services"
+                            search={{ category: sec.sector } as any}
+                            onClick={() => setOpen(false)}
+                            className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors"
+                          >
+                            <Icon className="size-3.5 text-primary shrink-0" />
+                            <span>{sec.title}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+
                   {item.label === "Gallery" && (
                     <a
                       href={`tel:${COMPANY.phone.replace(/[^0-9+]/g, "")}`}

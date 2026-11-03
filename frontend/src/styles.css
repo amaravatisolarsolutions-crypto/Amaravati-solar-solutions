@@ -241,6 +241,37 @@ body.scroll-anim-ready .slide-ltr.in-view {
   transition-delay: 90ms;
 }
 
+/* =========================================================================
+   Premium Pop Animation for Services & Dynamic Content Cards
+   Spring pop-up with smooth scale and fade-in
+   ========================================================================= */
+@keyframes premiumPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(18px);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.015) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-pop-in {
+  animation: premiumPopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+.pop-stagger-1 { animation-delay: 40ms; }
+.pop-stagger-2 { animation-delay: 100ms; }
+.pop-stagger-3 { animation-delay: 160ms; }
+.pop-stagger-4 { animation-delay: 220ms; }
+.pop-stagger-5 { animation-delay: 280ms; }
+.pop-stagger-6 { animation-delay: 340ms; }
+
 @media (prefers-reduced-motion: reduce) {
   body.scroll-anim-ready .slide-rtl,
   body.scroll-anim-ready .slide-ltr {
