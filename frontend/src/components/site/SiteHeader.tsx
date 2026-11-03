@@ -210,24 +210,24 @@ export function SiteHeader() {
             alt="Amaravati Solar Solutions"
             width={1016}
             height={307}
-            className="h-14 w-auto object-contain md:h-16"
+            className="h-9 sm:h-10 md:h-11 xl:h-12 w-auto object-contain transition-transform"
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-4 xl:gap-6 lg:flex">
-          <nav className="flex items-center gap-1 xl:gap-1.5" aria-label="Main">
+        <div className="hidden items-center gap-2.5 xl:gap-5 lg:flex">
+          <nav className="flex items-center gap-0.5 xl:gap-1" aria-label="Main">
             {NAV.map((item) => {
               const isActive = pathname === "/"
                 ? ("targetId" in item && item.targetId ? activeSection === item.targetId : false)
                 : (item.to === pathname || (item.to !== "/" && pathname.startsWith(item.to)));
               return (
-                <div key={item.label} className="flex items-center gap-1 xl:gap-1.5">
+                <div key={item.label} className="flex items-center gap-0.5 xl:gap-1">
                   <a
                     href={item.to}
                     onClick={(e) => handleNavClick(e, item)}
                     className={cn(
-                      "relative px-3.5 py-1.5 rounded-full text-[14px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1.5",
+                      "relative px-2.5 xl:px-3.5 py-1.5 rounded-full text-[13px] xl:text-[14px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1.5",
                       isActive
                         ? "bg-primary/10 text-primary font-bold border border-primary/25 shadow-sm"
                         : "text-[#0c2340] hover:text-primary hover:bg-slate-100/80"
@@ -240,12 +240,12 @@ export function SiteHeader() {
                   </a>
 
                   {item.label === "Gallery" && (
-                    <div className="flex items-center gap-2 border-l border-slate-300 pl-3 xl:pl-4 ml-1">
+                    <div className="flex items-center gap-1.5 border-l border-slate-300 pl-2.5 xl:pl-3.5 ml-1">
                       <a
                         href={`tel:${COMPANY.phone.replace(/[^0-9+]/g, "")}`}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[14px] font-bold text-[#082B4C] hover:text-[#087FC1] hover:bg-sky-50 transition-colors whitespace-nowrap"
+                        className="flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full text-[13px] xl:text-[14px] font-bold text-[#082B4C] hover:text-[#087FC1] hover:bg-sky-50 transition-colors whitespace-nowrap"
                       >
-                        <Headphones className="size-4 text-[#087FC1]" />
+                        <Headphones className="size-3.5 xl:size-4 text-[#087FC1]" />
                         <span>24/7 Support</span>
                       </a>
                     </div>
@@ -258,7 +258,7 @@ export function SiteHeader() {
           {/* CTA Button: Get A Quote */}
           <Link
             to="/book-a-demo"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
+            className="inline-flex items-center justify-center rounded-full bg-primary px-4 xl:px-5 py-2 text-xs xl:text-sm font-semibold text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0"
           >
             Get A Quote
           </Link>
