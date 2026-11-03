@@ -423,6 +423,6 @@ export const PROJECTS: Project[] = [
 ];
 
 export const CUSTOMER_TYPES = ["Residential", "Commercial", "Industrial"] as const;
-export const SOLUTIONS = SERVICES.map((s) => s.title);
+export const SOLUTIONS = ["Residential", "Commercial", "Industrial"] as const;
 export const PROPERTY_TYPES = ["Independent House", "Apartment", "Office", "Shop / Showroom", "Factory / Warehouse", "Farm / Land", "Other"] as const;
 export const TIME_SLOTS = ["09:00 – 11:00", "11:00 – 13:00", "14:00 – 16:00", "16:00 – 18:00"] as const;
