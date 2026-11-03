@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { HeroCarousel } from "@/components/site/HeroCarousel";
 import { SectionHeading } from "@/components/site/Sections";
 import { setupRooftopScrollAnimation } from "@/lib/scroll-animation";
+import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
 import { PROJECTS, type ProjectCategory } from "@/lib/site-data";
 import { scrollToTarget } from "@/lib/scroll-utils";
 import { cn } from "@/lib/utils";
@@ -155,9 +156,14 @@ function Index() {
     if (window.location.hash) {
       window.history.replaceState(null, "", window.location.pathname);
     }
-    // Initialize continuous scroll animations for rooftop solar sections
-    return setupRooftopScrollAnimation();
-  }, []);
+    // Initialize continuous scroll animations for rooftop solar and pop/parallax transitions
+    const cleanupRooftop = setupRooftopScrollAnimation();
+    const cleanupParallax = setupParallaxAndPopAnimation();
+    return () => {
+      cleanupRooftop();
+      cleanupParallax();
+    };
+  }, [galleryFilter]);
 
   // Commercial solar carport canopy (p6) is removed from home page and placed inside "View All Projects" (/projects)
   const homeProjects = PROJECTS.filter((p) => p.id !== "p6");
@@ -200,17 +206,17 @@ function Index() {
         </div>
       </section>
 
-      {/* 2. ABOUT US SECTION - Compact vertical padding */}
+      {/* 2. ABOUT US SECTION - Pop & Parallax Transitions */}
       <section id="about" className="bg-navy py-5 md:py-7 scroll-mt-28">
         <div className="container-site grid items-center gap-6 lg:grid-cols-2 lg:gap-10">
-          <div>
+          <div className="scroll-pop scroll-pop-1">
             <p className="eyebrow text-gold">Why us</p>
             <h2 className="mt-1.5 text-2xl font-extrabold text-navy-foreground sm:text-3xl md:text-4xl">
               Why Choose Amaravati Solar Solutions?
             </h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {WHY.map(({ icon: Icon, title, text }) => (
-                <div key={title} className="flex gap-3">
+              {WHY.map(({ icon: Icon, title, text }, i) => (
+                <div key={title} className={`scroll-pop scroll-pop-${i + 1} flex gap-3 parallax-card p-2 rounded-xl transition-all`}>
                   <div className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary/15 text-gold">
                     <Icon className="size-4" />
                   </div>
@@ -232,17 +238,20 @@ function Index() {
               </Button>
             </div>
           </div>
-          <div className="relative">
+          <div className="relative overflow-hidden rounded-2xl shadow-lift parallax-wrap group scroll-pop scroll-pop-2">
             <img
               src={installation}
               alt="Technicians installing rooftop solar panels"
               width={1600}
               height={1072}
               loading="lazy"
-              className="aspect-[16/10] w-full rounded-2xl object-cover shadow-lift"
+              data-parallax
+              data-parallax-rate="0.10"
+              className="parallax-img aspect-[16/10] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div className="absolute -bottom-4 -left-3 hidden rounded-xl bg-background p-3.5 shadow-lift sm:block">
-              <p className="eyebrow text-[10px]">Our promise</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent opacity-60" />
+            <div className="absolute -bottom-2 sm:-bottom-4 -left-2 sm:-left-3 hidden rounded-xl bg-background/95 backdrop-blur-md p-3.5 shadow-lift sm:block border border-slate-200/80 parallax-card">
+              <p className="eyebrow text-[10px] text-primary font-bold">Our promise</p>
               <p className="mt-0.5 text-sm font-bold text-navy">Honest advice, quality work.</p>
             </div>
           </div>
@@ -477,9 +486,9 @@ function Index() {
         </div>
       </section>
 
-      {/* 6. GALLERY / PROJECTS - Exactly matching user screenshot */}
+      {/* 6. GALLERY / PROJECTS - Pop & Parallax Transitions */}
       <section id="gallery" className="container-site py-6 md:py-8 scroll-mt-24 sm:scroll-mt-28">
-        <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filter projects">
+        <div className="flex flex-wrap gap-2 scroll-pop scroll-pop-1" role="tablist" aria-label="Filter projects">
           {FILTERS.map((f) => (
             <button
               key={f}
@@ -489,7 +498,7 @@ function Index() {
               className={cn(
                 "rounded-full border px-5 py-2.5 text-sm font-semibold transition-all active:scale-95 cursor-pointer select-none",
                 galleryFilter === f
-                  ? "border-navy bg-navy text-navy-foreground shadow-sm"
+                  ? "border-navy bg-navy text-navy-foreground shadow-sm scale-[1.02]"
                   : "bg-background text-navy hover:border-primary hover:text-primary active:bg-slate-100"
               )}
             >
@@ -497,45 +506,53 @@ function Index() {
             </button>
           ))}
         </div>
-        <p className="mt-4 text-sm text-muted-foreground">
+        <p className="mt-4 text-sm text-muted-foreground scroll-pop scroll-pop-2">
           These are sample placeholders. Verified project photos and details will be added soon.
         </p>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredProjects.map((p) => (
-            <Link
-              key={p.id}
-              to="/projects/$id"
-              params={{ id: p.id }}
-              className="group overflow-hidden rounded-2xl bg-card text-left shadow-card transition-all duration-300 hover:shadow-lift hover:-translate-y-1 active:scale-[0.98] flex flex-col"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <img
-                  src={p.image}
-                  alt={p.title}
-                  width={1920}
-                  height={1088}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-navy/0 transition-colors group-hover:bg-navy/30" />
-                <span className="absolute left-4 top-4 rounded-full bg-background/90 px-3 py-1 text-xs font-bold text-navy shadow-sm">
-                  {p.category}
-                </span>
-                {p.placeholder && (
-                  <span className="absolute right-4 top-4 rounded-full bg-navy/80 px-3 py-1 text-xs font-semibold text-navy-foreground shadow-sm">
-                    Sample
-                  </span>
+        <div key={galleryFilter} className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredProjects.map((p, i) => {
+            const staggerClass = `pop-stagger-${Math.min((i % 6) + 1, 6)}`;
+            return (
+              <Link
+                key={p.id}
+                to="/projects/$id"
+                params={{ id: p.id }}
+                className={cn(
+                  "group overflow-hidden rounded-2xl bg-card text-left shadow-card border border-slate-200/80 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 active:scale-[0.98] flex flex-col parallax-card animate-pop-in",
+                  staggerClass
                 )}
-              </div>
-              <div className="p-6 flex-1 flex flex-col justify-between">
-                <h3 className="text-lg font-bold text-navy line-clamp-2">{p.title}</h3>
-                <span className="mt-2 inline-block text-sm font-bold text-primary">
-                  View Project →
-                </span>
-              </div>
-            </Link>
-          ))}
+              >
+                <div className="relative aspect-[4/3] overflow-hidden parallax-wrap">
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    width={1920}
+                    height={1088}
+                    loading="lazy"
+                    data-parallax
+                    data-parallax-rate="0.08"
+                    className="parallax-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-85" />
+                  <span className="absolute left-4 top-4 rounded-full bg-white/95 backdrop-blur-md px-3 py-1 text-xs font-extrabold text-navy shadow-sm">
+                    {p.category}
+                  </span>
+                  {p.placeholder && (
+                    <span className="absolute right-4 top-4 rounded-full bg-navy/80 px-3 py-1 text-xs font-semibold text-navy-foreground shadow-sm">
+                      Sample
+                    </span>
+                  )}
+                </div>
+                <div className="p-6 flex-1 flex flex-col justify-between bg-white">
+                  <h3 className="text-lg font-bold text-navy line-clamp-2 group-hover:text-primary transition-colors">{p.title}</h3>
+                  <span className="mt-2 inline-block text-sm font-bold text-primary group-hover:translate-x-1 transition-transform">
+                    View Project →
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         {/* View All Projects Button */}

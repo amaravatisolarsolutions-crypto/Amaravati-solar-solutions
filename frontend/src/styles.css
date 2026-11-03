@@ -293,12 +293,67 @@ body.scroll-anim-ready .slide-ltr.in-view {
 .pop-stagger-5 { animation-delay: 280ms; }
 .pop-stagger-6 { animation-delay: 340ms; }
 
+/* =========================================================================
+   Scroll-Triggered Pop & Spring Stagger Animations
+   ========================================================================= */
+body.scroll-anim-ready .scroll-pop {
+  opacity: 0;
+  transform: scale(0.92) translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+body.scroll-anim-ready .scroll-pop.in-view {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.scroll-pop-1 { transition-delay: 50ms; }
+.scroll-pop-2 { transition-delay: 110ms; }
+.scroll-pop-3 { transition-delay: 170ms; }
+.scroll-pop-4 { transition-delay: 230ms; }
+.scroll-pop-5 { transition-delay: 290ms; }
+.scroll-pop-6 { transition-delay: 350ms; }
+
+/* =========================================================================
+   Parallax Image & Card Hover Depth Transitions
+   ========================================================================= */
+.parallax-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.parallax-img {
+  will-change: transform;
+  transform: translate3d(0, 0, 0) scale(1.08);
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.parallax-card {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  will-change: transform, box-shadow;
+}
+
+.parallax-card:hover {
+  transform: translateY(-8px) scale(1.008);
+  box-shadow: 0 20px 40px -15px rgba(8, 43, 76, 0.15), 0 0 1px 1px rgba(8, 43, 76, 0.05);
+}
+
+.parallax-card:active {
+  transform: translateY(-2px) scale(0.99);
+}
+
 @media (prefers-reduced-motion: reduce) {
   body.scroll-anim-ready .slide-rtl,
-  body.scroll-anim-ready .slide-ltr {
+  body.scroll-anim-ready .slide-ltr,
+  body.scroll-anim-ready .scroll-pop {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+  .parallax-img,
+  [data-parallax] {
+    transform: none !important;
   }
   * {
     animation-duration: 0.01ms !important;
