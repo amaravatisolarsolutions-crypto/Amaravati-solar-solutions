@@ -245,56 +245,56 @@ function Index() {
         </div>
       </section>
 
-      {/* 2. ABOUT US SECTION - Clean Image-Free Design matching exact user specification */}
-      <section id="about" className="bg-gradient-to-b from-[#082B4C] via-[#093259] to-[#082B4C] py-8 sm:py-12 md:py-16 text-white scroll-mt-28">
-        <div className="container-site max-w-5xl">
+      {/* 2. ABOUT US SECTION - Compact & Proportionate Image-Free Design */}
+      <section id="about" className="bg-gradient-to-b from-[#082B4C] via-[#093259] to-[#082B4C] py-4 sm:py-6 text-white scroll-mt-28">
+        <div className="container-site max-w-4xl">
           {/* Main About Statement */}
-          <div className="text-center scroll-pop scroll-pop-1 mb-8 sm:mb-12">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1 text-xs font-black text-gold uppercase tracking-wider mb-3 border border-white/15">
-              <Sparkles className="size-3.5" /> Amaravati Solar Solutions
+          <div className="text-center scroll-pop scroll-pop-1 mb-3.5 sm:mb-4">
+            <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-0.5 text-[10px] font-bold text-gold uppercase tracking-wider mb-1.5 border border-white/15">
+              <Sparkles className="size-3" /> Amaravati Solar Solutions
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
+            <h2 className="text-lg sm:text-2xl font-black text-white tracking-tight">
               ABOUT
             </h2>
-            <p className="mt-3 text-xl sm:text-2xl md:text-3xl font-extrabold text-white/95 leading-snug max-w-3xl mx-auto">
+            <p className="mt-0.5 text-xs sm:text-sm md:text-base font-bold text-white/95 leading-snug max-w-2xl mx-auto">
               We don't just install solar. We create a smarter way to power life.
             </p>
-            <div className="mt-5 max-w-3xl mx-auto text-left bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 sm:p-6 flex items-start gap-3">
-              <span className="size-2 rounded-full bg-[#B83A16] mt-2 shrink-0" />
-              <p className="text-sm sm:text-base text-white/85 leading-relaxed">
+            <div className="mt-2.5 max-w-2xl mx-auto text-left bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-3 sm:p-3.5 flex items-start gap-2.5">
+              <span className="size-1.5 rounded-full bg-[#B83A16] mt-1.5 shrink-0" />
+              <p className="text-[11px] sm:text-xs text-white/85 leading-relaxed">
                 At Amaravati Solar Solutions, we believe the future of energy should be efficient, dependable, and sustainable. Our approach combines thoughtful solar system design, quality components, precision installation, and end-to-end customer support to deliver solutions built around the needs of every customer.
               </p>
             </div>
           </div>
 
           {/* Vision & Mission Cards Grid */}
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="grid gap-3 sm:gap-3.5 md:grid-cols-2">
             {/* Our Vision Card */}
-            <div className="rounded-2xl bg-white/5 backdrop-blur-md border border-white/15 p-6 sm:p-8 flex flex-col justify-between scroll-pop scroll-pop-2 hover:bg-white/10 transition-all duration-300">
+            <div className="rounded-xl bg-white/5 backdrop-blur-md border border-white/15 p-3.5 sm:p-4 flex flex-col justify-between scroll-pop scroll-pop-2 hover:bg-white/10 transition-all duration-300">
               <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="grid size-10 place-items-center rounded-xl bg-white/10 text-gold">
-                    <Eye className="size-5" />
+                <div className="flex items-center gap-2 mb-2.5">
+                  <div className="grid size-7 place-items-center rounded-lg bg-white/10 text-gold">
+                    <Eye className="size-3.5" />
                   </div>
-                  <h3 className="text-2xl font-black text-white tracking-tight">
+                  <h3 className="text-sm sm:text-base font-extrabold text-white tracking-tight">
                     Our Vision
                   </h3>
                 </div>
-                <ul className="space-y-3.5 text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <li className="flex items-start gap-2.5">
-                    <span className="size-2 rounded-full bg-gold mt-2 shrink-0" />
-                    <span className="font-extrabold text-white">
+                <ul className="space-y-2 text-[11px] sm:text-xs text-white/85 leading-relaxed">
+                  <li className="flex items-start gap-2">
+                    <span className="size-1.5 rounded-full bg-gold mt-1.5 shrink-0" />
+                    <span className="font-bold text-white">
                       To redefine the way people experience energy.
                     </span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="size-2 rounded-full bg-gold mt-2 shrink-0" />
+                  <li className="flex items-start gap-2">
+                    <span className="size-1.5 rounded-full bg-gold mt-1.5 shrink-0" />
                     <span className="text-white/80">
                       We envision a future where every suitable rooftop becomes a source of clean power, every household has greater control over its energy costs, and sustainability becomes a natural part of everyday living.
                     </span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="size-2 rounded-full bg-gold mt-2 shrink-0" />
+                  <li className="flex items-start gap-2">
+                    <span className="size-1.5 rounded-full bg-gold mt-1.5 shrink-0" />
                     <span className="text-white/80">
                       Our ambition is to build a trusted solar brand that stands for engineering excellence, lasting reliability, and a cleaner tomorrow.
                     </span>
@@ -304,31 +304,31 @@ function Index() {
             </div>
 
             {/* Our Mission Card */}
-            <div className="rounded-2xl bg-white/5 backdrop-blur-md border border-white/15 p-6 sm:p-8 flex flex-col justify-between scroll-pop scroll-pop-3 hover:bg-white/10 transition-all duration-300">
+            <div className="rounded-xl bg-white/5 backdrop-blur-md border border-white/15 p-3.5 sm:p-4 flex flex-col justify-between scroll-pop scroll-pop-3 hover:bg-white/10 transition-all duration-300">
               <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="grid size-10 place-items-center rounded-xl bg-[#B83A16]/20 text-[#D9531E]">
-                    <Target className="size-5" />
+                <div className="flex items-center gap-2 mb-2.5">
+                  <div className="grid size-7 place-items-center rounded-lg bg-[#B83A16]/20 text-[#D9531E]">
+                    <Target className="size-3.5" />
                   </div>
-                  <h3 className="text-2xl font-black text-white tracking-tight">
+                  <h3 className="text-sm sm:text-base font-extrabold text-white tracking-tight">
                     Our Mission
                   </h3>
                 </div>
-                <ul className="space-y-4 text-sm sm:text-[15px] text-white/85 leading-relaxed">
-                  <li className="flex items-start gap-2.5">
-                    <span className="size-2 rounded-full bg-[#D9531E] mt-2 shrink-0" />
+                <ul className="space-y-2.5 text-[11px] sm:text-xs text-white/85 leading-relaxed">
+                  <li className="flex items-start gap-2">
+                    <span className="size-1.5 rounded-full bg-[#D9531E] mt-1.5 shrink-0" />
                     <div>
-                      <p className="font-extrabold text-white">
+                      <p className="font-bold text-white">
                         To make the transition to solar simple, seamless, and worthwhile.
                       </p>
-                      <p className="mt-1 text-white/80">
+                      <p className="mt-0.5 text-white/80">
                         To accelerate the transition towards clean energy by making solar power accessible and reliable, reducing environmental impact, and inspiring communities to embrace a greener, more sustainable future.
                       </p>
                     </div>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="size-2 rounded-full bg-[#D9531E] mt-2 shrink-0" />
-                    <span className="font-extrabold text-white">
+                  <li className="flex items-start gap-2">
+                    <span className="size-1.5 rounded-full bg-[#D9531E] mt-1.5 shrink-0" />
+                    <span className="font-bold text-white">
                       Together, building a greener society for generations to come
                     </span>
                   </li>
@@ -338,14 +338,14 @@ function Index() {
           </div>
 
           {/* Action CTA */}
-          <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3.5 scroll-pop scroll-pop-4">
-            <Button asChild variant="cta" className="rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white px-7 py-3 text-sm font-bold shadow-md">
+          <div className="mt-3.5 sm:mt-4 flex flex-wrap justify-center gap-2.5 scroll-pop scroll-pop-4">
+            <Button asChild variant="cta" className="h-8 sm:h-8.5 rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white px-5 text-xs font-bold shadow-xs">
               <Link to="/about">
                 <span>More About Our Company</span>
-                <ArrowRight className="size-4 ml-1.5" />
+                <ArrowRight className="size-3 ml-1" />
               </Link>
             </Button>
-            <Button asChild variant="heroOutline" className="rounded-[30px] border-white/40 text-white hover:bg-white/10 px-6 py-3 text-sm font-bold">
+            <Button asChild variant="heroOutline" className="h-8 sm:h-8.5 rounded-[30px] border-white/40 text-white hover:bg-white/10 px-4 text-xs font-bold">
               <Link to="/contact">Contact Us</Link>
             </Button>
           </div>
