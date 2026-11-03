@@ -22,12 +22,12 @@ function About() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-[calc(100svh-114px)] flex flex-col justify-center py-2 sm:py-3 md:py-4 px-4 sm:px-6">
+    <div className="bg-gradient-to-b from-slate-50 via-white to-slate-50 min-h-[calc(100svh-80px)] lg:h-[calc(100svh-80px)] flex flex-col justify-center py-2 sm:py-3 md:py-4 px-4 sm:px-6 overflow-hidden">
       <div className="container-site max-w-4xl px-2 sm:px-4">
         
         {/* Main ABOUT Card */}
         <div className="rounded-2xl bg-white border border-slate-200/90 shadow-xs p-3.5 sm:p-4.5 md:p-5 scroll-pop scroll-pop-1">
-          <div className="inline-flex items-center gap-1 rounded-full bg-[#B83A16]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#B83A16] uppercase tracking-wider mb-1.5">
+          <div className="inline-flex items-center gap-1 rounded-full bg-[#B83A16]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#B83A16] uppercase tracking-wider mb-1">
             <Sparkles className="size-3" /> Amaravati Solar Solutions
           </div>
           
@@ -39,8 +39,8 @@ function About() {
             We don't just install solar. We create a smarter way to power life.
           </p>
           
-          <div className="mt-2.5 pt-2.5 border-t border-slate-100 flex items-start gap-2">
-            <span className="size-1.5 rounded-full bg-[#B83A16] mt-1.5 shrink-0" />
+          <div className="mt-2 pt-2 border-t border-slate-100 flex items-start gap-2">
+            <span className="size-1.5 rounded-full bg-[#B83A16] mt-1 shrink-0" />
             <p className="text-xs sm:text-[13px] text-slate-700 leading-relaxed">
               At Amaravati Solar Solutions, we believe the future of energy should be efficient, dependable, and sustainable. Our approach combines thoughtful solar system design, quality components, precision installation, and end-to-end customer support to deliver solutions built around the needs of every customer.
             </p>
@@ -48,12 +48,12 @@ function About() {
         </div>
 
         {/* Vision & Mission 2-Column Grid */}
-        <div className="grid gap-3 sm:gap-3.5 md:grid-cols-2 mt-3 sm:mt-3.5">
+        <div className="grid gap-3 sm:gap-3.5 md:grid-cols-2 mt-2.5 sm:mt-3">
           
           {/* Our Vision Card */}
-          <div className="rounded-2xl bg-white border border-slate-200/90 shadow-xs p-3.5 sm:p-4.5 flex flex-col justify-between scroll-pop scroll-pop-2 transition-all duration-300 hover:shadow-sm hover:border-[#082B4C]/30">
+          <div className="rounded-2xl bg-white border border-slate-200/90 shadow-xs p-3.5 sm:p-4 flex flex-col justify-between scroll-pop scroll-pop-2 transition-all duration-300 hover:shadow-sm hover:border-[#082B4C]/30">
             <div>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-1.5">
                 <div className="grid size-7 sm:size-8 place-items-center rounded-xl bg-[#082B4C]/10 text-[#082B4C]">
                   <Eye className="size-3.5 sm:size-4" />
                 </div>
@@ -62,7 +62,7 @@ function About() {
                 </h2>
               </div>
 
-              <ul className="space-y-2 text-slate-700 text-xs sm:text-[13px] leading-relaxed">
+              <ul className="space-y-1.5 sm:space-y-2 text-slate-700 text-xs sm:text-[13px] leading-relaxed">
                 <li className="flex items-start gap-2">
                   <span className="size-1.5 rounded-full bg-[#082B4C] mt-1.5 shrink-0" />
                   <span className="font-extrabold text-[#082B4C]">
@@ -86,9 +86,9 @@ function About() {
           </div>
 
           {/* Our Mission Card */}
-          <div className="rounded-2xl bg-white border border-slate-200/90 shadow-xs p-3.5 sm:p-4.5 flex flex-col justify-between scroll-pop scroll-pop-3 transition-all duration-300 hover:shadow-sm hover:border-[#B83A16]/30">
+          <div className="rounded-2xl bg-white border border-slate-200/90 shadow-xs p-3.5 sm:p-4 flex flex-col justify-between scroll-pop scroll-pop-3 transition-all duration-300 hover:shadow-sm hover:border-[#B83A16]/30">
             <div>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-1.5">
                 <div className="grid size-7 sm:size-8 place-items-center rounded-xl bg-[#B83A16]/10 text-[#B83A16]">
                   <Target className="size-3.5 sm:size-4" />
                 </div>
@@ -97,7 +97,7 @@ function About() {
                 </h2>
               </div>
 
-              <ul className="space-y-2 text-slate-700 text-xs sm:text-[13px] leading-relaxed">
+              <ul className="space-y-1.5 sm:space-y-2 text-slate-700 text-xs sm:text-[13px] leading-relaxed">
                 <li className="flex items-start gap-2">
                   <span className="size-1.5 rounded-full bg-[#B83A16] mt-1.5 shrink-0" />
                   <div>

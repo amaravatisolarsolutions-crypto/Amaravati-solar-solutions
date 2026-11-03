@@ -30,7 +30,13 @@ export const SOLAR_SOLUTIONS = [
 export function SiteHeader() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isContactPage = pathname === "/contact";
+  const isStandalonePage =
+    pathname === "/contact" ||
+    pathname === "/contact/" ||
+    pathname.startsWith("/contact") ||
+    pathname === "/about" ||
+    pathname === "/about/" ||
+    pathname.startsWith("/about");
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("home");
@@ -184,8 +190,8 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* Top Announcement Bar - Single Line & Compact Size (Non-sticky, scrolls with page, hidden on /contact) */}
-      {!isContactPage && (
+      {/* Top Announcement Bar - Single Line & Compact Size (Non-sticky, scrolls with page, hidden on /contact and /about) */}
+      {!isStandalonePage && (
         <div className="bg-[#082B4C] text-white py-0.5 sm:py-1 border-b border-white/10 transition-all duration-300">
           <div className="container-site px-2 sm:px-6 flex items-center justify-center lg:justify-between gap-2 sm:gap-3 overflow-hidden">
             {/* Left: Email & Phone Support in Single Line */}
