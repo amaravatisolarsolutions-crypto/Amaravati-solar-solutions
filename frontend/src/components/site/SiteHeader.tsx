@@ -302,9 +302,6 @@ export function SiteHeader() {
                           : "text-[#0c2340] hover:text-primary hover:bg-slate-100/80"
                       )}
                     >
-                      {isActive && (
-                        <span className="size-1.5 rounded-full bg-primary animate-pulse shrink-0" />
-                      )}
                       <span>{item.label}</span>
                       <ChevronDown
                         className={cn(
@@ -380,9 +377,6 @@ export function SiteHeader() {
                           : "text-[#0c2340] hover:text-primary hover:bg-slate-100/80"
                       )}
                     >
-                      {isSolarActive && (
-                        <span className="size-1.5 rounded-full bg-primary animate-pulse shrink-0" />
-                      )}
                       <span>{item.label}</span>
                       <ChevronDown
                         className={cn(
@@ -432,9 +426,6 @@ export function SiteHeader() {
                         : "text-[#0c2340] hover:text-primary hover:bg-slate-100/80"
                     )}
                   >
-                    {isActive && (
-                      <span className="size-1.5 rounded-full bg-primary animate-pulse shrink-0" />
-                    )}
                     <span>{item.label}</span>
                   </a>
 
@@ -500,12 +491,7 @@ export function SiteHeader() {
                         : "text-[#0c2340] hover:bg-slate-50 hover:text-primary active:bg-slate-100"
                     )}
                   >
-                    <div className="flex items-center gap-2">
-                      {isActive && (
-                        <span className="size-1.5 rounded-full bg-primary animate-pulse shrink-0" />
-                      )}
-                      <span>{item.label}</span>
-                    </div>
+                    <span>{item.label}</span>
                   </a>
 
                   {/* Sub-items for Services on mobile */}
