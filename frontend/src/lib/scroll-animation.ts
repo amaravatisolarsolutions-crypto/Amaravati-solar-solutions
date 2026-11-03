@@ -46,9 +46,44 @@ export function setupRooftopScrollAnimation() {
   const t1 = setTimeout(update, 100);
   const t2 = setTimeout(update, 400);
 
+  // Handler for explicit navigation trigger (e.g. from Amaravati Solar Solution dropdown)
+  const onAnimateCard = (e: Event) => {
+    const customEvent = e as CustomEvent<string>;
+    const targetId = customEvent.detail;
+    if (!targetId) return;
+
+    const section = document.getElementById(targetId);
+    if (!section) return;
+
+    const card = section.querySelector<HTMLElement>("[data-rooftop-card]") || (section as HTMLElement);
+    const items = card.querySelectorAll<HTMLElement>(".slide-rtl, .slide-ltr");
+
+    // 1. Temporarily remove in-view to reset slide transition
+    items.forEach((item) => {
+      item.classList.remove("in-view");
+    });
+    card.classList.remove("rooftop-card-pop");
+
+    // 2. Force DOM reflow
+    void card.offsetWidth;
+
+    // 3. Re-add in-view for smooth slide transition
+    items.forEach((item) => {
+      item.classList.add("in-view");
+    });
+
+    // 4. Trigger premium spring scale pop
+    card.classList.add("rooftop-card-pop");
+
+    setTimeout(() => {
+      card.classList.remove("rooftop-card-pop");
+    }, 1200);
+  };
+
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll, { passive: true });
   window.addEventListener("section-scrolled", onScroll);
+  window.addEventListener("animate-rooftop-card", onAnimateCard);
 
   return () => {
     clearTimeout(t1);
@@ -56,6 +91,7 @@ export function setupRooftopScrollAnimation() {
     window.removeEventListener("scroll", onScroll);
     window.removeEventListener("resize", onScroll);
     window.removeEventListener("section-scrolled", onScroll);
+    window.removeEventListener("animate-rooftop-card", onAnimateCard);
   };
 }
 

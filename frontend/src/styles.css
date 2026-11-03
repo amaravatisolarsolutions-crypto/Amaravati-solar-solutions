@@ -208,7 +208,7 @@
 
 /* =========================================================================
    Premium Rooftop Solar Scroll Slide Animations
-   Smooth right-to-left and left-to-right transitions on scroll
+   Smooth right-to-left and left-to-right transitions on scroll & pop
    ========================================================================= */
 .slide-rtl,
 .slide-ltr {
@@ -219,26 +219,47 @@
 /* Offset and hidden when animation is initialized on client and element is out of view */
 body.scroll-anim-ready .slide-rtl:not(.in-view) {
   opacity: 0;
-  transform: translateX(64px);
+  transform: translateX(64px) scale(0.96);
   pointer-events: none;
 }
 
 body.scroll-anim-ready .slide-ltr:not(.in-view) {
   opacity: 0;
-  transform: translateX(-64px);
+  transform: translateX(-64px) scale(0.96);
   pointer-events: none;
 }
 
-/* In-view state: perfectly positioned and visible */
+/* In-view state: perfectly positioned and visible with smooth slide & spring pop */
 body.scroll-anim-ready .slide-rtl.in-view,
 body.scroll-anim-ready .slide-ltr.in-view {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(0) scale(1);
   pointer-events: auto;
 }
 
 .slide-stagger {
   transition-delay: 90ms;
+}
+
+/* Premium Rooftop Card Spring Pop & Glow Highlight */
+@keyframes rooftopCardPop {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(8, 127, 193, 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 16px 36px rgba(8, 127, 193, 0.25);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(8, 43, 76, 0.08);
+  }
+}
+
+.rooftop-card-pop {
+  animation: rooftopCardPop 0.85s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+  will-change: transform, box-shadow;
 }
 
 /* =========================================================================

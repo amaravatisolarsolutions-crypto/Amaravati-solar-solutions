@@ -1,6 +1,7 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   ArrowRight,
+  Battery,
   Building2,
   ChevronDown,
   Clock,
@@ -10,6 +11,8 @@ import {
   Mail,
   Menu,
   Phone,
+  PlugZap,
+  SlidersHorizontal,
   Sparkles,
   X,
 } from "lucide-react";
@@ -46,6 +49,39 @@ export const SERVICE_SECTORS = [
   },
 ] as const;
 
+export const SOLAR_SOLUTIONS = [
+  {
+    title: "On - Grid Rooftop Solar",
+    shortTitle: "On-Grid",
+    targetId: "on-grid",
+    to: "/#on-grid",
+    subtitle: "Cut bills up to 90% with net-metering & zero battery costs",
+    tag: "Net-Metering",
+    icon: PlugZap,
+    accent: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+  },
+  {
+    title: "Off - Grid Rooftop Solar",
+    shortTitle: "Off-Grid",
+    targetId: "off-grid",
+    to: "/#off-grid",
+    subtitle: "100% self-reliance with high-capacity battery night backup",
+    tag: "100% Independence",
+    icon: Battery,
+    accent: "text-[#087FC1] bg-sky-500/10 border-sky-500/20",
+  },
+  {
+    title: "Hybrid Rooftop Solar",
+    shortTitle: "Hybrid",
+    targetId: "hybrid",
+    to: "/#hybrid",
+    subtitle: "24/7 power security with smart automatic battery switchover",
+    tag: "24/7 Power",
+    icon: SlidersHorizontal,
+    accent: "text-emerald-600 bg-emerald-500/10 border-emerald-500/20",
+  },
+] as const;
+
 export function SiteHeader() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -54,9 +90,11 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("home");
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [solutionsDropdownOpen, setSolutionsDropdownOpen] = useState(false);
   const isAutoScrollingRef = useRef(false);
   const scrollLockTimerRef = useRef<NodeJS.Timeout | null>(null);
   const servicesTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const solutionsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // ScrollSpy & sticky shadow
   useEffect(() => {
@@ -130,8 +168,38 @@ export function SiteHeader() {
     };
   }, []);
 
+  const handleSolutionClick = (e: React.MouseEvent, sol: (typeof SOLAR_SOLUTIONS)[number]) => {
+    e.preventDefault();
+    setSolutionsDropdownOpen(false);
+    setOpen(false);
+
+    const triggerAnimation = () => {
+      window.dispatchEvent(new CustomEvent("section-scrolled", { detail: sol.targetId }));
+      window.dispatchEvent(new CustomEvent("animate-rooftop-card", { detail: sol.targetId }));
+    };
+
+    if (pathname === "/") {
+      scrollToTarget(sol.targetId);
+      setActiveSection(sol.targetId);
+      setTimeout(triggerAnimation, 120);
+    } else {
+      navigate({ to: `/#${sol.targetId}` as any }).then(() => {
+        setTimeout(() => {
+          scrollToTarget(sol.targetId);
+          setActiveSection(sol.targetId);
+          triggerAnimation();
+        }, 220);
+      });
+    }
+  };
+
   const handleNavClick = (e: React.MouseEvent, item: (typeof NAV)[number]) => {
     const isHomePage = pathname === "/";
+
+    if (item.label === "Amaravati Solar Solution") {
+      handleSolutionClick(e, SOLAR_SOLUTIONS[0]);
+      return;
+    }
 
     if ("targetId" in item && item.targetId && ["on-grid", "off-grid", "hybrid", "home"].includes(item.targetId)) {
       e.preventDefault();
@@ -365,6 +433,106 @@ export function SiteHeader() {
                 );
               }
 
+              if (item.label === "Amaravati Solar Solution") {
+                const isSolarActive =
+                  activeSection === "on-grid" || activeSection === "off-grid" || activeSection === "hybrid";
+
+                return (
+                  <div
+                    key={item.label}
+                    className="relative flex items-center group"
+                    onMouseEnter={() => {
+                      if (solutionsTimeoutRef.current) clearTimeout(solutionsTimeoutRef.current);
+                      setSolutionsDropdownOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                      solutionsTimeoutRef.current = setTimeout(() => {
+                        setSolutionsDropdownOpen(false);
+                      }, 180);
+                    }}
+                  >
+                    <a
+                      href={item.to}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSolutionClick(e, SOLAR_SOLUTIONS[0]);
+                      }}
+                      className={cn(
+                        "relative px-2 xl:px-2.5 py-1.5 rounded-full text-[12.5px] xl:text-[13.5px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1",
+                        isSolarActive
+                          ? "bg-primary/10 text-primary font-bold border border-primary/25 shadow-sm"
+                          : "text-[#0c2340] hover:text-primary hover:bg-slate-100/80"
+                      )}
+                    >
+                      {isSolarActive && (
+                        <span className="size-1.5 rounded-full bg-primary animate-pulse shrink-0" />
+                      )}
+                      <span>{item.label}</span>
+                      <ChevronDown
+                        className={cn(
+                          "size-3.5 text-slate-400 transition-transform duration-200",
+                          solutionsDropdownOpen ? "rotate-180 text-primary" : "group-hover:rotate-180 group-hover:text-primary"
+                        )}
+                      />
+                    </a>
+
+                    {/* Premium Hover Dropdown Menu */}
+                    <div
+                      className={cn(
+                        "absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 transition-all duration-200",
+                        solutionsDropdownOpen
+                          ? "opacity-100 translate-y-0 pointer-events-auto visible"
+                          : "opacity-0 -translate-y-1.5 pointer-events-none invisible"
+                      )}
+                    >
+                      <div className="w-[330px] rounded-2xl bg-white/95 backdrop-blur-xl p-2 shadow-[0_20px_50px_rgba(8,43,76,0.20)] border border-slate-200/90 divide-y divide-slate-100">
+                        <div className="space-y-1 p-1">
+                          {SOLAR_SOLUTIONS.map((sol) => {
+                            const Icon = sol.icon;
+                            return (
+                              <a
+                                key={sol.targetId}
+                                href={sol.to}
+                                onClick={(e) => handleSolutionClick(e, sol)}
+                                className="flex items-center gap-3 p-2.5 rounded-xl transition-all duration-150 hover:bg-slate-50 active:scale-[0.98] group/item cursor-pointer text-left"
+                              >
+                                <div className={cn("grid size-9 shrink-0 place-items-center rounded-xl border transition-transform duration-200 group-hover/item:scale-105", sol.accent)}>
+                                  <Icon className="size-4.5" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center justify-between gap-1">
+                                    <span className="text-[13px] font-bold text-[#082B4C] group-hover/item:text-primary transition-colors">
+                                      {sol.title}
+                                    </span>
+                                    <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-600 group-hover/item:bg-primary/10 group-hover/item:text-primary transition-colors shrink-0">
+                                      {sol.tag}
+                                    </span>
+                                  </div>
+                                  <p className="text-[11px] text-slate-500 leading-tight truncate mt-0.5">
+                                    {sol.subtitle}
+                                  </p>
+                                </div>
+                              </a>
+                            );
+                          })}
+                        </div>
+
+                        <div className="pt-2 pb-1 px-1">
+                          <Link
+                            to="/services"
+                            onClick={() => setSolutionsDropdownOpen(false)}
+                            className="flex items-center justify-between w-full px-3 py-1.5 rounded-xl text-xs font-bold text-[#082B4C] hover:bg-primary/10 hover:text-primary transition-all group/all"
+                          >
+                            <span>Explore All Solar Architecture</span>
+                            <ArrowRight className="size-3.5 text-primary transition-transform duration-200 group-hover/all:translate-x-1" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <div key={item.label} className="flex items-center gap-0.5 xl:gap-1">
                   <a
@@ -469,6 +637,26 @@ export function SiteHeader() {
                             <Icon className="size-3.5 text-primary shrink-0" />
                             <span>{sec.title}</span>
                           </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Sub-items for Amaravati Solar Solution on mobile */}
+                  {item.label === "Amaravati Solar Solution" && (
+                    <div className="pl-4 pr-1 py-1 space-y-1 border-l-2 border-primary/20 ml-3.5 my-1">
+                      {SOLAR_SOLUTIONS.map((sol) => {
+                        const Icon = sol.icon;
+                        return (
+                          <a
+                            key={sol.targetId}
+                            href={sol.to}
+                            onClick={(e) => handleSolutionClick(e, sol)}
+                            className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors"
+                          >
+                            <Icon className="size-3.5 text-primary shrink-0" />
+                            <span>{sol.title}</span>
+                          </a>
                         );
                       })}
                     </div>
