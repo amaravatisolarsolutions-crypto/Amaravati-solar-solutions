@@ -14,49 +14,48 @@ export function SlideInCard({
   className = "",
   targetId,
 }: SlideInCardProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const node = ref.current;
+    const node = containerRef.current;
     if (!node) return;
 
-    // Check if element is already within viewport on mount
+    // Check if element is already within viewport on initial client mount
     const rect = node.getBoundingClientRect();
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.top < viewportHeight * 0.9 && rect.bottom > 0) {
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    if (rect.top < vh * 0.85 && rect.bottom > 0) {
       setIsVisible(true);
-      setIsDone(true);
-      return;
     }
 
+    // Continuous bidirectional IntersectionObserver:
+    // Triggers smooth slide-in every time the card scrolls into view,
+    // and resets silently when the card is completely outside the viewport.
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.04) {
             setIsVisible(true);
-            setTimeout(() => setIsDone(true), 950);
-            observer.unobserve(entry.target);
+          } else if (!entry.isIntersecting || entry.intersectionRatio === 0) {
+            setIsVisible(false);
           }
         });
       },
       {
-        threshold: 0.1,
-        rootMargin: "0px 0px -30px 0px",
+        threshold: [0, 0.05],
+        rootMargin: "0px",
       }
     );
 
     observer.observe(node);
 
-    // Listen to header/navbar direct anchor scroll events
+    // Header/navbar direct anchor scroll event support
     const onSectionScrolled = (e: Event) => {
       const customEvent = e as CustomEvent<string>;
       if (customEvent.detail && targetId && customEvent.detail === targetId) {
         setIsVisible(true);
-        setTimeout(() => setIsDone(true), 950);
       }
     };
     window.addEventListener("section-scrolled", onSectionScrolled);
@@ -67,47 +66,40 @@ export function SlideInCard({
     };
   }, [targetId]);
 
-  // Server-side rendering fallback: keep fully visible for SEO & prerender
+  // Server-side rendering / Prerender fallback: keep fully visible for SEO & prerender
   if (!mounted) {
     return (
-      <div ref={ref} className={cn("opacity-100 transform-none", className)}>
-        {children}
+      <div ref={containerRef} className={cn("overflow-x-clip w-full", className)}>
+        <div className="opacity-100 transform-none">{children}</div>
       </div>
     );
   }
 
-  // Once animation completes: remove transform & will-change for crisp rendering & zero GPU memory retention
-  if (isDone) {
-    return (
-      <div ref={ref} className={cn("opacity-100 transform-none transition-none", className)}>
-        {children}
-      </div>
-    );
-  }
-
-  // Animation classes
-  // right-to-left: starts offset to the right (+translate-x), slides into 0
-  // left-to-right: starts offset to the left (-translate-x), slides into 0
-  const initialTransformClass =
+  // Animation offsets:
+  // right-to-left: starts offset to the right (+X), slides in smoothly to the left
+  // left-to-right: starts offset to the left (-X), slides in smoothly to the right
+  const offsetClass =
     direction === "right-to-left"
-      ? "translate-x-12 sm:translate-x-16"
-      : "-translate-x-12 sm:-translate-x-16";
+      ? "translate-x-12 sm:translate-x-16 md:translate-x-20"
+      : "-translate-x-12 sm:-translate-x-16 md:-translate-x-20";
 
   return (
-    <div
-      ref={ref}
-      style={{
-        transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-      }}
-      className={cn(
-        "transition-all duration-700 md:duration-850 will-change-[transform,opacity]",
-        isVisible
-          ? "opacity-100 translate-x-0"
-          : cn("opacity-0", initialTransformClass),
-        className
-      )}
-    >
-      {children}
+    <div ref={containerRef} className={cn("overflow-x-clip w-full", className)}>
+      <div
+        style={{
+          transitionProperty: "transform, opacity",
+          transitionDuration: "800ms",
+          transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+        }}
+        className={cn(
+          "will-change-[transform,opacity] motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none",
+          isVisible
+            ? "opacity-100 translate-x-0"
+            : cn("opacity-0 pointer-events-none", offsetClass)
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }
