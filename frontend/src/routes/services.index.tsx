@@ -464,47 +464,29 @@ function AllServices() {
   const spotlight = SECTOR_SPOTLIGHTS[selectedCategory];
 
   return (
-    <div className="min-h-screen bg-slate-50/60 pb-16">
-      {/* Top Breadcrumb & Page Header - Compact & Screen-Fit */}
-      <section className="bg-white border-b border-slate-200/80 pt-3.5 pb-3.5 md:pt-4 md:pb-4 shadow-2xs">
+    <div className="min-h-screen bg-slate-50/60 pb-8">
+      {/* Top Breadcrumb & Page Header - Ultra Sleek & Space-Saving */}
+      <section className="bg-white border-b border-slate-200/80 py-2 sm:py-2.5 shadow-2xs">
         <div className="container-site">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-navy hover:text-primary transition-colors mb-2"
-          >
-            <ArrowLeft className="size-3.5 text-primary" /> Back to Home
-          </Link>
+          <div className="flex flex-wrap items-center justify-between gap-1.5 mb-1.5">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-navy hover:text-primary transition-colors"
+            >
+              <ArrowLeft className="size-3.5 text-primary" /> Back to Home
+            </Link>
 
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-            <div>
-              <div className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary mb-1">
-                <Sparkles className="size-3" /> RESIDENTIAL • COMMERCIAL • INDUSTRIAL
-              </div>
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#082B4C] tracking-tight">
-                Solar & Electrical Engineering Services
-              </h1>
-              <p className="mt-0.5 text-xs sm:text-sm text-slate-500 max-w-2xl leading-normal">
-                Explore custom rooftop systems, PM Surya Ghar subsidies, commercial ROI power plants, and industrial MW utility turnkeys.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2 shrink-0">
-              <Button asChild variant="cta" size="sm" className="h-8 px-3 text-xs shadow-2xs font-bold">
-                <Link to="/book-a-demo">Book Free Site Visit</Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="sm"
-                className="h-8 px-3 text-xs font-bold border-navy text-navy hover:bg-navy hover:text-white"
-              >
-                <Link to="/contact">Get A Quote</Link>
-              </Button>
+            <div className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold text-primary">
+              <Sparkles className="size-3" /> RESIDENTIAL • COMMERCIAL • INDUSTRIAL
             </div>
           </div>
 
+          <h1 className="text-lg sm:text-xl md:text-2xl font-black text-[#082B4C] tracking-tight">
+            Solar & Electrical Engineering Services
+          </h1>
+
           {/* Interactive Sector Filter Pills - Compact */}
-          <div className="mt-3.5 flex flex-wrap gap-1.5 sm:gap-2" role="tablist" aria-label="Filter Services by Sector">
+          <div className="mt-2 flex flex-wrap gap-1.5 sm:gap-2" role="tablist" aria-label="Filter Services by Sector">
             {TAB_CATEGORIES.map((tab) => {
               const Icon = tab.icon;
               const isSelected = selectedCategory === tab.id;
@@ -533,7 +515,7 @@ function AllServices() {
 
       {/* Dynamic Sector Spotlight Hero Banner - Horizontal, Compact & Screen-Fitting */}
       {spotlight && (
-        <section className="container-site pt-3 pb-1">
+        <section className="container-site pt-2 pb-0.5">
           <div
             key={spotlight.key}
             className={cn(
@@ -594,8 +576,8 @@ function AllServices() {
       )}
 
       {/* Services Grid Section with Compact Cards & Screen-Fitting Layout */}
-      <section className="container-site py-4 sm:py-6">
-        <div className="flex items-center justify-between mb-3">
+      <section className="container-site py-2 sm:py-3">
+        <div className="flex items-center justify-between mb-1.5">
           <div>
             <h2 className="text-base sm:text-lg font-extrabold text-[#082B4C]">
               {selectedCategory === "all" ? "All Solar & Energy Solutions" : `${spotlight?.name || selectedCategory} Services`}
