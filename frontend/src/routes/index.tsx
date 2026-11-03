@@ -7,6 +7,7 @@ import {
   ChevronRight,
   ClipboardCheck,
   ClipboardList,
+  Eye,
   FileText,
   HardHat,
   Headphones,
@@ -16,6 +17,7 @@ import {
   SlidersHorizontal,
   Sparkles,
   Sun,
+  Target,
   Users,
   Wrench,
 } from "lucide-react";
@@ -243,54 +245,109 @@ function Index() {
         </div>
       </section>
 
-      {/* 2. ABOUT US SECTION - Pop & Parallax Transitions */}
-      <section id="about" className="bg-navy py-5 md:py-7 scroll-mt-28">
-        <div className="container-site grid items-center gap-6 lg:grid-cols-2 lg:gap-10">
-          <div className="scroll-pop scroll-pop-1">
-            <p className="eyebrow text-gold">Why us</p>
-            <h2 className="mt-1.5 text-2xl font-extrabold text-navy-foreground sm:text-3xl md:text-4xl">
-              Why Choose Amaravati Solar Solutions?
+      {/* 2. ABOUT US SECTION - Clean Image-Free Design matching exact user specification */}
+      <section id="about" className="bg-gradient-to-b from-[#082B4C] via-[#093259] to-[#082B4C] py-8 sm:py-12 md:py-16 text-white scroll-mt-28">
+        <div className="container-site max-w-5xl">
+          {/* Main About Statement */}
+          <div className="text-center scroll-pop scroll-pop-1 mb-8 sm:mb-12">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1 text-xs font-black text-gold uppercase tracking-wider mb-3 border border-white/15">
+              <Sparkles className="size-3.5" /> Amaravati Solar Solutions
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
+              ABOUT
             </h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {WHY.map(({ icon: Icon, title, text }, i) => (
-                <div key={title} className={`scroll-pop scroll-pop-${i + 1} flex gap-3 parallax-card p-2 rounded-xl transition-all`}>
-                  <div className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary/15 text-gold">
-                    <Icon className="size-4" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-navy-foreground">{title}</h3>
-                    <p className="mt-0.5 text-xs text-navy-foreground/70 text-left md:text-justify">{text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Button asChild variant="cta" size="sm">
-                <Link to="/about">
-                  More About Our Company <ArrowRight className="size-3.5" />
-                </Link>
-              </Button>
-              <Button asChild variant="heroOutline" size="sm">
-                <Link to="/book-a-demo">Book Free Site Visit</Link>
-              </Button>
+            <p className="mt-3 text-xl sm:text-2xl md:text-3xl font-extrabold text-white/95 leading-snug max-w-3xl mx-auto">
+              We don't just install solar. We create a smarter way to power life.
+            </p>
+            <div className="mt-5 max-w-3xl mx-auto text-left bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 sm:p-6 flex items-start gap-3">
+              <span className="size-2 rounded-full bg-[#B83A16] mt-2 shrink-0" />
+              <p className="text-sm sm:text-base text-white/85 leading-relaxed">
+                At Amaravati Solar Solutions, we believe the future of energy should be efficient, dependable, and sustainable. Our approach combines thoughtful solar system design, quality components, precision installation, and end-to-end customer support to deliver solutions built around the needs of every customer.
+              </p>
             </div>
           </div>
-          <div className="relative overflow-hidden rounded-2xl shadow-lift parallax-wrap group scroll-pop scroll-pop-2">
-            <img
-              src={installation}
-              alt="Technicians installing rooftop solar panels"
-              width={1600}
-              height={1072}
-              loading="lazy"
-              data-parallax
-              data-parallax-rate="0.10"
-              className="parallax-img aspect-[16/10] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent opacity-60" />
-            <div className="absolute -bottom-2 sm:-bottom-4 -left-2 sm:-left-3 hidden rounded-xl bg-background/95 backdrop-blur-md p-3.5 shadow-lift sm:block border border-slate-200/80 parallax-card">
-              <p className="eyebrow text-[10px] text-primary font-bold">Our promise</p>
-              <p className="mt-0.5 text-sm font-bold text-navy">Honest advice, quality work.</p>
+
+          {/* Vision & Mission Cards Grid */}
+          <div className="grid gap-5 md:grid-cols-2">
+            {/* Our Vision Card */}
+            <div className="rounded-2xl bg-white/5 backdrop-blur-md border border-white/15 p-6 sm:p-8 flex flex-col justify-between scroll-pop scroll-pop-2 hover:bg-white/10 transition-all duration-300">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="grid size-10 place-items-center rounded-xl bg-white/10 text-gold">
+                    <Eye className="size-5" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white tracking-tight">
+                    Our Vision
+                  </h3>
+                </div>
+                <ul className="space-y-3.5 text-sm sm:text-[15px] text-white/85 leading-relaxed">
+                  <li className="flex items-start gap-2.5">
+                    <span className="size-2 rounded-full bg-gold mt-2 shrink-0" />
+                    <span className="font-extrabold text-white">
+                      To redefine the way people experience energy.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="size-2 rounded-full bg-gold mt-2 shrink-0" />
+                    <span className="text-white/80">
+                      We envision a future where every suitable rooftop becomes a source of clean power, every household has greater control over its energy costs, and sustainability becomes a natural part of everyday living.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="size-2 rounded-full bg-gold mt-2 shrink-0" />
+                    <span className="text-white/80">
+                      Our ambition is to build a trusted solar brand that stands for engineering excellence, lasting reliability, and a cleaner tomorrow.
+                    </span>
+                  </li>
+                </ul>
+              </div>
             </div>
+
+            {/* Our Mission Card */}
+            <div className="rounded-2xl bg-white/5 backdrop-blur-md border border-white/15 p-6 sm:p-8 flex flex-col justify-between scroll-pop scroll-pop-3 hover:bg-white/10 transition-all duration-300">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="grid size-10 place-items-center rounded-xl bg-[#B83A16]/20 text-[#D9531E]">
+                    <Target className="size-5" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white tracking-tight">
+                    Our Mission
+                  </h3>
+                </div>
+                <ul className="space-y-4 text-sm sm:text-[15px] text-white/85 leading-relaxed">
+                  <li className="flex items-start gap-2.5">
+                    <span className="size-2 rounded-full bg-[#D9531E] mt-2 shrink-0" />
+                    <div>
+                      <p className="font-extrabold text-white">
+                        To make the transition to solar simple, seamless, and worthwhile.
+                      </p>
+                      <p className="mt-1 text-white/80">
+                        To accelerate the transition towards clean energy by making solar power accessible and reliable, reducing environmental impact, and inspiring communities to embrace a greener, more sustainable future.
+                      </p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="size-2 rounded-full bg-[#D9531E] mt-2 shrink-0" />
+                    <span className="font-extrabold text-white">
+                      Together, building a greener society for generations to come
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Action CTA */}
+          <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-3.5 scroll-pop scroll-pop-4">
+            <Button asChild variant="cta" className="rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white px-7 py-3 text-sm font-bold shadow-md">
+              <Link to="/about">
+                <span>More About Our Company</span>
+                <ArrowRight className="size-4 ml-1.5" />
+              </Link>
+            </Button>
+            <Button asChild variant="heroOutline" className="rounded-[30px] border-white/40 text-white hover:bg-white/10 px-6 py-3 text-sm font-bold">
+              <Link to="/contact">Contact Us</Link>
+            </Button>
           </div>
         </div>
       </section>
