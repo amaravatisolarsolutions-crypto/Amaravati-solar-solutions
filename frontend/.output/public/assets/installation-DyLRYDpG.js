@@ -1,0 +1,1 @@
+var e=`/assets/installation-d4wOePUh.jpg`;export{e as t};
