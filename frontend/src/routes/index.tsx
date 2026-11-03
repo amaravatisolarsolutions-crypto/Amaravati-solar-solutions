@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeroCarousel } from "@/components/site/HeroCarousel";
 import { SectionHeading } from "@/components/site/Sections";
+import { SlideInCard } from "@/components/site/SlideInCard";
 import { PROJECTS, type ProjectCategory } from "@/lib/site-data";
 import { scrollToTarget } from "@/lib/scroll-utils";
 import { cn } from "@/lib/utils";
@@ -271,98 +272,31 @@ function Index() {
       </div>
 
       {/* 3. A) ON-GRID ROOFTOP SOLAR SYSTEMS */}
-      <section id="on-grid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28">
-        <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2">
-          <div className="flex flex-col justify-center">
-            <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-xs font-bold text-primary">
-              <PlugZap className="size-3.5" /> A) On - Grid Rooftop Solar
-            </span>
-            <h2 className="mt-2 text-xl font-extrabold text-navy sm:text-2xl md:text-3xl">
-              A) On - Grid Rooftop Solar Systems
-            </h2>
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm text-left md:text-justify">
-              An on-grid rooftop system works alongside your existing utility connection. Solar power is used first during daylight, and surplus energy is exported back to the grid through net-metering to drastically cut monthly electricity bills.
-            </p>
-            <ul className="mt-3.5 grid grid-cols-1 gap-2 text-xs font-semibold text-slate-700 sm:grid-cols-2">
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-primary" /> Drastic electricity bill reduction
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-primary" /> Government subsidy & net-metering
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-primary" /> No costly battery maintenance
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-primary" /> Fastest return on investment (ROI)
-              </li>
-            </ul>
-            <div className="mt-4 flex flex-wrap gap-2.5">
-              <Button asChild variant="cta" size="sm">
-                <Link to="/book-a-demo">
-                  Book Free Site Visit <ArrowRight className="size-3.5" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="sm">
-                <Link to="/contact">Get A Quote</Link>
-              </Button>
-            </div>
-          </div>
-          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
-            <img
-              src={residential}
-              alt="On-grid solar installation"
-              width={1600}
-              height={1072}
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-            />
-            <span className="absolute bottom-3 left-3 rounded-full bg-navy/90 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-white z-10">
-              Ideal for Homes & Offices
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. B) OFF-GRID ROOFTOP SOLAR SYSTEMS */}
-      <section id="off-grid" className="bg-surface py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28">
-        <div className="container-site">
+      <section id="on-grid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
+        <SlideInCard direction="right-to-left" targetId="on-grid">
           <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2">
-            <div className="order-2 lg:order-1 relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
-              <img
-                src={future}
-                alt="Off-grid solar installation"
-                width={1600}
-                height={1072}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-              />
-              <span className="absolute bottom-3 left-3 rounded-full bg-navy/90 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-white z-10">
-                100% Energy Independence
-              </span>
-            </div>
-            <div className="order-1 lg:order-2 flex flex-col justify-center">
-              <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-sun/15 px-3 py-0.5 text-xs font-bold text-navy">
-                <Battery className="size-3.5 text-sun" /> B) Off - Grid Rooftop Solar
+            <div className="flex flex-col justify-center">
+              <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-xs font-bold text-primary">
+                <PlugZap className="size-3.5" /> A) On - Grid Rooftop Solar
               </span>
               <h2 className="mt-2 text-xl font-extrabold text-navy sm:text-2xl md:text-3xl">
-                B) Off - Grid Rooftop Solar Systems
+                A) On - Grid Rooftop Solar Systems
               </h2>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm text-left md:text-justify">
-                Off-grid rooftop systems combine high-grade solar panels with battery storage, generating and storing your own electricity independent of the utility company. Ideal for farmhouses, resorts, and remote areas with frequent power cuts.
+                An on-grid rooftop system works alongside your existing utility connection. Solar power is used first during daylight, and surplus energy is exported back to the grid through net-metering to drastically cut monthly electricity bills.
               </p>
               <ul className="mt-3.5 grid grid-cols-1 gap-2 text-xs font-semibold text-slate-700 sm:grid-cols-2">
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 shrink-0 text-sun" /> Complete energy self-reliance
+                  <CheckCircle2 className="size-3.5 shrink-0 text-primary" /> Drastic electricity bill reduction
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 shrink-0 text-sun" /> High-capacity battery night backup
+                  <CheckCircle2 className="size-3.5 shrink-0 text-primary" /> Government subsidy & net-metering
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 shrink-0 text-sun" /> Zero dependence on the grid
+                  <CheckCircle2 className="size-3.5 shrink-0 text-primary" /> No costly battery maintenance
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="size-3.5 shrink-0 text-sun" /> Reliable in remote locations
+                  <CheckCircle2 className="size-3.5 shrink-0 text-primary" /> Fastest return on investment (ROI)
                 </li>
               </ul>
               <div className="mt-4 flex flex-wrap gap-2.5">
@@ -376,62 +310,135 @@ function Index() {
                 </Button>
               </div>
             </div>
+            <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
+              <img
+                src={residential}
+                alt="On-grid solar installation"
+                width={1600}
+                height={1072}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+              <span className="absolute bottom-3 left-3 rounded-full bg-navy/90 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-white z-10">
+                Ideal for Homes & Offices
+              </span>
+            </div>
           </div>
+        </SlideInCard>
+      </section>
+
+      {/* 4. B) OFF-GRID ROOFTOP SOLAR SYSTEMS */}
+      <section id="off-grid" className="bg-surface py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
+        <div className="container-site">
+          <SlideInCard direction="left-to-right" targetId="off-grid">
+            <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2">
+              <div className="order-2 lg:order-1 relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
+                <img
+                  src={future}
+                  alt="Off-grid solar installation"
+                  width={1600}
+                  height={1072}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                />
+                <span className="absolute bottom-3 left-3 rounded-full bg-navy/90 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-white z-10">
+                  100% Energy Independence
+                </span>
+              </div>
+              <div className="order-1 lg:order-2 flex flex-col justify-center">
+                <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-sun/15 px-3 py-0.5 text-xs font-bold text-navy">
+                  <Battery className="size-3.5 text-sun" /> B) Off - Grid Rooftop Solar
+                </span>
+                <h2 className="mt-2 text-xl font-extrabold text-navy sm:text-2xl md:text-3xl">
+                  B) Off - Grid Rooftop Solar Systems
+                </h2>
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm text-left md:text-justify">
+                  Off-grid rooftop systems combine high-grade solar panels with battery storage, generating and storing your own electricity independent of the utility company. Ideal for farmhouses, resorts, and remote areas with frequent power cuts.
+                </p>
+                <ul className="mt-3.5 grid grid-cols-1 gap-2 text-xs font-semibold text-slate-700 sm:grid-cols-2">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="size-3.5 shrink-0 text-sun" /> Complete energy self-reliance
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="size-3.5 shrink-0 text-sun" /> High-capacity battery night backup
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="size-3.5 shrink-0 text-sun" /> Zero dependence on the grid
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="size-3.5 shrink-0 text-sun" /> Reliable in remote locations
+                  </li>
+                </ul>
+                <div className="mt-4 flex flex-wrap gap-2.5">
+                  <Button asChild variant="cta" size="sm">
+                    <Link to="/book-a-demo">
+                      Book Free Site Visit <ArrowRight className="size-3.5" />
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm">
+                    <Link to="/contact">Get A Quote</Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </SlideInCard>
         </div>
       </section>
 
       {/* 5. C) HYBRID ROOFTOP SOLAR SYSTEMS */}
-      <section id="hybrid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28">
-        <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2">
-          <div className="flex flex-col justify-center">
-            <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-solar-blue/15 px-3 py-0.5 text-xs font-bold text-solar-blue">
-              <SlidersHorizontal className="size-3.5" /> C) Hybrid Rooftop Solar
-            </span>
-            <h2 className="mt-2 text-xl font-extrabold text-navy sm:text-2xl md:text-3xl">
-              C) Hybrid Rooftop Solar Systems
-            </h2>
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm text-left md:text-justify">
-              Hybrid systems deliver uninterrupted energy around the clock. Export surplus electricity to the grid for savings during regular times, and enjoy instant, automatic switchover to battery storage during unexpected blackouts.
-            </p>
-            <ul className="mt-3.5 grid grid-cols-1 gap-2 text-xs font-semibold text-slate-700 sm:grid-cols-2">
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-solar-blue" /> Uninterrupted power 24/7
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-solar-blue" /> Smart automatic power switching
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-solar-blue" /> Net-metering export enabled
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="size-3.5 shrink-0 text-solar-blue" /> Scalable modern lithium batteries
-              </li>
-            </ul>
-            <div className="mt-4 flex flex-wrap gap-2.5">
-              <Button asChild variant="cta" size="sm">
-                <Link to="/book-a-demo">
-                  Book Free Site Visit <ArrowRight className="size-3.5" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="sm">
-                <Link to="/contact">Get A Quote</Link>
-              </Button>
+      <section id="hybrid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
+        <SlideInCard direction="right-to-left" targetId="hybrid">
+          <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2">
+            <div className="flex flex-col justify-center">
+              <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-solar-blue/15 px-3 py-0.5 text-xs font-bold text-solar-blue">
+                <SlidersHorizontal className="size-3.5" /> C) Hybrid Rooftop Solar
+              </span>
+              <h2 className="mt-2 text-xl font-extrabold text-navy sm:text-2xl md:text-3xl">
+                C) Hybrid Rooftop Solar Systems
+              </h2>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm text-left md:text-justify">
+                Hybrid systems deliver uninterrupted energy around the clock. Export surplus electricity to the grid for savings during regular times, and enjoy instant, automatic switchover to battery storage during unexpected blackouts.
+              </p>
+              <ul className="mt-3.5 grid grid-cols-1 gap-2 text-xs font-semibold text-slate-700 sm:grid-cols-2">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 shrink-0 text-solar-blue" /> Uninterrupted power 24/7
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 shrink-0 text-solar-blue" /> Smart automatic power switching
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 shrink-0 text-solar-blue" /> Net-metering export enabled
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="size-3.5 shrink-0 text-solar-blue" /> Scalable modern lithium batteries
+                </li>
+              </ul>
+              <div className="mt-4 flex flex-wrap gap-2.5">
+                <Button asChild variant="cta" size="sm">
+                  <Link to="/book-a-demo">
+                    Book Free Site Visit <ArrowRight className="size-3.5" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="sm">
+                  <Link to="/contact">Get A Quote</Link>
+                </Button>
+              </div>
+            </div>
+            <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
+              <img
+                src={installation}
+                alt="Hybrid solar installation"
+                width={1600}
+                height={1072}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+              <span className="absolute bottom-3 left-3 rounded-full bg-navy/90 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-white z-10">
+                Smart 24/7 Power Security
+              </span>
             </div>
           </div>
-          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
-            <img
-              src={installation}
-              alt="Hybrid solar installation"
-              width={1600}
-              height={1072}
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-            />
-            <span className="absolute bottom-3 left-3 rounded-full bg-navy/90 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-white z-10">
-              Smart 24/7 Power Security
-            </span>
-          </div>
-        </div>
+        </SlideInCard>
 
         {/* View All Services Button */}
         <div className="mt-6 flex justify-center">
