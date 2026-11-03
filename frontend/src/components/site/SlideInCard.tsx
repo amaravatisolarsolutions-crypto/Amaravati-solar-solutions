@@ -1,5 +1,19 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+
+interface SlideInContextType {
+  isVisible: boolean;
+  direction: "right-to-left" | "left-to-right";
+}
+
+const SlideInContext = createContext<SlideInContextType>({
+  isVisible: false,
+  direction: "right-to-left",
+});
+
+export function useSlideIn() {
+  return useContext(SlideInContext);
+}
 
 interface SlideInCardProps {
   direction: "right-to-left" | "left-to-right";
@@ -23,35 +37,35 @@ export function SlideInCard({
     const node = containerRef.current;
     if (!node) return;
 
-    // Check if element is already within viewport on initial client mount
-    const rect = node.getBoundingClientRect();
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.top < vh * 0.85 && rect.bottom > 0) {
-      setIsVisible(true);
-    }
+    let rafId: number | null = null;
 
-    // Continuous bidirectional IntersectionObserver:
-    // Triggers smooth slide-in every time the card scrolls into view,
-    // and resets silently when the card is completely outside the viewport.
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.04) {
-            setIsVisible(true);
-          } else if (!entry.isIntersecting || entry.intersectionRatio === 0) {
-            setIsVisible(false);
-          }
-        });
-      },
-      {
-        threshold: [0, 0.05],
-        rootMargin: "0px",
-      }
-    );
+    const updateVisibility = () => {
+      if (!node) return;
+      const rect = node.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
 
-    observer.observe(node);
+      // An element enters view when its top edge is inside the viewport (vh - 50px)
+      // and resets when it is completely out of the viewport (either above or below).
+      const inView = rect.top < vh - 50 && rect.bottom > 50;
+      setIsVisible(inView);
+    };
 
-    // Header/navbar direct anchor scroll event support
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        updateVisibility();
+        rafId = null;
+      });
+    };
+
+    // Run check immediately on mount and on the following frame
+    updateVisibility();
+    const timer = setTimeout(updateVisibility, 150);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+
+    // Anchor navigation click trigger
     const onSectionScrolled = (e: Event) => {
       const customEvent = e as CustomEvent<string>;
       if (customEvent.detail && targetId && customEvent.detail === targetId) {
@@ -61,45 +75,70 @@ export function SlideInCard({
     window.addEventListener("section-scrolled", onSectionScrolled);
 
     return () => {
-      observer.disconnect();
+      clearTimeout(timer);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
       window.removeEventListener("section-scrolled", onSectionScrolled);
     };
   }, [targetId]);
 
-  // Server-side rendering / Prerender fallback: keep fully visible for SEO & prerender
+  // SSR / Prerender fallback: keep fully visible for SEO & prerender crawlers
   if (!mounted) {
     return (
-      <div ref={containerRef} className={cn("overflow-x-clip w-full", className)}>
-        <div className="opacity-100 transform-none">{children}</div>
-      </div>
+      <SlideInContext.Provider value={{ isVisible: true, direction }}>
+        <div ref={containerRef} className={cn("overflow-x-clip w-full", className)}>
+          <div className="opacity-100 transform-none">{children}</div>
+        </div>
+      </SlideInContext.Provider>
     );
   }
 
-  // Animation offsets:
-  // right-to-left: starts offset to the right (+X), slides in smoothly to the left
-  // left-to-right: starts offset to the left (-X), slides in smoothly to the right
+  return (
+    <SlideInContext.Provider value={{ isVisible, direction }}>
+      <div ref={containerRef} className={cn("overflow-x-clip w-full", className)}>
+        {children}
+      </div>
+    </SlideInContext.Provider>
+  );
+}
+
+export function SlideInItem({
+  children,
+  className = "",
+  delayMs = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delayMs?: number;
+}) {
+  const { isVisible, direction } = useSlideIn();
+
+  // Offset distance:
+  // right-to-left: starts offset to the right (+X), glides left to 0
+  // left-to-right: starts offset to the left (-X), glides right to 0
   const offsetClass =
     direction === "right-to-left"
       ? "translate-x-12 sm:translate-x-16 md:translate-x-20"
       : "-translate-x-12 sm:-translate-x-16 md:-translate-x-20";
 
   return (
-    <div ref={containerRef} className={cn("overflow-x-clip w-full", className)}>
-      <div
-        style={{
-          transitionProperty: "transform, opacity",
-          transitionDuration: "800ms",
-          transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
-        }}
-        className={cn(
-          "will-change-[transform,opacity] motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none",
-          isVisible
-            ? "opacity-100 translate-x-0"
-            : cn("opacity-0 pointer-events-none", offsetClass)
-        )}
-      >
-        {children}
-      </div>
+    <div
+      style={{
+        transitionProperty: "transform, opacity",
+        transitionDuration: "800ms",
+        transitionDelay: `${delayMs}ms`,
+        transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
+      className={cn(
+        "will-change-[transform,opacity] transition-all motion-reduce:transform-none motion-reduce:opacity-100 motion-reduce:transition-none",
+        isVisible
+          ? "opacity-100 translate-x-0"
+          : cn("opacity-0 pointer-events-none", offsetClass),
+        className
+      )}
+    >
+      {children}
     </div>
   );
 }

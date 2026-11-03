@@ -903,7 +903,9 @@ $htmlCandidates = [
 foreach ($htmlCandidates as $htmlFile) {
     if (file_exists($htmlFile) && is_file($htmlFile) && filesize($htmlFile) > 100) {
         header('Content-Type: text/html; charset=UTF-8');
-        header('Cache-Control: public, max-age=3600');
+        header('Cache-Control: no-cache, no-store, must-revalidate, max-age=0');
+        header('Pragma: no-cache');
+        header('Expires: 0');
         readfile($htmlFile);
         exit;
     }

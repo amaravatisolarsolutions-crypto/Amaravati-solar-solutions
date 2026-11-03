@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeroCarousel } from "@/components/site/HeroCarousel";
 import { SectionHeading } from "@/components/site/Sections";
-import { SlideInCard } from "@/components/site/SlideInCard";
+import { SlideInCard, SlideInItem } from "@/components/site/SlideInCard";
 import { PROJECTS, type ProjectCategory } from "@/lib/site-data";
 import { scrollToTarget } from "@/lib/scroll-utils";
 import { cn } from "@/lib/utils";
@@ -274,8 +274,8 @@ function Index() {
       {/* 3. A) ON-GRID ROOFTOP SOLAR SYSTEMS */}
       <section id="on-grid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
         <SlideInCard direction="right-to-left" targetId="on-grid">
-          <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2">
-            <div className="flex flex-col justify-center">
+          <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2 overflow-hidden">
+            <SlideInItem delayMs={0} className="flex flex-col justify-center">
               <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-xs font-bold text-primary">
                 <PlugZap className="size-3.5" /> A) On - Grid Rooftop Solar
               </span>
@@ -309,8 +309,8 @@ function Index() {
                   <Link to="/contact">Get A Quote</Link>
                 </Button>
               </div>
-            </div>
-            <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
+            </SlideInItem>
+            <SlideInItem delayMs={80} className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
               <img
                 src={residential}
                 alt="On-grid solar installation"
@@ -322,7 +322,7 @@ function Index() {
               <span className="absolute bottom-3 left-3 rounded-full bg-navy/90 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-white z-10">
                 Ideal for Homes & Offices
               </span>
-            </div>
+            </SlideInItem>
           </div>
         </SlideInCard>
       </section>
@@ -331,8 +331,8 @@ function Index() {
       <section id="off-grid" className="bg-surface py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
         <div className="container-site">
           <SlideInCard direction="left-to-right" targetId="off-grid">
-            <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2">
-              <div className="order-2 lg:order-1 relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
+            <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2 overflow-hidden">
+              <SlideInItem delayMs={0} className="order-2 lg:order-1 relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
                 <img
                   src={future}
                   alt="Off-grid solar installation"
@@ -344,8 +344,8 @@ function Index() {
                 <span className="absolute bottom-3 left-3 rounded-full bg-navy/90 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-white z-10">
                   100% Energy Independence
                 </span>
-              </div>
-              <div className="order-1 lg:order-2 flex flex-col justify-center">
+              </SlideInItem>
+              <SlideInItem delayMs={80} className="order-1 lg:order-2 flex flex-col justify-center">
                 <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-sun/15 px-3 py-0.5 text-xs font-bold text-navy">
                   <Battery className="size-3.5 text-sun" /> B) Off - Grid Rooftop Solar
                 </span>
@@ -379,7 +379,7 @@ function Index() {
                     <Link to="/contact">Get A Quote</Link>
                   </Button>
                 </div>
-              </div>
+              </SlideInItem>
             </div>
           </SlideInCard>
         </div>
@@ -388,8 +388,8 @@ function Index() {
       {/* 5. C) HYBRID ROOFTOP SOLAR SYSTEMS */}
       <section id="hybrid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
         <SlideInCard direction="right-to-left" targetId="hybrid">
-          <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2">
-            <div className="flex flex-col justify-center">
+          <div className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2 overflow-hidden">
+            <SlideInItem delayMs={0} className="flex flex-col justify-center">
               <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-solar-blue/15 px-3 py-0.5 text-xs font-bold text-solar-blue">
                 <SlidersHorizontal className="size-3.5" /> C) Hybrid Rooftop Solar
               </span>
@@ -423,8 +423,8 @@ function Index() {
                   <Link to="/contact">Get A Quote</Link>
                 </Button>
               </div>
-            </div>
-            <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
+            </SlideInItem>
+            <SlideInItem delayMs={80} className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
               <img
                 src={installation}
                 alt="Hybrid solar installation"
@@ -436,7 +436,7 @@ function Index() {
               <span className="absolute bottom-3 left-3 rounded-full bg-navy/90 backdrop-blur px-2.5 py-0.5 text-[11px] font-bold text-white z-10">
                 Smart 24/7 Power Security
               </span>
-            </div>
+            </SlideInItem>
           </div>
         </SlideInCard>
 
