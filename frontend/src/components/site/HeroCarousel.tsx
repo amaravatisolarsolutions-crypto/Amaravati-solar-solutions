@@ -76,7 +76,7 @@ export function HeroCarousel() {
             className={cn("h-full w-full object-cover transition-transform duration-[6000ms] ease-out", i === index ? "scale-105" : "scale-100")}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/35 sm:bg-hero-overlay" />
-          <div className="absolute inset-0 flex items-center pt-0 pb-12 sm:pb-16">
+          <div className="absolute inset-0 flex items-start pt-3 sm:pt-5 md:pt-6 lg:pt-8 pb-12 sm:pb-16">
             <div className="container-site px-4 sm:px-6">
               {i === index && (
                 <div className="max-w-[320px] sm:max-w-2xl lg:max-w-3xl">
