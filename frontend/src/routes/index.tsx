@@ -671,41 +671,41 @@ function Index() {
       </section>
 
       {/* 5. POWERCARE SECTION - 5 YEARS OF COMPREHENSIVE SOLAR CARE */}
-      <section id="powercare" className="scroll-mt-20 sm:scroll-mt-24 py-8 sm:py-12 md:py-16 bg-gradient-to-b from-white via-slate-50/70 to-white border-t border-b border-slate-200/80">
+      <section id="powercare" className="scroll-mt-20 sm:scroll-mt-24 py-5 sm:py-8 md:py-10 bg-gradient-to-b from-white via-slate-50/70 to-white border-t border-b border-slate-200/80">
         <div className="container-site px-3.5 sm:px-6 lg:px-8">
           {/* Eyebrow & Section Heading */}
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#B83A16]/10 px-3 py-1 text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#B83A16] border border-[#B83A16]/20">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#B83A16]/10 px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-[#B83A16] border border-[#B83A16]/20">
               <ShieldCheck className="size-3.5" />
               <span>5 YEARS COMPREHENSIVE SOLAR CARE</span>
             </div>
-            <h2 className="mt-3 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#0B2B4C] tracking-tight">
+            <h2 className="mt-1.5 text-xl sm:text-2xl md:text-3xl font-black text-[#0B2B4C] tracking-tight">
               Power Care
             </h2>
-            <p className="mt-3 text-sm sm:text-base md:text-lg text-[#53647C] leading-relaxed font-medium">
+            <p className="mt-1 text-xs sm:text-[13.5px] md:text-sm text-[#53647C] leading-snug font-normal max-w-2xl">
               More than routine maintenance, <strong className="text-[#B83A16] font-bold">PowerCare</strong> is our commitment to keeping your solar system in top condition. Through dedicated structural, electrical, and mechanical inspections, preventive maintenance, and reliable service support, we help maintain system safety, reliability, and long-term performance.
             </p>
-            <p className="mt-2 text-xs sm:text-sm md:text-base font-extrabold text-[#0756B9]">
+            <p className="mt-1 text-xs sm:text-sm font-extrabold text-[#0756B9]">
               Complete Care. Reliable Power. Greener Tomorrow.
             </p>
           </div>
 
-          {/* Main Visual Poster Image (Image 3) */}
-          <div className="mt-6 sm:mt-8 rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_16px_40px_rgba(11,43,76,0.14)] border border-slate-200/90 bg-slate-900 group relative">
+          {/* Main Visual Poster Image (Image 3) - reduced compact size */}
+          <div className="mt-4 sm:mt-5 max-w-xl md:max-w-2xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_10px_28px_rgba(11,43,76,0.12)] border border-slate-200/90 bg-slate-900 group relative">
             <img
               src={powerCareBanner}
               alt="PowerCare 5 Years of Comprehensive Solar Care - Amaravati Solar Solutions"
-              className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.01]"
+              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.01]"
               loading="lazy"
             />
             {/* Overlay button to open full modal */}
-            <div className="absolute top-3 right-3 sm:top-5 sm:right-5">
+            <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3">
               <button
                 type="button"
                 onClick={() => setIsPowerCareModalOpen(true)}
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#0B2B4C]/85 hover:bg-[#0B2B4C] px-3.5 py-1.5 text-xs font-bold text-white shadow-lg backdrop-blur cursor-pointer transition-all active:scale-95"
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#0B2B4C]/85 hover:bg-[#0B2B4C] px-2.5 py-1 text-[11px] font-bold text-white shadow-md backdrop-blur cursor-pointer transition-all active:scale-95"
               >
-                <Eye className="size-3.5" />
+                <Eye className="size-3" />
                 <span>View Full Brochure</span>
               </button>
             </div>
@@ -948,11 +948,11 @@ function Index() {
           onClick={() => setIsPowerCareModalOpen(false)}
         >
           <div
-            className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 flex flex-col"
+            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Sticky Header with Title and Close Button */}
-            <div className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white/95 px-5 sm:px-7 py-3.5 sm:py-4 backdrop-blur">
+            <div className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white/95 px-4 sm:px-6 py-3 sm:py-3.5 backdrop-blur">
               <div className="flex items-center gap-2.5">
                 <div className="grid size-8 sm:size-9 place-items-center rounded-lg bg-[#B83A16]/10 text-[#B83A16]">
                   <ShieldCheck className="size-5" />
@@ -969,42 +969,42 @@ function Index() {
               <button
                 type="button"
                 onClick={() => setIsPowerCareModalOpen(false)}
-                className="grid size-9 place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-900 transition-colors cursor-pointer"
+                className="grid size-8 sm:size-9 place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-900 transition-colors cursor-pointer"
                 aria-label="Close PowerCare modal"
               >
-                <X className="size-5" />
+                <X className="size-4 sm:size-5" />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="p-4 sm:p-6 lg:p-7 space-y-6">
-              {/* Full Image 3 Poster Graphic */}
-              <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200 shadow-md bg-slate-900">
+            <div className="p-4 sm:p-5 space-y-4">
+              {/* Full Image 3 Poster Graphic - compact */}
+              <div className="max-w-2xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200 shadow-md bg-slate-900">
                 <img
                   src={powerCareBanner}
                   alt="Amaravati Solar Solutions - PowerCare 5 Years of Comprehensive Solar Care"
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-contain"
                 />
               </div>
 
               {/* Exact Text from Image 2 */}
-              <div className="rounded-2xl bg-gradient-to-br from-[#0B2B4C]/5 via-[#0756B9]/5 to-transparent p-5 sm:p-6 border border-slate-200/80">
-                <h4 className="text-lg sm:text-xl font-black text-[#0B2B4C]">
+              <div className="max-w-2xl mx-auto rounded-xl bg-gradient-to-br from-[#0B2B4C]/5 via-[#0756B9]/5 to-transparent p-4 sm:p-5 border border-slate-200/80">
+                <h4 className="text-base sm:text-lg font-black text-[#0B2B4C]">
                   Power Care
                 </h4>
-                <ul className="mt-3 space-y-2.5 text-xs sm:text-sm md:text-base text-[#53647C] leading-relaxed">
-                  <li className="flex items-start gap-2.5 font-bold text-[#0B2B4C]">
-                    <span className="text-[#B83A16] font-black text-lg leading-none mt-0.5">•</span>
+                <ul className="mt-2 space-y-1.5 text-xs sm:text-[13.5px] text-[#53647C] leading-snug">
+                  <li className="flex items-start gap-2 font-bold text-[#0B2B4C]">
+                    <span className="text-[#B83A16] font-black text-base leading-none mt-0.5">•</span>
                     <span>5 Years of Comprehensive Solar Care</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="text-[#B83A16] font-black text-lg leading-none mt-0.5">•</span>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#B83A16] font-black text-base leading-none mt-0.5">•</span>
                     <span>
                       More than routine maintenance, <strong className="text-[#B83A16] font-bold">PowerCare</strong> is our commitment to keeping your solar system in top condition. Through dedicated structural, electrical, and mechanical inspections, preventive maintenance, and reliable service support, we help maintain system safety, reliability, and long-term performance.
                     </span>
                   </li>
-                  <li className="flex items-start gap-2.5 font-bold text-[#0756B9]">
-                    <span className="text-[#B83A16] font-black text-lg leading-none mt-0.5">•</span>
+                  <li className="flex items-start gap-2 font-bold text-[#0756B9]">
+                    <span className="text-[#B83A16] font-black text-base leading-none mt-0.5">•</span>
                     <span>Complete Care. Reliable Power. Greener Tomorrow.</span>
                   </li>
                 </ul>

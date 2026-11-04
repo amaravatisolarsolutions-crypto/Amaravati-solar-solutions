@@ -32,7 +32,7 @@ $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // -------------------------------------------------------------------------
-// 1. API: Database Initialization / Verification Webhook
+// 1. API: Database Initialization / Verification Webhook 
 // -------------------------------------------------------------------------
 if ($uri === '/api/debug-files') {
     header('Content-Type: application/json');
