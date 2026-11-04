@@ -48,3 +48,4 @@ for f in os.listdir(dist_assets):
         shutil.copy2(src, dst)
 
 print(f"Assets synced and pruned. Total active assets: {len(active_assets)}")
+
