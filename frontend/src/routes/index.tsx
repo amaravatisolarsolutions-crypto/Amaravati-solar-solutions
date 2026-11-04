@@ -548,29 +548,29 @@ function Index() {
       </section>
 
       {/* OUR 4-STEP PROCESS - Premium Visual Layout matching exact user specifications */}
-      <section id="how-it-works" className="bg-gradient-to-b from-slate-50 via-white to-slate-50 pt-3 sm:pt-4 md:pt-6 pb-4 sm:pb-5 md:pb-6 scroll-mt-24 sm:scroll-mt-28 overflow-hidden">
+      <section id="how-it-works" className="bg-gradient-to-b from-slate-50 via-white to-slate-50 pt-2 sm:pt-3 md:pt-4 pb-3 sm:pb-4 scroll-mt-20 sm:scroll-mt-24 overflow-hidden">
         <div className="container-site">
           {/* Section Header with Curved Orange Swoosh Underline */}
-          <div className="text-center mb-5 sm:mb-7 scroll-pop scroll-pop-1">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#B83A16]/10 px-3.5 py-1 text-xs font-black text-[#B83A16] uppercase tracking-wider mb-2.5">
-              <Sparkles className="size-3.5" /> Seamless End-to-End Execution
+          <div className="text-center mb-3 sm:mb-4 md:mb-5 scroll-pop scroll-pop-1">
+            <div className="inline-flex items-center gap-1 rounded-full bg-[#B83A16]/10 px-3 py-0.5 text-[10px] sm:text-[11px] font-black text-[#B83A16] uppercase tracking-wider mb-1.5">
+              <Sparkles className="size-3" /> Seamless End-to-End Execution
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#082B4C] tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#082B4C] tracking-tight">
               Our <span className="text-[#B83A16]">4-Step Process</span>
             </h2>
             {/* Orange Swoosh Curve */}
-            <div className="relative mx-auto mt-2 h-3 w-40 sm:w-56 overflow-hidden">
+            <div className="relative mx-auto mt-1 h-2.5 w-32 sm:w-44 overflow-hidden">
               <svg viewBox="0 0 200 14" fill="none" className="w-full h-full text-[#B83A16]">
                 <path d="M4 11C60 2 140 2 196 11" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
               </svg>
             </div>
-            <p className="mt-3 text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
+            <p className="mt-1.5 text-xs sm:text-[13px] text-slate-600 max-w-xl mx-auto leading-relaxed">
               From your initial site survey to 25 years of clean power generation — clear, engineered, and transparent solar journey.
             </p>
           </div>
 
           {/* 4 Process Cards Grid with Orange Connector Arrows */}
-          <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-3.5 xl:gap-5 items-stretch">
+          <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-3 xl:gap-4 items-stretch">
             {FOUR_STEP_PROCESS.map((item, index) => {
               const Icon = item.icon;
               const staggerClass = `scroll-pop-${index + 1}`;
@@ -584,41 +584,41 @@ function Index() {
                     )}
                   >
                     {/* Card Photo Container with Step Pill */}
-                    <div className="relative aspect-[16/11] sm:aspect-[4/3] w-full overflow-hidden bg-slate-900">
+                    <div className="relative aspect-[16/10] sm:aspect-[16/10.5] w-full overflow-hidden bg-slate-900">
                       <img
                         src={item.image}
                         alt={item.title}
                         width={800}
-                        height={600}
+                        height={500}
                         loading="lazy"
                         className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#082B4C]/80 via-transparent to-black/20 opacity-40 group-hover:opacity-20 transition-opacity duration-300" />
 
                       {/* Step Indicator Badge */}
-                      <div className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-white/95 backdrop-blur-md px-2.5 py-1 text-xs font-black text-[#082B4C] shadow-md border border-white/60">
+                      <div className="absolute top-2.5 left-2.5 flex items-center gap-1 rounded-full bg-white/95 backdrop-blur-md px-2 py-0.5 text-[11px] font-black text-[#082B4C] shadow-md border border-white/60">
                         <span className="text-[#B83A16] font-black">0{index + 1}</span>
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider ml-0.5">Step</span>
+                        <span className="text-[9.5px] text-slate-400 font-bold uppercase tracking-wider ml-0.5">Step</span>
                       </div>
                     </div>
 
                     {/* Dark Navy Pill Footer Badge matching exact user screenshot */}
-                    <div className="bg-[#082B4C] p-3.5 sm:p-4 text-white flex items-center gap-3 transition-colors duration-300 group-hover:bg-[#061e35] shrink-0">
-                      <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-white/10 text-white group-hover:bg-[#B83A16] group-hover:scale-110 transition-all duration-300 shadow-2xs">
-                        <Icon className="size-4.5" />
+                    <div className="bg-[#082B4C] px-3 py-2 sm:py-2.5 text-white flex items-center gap-2.5 transition-colors duration-300 group-hover:bg-[#061e35] shrink-0">
+                      <div className="grid size-7 shrink-0 place-items-center rounded-lg bg-white/10 text-white group-hover:bg-[#B83A16] group-hover:scale-105 transition-all duration-300 shadow-2xs">
+                        <Icon className="size-3.5" />
                       </div>
-                      <div className="h-6 w-[2px] bg-[#B83A16] shrink-0" />
-                      <h3 className="text-xs sm:text-[13.5px] font-extrabold text-white leading-tight line-clamp-2">
+                      <div className="h-5 w-[2px] bg-[#B83A16] shrink-0" />
+                      <h3 className="text-[11.5px] sm:text-xs font-extrabold text-white leading-tight line-clamp-2">
                         {item.title}
                       </h3>
                     </div>
 
                     {/* Detailed Card Body */}
-                    <div className="p-4 flex-1 flex flex-col justify-between bg-white text-xs">
-                      <p className="text-slate-600 leading-relaxed text-left">
+                    <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between bg-white text-xs">
+                      <p className="text-slate-600 leading-relaxed text-left text-[11px] sm:text-[11.5px] line-clamp-3">
                         {item.desc}
                       </p>
-                      <ul className="mt-3 pt-2.5 border-t border-slate-100 space-y-1 text-[11px] font-semibold text-slate-700">
+                      <ul className="mt-2.5 pt-2 border-t border-slate-100 space-y-1 text-[10.5px] sm:text-[11px] font-semibold text-slate-700">
                         {item.highlights.map((h, i) => (
                           <li key={i} className="flex items-center gap-1.5">
                             <CheckCircle2 className="size-3 text-emerald-600 shrink-0" />
@@ -633,9 +633,9 @@ function Index() {
                   {index < FOUR_STEP_PROCESS.length - 1 && (
                     <div
                       aria-hidden="true"
-                      className="hidden lg:grid absolute top-[28%] -right-3.5 xl:-right-4 z-20 size-7 xl:size-8 place-items-center rounded-full bg-[#B83A16] text-white shadow-md border-2 border-white pointer-events-none transition-transform duration-300 group-hover:scale-110"
+                      className="hidden lg:grid absolute top-[24%] -right-2.5 xl:-right-3 z-20 size-6.5 xl:size-7 place-items-center rounded-full bg-[#B83A16] text-white shadow-md border-2 border-white pointer-events-none transition-transform duration-300 group-hover:scale-110"
                     >
-                      <ChevronRight className="size-4" strokeWidth={3} />
+                      <ChevronRight className="size-3.5" strokeWidth={3} />
                     </div>
                   )}
                 </div>
@@ -644,11 +644,11 @@ function Index() {
           </div>
 
           {/* Bottom Action CTA */}
-          <div className="mt-5 sm:mt-6 flex justify-center scroll-pop">
-            <Button asChild variant="cta" size="default" className="rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white px-7 py-2.5 sm:py-3 shadow-md text-xs sm:text-sm">
+          <div className="mt-4 sm:mt-5 flex justify-center scroll-pop">
+            <Button asChild variant="cta" size="sm" className="rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white px-6 py-2 shadow-md text-xs">
               <Link to="/book-a-demo">
                 <span>Start Your 4-Step Solar Journey</span>
-                <ArrowRight className="size-4 ml-1.5" />
+                <ArrowRight className="size-3.5 ml-1" />
               </Link>
             </Button>
           </div>
