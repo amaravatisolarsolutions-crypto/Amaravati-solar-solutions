@@ -378,7 +378,7 @@ function Index() {
 
       {/* 3. A) ON-GRID ROOFTOP SOLAR SYSTEMS */}
       <section id="on-grid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
-        <div data-rooftop-card="on-grid" className="grid items-stretch gap-6 rounded-2xl bg-card p-5 shadow-md transition-all duration-300 hover:shadow-xl md:p-6 lg:grid-cols-2 overflow-hidden">
+        <div data-rooftop-card="on-grid" className="grid items-stretch gap-6 md:gap-8 lg:grid-cols-2 py-3 sm:py-4 overflow-hidden">
           <div className="slide-rtl flex flex-col justify-center">
             <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-xs font-bold text-primary">
               <PlugZap className="size-3.5" /> A) On - Grid Rooftop Solar
@@ -431,10 +431,9 @@ function Index() {
       </section>
 
       {/* 4. B) OFF-GRID ROOFTOP SOLAR SYSTEMS */}
-      <section id="off-grid" className="bg-surface py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
-        <div className="container-site">
-          <div data-rooftop-card="off-grid" className="grid items-stretch gap-6 rounded-2xl bg-card p-5 shadow-md transition-all duration-300 hover:shadow-xl md:p-6 lg:grid-cols-2 overflow-hidden">
-            <div className="slide-ltr order-2 lg:order-1 relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
+      <section id="off-grid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
+        <div data-rooftop-card="off-grid" className="grid items-stretch gap-6 md:gap-8 lg:grid-cols-2 py-3 sm:py-4 overflow-hidden">
+          <div className="slide-ltr order-2 lg:order-1 relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
               <img
                 src={future}
                 alt="Off-grid solar installation"
@@ -483,12 +482,11 @@ function Index() {
               </div>
             </div>
           </div>
-        </div>
       </section>
 
       {/* 5. C) HYBRID ROOFTOP SOLAR SYSTEMS */}
       <section id="hybrid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
-        <div data-rooftop-card="hybrid" className="grid items-stretch gap-6 rounded-2xl bg-card p-5 shadow-md transition-all duration-300 hover:shadow-xl md:p-6 lg:grid-cols-2 overflow-hidden">
+        <div data-rooftop-card="hybrid" className="grid items-stretch gap-6 md:gap-8 lg:grid-cols-2 py-3 sm:py-4 overflow-hidden">
           <div className="slide-rtl flex flex-col justify-center">
               <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-solar-blue/15 px-3 py-0.5 text-xs font-bold text-solar-blue">
                 <SlidersHorizontal className="size-3.5" /> C) Hybrid Rooftop Solar
