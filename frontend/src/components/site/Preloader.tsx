@@ -70,9 +70,9 @@ export function Preloader() {
       </div>
 
       {/* Main card */}
-      <div className="relative z-10 flex flex-col items-center px-6 text-center max-w-md w-full">
-        {/* Logo Card with glassmorphism */}
-        <div className="relative overflow-hidden rounded-3xl bg-white/95 p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_40px_rgba(245,166,35,0.25)] border border-white/40 transform transition-transform duration-500 hover:scale-[1.02]">
+      <div className="relative z-10 flex flex-col items-center px-4 text-center max-w-sm w-full">
+        {/* Logo Card with sleek, compact borders */}
+        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-white/95 px-3.5 py-1.5 sm:px-5 sm:py-2 shadow-[0_10px_25px_rgba(0,0,0,0.35)] border border-white/20 transform transition-transform duration-500 hover:scale-[1.02]">
           {/* Shimmer sweep effect */}
           <div className="pointer-events-none absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
 
@@ -82,13 +82,13 @@ export function Preloader() {
             alt="Amaravati Solar Solutions"
             width={1016}
             height={307}
-            className="h-16 sm:h-20 w-auto object-contain md:h-24 drop-shadow-md"
+            className="h-11 sm:h-14 w-auto object-contain md:h-16 drop-shadow-sm"
             loading="eager"
           />
         </div>
 
         {/* Progress & Status */}
-        <div className="mt-8 flex flex-col items-center w-full max-w-xs">
+        <div className="mt-6 sm:mt-7 flex flex-col items-center w-full max-w-xs">
           {/* Progress bar container */}
           <div className="h-1.5 w-full rounded-full bg-white/15 overflow-hidden p-[1px] shadow-inner backdrop-blur">
             <div
