@@ -30,7 +30,7 @@ import step3Design from "@/assets/process-step-3-design.jpg";
 import step4Installation from "@/assets/process-step-4-installation.jpg";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { HeroCarousel } from "@/components/site/HeroCarousel";
+import { HeroSection } from "@/components/site/HeroSection";
 import { SectionHeading } from "@/components/site/Sections";
 import { setupRooftopScrollAnimation } from "@/lib/scroll-animation";
 import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
@@ -212,7 +212,7 @@ function Index() {
     <>
       {/* 1. HOME SECTION */}
       <div id="home">
-        <HeroCarousel />
+        <HeroSection />
       </div>
 
       {/* QUICK HIGHLIGHT FEATURES ROW (MATCHING SCREENSHOT) */}
