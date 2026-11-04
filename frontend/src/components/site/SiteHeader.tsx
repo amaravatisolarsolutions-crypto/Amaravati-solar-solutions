@@ -147,7 +147,7 @@ export function SiteHeader() {
   const handleNavClick = (e: React.MouseEvent, item: (typeof NAV)[number]) => {
     const isHomePage = pathname === "/";
 
-    if (item.label === "Amaravati Solar Solution") {
+    if (item.label === "Our Solar Solutions") {
       handleSolutionClick(e, SOLAR_SOLUTIONS[0]);
       return;
     }
@@ -352,7 +352,7 @@ export function SiteHeader() {
                 );
               }
 
-              if (item.label === "Amaravati Solar Solution") {
+              if (item.label === "Our Solar Solutions") {
                 const isSolarActive =
                   activeSection === "on-grid" || activeSection === "off-grid" || activeSection === "hybrid";
 
@@ -517,8 +517,8 @@ export function SiteHeader() {
                     </div>
                   )}
 
-                  {/* Sub-items for Amaravati Solar Solution on mobile */}
-                  {item.label === "Amaravati Solar Solution" && (
+                  {/* Sub-items for Our Solar Solutions on mobile */}
+                  {item.label === "Our Solar Solutions" && (
                     <div className="pl-4 pr-1 py-1 space-y-1 border-l-2 border-primary/20 ml-3.5 my-1">
                       {SOLAR_SOLUTIONS.map((sol) => (
                         <a
