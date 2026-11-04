@@ -75,27 +75,34 @@ export function HeroCarousel() {
           aria-label={`${i + 1} of ${SLIDES.length}`}
         >
           {s.isCustomBanner ? (
-            <div className="relative h-full w-full flex items-center justify-center bg-[#e4f1fb] overflow-hidden">
+            <div className="relative h-full w-full flex items-center justify-center bg-[#e4f1fb] overflow-hidden [container-type:size]">
               {/* Crisp, undistorted banner fitting perfectly edge-to-edge */}
-              <div className="relative aspect-[2/1] w-full max-h-full flex items-center justify-center">
+              <div
+                className="relative flex items-center justify-center max-w-full max-h-full"
+                style={{
+                  width: "min(100cqw, calc(100cqh * 2))",
+                  height: "min(100cqh, calc(100cqw / 2))",
+                  aspectRatio: "2 / 1",
+                }}
+              >
                 <img
                   src={s.image}
                   alt="One Solar Partner for All Your Energy Needs - Complete Solar Solutions"
                   width={1024}
                   height={512}
                   loading="eager"
-                  className="h-full w-full object-contain pointer-events-auto select-none"
+                  className="h-full w-full object-contain pointer-events-auto select-none block"
                 />
                 
                 {/* Interactive Hotspots for the two buttons drawn inside the banner */}
                 <Link
                   to="/book-a-demo"
-                  className="absolute cursor-pointer rounded-full transition-all hover:ring-2 hover:ring-white/70 hover:shadow-lg active:scale-95"
+                  className="absolute cursor-pointer rounded-full transition-all hover:ring-2 hover:ring-white/80 hover:shadow-lg active:scale-95"
                   style={{
                     left: "4.69%",
-                    top: "70.5%",
+                    top: "72.0%",
                     width: "23.34%",
-                    height: "10.5%",
+                    height: "7.6%",
                   }}
                   title="Get a Free Site Assessment"
                   aria-label="Get a Free Site Assessment"
@@ -104,10 +111,10 @@ export function HeroCarousel() {
                   to="/services"
                   className="absolute cursor-pointer rounded-full transition-all hover:ring-2 hover:ring-[#082B4C]/50 hover:shadow-lg active:scale-95"
                   style={{
-                    left: "29.69%",
-                    top: "70.5%",
-                    width: "16.80%",
-                    height: "10.5%",
+                    left: "29.59%",
+                    top: "72.0%",
+                    width: "17.00%",
+                    height: "7.6%",
                   }}
                   title="Our Solar Solutions"
                   aria-label="Our Solar Solutions"
