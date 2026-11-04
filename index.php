@@ -898,14 +898,13 @@ foreach ($assetRoots as $root) {
 // -------------------------------------------------------------------------
 $routePath = trim($cleanUri, '/');
 $htmlCandidates = [
+    __DIR__ . '/frontend/dist/' . ($routePath ? $routePath . '/index.html' : 'index.html'),
+    __DIR__ . '/frontend/.output/public/' . ($routePath ? $routePath . '/index.html' : 'index.html'),
     __DIR__ . '/' . $routePath . '/index.html',
-    __DIR__ . '/' . $routePath . '.html',
-    __DIR__ . '/frontend/dist/' . $routePath . '/index.html',
     __DIR__ . '/frontend/dist/' . $routePath . '.html',
-    __DIR__ . '/frontend/dist/' . ($routePath ? '' : 'index.html'),
-    __DIR__ . '/frontend/.output/public/' . $routePath . '/index.html',
     __DIR__ . '/frontend/.output/public/' . $routePath . '.html',
     __DIR__ . '/frontend/dist/index.html',
+    __DIR__ . '/index.html',
     __DIR__ . '/frontend/.output/public/index.html'
 ];
 
@@ -926,6 +925,13 @@ foreach ($htmlCandidates as $htmlFile) {
 $assetsDir = is_dir(__DIR__ . '/frontend/dist/assets') ? (__DIR__ . '/frontend/dist/assets') : (__DIR__ . '/frontend/.output/public/assets');
 $cssFiles = glob($assetsDir . '/*.css') ?: [];
 $jsFiles  = glob($assetsDir . '/index-*.js') ?: (glob($assetsDir . '/*.js') ?: []);
+
+if (!empty($cssFiles)) {
+    usort($cssFiles, function($a, $b) { return filemtime($b) - filemtime($a); });
+}
+if (!empty($jsFiles)) {
+    usort($jsFiles, function($a, $b) { return filemtime($b) - filemtime($a); });
+}
 
 $cssUrl = !empty($cssFiles) ? '/assets/' . basename($cssFiles[0]) : '';
 $jsUrl  = !empty($jsFiles)  ? '/assets/' . basename($jsFiles[0])  : '';

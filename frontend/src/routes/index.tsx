@@ -216,7 +216,7 @@ function Index() {
       </div>
 
       {/* QUICK HIGHLIGHT FEATURES ROW (MATCHING SCREENSHOT) */}
-      <section className="bg-slate-50/60 sm:bg-slate-50/70 border-b border-slate-200/80 py-2 sm:py-5">
+      <section className="bg-slate-50/60 sm:bg-slate-50/70 py-2 sm:py-5">
         <div className="container-site px-2.5 sm:px-4">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
             {FEATURE_HIGHLIGHTS.map((item, idx) => (
@@ -354,7 +354,7 @@ function Index() {
 
       {/* Solutions Header - Side Heading matching Featured projects style */}
       <div className="container-site pt-5 pb-2">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-200/90 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3">
           <div>
             <SectionHeading
               eyebrow="PRODUCTS & SOLUTIONS"
