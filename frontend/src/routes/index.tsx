@@ -230,7 +230,7 @@ function Index() {
                     scrollToTarget(targetId);
                   }
                 }}
-                className="group flex flex-col items-center justify-center rounded-2xl sm:rounded-[22px] border border-slate-200/90 bg-white py-2.5 sm:py-6 px-2 text-center shadow-[0_1px_6px_rgba(8,43,76,0.04)] sm:shadow-[0_2px_12px_rgba(8,43,76,0.05)] transition-all duration-300 hover:-translate-y-0.5 sm:hover:-translate-y-1 hover:shadow-md hover:border-[#D9531E]/40 select-none cursor-pointer"
+                className="group flex flex-col items-center justify-center rounded-2xl sm:rounded-[22px] bg-white py-2.5 sm:py-6 px-2 text-center shadow-[0_2px_10px_rgba(8,43,76,0.06)] sm:shadow-[0_4px_16px_rgba(8,43,76,0.08)] transition-all duration-300 hover:-translate-y-0.5 sm:hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer"
               >
                 <div className="flex size-6 sm:size-10 items-center justify-center text-[#D9531E] transition-transform duration-300 group-hover:scale-110">
                   <item.icon />
@@ -259,7 +259,7 @@ function Index() {
             <p className="mt-0.5 text-xs sm:text-sm md:text-base font-bold text-white/95 leading-snug max-w-2xl mx-auto">
               We don't just install solar. We create a smarter way to power life.
             </p>
-            <div className="mt-2.5 max-w-2xl mx-auto text-left bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-3 sm:p-3.5 flex items-start gap-2.5">
+            <div className="mt-2.5 max-w-2xl mx-auto text-left bg-white/5 backdrop-blur-md rounded-xl p-3 sm:p-3.5 flex items-start gap-2.5 shadow-sm">
               <span className="size-1.5 rounded-full bg-[#B83A16] mt-1.5 shrink-0" />
               <p className="text-[11px] sm:text-xs text-white/85 leading-relaxed">
                 At Amaravati Solar Solutions, we believe the future of energy should be efficient, dependable, and sustainable. Our approach combines thoughtful solar system design, quality components, precision installation, and end-to-end customer support to deliver solutions built around the needs of every customer.
@@ -270,7 +270,7 @@ function Index() {
           {/* Vision & Mission Cards Grid */}
           <div className="grid gap-3 sm:gap-3.5 md:grid-cols-2">
             {/* Our Vision Card */}
-            <div className="rounded-xl bg-white/5 backdrop-blur-md border border-white/15 p-3.5 sm:p-4 flex flex-col justify-between scroll-pop scroll-pop-2 hover:bg-white/10 transition-all duration-300">
+            <div className="rounded-xl bg-white/5 backdrop-blur-md p-3.5 sm:p-4 flex flex-col justify-between scroll-pop scroll-pop-2 hover:bg-white/10 transition-all duration-300 shadow-sm">
               <div>
                 <div className="flex items-center gap-2 mb-2.5">
                   <div className="grid size-7 place-items-center rounded-lg bg-white/10 text-gold">
@@ -304,7 +304,7 @@ function Index() {
             </div>
 
             {/* Our Mission Card */}
-            <div className="rounded-xl bg-white/5 backdrop-blur-md border border-white/15 p-3.5 sm:p-4 flex flex-col justify-between scroll-pop scroll-pop-3 hover:bg-white/10 transition-all duration-300">
+            <div className="rounded-xl bg-white/5 backdrop-blur-md p-3.5 sm:p-4 flex flex-col justify-between scroll-pop scroll-pop-3 hover:bg-white/10 transition-all duration-300 shadow-sm">
               <div>
                 <div className="flex items-center gap-2 mb-2.5">
                   <div className="grid size-7 place-items-center rounded-lg bg-[#B83A16]/20 text-[#D9531E]">
@@ -378,7 +378,7 @@ function Index() {
 
       {/* 3. A) ON-GRID ROOFTOP SOLAR SYSTEMS */}
       <section id="on-grid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
-        <div data-rooftop-card="on-grid" className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2 overflow-hidden">
+        <div data-rooftop-card="on-grid" className="grid items-stretch gap-6 rounded-2xl bg-card p-5 shadow-md transition-all duration-300 hover:shadow-xl md:p-6 lg:grid-cols-2 overflow-hidden">
           <div className="slide-rtl flex flex-col justify-center">
             <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-xs font-bold text-primary">
               <PlugZap className="size-3.5" /> A) On - Grid Rooftop Solar
@@ -433,7 +433,7 @@ function Index() {
       {/* 4. B) OFF-GRID ROOFTOP SOLAR SYSTEMS */}
       <section id="off-grid" className="bg-surface py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
         <div className="container-site">
-          <div data-rooftop-card="off-grid" className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2 overflow-hidden">
+          <div data-rooftop-card="off-grid" className="grid items-stretch gap-6 rounded-2xl bg-card p-5 shadow-md transition-all duration-300 hover:shadow-xl md:p-6 lg:grid-cols-2 overflow-hidden">
             <div className="slide-ltr order-2 lg:order-1 relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-full min-h-[220px] overflow-hidden rounded-xl shadow-md">
               <img
                 src={future}
@@ -488,7 +488,7 @@ function Index() {
 
       {/* 5. C) HYBRID ROOFTOP SOLAR SYSTEMS */}
       <section id="hybrid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
-        <div data-rooftop-card="hybrid" className="grid items-stretch gap-6 rounded-2xl border border-slate-200/90 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md md:p-6 lg:grid-cols-2 overflow-hidden">
+        <div data-rooftop-card="hybrid" className="grid items-stretch gap-6 rounded-2xl bg-card p-5 shadow-md transition-all duration-300 hover:shadow-xl md:p-6 lg:grid-cols-2 overflow-hidden">
           <div className="slide-rtl flex flex-col justify-center">
               <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-solar-blue/15 px-3 py-0.5 text-xs font-bold text-solar-blue">
                 <SlidersHorizontal className="size-3.5" /> C) Hybrid Rooftop Solar
@@ -540,7 +540,7 @@ function Index() {
           </div>
 
         {/* View All Services Button */}
-        <div className="mt-6 flex justify-center">
+        <div className="mt-3 sm:mt-4 flex justify-center">
           <Button asChild variant="cta" size="default" className="shadow-md">
             <Link to="/services">
               View All Services & Solutions <ArrowRight className="size-4 ml-1" />
@@ -550,10 +550,10 @@ function Index() {
       </section>
 
       {/* OUR 4-STEP PROCESS - Premium Visual Layout matching exact user specifications */}
-      <section id="how-it-works" className="bg-gradient-to-b from-slate-50 via-white to-slate-50 py-8 sm:py-12 md:py-16 scroll-mt-24 sm:scroll-mt-28 overflow-hidden">
+      <section id="how-it-works" className="bg-gradient-to-b from-slate-50 via-white to-slate-50 pt-3 sm:pt-4 md:pt-6 pb-8 sm:pb-12 md:pb-16 scroll-mt-24 sm:scroll-mt-28 overflow-hidden">
         <div className="container-site">
           {/* Section Header with Curved Orange Swoosh Underline */}
-          <div className="text-center mb-8 sm:mb-12 scroll-pop scroll-pop-1">
+          <div className="text-center mb-5 sm:mb-7 scroll-pop scroll-pop-1">
             <div className="inline-flex items-center gap-1.5 rounded-full bg-[#B83A16]/10 px-3.5 py-1 text-xs font-black text-[#B83A16] uppercase tracking-wider mb-2.5">
               <Sparkles className="size-3.5" /> Seamless End-to-End Execution
             </div>
@@ -581,7 +581,7 @@ function Index() {
                   {/* Process Card with Premium Hover Motion */}
                   <div
                     className={cn(
-                      "group relative flex-1 flex flex-col overflow-hidden rounded-3xl bg-white border border-slate-200/90 shadow-md transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_22px_45px_rgba(8,43,76,0.18)] hover:border-[#B83A16]/40 scroll-pop",
+                      "group relative flex-1 flex flex-col isolate overflow-hidden rounded-tl-[36px] rounded-br-[36px] rounded-tr-none rounded-bl-none bg-white shadow-md transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_24px_50px_rgba(8,43,76,0.18)] scroll-pop",
                       staggerClass
                     )}
                   >
@@ -690,7 +690,7 @@ function Index() {
                 to="/projects/$id"
                 params={{ id: p.id }}
                 className={cn(
-                  "group overflow-hidden rounded-2xl bg-card text-left shadow-card border border-slate-200/80 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 active:scale-[0.98] flex flex-col parallax-card animate-pop-in",
+                  "group overflow-hidden rounded-2xl bg-card text-left shadow-card transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 active:scale-[0.98] flex flex-col parallax-card animate-pop-in",
                   staggerClass
                 )}
               >

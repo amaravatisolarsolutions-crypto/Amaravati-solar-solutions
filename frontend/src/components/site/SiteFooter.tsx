@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
 import logo from "@/assets/logo.png";
-import { COMPANY, NAV, SERVICES } from "@/lib/site-data";
+import { COMPANY, NAV } from "@/lib/site-data";
 import { scrollToTarget } from "@/lib/scroll-utils";
 
 const SOCIAL_LINKS = [
@@ -76,16 +76,6 @@ export function SiteFooter() {
     }
   };
 
-  const SERVICE_TARGET_MAP: Record<string, string> = {
-    "on-grid-solar-systems": "on-grid",
-    "off-grid-solar-systems": "off-grid",
-    "hybrid-solar-systems": "hybrid",
-    "residential-rooftop-solar": "on-grid",
-    "commercial-solar-installations": "on-grid",
-    "industrial-solar-solutions": "hybrid",
-    "solar-system-inspection": "on-grid",
-  };
-
   return (
     <footer className="bg-navy text-navy-foreground/80">
       <div className="container-site grid gap-6 py-8 md:py-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
@@ -146,38 +136,40 @@ export function SiteFooter() {
         </div>
         <div>
           <h3 className="text-xs font-bold uppercase tracking-wider text-navy-foreground">Services</h3>
-          <ul className="mt-2.5 space-y-1.5 text-xs">
-            {SERVICES.slice(0, 6).map((s) => {
-              const targetId = SERVICE_TARGET_MAP[s.slug];
-              if (targetId) {
-                return (
-                  <li key={s.slug}>
-                    <a
-                      href={`/#${targetId}`}
-                      onClick={(e) => handleTargetClick(e, targetId)}
-                      className="hover:text-gold transition-colors cursor-pointer"
-                    >
-                      {s.title}
-                    </a>
-                  </li>
-                );
-              }
-
-              return (
-                <li key={s.slug}>
-                  <a
-                    href="/#on-grid"
-                    onClick={(e) => handleTargetClick(e, "on-grid")}
-                    className="hover:text-gold transition-colors cursor-pointer"
-                  >
-                    {s.title}
-                  </a>
-                </li>
-              );
-            })}
-            <li className="pt-1 border-t border-navy-foreground/15 mt-2">
-              <Link to="/services" className="font-bold text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1 text-xs">
-                View All Services (10+) →
+          <ul className="mt-2.5 space-y-2 text-xs">
+            <li>
+              <Link
+                to="/services"
+                search={{ category: "residential" } as any}
+                className="hover:text-gold transition-colors"
+              >
+                Residential
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/services"
+                search={{ category: "commercial" } as any}
+                className="hover:text-gold transition-colors"
+              >
+                Commercial
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/services"
+                search={{ category: "industrial" } as any}
+                className="hover:text-gold transition-colors"
+              >
+                Industrial
+              </Link>
+            </li>
+            <li className="pt-1.5 border-t border-navy-foreground/15 mt-2">
+              <Link
+                to="/services"
+                className="font-bold text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1 text-xs"
+              >
+                All services →
               </Link>
             </li>
           </ul>

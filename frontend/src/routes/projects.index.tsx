@@ -150,7 +150,7 @@ function Projects() {
                 to="/projects/$id"
                 params={{ id: p.id }}
                 className={cn(
-                  "group overflow-hidden rounded-2xl bg-card text-left shadow-card border border-slate-200/80 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 active:scale-[0.98] flex flex-col parallax-card animate-pop-in",
+                  "group overflow-hidden rounded-2xl bg-card text-left shadow-card transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 active:scale-[0.98] flex flex-col parallax-card animate-pop-in",
                   staggerClass
                 )}
               >
