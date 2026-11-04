@@ -550,7 +550,7 @@ function Index() {
       </section>
 
       {/* OUR 4-STEP PROCESS - Premium Visual Layout matching exact user specifications */}
-      <section id="how-it-works" className="bg-gradient-to-b from-slate-50 via-white to-slate-50 pt-3 sm:pt-4 md:pt-6 pb-8 sm:pb-12 md:pb-16 scroll-mt-24 sm:scroll-mt-28 overflow-hidden">
+      <section id="how-it-works" className="bg-gradient-to-b from-slate-50 via-white to-slate-50 pt-3 sm:pt-4 md:pt-6 pb-4 sm:pb-5 md:pb-6 scroll-mt-24 sm:scroll-mt-28 overflow-hidden">
         <div className="container-site">
           {/* Section Header with Curved Orange Swoosh Underline */}
           <div className="text-center mb-5 sm:mb-7 scroll-pop scroll-pop-1">
@@ -646,8 +646,8 @@ function Index() {
           </div>
 
           {/* Bottom Action CTA */}
-          <div className="mt-8 sm:mt-10 flex justify-center scroll-pop">
-            <Button asChild variant="cta" size="lg" className="rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white px-8 py-3.5 shadow-md">
+          <div className="mt-5 sm:mt-6 flex justify-center scroll-pop">
+            <Button asChild variant="cta" size="default" className="rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white px-7 py-2.5 sm:py-3 shadow-md text-xs sm:text-sm">
               <Link to="/book-a-demo">
                 <span>Start Your 4-Step Solar Journey</span>
                 <ArrowRight className="size-4 ml-1.5" />
@@ -658,7 +658,7 @@ function Index() {
       </section>
 
       {/* 6. GALLERY / PROJECTS - Pop & Parallax Transitions */}
-      <section id="gallery" className="container-site py-6 md:py-8 scroll-mt-24 sm:scroll-mt-28">
+      <section id="gallery" className="container-site pt-2 sm:pt-3 pb-6 md:pb-8 scroll-mt-24 sm:scroll-mt-28">
         <div className="flex flex-wrap gap-2 scroll-pop scroll-pop-1" role="tablist" aria-label="Filter projects">
           {FILTERS.map((f) => (
             <button
