@@ -39,7 +39,7 @@ export function HeroCarousel() {
 
   return (
     <section
-      className="relative h-[calc(100svh-114px)] min-h-[460px] sm:min-h-[540px] overflow-hidden bg-navy touch-pan-y select-none"
+      className="relative w-full aspect-[2/1] max-h-[calc(100svh-114px)] min-h-[220px] sm:min-h-[340px] md:min-h-[460px] overflow-hidden bg-[#e4f1fb] touch-pan-y select-none"
       aria-roledescription="carousel"
       aria-label="Solar solutions"
       onMouseEnter={() => setPaused(true)}
@@ -76,52 +76,42 @@ export function HeroCarousel() {
         >
           {s.isCustomBanner ? (
             <div className="relative h-full w-full flex items-center justify-center bg-[#e4f1fb] overflow-hidden">
-              {/* Blurred background ambience to match exact colors seamlessly */}
-              <img
-                src={s.image}
-                alt=""
-                className="absolute inset-0 h-full w-full object-cover blur-2xl scale-110 opacity-75 pointer-events-none"
-                aria-hidden="true"
-              />
-              
-              {/* Crisp, undistorted banner fitting the viewport without any crop */}
-              <div className="relative h-full w-full flex items-center justify-center p-0 z-10">
-                <div className="relative aspect-[2/1] max-h-full max-w-full w-auto h-auto flex items-center justify-center shadow-xs">
-                  <img
-                    src={s.image}
-                    alt="One Solar Partner for All Your Energy Needs - Complete Solar Solutions"
-                    width={1024}
-                    height={512}
-                    loading="eager"
-                    className="h-full w-full object-contain pointer-events-auto select-none"
-                  />
-                  
-                  {/* Interactive Hotspots for the two buttons drawn inside the banner */}
-                  <Link
-                    to="/book-a-demo"
-                    className="absolute cursor-pointer rounded-full transition-all hover:bg-white/10 active:scale-95"
-                    style={{
-                      left: "4.7%",
-                      top: "71.9%",
-                      width: "23.4%",
-                      height: "9.0%",
-                    }}
-                    title="Get a Free Site Assessment"
-                    aria-label="Get a Free Site Assessment"
-                  />
-                  <Link
-                    to="/services"
-                    className="absolute cursor-pointer rounded-full transition-all hover:bg-primary/10 active:scale-95"
-                    style={{
-                      left: "29.5%",
-                      top: "71.9%",
-                      width: "17.2%",
-                      height: "9.0%",
-                    }}
-                    title="Our Solar Solutions"
-                    aria-label="Our Solar Solutions"
-                  />
-                </div>
+              {/* Crisp, undistorted banner fitting perfectly edge-to-edge */}
+              <div className="relative aspect-[2/1] w-full max-h-full flex items-center justify-center">
+                <img
+                  src={s.image}
+                  alt="One Solar Partner for All Your Energy Needs - Complete Solar Solutions"
+                  width={1024}
+                  height={512}
+                  loading="eager"
+                  className="h-full w-full object-contain pointer-events-auto select-none"
+                />
+                
+                {/* Interactive Hotspots for the two buttons drawn inside the banner */}
+                <Link
+                  to="/book-a-demo"
+                  className="absolute cursor-pointer rounded-full transition-all hover:ring-2 hover:ring-white/70 hover:shadow-lg active:scale-95"
+                  style={{
+                    left: "4.69%",
+                    top: "70.5%",
+                    width: "23.34%",
+                    height: "10.5%",
+                  }}
+                  title="Get a Free Site Assessment"
+                  aria-label="Get a Free Site Assessment"
+                />
+                <Link
+                  to="/services"
+                  className="absolute cursor-pointer rounded-full transition-all hover:ring-2 hover:ring-[#082B4C]/50 hover:shadow-lg active:scale-95"
+                  style={{
+                    left: "29.69%",
+                    top: "70.5%",
+                    width: "16.80%",
+                    height: "10.5%",
+                  }}
+                  title="Our Solar Solutions"
+                  aria-label="Our Solar Solutions"
+                />
               </div>
             </div>
           ) : (
@@ -163,7 +153,7 @@ export function HeroCarousel() {
         </div>
       ))}
 
-      <div className="absolute inset-x-0 bottom-4 sm:bottom-6 lg:bottom-8 z-20 pointer-events-auto">
+      <div className="absolute inset-x-0 bottom-2 sm:bottom-4 lg:bottom-6 z-20 pointer-events-auto">
         <div className="container-site flex items-center justify-center sm:justify-between gap-4">
           <div className="flex items-center gap-1 sm:gap-2.5 bg-black/20 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/20">
             {SLIDES.map((s, i) => (
