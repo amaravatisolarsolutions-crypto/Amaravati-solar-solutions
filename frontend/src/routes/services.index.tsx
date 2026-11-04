@@ -434,12 +434,33 @@ function AllServices() {
     return queryCat || "all";
   });
 
+  // Always scroll to top on mount
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, []);
+
   // Sync state when router location search changes
   useEffect(() => {
-    if (queryCat && queryCat !== selectedCategory) {
-      setSelectedCategory(queryCat);
-    }
+    const validCategories = ["residential", "commercial", "industrial", "electrical", "agriculture", "maintenance"];
+    const targetCat = (queryCat && validCategories.includes(queryCat)) ? queryCat : "all";
+    setSelectedCategory(targetCat);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [queryCat]);
+
+  // Listen for reset-services-view event (e.g. from footer All services click or navbar)
+  useEffect(() => {
+    const onReset = () => {
+      setSelectedCategory("all");
+      if (typeof window !== "undefined") {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("category");
+        window.history.replaceState({}, "", url.pathname);
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    };
+    window.addEventListener("reset-services-view", onReset);
+    return () => window.removeEventListener("reset-services-view", onReset);
+  }, []);
 
   // Handle category switch smoothly with URL update
   const handleSelectCategory = (catId: string) => {

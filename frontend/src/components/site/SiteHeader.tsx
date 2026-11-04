@@ -42,6 +42,8 @@ export function SiteHeader() {
   const [activeSection, setActiveSection] = useState<string>("home");
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [solutionsDropdownOpen, setSolutionsDropdownOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileSolutionsOpen, setMobileSolutionsOpen] = useState(false);
   const isAutoScrollingRef = useRef(false);
   const scrollLockTimerRef = useRef<NodeJS.Timeout | null>(null);
   const servicesTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -152,7 +154,16 @@ export function SiteHeader() {
       return;
     }
 
-    if ("targetId" in item && item.targetId && ["on-grid", "off-grid", "hybrid", "home"].includes(item.targetId)) {
+    if (item.label === "Services") {
+      e.preventDefault();
+      setOpen(false);
+      navigate({ to: "/services", search: { category: undefined } as any });
+      window.dispatchEvent(new CustomEvent("reset-services-view"));
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+      return;
+    }
+
+    if ("targetId" in item && item.targetId && ["about", "on-grid", "off-grid", "hybrid", "home"].includes(item.targetId)) {
       e.preventDefault();
       setOpen(false);
       const targetId = item.targetId;
@@ -168,7 +179,7 @@ export function SiteHeader() {
         setTimeout(() => scrollToTarget(targetId, false, true), 150);
         setTimeout(() => scrollToTarget(targetId, false, true), 400);
       } else {
-        navigate({ to: "/" }).then(() => {
+        navigate({ to: `/#${targetId}` as any }).then(() => {
           setTimeout(() => scrollToTarget(targetId, false, false), 80);
           setTimeout(() => scrollToTarget(targetId, true, true), 250);
           setTimeout(() => scrollToTarget(targetId, false, true), 600);
@@ -177,7 +188,7 @@ export function SiteHeader() {
       return;
     }
 
-    if (item.to === "/contact" || item.to === "/about" || item.to === "/projects" || item.to === "/services") {
+    if (item.to === "/contact" || item.to === "/about" || item.to === "/projects") {
       e.preventDefault();
       setOpen(false);
       navigate({ to: item.to });
@@ -326,8 +337,25 @@ export function SiteHeader() {
                           : "opacity-0 -translate-y-1.5 pointer-events-none invisible"
                       )}
                     >
-                      <div className="w-[180px] rounded-xl bg-white/95 backdrop-blur-xl p-1.5 shadow-[0_16px_36px_rgba(8,43,76,0.18)] border border-slate-200/90">
+                      <div className="w-[190px] rounded-xl bg-white/95 backdrop-blur-xl p-1.5 shadow-[0_16px_36px_rgba(8,43,76,0.18)] border border-slate-200/90">
                         <div className="space-y-0.5">
+                          <a
+                            href="/services"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setServicesDropdownOpen(false);
+                              navigate({
+                                to: "/services",
+                                search: { category: undefined } as any,
+                              });
+                              window.dispatchEvent(new CustomEvent("reset-services-view"));
+                              window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                            }}
+                            className="flex items-center gap-1.5 w-full px-3.5 py-2 rounded-lg text-[13px] font-bold text-primary hover:bg-primary/10 transition-all duration-150 active:scale-[0.98] cursor-pointer text-left border-b border-slate-100 mb-0.5"
+                          >
+                            <Sparkles className="size-3 text-primary shrink-0" />
+                            <span>All Services</span>
+                          </a>
                           {SERVICE_SECTORS.map((sec) => (
                             <a
                               key={sec.sector}
@@ -339,6 +367,7 @@ export function SiteHeader() {
                                   to: "/services",
                                   search: { category: sec.sector } as any,
                                 });
+                                window.scrollTo({ top: 0, left: 0, behavior: "instant" });
                               }}
                               className="block w-full px-3.5 py-2 rounded-lg text-[13px] font-bold text-[#082B4C] hover:bg-primary/10 hover:text-primary transition-all duration-150 active:scale-[0.98] cursor-pointer text-left"
                             >
@@ -460,7 +489,17 @@ export function SiteHeader() {
           </Link>
         </div>
 
-        {/* Mobile menu toggle button */}
+        {/* Tablet quick CTA button (768px - 1023px) */}
+        <div className="hidden md:flex lg:hidden items-center gap-2">
+          <Link
+            to="/book-a-demo"
+            className="inline-flex items-center justify-center rounded-[30px] bg-[#B83A16] px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#A33112] whitespace-nowrap"
+          >
+            Get A Quote
+          </Link>
+        </div>
+
+        {/* Mobile & Tablet menu toggle button */}
         <button
           type="button"
           className="grid size-10 place-items-center rounded-lg text-[#0c2340] lg:hidden hover:bg-slate-100 active:scale-90 transition-all cursor-pointer"
@@ -472,84 +511,228 @@ export function SiteHeader() {
         </button>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile & Tablet Drawer */}
       <div
         className={cn(
-          "grid overflow-hidden border-t bg-white transition-[grid-template-rows] duration-300 lg:hidden shadow-lg",
+          "grid overflow-hidden border-t bg-white transition-[grid-template-rows] duration-300 lg:hidden shadow-xl max-h-[calc(100vh-80px)] overflow-y-auto",
           open ? "grid-rows-[1fr]" : "grid-rows-[0fr] border-transparent"
         )}
       >
-        <nav className="min-h-0" aria-label="Mobile">
-          <div className="container-site flex flex-col gap-0.5 py-2.5">
-            {NAV.map((item) => {
-              const isActive = pathname === "/"
-                ? ("targetId" in item && item.targetId ? activeSection === item.targetId : false)
-                : (item.to === pathname || (item.to !== "/" && pathname.startsWith(item.to)));
-              return (
-                <div key={item.label} className="flex flex-col">
+        <nav className="min-h-0" aria-label="Mobile and Tablet Navigation">
+          <div className="container-site max-w-2xl flex flex-col gap-1 py-3 sm:py-4">
+            {/* Home */}
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(false);
+                if (pathname === "/") {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  setActiveSection("home");
+                } else {
+                  navigate({ to: "/" });
+                  window.scrollTo({ top: 0, behavior: "instant" });
+                }
+              }}
+              className={cn(
+                "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm sm:text-base font-semibold transition-all cursor-pointer",
+                activeSection === "home" && pathname === "/"
+                  ? "bg-primary/10 text-primary font-bold border border-primary/20 shadow-xs"
+                  : "text-[#0c2340] hover:bg-slate-50 hover:text-primary active:bg-slate-100"
+              )}
+            >
+              <span>Home</span>
+            </a>
+
+            {/* About Us */}
+            <a
+              href="/about"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(false);
+                if (pathname === "/") {
+                  scrollToTarget("about");
+                  setActiveSection("about");
+                } else {
+                  navigate({ to: "/#about" as any }).then(() => {
+                    setTimeout(() => scrollToTarget("about"), 150);
+                  });
+                }
+              }}
+              className={cn(
+                "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm sm:text-base font-semibold transition-all cursor-pointer",
+                (activeSection === "about" && pathname === "/") || pathname === "/about"
+                  ? "bg-primary/10 text-primary font-bold border border-primary/20 shadow-xs"
+                  : "text-[#0c2340] hover:bg-slate-50 hover:text-primary active:bg-slate-100"
+              )}
+            >
+              <span>About Us</span>
+            </a>
+
+            {/* Services (Expandable Accordion) */}
+            <div className="rounded-xl border border-slate-100 bg-slate-50/60 overflow-hidden transition-colors">
+              <button
+                type="button"
+                onClick={() => setMobileServicesOpen((prev) => !prev)}
+                className={cn(
+                  "w-full flex items-center justify-between px-3.5 py-2.5 text-sm sm:text-base font-semibold transition-all cursor-pointer select-none text-left",
+                  pathname.startsWith("/services")
+                    ? "text-primary font-bold"
+                    : "text-[#0c2340] hover:text-primary"
+                )}
+                aria-expanded={mobileServicesOpen}
+              >
+                <span>Services</span>
+                <ChevronDown
+                  className={cn(
+                    "size-4 text-slate-400 transition-transform duration-200",
+                    mobileServicesOpen && "rotate-180 text-primary"
+                  )}
+                />
+              </button>
+
+              {mobileServicesOpen && (
+                <div className="px-2.5 pb-2.5 pt-0.5 space-y-1">
                   <a
-                    href={item.to}
-                    onClick={(e) => handleNavClick(e, item)}
-                    className={cn(
-                      "flex items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-all active:scale-[0.98] select-none cursor-pointer",
-                      isActive
-                        ? "bg-primary/10 text-primary font-bold border border-primary/25 shadow-xs"
-                        : "text-[#0c2340] hover:bg-slate-50 hover:text-primary active:bg-slate-100"
-                    )}
+                    href="/services"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setOpen(false);
+                      navigate({
+                        to: "/services",
+                        search: { category: undefined } as any,
+                      });
+                      window.dispatchEvent(new CustomEvent("reset-services-view"));
+                      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                    }}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-bold bg-primary/10 text-primary hover:bg-primary/15 transition-colors cursor-pointer"
                   >
-                    <span>{item.label}</span>
+                    <Sparkles className="size-3.5 text-primary shrink-0" />
+                    <span>All Services (15 Solutions)</span>
                   </a>
-
-                  {/* Sub-items for Services on mobile */}
-                  {item.label === "Services" && (
-                    <div className="pl-4 pr-1 py-1 space-y-1 border-l-2 border-primary/20 ml-3.5 my-1">
-                      {SERVICE_SECTORS.map((sec) => (
-                        <Link
-                          key={sec.sector}
-                          to="/services"
-                          search={{ category: sec.sector } as any}
-                          onClick={() => setOpen(false)}
-                          className="flex items-center px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors"
-                        >
-                          <span>{sec.title}</span>
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Sub-items for Our Solar Solutions on mobile */}
-                  {item.label === "Our Solar Solutions" && (
-                    <div className="pl-4 pr-1 py-1 space-y-1 border-l-2 border-primary/20 ml-3.5 my-1">
-                      {SOLAR_SOLUTIONS.map((sol) => (
-                        <a
-                          key={sol.targetId}
-                          href={sol.to}
-                          onClick={(e) => handleSolutionClick(e, sol)}
-                          className="flex items-center px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors"
-                        >
-                          <span>{sol.title}</span>
-                        </a>
-                      ))}
-                    </div>
-                  )}
-
-                  {item.label === "Gallery" && (
+                  {SERVICE_SECTORS.map((sec) => (
                     <a
-                      href={`tel:${COMPANY.phone.replace(/[^0-9+]/g, "")}`}
-                      onClick={() => setOpen(false)}
-                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-[#087FC1] hover:bg-sky-50 active:bg-sky-100 active:scale-[0.98] transition-all"
+                      key={sec.sector}
+                      href={`/services?category=${sec.sector}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setOpen(false);
+                        navigate({
+                          to: "/services",
+                          search: { category: sec.sector } as any,
+                        });
+                        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                      }}
+                      className="flex items-center px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold text-slate-700 hover:text-primary hover:bg-white transition-colors cursor-pointer"
                     >
-                      <Headphones className="size-4 text-[#087FC1]" />
-                      <span>24/7 Support</span>
+                      <span className="size-1.5 rounded-full bg-primary/60 mr-2 shrink-0" />
+                      <span>{sec.title}</span>
                     </a>
-                  )}
+                  ))}
                 </div>
-              );
-            })}
+              )}
+            </div>
+
+            {/* Our Solar Solutions (Expandable Accordion) */}
+            <div className="rounded-xl border border-slate-100 bg-slate-50/60 overflow-hidden transition-colors">
+              <button
+                type="button"
+                onClick={() => setMobileSolutionsOpen((prev) => !prev)}
+                className={cn(
+                  "w-full flex items-center justify-between px-3.5 py-2.5 text-sm sm:text-base font-semibold transition-all cursor-pointer select-none text-left",
+                  activeSection === "on-grid" || activeSection === "off-grid" || activeSection === "hybrid"
+                    ? "text-primary font-bold"
+                    : "text-[#0c2340] hover:text-primary"
+                )}
+                aria-expanded={mobileSolutionsOpen}
+              >
+                <span>Our Solar Solutions</span>
+                <ChevronDown
+                  className={cn(
+                    "size-4 text-slate-400 transition-transform duration-200",
+                    mobileSolutionsOpen && "rotate-180 text-primary"
+                  )}
+                />
+              </button>
+
+              {mobileSolutionsOpen && (
+                <div className="px-2.5 pb-2.5 pt-0.5 space-y-1">
+                  {SOLAR_SOLUTIONS.map((sol) => (
+                    <a
+                      key={sol.targetId}
+                      href={sol.to}
+                      onClick={(e) => handleSolutionClick(e, sol)}
+                      className={cn(
+                        "flex items-center px-3 py-2 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer",
+                        activeSection === sol.targetId
+                          ? "bg-primary/10 text-primary"
+                          : "text-slate-700 hover:text-primary hover:bg-white"
+                      )}
+                    >
+                      <span className="size-1.5 rounded-full bg-amber-500 mr-2 shrink-0" />
+                      <span>{sol.title} Rooftop Solar</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Gallery */}
+            <a
+              href="/projects"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(false);
+                navigate({ to: "/projects" });
+                window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+              }}
+              className={cn(
+                "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm sm:text-base font-semibold transition-all cursor-pointer",
+                pathname === "/projects" || pathname.startsWith("/projects")
+                  ? "bg-primary/10 text-primary font-bold border border-primary/20 shadow-xs"
+                  : "text-[#0c2340] hover:bg-slate-50 hover:text-primary active:bg-slate-100"
+              )}
+            >
+              <span>Gallery</span>
+            </a>
+
+            {/* Contact Us */}
+            <a
+              href="/contact"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(false);
+                navigate({ to: "/contact" });
+                window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+              }}
+              className={cn(
+                "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm sm:text-base font-semibold transition-all cursor-pointer",
+                pathname === "/contact" || pathname.startsWith("/contact")
+                  ? "bg-primary/10 text-primary font-bold border border-primary/20 shadow-xs"
+                  : "text-[#0c2340] hover:bg-slate-50 hover:text-primary active:bg-slate-100"
+              )}
+            >
+              <span>Contact Us</span>
+            </a>
+
+            {/* 24/7 Support Phone Action */}
+            <a
+              href={`tel:${COMPANY.phone.replace(/[^0-9+]/g, "")}`}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm sm:text-base font-bold text-[#087FC1] bg-sky-50/80 hover:bg-sky-100 active:scale-[0.99] transition-all"
+            >
+              <Headphones className="size-4 sm:size-5 text-[#087FC1] shrink-0" />
+              <span>24/7 Support: {COMPANY.phone}</span>
+            </a>
+
+            {/* Get A Quote Button */}
             <Link
               to="/book-a-demo"
-              onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-[30px] bg-[#B83A16] py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-[#A33112] active:scale-95"
+              onClick={() => {
+                setOpen(false);
+                window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+              }}
+              className="mt-2 inline-flex items-center justify-center rounded-[30px] bg-[#B83A16] py-3 text-sm sm:text-base font-bold text-white shadow-sm transition-all hover:bg-[#A33112] active:scale-95 text-center"
             >
               Get A Quote
             </Link>

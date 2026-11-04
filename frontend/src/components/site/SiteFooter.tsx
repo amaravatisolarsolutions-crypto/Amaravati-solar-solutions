@@ -106,7 +106,7 @@ export function SiteFooter() {
           <ul className="mt-2.5 space-y-1.5 text-xs">
             {NAV.map((n) => {
               const targetId = "targetId" in n ? n.targetId : undefined;
-              if (targetId && ["on-grid", "off-grid", "hybrid", "home"].includes(targetId)) {
+              if (targetId && ["about", "on-grid", "off-grid", "hybrid", "home"].includes(targetId)) {
                 return (
                   <li key={n.label}>
                     <a
@@ -120,10 +120,31 @@ export function SiteFooter() {
                 );
               }
 
+              if (n.label === "Services") {
+                return (
+                  <li key={n.label}>
+                    <Link
+                      to="/services"
+                      search={{ category: undefined } as any}
+                      onClick={() => {
+                        window.dispatchEvent(new CustomEvent("reset-services-view"));
+                        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                      }}
+                      className="hover:text-gold transition-colors"
+                    >
+                      {n.label}
+                    </Link>
+                  </li>
+                );
+              }
+
               return (
                 <li key={n.label}>
                   <Link
                     to={n.to as any}
+                    onClick={() => {
+                      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                    }}
                     className="hover:text-gold transition-colors"
                   >
                     {n.label}
@@ -131,7 +152,17 @@ export function SiteFooter() {
                 </li>
               );
             })}
-            <li><Link to="/book-a-demo" className="hover:text-gold transition-colors">Get A Quote</Link></li>
+            <li>
+              <Link
+                to="/book-a-demo"
+                onClick={() => {
+                  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                }}
+                className="hover:text-gold transition-colors"
+              >
+                Get A Quote
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
@@ -141,6 +172,9 @@ export function SiteFooter() {
               <Link
                 to="/services"
                 search={{ category: "residential" } as any}
+                onClick={() => {
+                  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                }}
                 className="hover:text-gold transition-colors"
               >
                 Residential
@@ -150,6 +184,9 @@ export function SiteFooter() {
               <Link
                 to="/services"
                 search={{ category: "commercial" } as any}
+                onClick={() => {
+                  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                }}
                 className="hover:text-gold transition-colors"
               >
                 Commercial
@@ -159,6 +196,9 @@ export function SiteFooter() {
               <Link
                 to="/services"
                 search={{ category: "industrial" } as any}
+                onClick={() => {
+                  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                }}
                 className="hover:text-gold transition-colors"
               >
                 Industrial
@@ -167,7 +207,12 @@ export function SiteFooter() {
             <li className="pt-1.5 border-t border-navy-foreground/15 mt-2">
               <Link
                 to="/services"
-                className="font-bold text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1 text-xs"
+                search={{ category: undefined } as any}
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent("reset-services-view"));
+                  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                }}
+                className="font-bold text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1 text-xs cursor-pointer"
               >
                 All services →
               </Link>
