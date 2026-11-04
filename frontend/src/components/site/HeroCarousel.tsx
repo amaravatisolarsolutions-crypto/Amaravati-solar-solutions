@@ -29,6 +29,87 @@ export function HeroCarousel() {
   const touchX = useRef<number | null>(null);
   const touchY = useRef<number | null>(null);
 
+  // Dynamic hotspot synchronization for object-cover image
+  const bannerContainerRef = useRef<HTMLDivElement>(null);
+  const [hotspots, setHotspots] = useState<{
+    b1: { left: string; top: string; width: string; height: string };
+    b2: { left: string; top: string; width: string; height: string };
+  }>({
+    b1: { left: "7.27%", top: "71.22%", width: "22.17%", height: "7.03%" },
+    b2: { left: "30.60%", top: "71.22%", width: "15.26%", height: "7.03%" },
+  });
+
+  useEffect(() => {
+    const el = bannerContainerRef.current;
+    if (!el) return;
+
+    const updateHotspots = () => {
+      const cw = el.clientWidth;
+      const ch = el.clientHeight;
+      if (!cw || !ch) return;
+
+      const imgW = 1376;
+      const imgH = 768;
+      const imgRatio = imgW / imgH;
+      const containerRatio = cw / ch;
+
+      let renderW: number;
+      let renderH: number;
+      let offsetX: number;
+      let offsetY: number;
+
+      if (containerRatio > imgRatio) {
+        // Container is wider than 16:9: scaled by width, cropped vertically
+        renderW = cw;
+        renderH = cw / imgRatio;
+        offsetX = 0;
+        offsetY = (ch - renderH) / 2;
+      } else {
+        // Container is narrower: scaled by height, cropped horizontally
+        renderH = ch;
+        renderW = ch * imgRatio;
+        offsetY = 0;
+        offsetX = (cw - renderW) / 2;
+      }
+
+      // Button 1 at 1x in 1376x768: x=100, y=547, w=305, h=54
+      const b1Left = ((offsetX + (100 / imgW) * renderW) / cw) * 100;
+      const b1Top = ((offsetY + (547 / imgH) * renderH) / ch) * 100;
+      const b1Width = (((305 / imgW) * renderW) / cw) * 100;
+      const b1Height = (((54 / imgH) * renderH) / ch) * 100;
+
+      // Button 2 at 1x in 1376x768: x=421, y=547, w=210, h=54
+      const b2Left = ((offsetX + (421 / imgW) * renderW) / cw) * 100;
+      const b2Top = ((offsetY + (547 / imgH) * renderH) / ch) * 100;
+      const b2Width = (((210 / imgW) * renderW) / cw) * 100;
+      const b2Height = (((54 / imgH) * renderH) / ch) * 100;
+
+      setHotspots({
+        b1: {
+          left: `${b1Left.toFixed(2)}%`,
+          top: `${b1Top.toFixed(2)}%`,
+          width: `${b1Width.toFixed(2)}%`,
+          height: `${b1Height.toFixed(2)}%`,
+        },
+        b2: {
+          left: `${b2Left.toFixed(2)}%`,
+          top: `${b2Top.toFixed(2)}%`,
+          width: `${b2Width.toFixed(2)}%`,
+          height: `${b2Height.toFixed(2)}%`,
+        },
+      });
+    };
+
+    updateHotspots();
+    const ro = new ResizeObserver(updateHotspots);
+    ro.observe(el);
+    window.addEventListener("resize", updateHotspots);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", updateHotspots);
+    };
+  }, []);
+
   const go = useCallback((i: number) => setIndex((i + SLIDES.length) % SLIDES.length), []);
 
   useEffect(() => {
@@ -39,7 +120,7 @@ export function HeroCarousel() {
 
   return (
     <section
-      className="relative w-full aspect-[2/1] max-h-[calc(100svh-114px)] min-h-[220px] sm:min-h-[340px] md:min-h-[460px] overflow-hidden bg-[#e4f1fb] touch-pan-y select-none"
+      className="relative w-full aspect-[16/9] sm:h-[calc(100svh-114px)] sm:max-h-[820px] min-h-[220px] sm:min-h-[460px] overflow-hidden bg-navy touch-pan-y select-none"
       aria-roledescription="carousel"
       aria-label="Solar solutions"
       onMouseEnter={() => setPaused(true)}
@@ -75,51 +156,42 @@ export function HeroCarousel() {
           aria-label={`${i + 1} of ${SLIDES.length}`}
         >
           {s.isCustomBanner ? (
-            <div className="relative h-full w-full flex items-center justify-center bg-[#e4f1fb] overflow-hidden [container-type:size]">
-              {/* Crisp, undistorted banner fitting perfectly edge-to-edge */}
-              <div
-                className="relative flex items-center justify-center max-w-full max-h-full"
+            <div ref={bannerContainerRef} className="relative h-full w-full overflow-hidden select-none bg-navy">
+              {/* Seamless, edge-to-edge widescreen banner with perfect screen fit */}
+              <img
+                src={s.image}
+                alt="One Solar Partner for All Your Energy Needs - Complete Solar Solutions"
+                width={1376}
+                height={768}
+                loading="eager"
+                className="h-full w-full object-cover pointer-events-auto select-none"
+              />
+              
+              {/* Interactive Hotspots for the two buttons drawn inside the banner */}
+              <Link
+                to="/book-a-demo"
+                className="absolute cursor-pointer rounded-full transition-all hover:ring-2 hover:ring-white/80 hover:shadow-lg active:scale-95 z-10"
                 style={{
-                  width: "min(100cqw, calc(100cqh * 2))",
-                  height: "min(100cqh, calc(100cqw / 2))",
-                  aspectRatio: "2 / 1",
+                  left: hotspots.b1.left,
+                  top: hotspots.b1.top,
+                  width: hotspots.b1.width,
+                  height: hotspots.b1.height,
                 }}
-              >
-                <img
-                  src={s.image}
-                  alt="One Solar Partner for All Your Energy Needs - Complete Solar Solutions"
-                  width={1024}
-                  height={512}
-                  loading="eager"
-                  className="h-full w-full object-contain pointer-events-auto select-none block"
-                />
-                
-                {/* Interactive Hotspots for the two buttons drawn inside the banner */}
-                <Link
-                  to="/book-a-demo"
-                  className="absolute cursor-pointer rounded-full transition-all hover:ring-2 hover:ring-white/80 hover:shadow-lg active:scale-95"
-                  style={{
-                    left: "4.69%",
-                    top: "72.0%",
-                    width: "23.34%",
-                    height: "7.6%",
-                  }}
-                  title="Get a Free Site Assessment"
-                  aria-label="Get a Free Site Assessment"
-                />
-                <Link
-                  to="/services"
-                  className="absolute cursor-pointer rounded-full transition-all hover:ring-2 hover:ring-[#082B4C]/50 hover:shadow-lg active:scale-95"
-                  style={{
-                    left: "29.59%",
-                    top: "72.0%",
-                    width: "17.00%",
-                    height: "7.6%",
-                  }}
-                  title="Our Solar Solutions"
-                  aria-label="Our Solar Solutions"
-                />
-              </div>
+                title="Get a Free Site Assessment"
+                aria-label="Get a Free Site Assessment"
+              />
+              <Link
+                to="/services"
+                className="absolute cursor-pointer rounded-full transition-all hover:ring-2 hover:ring-[#0B2B4C]/50 hover:shadow-lg active:scale-95 z-10"
+                style={{
+                  left: hotspots.b2.left,
+                  top: hotspots.b2.top,
+                  width: hotspots.b2.width,
+                  height: hotspots.b2.height,
+                }}
+                title="Our Solar Solutions"
+                aria-label="Our Solar Solutions"
+              />
             </div>
           ) : (
             <>
