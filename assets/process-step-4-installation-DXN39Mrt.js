@@ -1,0 +1,1 @@
+var e=`/assets/process-step-4-installation-BvoFmDhA.jpg`;export{e as t};

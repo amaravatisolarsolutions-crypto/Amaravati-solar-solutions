@@ -14,6 +14,7 @@ import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
 import { cn } from "@/lib/utils";
 import solarDrone from "@/assets/hero-elevated-drone.jpg";
 import solarInstallation from "@/assets/installation.jpg";
+import solarWatermark from "@/assets/solar-watermark-bg.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -49,10 +50,17 @@ function AboutPage() {
   }, []);
 
   return (
-    <div className="bg-slate-50/60 pb-16">
-      {/* 1. TOP HEADER & BREADCRUMB (Pixel-perfect alignment with Header Logo) */}
-      <section className="bg-white border-b border-orange-100/80 pt-3 pb-5">
-        <div className="container-site">
+    <div className="bg-transparent pb-16 relative">
+      {/* 1. TOP HEADER & BREADCRUMB WITH WARM SOLAR AMBIENT TINT */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-orange-50/90 via-white/80 to-amber-50/70 backdrop-blur-md border-b border-orange-200/90 pt-4 pb-6">
+        {/* Subtle Solar Watermark Decoration in Header */}
+        <div
+          className="absolute -right-8 -bottom-8 w-80 sm:w-96 h-48 sm:h-56 opacity-[0.09] pointer-events-none select-none bg-contain bg-no-repeat bg-right-bottom mix-blend-multiply"
+          style={{ backgroundImage: `url(${solarWatermark})` }}
+        />
+        <div className="absolute top-0 right-1/4 w-72 h-72 rounded-full bg-orange-400/10 blur-3xl pointer-events-none" />
+
+        <div className="container-site relative z-10">
           <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
             <Link
               to="/"
@@ -61,7 +69,7 @@ function AboutPage() {
               <ArrowLeft className="size-3.5 text-[#B83A16]" /> Back to Home
             </Link>
 
-            <div className="inline-flex items-center gap-1 rounded-full bg-[#B83A16]/10 px-3 py-0.5 text-[11px] font-bold text-[#B83A16]">
+            <div className="inline-flex items-center gap-1 rounded-full bg-[#B83A16]/10 px-3 py-0.5 text-[11px] font-bold text-[#B83A16] border border-[#B83A16]/20 shadow-2xs">
               <Sparkles className="size-3 text-[#B83A16]" /> ABOUT AMARAVATI SOLAR SOLUTIONS
             </div>
           </div>
@@ -72,7 +80,7 @@ function AboutPage() {
           <p className="mt-1.5 text-sm sm:text-base font-bold text-[#B83A16] leading-snug">
             We don't just install solar. We create a smarter way to power everyday life.
           </p>
-          <p className="mt-1 text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
+          <p className="mt-1 text-xs sm:text-sm text-slate-700 max-w-3xl leading-relaxed font-medium">
             Headquartered in Vijayawada, Amaravati Solar Solutions is a premier engineering, procurement, and construction (EPC) company delivering turnkey rooftop and ground-mounted solar power plants across Andhra Pradesh and Telangana.
           </p>
         </div>

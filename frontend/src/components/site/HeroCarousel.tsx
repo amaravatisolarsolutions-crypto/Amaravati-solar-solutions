@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import heroBannerMain from "@/assets/hero-banner-main.png";
 import commercial from "@/assets/hero-commercial.jpg";
 import industrial from "@/assets/hero-industrial.jpg";
-import future from "@/assets/hero-future.jpg";
+import heroSmartVilla from "@/assets/hero-smart-villa.jpg";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +20,7 @@ const SLIDES: { tag: string; title: string; text: string; image: string; ctas: [
   },
   { tag: "Commercial Solar", title: "Power Your Business with Solar.", text: "Reduce electricity expenses and move towards a smarter energy future.", image: commercial, ctas: [{ label: "Explore Commercial Solar", to: "/services" }, { label: "Book a Demo", to: "/book-a-demo" }] },
   { tag: "Industrial Solar", title: "Smarter Energy for a Stronger Industry.", text: "Scalable solar power solutions designed for industrial and manufacturing facilities.", image: industrial, ctas: [{ label: "Our Services", to: "/services" }, { label: "Request a Quote", to: "/contact" }] },
-  { tag: "Sustainable Future", title: "Make the Switch to Solar.", text: "Discover a cleaner, more efficient way to power your everyday life.", image: future, ctas: [{ label: "Start Your Solar Journey", to: "/book-a-demo" }, { label: "Contact Us", to: "/contact" }] },
+  { tag: "Sustainable Future", title: "Make the Switch to Solar.", text: "Discover a cleaner, more efficient way to power your everyday life.", image: heroSmartVilla, ctas: [{ label: "Start Your Solar Journey", to: "/book-a-demo" }, { label: "Contact Us", to: "/contact" }] },
 ];
 
 export function HeroCarousel() {

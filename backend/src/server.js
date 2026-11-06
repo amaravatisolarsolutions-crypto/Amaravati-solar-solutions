@@ -67,29 +67,45 @@ app.post("/api/bookings", async (req, res) => {
       preferred_time,
       time_slot,
       requirements,
+      monthly_bill,
+      service,
       notes,
     } = req.body;
 
-    if (!full_name || !phone || !email) {
-      return res.status(400).json({ error: "Full name, phone, and email are required." });
+    if (!full_name || !phone) {
+      return res.status(400).json({ error: "Full name and phone number are required." });
     }
 
+    const safeEmail =
+      email && email.trim()
+        ? email.trim()
+        : `${phone.replace(/[^0-9]/g, "")}@inquiry.amaravatisolar.com`;
+
+    const selectedSolution = solution || service || "Residential Rooftop Solar (On-Grid)";
     const bookingDate = preferred_date || date || new Date().toISOString().slice(0, 10);
     const bookingTime = preferred_time || time_slot || "10:00 AM - 01:00 PM";
     const reference = `ASS-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+
+    const combinedRequirements = [
+      requirements,
+      monthly_bill ? `Monthly Bill: ${monthly_bill}` : null,
+      service && service !== selectedSolution ? `Service: ${service}` : null,
+    ]
+      .filter(Boolean)
+      .join(" | ");
 
     await insertRow("demo_bookings", {
       reference,
       full_name,
       phone,
-      email,
+      email: safeEmail,
       customer_type,
-      solution,
+      solution: selectedSolution,
       property_type,
       city,
       preferred_date: bookingDate,
       preferred_time: bookingTime,
-      requirements: requirements || null,
+      requirements: combinedRequirements || null,
       status: "pending",
       notes: notes || null,
     });

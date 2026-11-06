@@ -3,6 +3,8 @@ import commercial from "@/assets/hero-commercial.jpg";
 import industrial from "@/assets/hero-industrial.jpg";
 import future from "@/assets/hero-future.jpg";
 import installation from "@/assets/installation.jpg";
+import heroSunriseClassic from "@/assets/hero-sunrise-classic.jpg";
+import heroElevatedDrone from "@/assets/hero-elevated-drone.jpg";
 import solarCarport from "@/assets/solar-carport.jpg";
 import solarFarm from "@/assets/solar-farm.jpg";
 import solarInverter from "@/assets/solar-inverter.jpg";
@@ -61,6 +63,7 @@ export const NAV = [
   { label: "About Us", to: "/about" },
   { label: "Services", to: "/services" },
   { label: "Our Solar Solutions", to: "/solar-solutions" },
+  { label: "Solar Calculation", to: "/solar-calculator" },
   { label: "Projects", to: "/projects" },
   { label: "Contact Us", to: "/contact" },
 ] as const;
@@ -84,7 +87,7 @@ export const SERVICES: Service[] = [
       "An on-grid rooftop solar system works directly with your utility supply. Solar power is consumed first during daylight, and any surplus generation is exported to the grid via net-metering, drastically reducing your electricity bills.",
     benefits: ["Maximum monthly electricity bill reduction", "Net-metering & government subsidy eligible", "Zero battery maintenance overhead", "Fastest return on investment (ROI)"],
     applications: ["Independent homes & villas", "Apartment rooftops", "Offices & commercial complexes"],
-    image: residential,
+    image: heroSunriseClassic,
   },
   {
     slug: "off-grid-solar-systems",
@@ -94,7 +97,7 @@ export const SERVICES: Service[] = [
       "Off-grid rooftop systems combine high-efficiency solar panels with battery storage, generating and storing clean power completely independent of the utility grid.",
     benefits: ["Complete energy self-reliance", "Full battery backup for nighttime use", "Protection from grid blackouts", "Reliable power in remote or outage-prone areas"],
     applications: ["Farmhouses & rural estates", "Sites with unstable grid power", "Remote commercial setups"],
-    image: future,
+    image: projectResidentialRooftopPergola,
   },
   {
     slug: "hybrid-solar-systems",
@@ -104,7 +107,7 @@ export const SERVICES: Service[] = [
       "Hybrid rooftop solar gives you round-the-clock power assurance. Feed surplus energy to the grid for savings, while maintaining smart battery reserves for instant backup during power failures.",
     benefits: ["Continuous 24/7 power backup", "Smart automatic switching during cuts", "Net-metering export enabled", "Scalable lithium battery integration"],
     applications: ["Homes needing constant backup", "Hospitals, clinics & critical loads", "Commercial businesses"],
-    image: installation,
+    image: projectHybridStorageVilla,
   },
   {
     slug: "residential-rooftop-solar",
@@ -114,7 +117,7 @@ export const SERVICES: Service[] = [
       "We assess your roof, shading and consumption to design a rooftop solar system that suits your home and budget.",
     benefits: ["Tailored to your roof and usage", "Clean energy for your family", "Neat, professional installation", "Guidance on applicable schemes"],
     applications: ["Independent houses", "Villas", "Apartment terraces"],
-    image: residential,
+    image: projectResidentialVilla,
   },
   {
     slug: "commercial-solar-installations",
@@ -124,7 +127,7 @@ export const SERVICES: Service[] = [
       "Commercial solar helps businesses reduce electricity expenses and demonstrate a commitment to sustainability.",
     benefits: ["Reduced operating costs", "Daytime load offset", "Sustainability credentials", "Scalable design"],
     applications: ["Offices", "Retail and showrooms", "Hospitals, schools and hotels"],
-    image: commercial,
+    image: projectCommercialRooftop,
   },
   {
     slug: "industrial-solar-solutions",
@@ -134,7 +137,7 @@ export const SERVICES: Service[] = [
       "Industrial solar solutions are engineered for large rooftops and high energy demand, designed around your operations.",
     benefits: ["Significant energy offset", "Engineered for large roofs", "Minimal disruption to operations", "Ongoing performance support"],
     applications: ["Factories", "Warehouses", "Cold storage and processing units"],
-    image: industrial,
+    image: projectWarehouseIndustrial,
   },
   {
     slug: "solar-system-inspection",
@@ -144,7 +147,7 @@ export const SERVICES: Service[] = [
       "Our team inspects your site or existing installation to evaluate structure, shading, wiring and system health.",
     benefits: ["Identify performance issues", "Safety checks", "Clear inspection report", "Recommendations for improvement"],
     applications: ["Pre-installation surveys", "Existing installations", "Performance troubleshooting"],
-    image: installation,
+    image: heroElevatedDrone,
   },
   {
     slug: "maintenance-and-technical-support",
@@ -154,7 +157,17 @@ export const SERVICES: Service[] = [
       "Regular maintenance keeps your solar system safe and efficient. We provide cleaning, checks and technical support after installation.",
     benefits: ["Consistent performance", "Panel cleaning", "Preventive checks", "Responsive technical help"],
     applications: ["Residential systems", "Commercial systems", "Industrial systems"],
-    image: future,
+    image: projectIndustrialMetalRoofClamps,
+  },
+  {
+    slug: "agricultural-solar-water-pumps",
+    title: "Agricultural Solar Water Pumps",
+    short: "High-power solar water pumping systems for uninterrupted daytime irrigation on farms.",
+    description:
+      "Standalone solar water pumping systems powered directly by ground-mounted solar arrays, eliminating diesel generator costs and erratic rural grid power.",
+    benefits: ["Up to 60% PM-KUSUM subsidy", "Zero diesel fuel expenses", "Reliable daytime irrigation", "Automatic MPPT motor control"],
+    applications: ["Agricultural farms", "Orchards & plantations", "Aquaculture & fisheries"],
+    image: projectAgriculturalSolarPump,
   },
 ];
 
@@ -435,6 +448,89 @@ export const PROJECTS: Project[] = [
 ];
 
 export const CUSTOMER_TYPES = ["Residential", "Commercial", "Industrial"] as const;
-export const SOLUTIONS = ["Residential", "Commercial", "Industrial"] as const;
-export const PROPERTY_TYPES = ["Independent House", "Apartment", "Office", "Shop / Showroom", "Factory / Warehouse", "Farm / Land", "Other"] as const;
-export const TIME_SLOTS = ["09:00 – 11:00", "11:00 – 13:00", "14:00 – 16:00", "16:00 – 18:00"] as const;
+
+export const SOLAR_SERVICES_AND_SOLUTIONS = [
+  // --- Core Rooftop Architectures ---
+  "Residential Rooftop Solar (On-Grid)",
+  "Residential Hybrid Solar (Solar + Battery)",
+  "Off-Grid Solar for Farmhouses & Villas",
+  "PM Surya Ghar Muft Bijli Yojana Facilitation",
+  "Solar Water Heater & Domestic Pumping",
+
+  // --- Commercial Solutions ---
+  "Commercial Rooftop Solar (HT / LT Net-Metering)",
+  "Commercial Solar Carport Canopies",
+  "Institutional & Hospital Solar Plants",
+  "Corporate Solar PPA & Open Access",
+
+  // --- Industrial Megawatt Plants ---
+  "Industrial PEB Metal Roof Solar Systems",
+  "Megawatt Ground-Mounted Solar Farms",
+  "Captive Solar Power Plants for Manufacturing",
+
+  // --- Agricultural & Infrastructure ---
+  "Agricultural Solar Water Pumping (PM KUSUM)",
+  "Commercial EV Charging Stations",
+  "PowerCare 5-Year Comprehensive Solar AMC",
+  "Solar System Health Audit & 3D Drone Inspection",
+] as const;
+
+export const SOLUTIONS = SOLAR_SERVICES_AND_SOLUTIONS;
+
+export const PROPERTY_TYPES = [
+  "Independent House / Villa",
+  "Apartment / Gated Community",
+  "Commercial Building / Office",
+  "Hospital / Institution / School",
+  "Industrial Factory / PEB Shed",
+  "Farmhouse / Agricultural Land",
+  "Showroom / Warehouse",
+  "Other",
+] as const;
+
+export const MONTHLY_BILL_RANGES = [
+  "Under ₹2,000 / month",
+  "₹2,000 – ₹5,000 / month",
+  "₹5,000 – ₹10,000 / month",
+  "₹10,000 – ₹25,000 / month",
+  "₹25,000 – ₹50,000 / month",
+  "Above ₹50,000 / month (Commercial / Industrial)",
+] as const;
+
+export const TIME_SLOTS = [
+  "09:00 AM – 11:00 AM (Morning)",
+  "11:00 AM – 01:00 PM (Mid-Day)",
+  "02:00 PM – 04:00 PM (Afternoon)",
+  "04:00 PM – 06:30 PM (Evening)",
+] as const;
+
+export function buildSolarWhatsAppUrl(details: {
+  reference?: string;
+  fullName: string;
+  phone: string;
+  city: string;
+  service: string;
+  propertyType?: string;
+  monthlyBill?: string;
+  preferredDate?: string;
+  preferredTime?: string;
+  requirements?: string;
+}) {
+  const lines = [
+    "☀️ *AMARAVATI SOLAR SOLUTIONS — NEW INQUIRY* ☀️",
+    details.reference ? `*Ref ID:* ${details.reference}` : null,
+    `*Customer Name:* ${details.fullName}`,
+    `*Phone:* ${details.phone}`,
+    `*City / Location:* ${details.city}`,
+    `*Selected Service / Solution:* ${details.service}`,
+    details.propertyType ? `*Property Type:* ${details.propertyType}` : null,
+    details.monthlyBill ? `*Monthly Power Bill:* ${details.monthlyBill}` : null,
+    details.preferredDate ? `*Preferred Visit Date:* ${details.preferredDate}${details.preferredTime ? ` (${details.preferredTime})` : ""}` : null,
+    details.requirements ? `*Notes / Requirements:* ${details.requirements}` : null,
+    "----------------------------------------",
+    "Hi Amaravati Solar Solutions, I have submitted this inquiry on your website. Please connect with me for a site survey and solar quotation!",
+  ].filter(Boolean);
+
+  const text = encodeURIComponent(lines.join("\n"));
+  return `https://wa.me/917989641899?text=${text}`;
+}

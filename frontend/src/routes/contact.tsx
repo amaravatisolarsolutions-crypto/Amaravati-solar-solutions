@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
 import {
   ArrowLeft,
   ArrowRight,
@@ -19,9 +19,9 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
-import { SolarCalculator } from "@/components/site/SolarCalculator";
 import { COMPANY } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
+import solarWatermark from "@/assets/solar-watermark-bg.jpg";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -63,45 +63,45 @@ const CONTACT_FAQS = [
 ];
 
 function ContactPage() {
+  const routerSearch = useRouterState({
+    select: (s) => (s.location.search as Record<string, string>) || {},
+  });
+
   const [initialService, setInitialService] = useState<string>("");
   const [initialMessage, setInitialMessage] = useState<string>("");
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  }, []);
-
-  const handleApplyPlan = (plan: {
-    bill: number;
-    location: string;
-    load: string;
-    propertyType: string;
-    systemKw: number;
-    monthlySavings: number;
-    subsidy: number;
-  }) => {
-    let serviceCategory = "Residential";
-    if (plan.propertyType.includes("Commercial")) serviceCategory = "Commercial";
-    else if (plan.propertyType.includes("Industrial")) serviceCategory = "Industrial";
-
-    setInitialService(serviceCategory);
-    setInitialMessage(
-      `Interested in a ${plan.systemKw} kW ${serviceCategory} Solar System for monthly bill of ₹${plan.bill.toLocaleString("en-IN")} in ${plan.location} (Sanctioned Load: ${plan.load}). Estimated subsidy: ₹${plan.subsidy.toLocaleString("en-IN")}.`
-    );
-
-    const el = document.getElementById("enquiry-form-card");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+    if (typeof window !== "undefined") {
+      const sp = new URLSearchParams(window.location.search);
+      const s = sp.get("service") || sp.get("solution") || routerSearch.service || routerSearch.solution || "";
+      if (s) {
+        setInitialService(s);
+        setTimeout(() => {
+          const el = document.getElementById("enquiry-form-card");
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 200);
+      }
     }
-  };
+  }, [routerSearch]);
 
   const cleanPhone = COMPANY.phone.replace(/[^0-9+]/g, "");
   const cleanWhatsapp = COMPANY.whatsapp.replace(/[^0-9]/g, "");
 
   return (
-    <div className="bg-slate-50/60 pb-16 space-y-8 sm:space-y-10">
-      {/* 1. HERO HEADER (Pixel-perfect alignment with Header Logo) */}
-      <section className="bg-white border-b border-orange-100/80 pt-3 pb-5 sm:pb-6">
-        <div className="container-site">
+    <div className="bg-transparent pb-16 space-y-8 sm:space-y-10 relative">
+      {/* 1. HERO HEADER WITH WARM SOLAR AMBIENT TINT */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-orange-50/90 via-white/80 to-amber-50/70 backdrop-blur-md border-b border-orange-200/90 pt-4 pb-6 sm:pb-7">
+        {/* Subtle Solar Watermark Decoration in Header */}
+        <div
+          className="absolute -right-8 -bottom-8 w-80 sm:w-96 h-48 sm:h-56 opacity-[0.09] pointer-events-none select-none bg-contain bg-no-repeat bg-right-bottom mix-blend-multiply"
+          style={{ backgroundImage: `url(${solarWatermark})` }}
+        />
+        <div className="absolute top-0 right-1/4 w-72 h-72 rounded-full bg-orange-400/10 blur-3xl pointer-events-none" />
+
+        <div className="container-site relative z-10">
           <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
             <Link
               to="/"
@@ -110,7 +110,7 @@ function ContactPage() {
               <ArrowLeft className="size-3.5 text-[#B83A16]" /> Back to Home
             </Link>
 
-            <div className="inline-flex items-center gap-1 rounded-full bg-[#B83A16]/10 px-3 py-0.5 text-[11px] font-bold text-[#B83A16]">
+            <div className="inline-flex items-center gap-1 rounded-full bg-[#B83A16]/10 px-3 py-0.5 text-[11px] font-bold text-[#B83A16] border border-[#B83A16]/20 shadow-2xs">
               <Sparkles className="size-3 text-[#B83A16]" /> DIRECT TECHNICAL &amp; SALES CONSULTATION
             </div>
           </div>
@@ -121,7 +121,7 @@ function ContactPage() {
           <p className="mt-1.5 text-sm sm:text-base font-bold text-[#B83A16] leading-snug">
             We're here to help you cut electricity costs and achieve clean energy independence.
           </p>
-          <p className="mt-1 text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
+          <p className="mt-1 text-xs sm:text-sm text-slate-700 max-w-3xl leading-relaxed font-medium">
             Whether you want to cut your home electricity bill by 90%, enquire about the PM Surya Ghar ₹78,000 subsidy, or engineer an industrial rooftop plant — our Vijayawada team is ready to assist.
           </p>
         </div>
@@ -253,13 +253,13 @@ function ContactPage() {
                 </p>
               </div>
 
-              <a
-                href="#solar-calculator-section"
+              <Link
+                to="/solar-calculator"
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-[#B83A16] hover:text-[#A33112] hover:underline bg-[#FFF5EA] border border-orange-200/80 px-3 py-1.5 shadow-2xs cursor-pointer"
               >
                 <Calculator className="size-3.5" />
-                <span>Calculate Solar Plan ↓</span>
-              </a>
+                <span>Calculate Solar Plan →</span>
+              </Link>
             </div>
 
             {/* The Interactive Form */}
@@ -372,21 +372,33 @@ function ContactPage() {
         </div>
       </section>
 
-      {/* 4. SOLAR CALCULATOR SECTION (Positioned Below) */}
-      <section id="solar-calculator-section" className="container-site scroll-mt-24">
-        <div className="mb-4">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-[#B83A16]/10 px-3 py-0.5 text-[11px] font-bold text-[#B83A16] uppercase tracking-wider mb-1">
-            <Calculator className="size-3 text-[#B83A16]" /> Instant System Sizing &amp; Financial ROI
+      {/* 4. SOLAR CALCULATOR FEATURE BANNER (Moved to Dedicated Page & Linked) */}
+      <section className="container-site">
+        <div className="rounded-2xl bg-gradient-to-r from-[#082B4C] via-[#093259] to-[#082B4C] p-6 sm:p-8 text-white border border-[#0d3b66] shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-orange-500/20 border border-orange-400/30 px-3 py-0.5 text-[11px] font-bold text-amber-300 uppercase tracking-wider mb-2">
+              <Calculator className="size-3 text-amber-300" />
+              <span>Solar Sizing &amp; ROI Engine</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-white">
+              Want to Calculate Your Exact Rooftop Sizing &amp; ₹78,000 Subsidy?
+            </h2>
+            <p className="mt-2 text-xs sm:text-sm text-white/80 leading-relaxed font-medium">
+              Use our interactive Solar Calculator to adjust your electricity bill, calculate required kW system capacity, rooftop area, and 25-year financial savings.
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#082B4C] tracking-tight">
-            Calculate Your Solar Potential &amp; Estimated Subsidy
-          </h2>
-          <p className="mt-1 text-xs sm:text-sm text-slate-600">
-            Slide your average monthly electricity bill to calculate the required kW capacity, rooftop area, and 25-year financial savings.
-          </p>
-        </div>
 
-        <SolarCalculator onApplyPlan={handleApplyPlan} />
+          <div className="shrink-0">
+            <Link
+              to="/solar-calculator"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] px-6 py-3 text-xs sm:text-sm font-bold text-white shadow-md hover:shadow-lg transition-all active:scale-95"
+            >
+              <Calculator className="size-4" />
+              <span>Open Solar Calculator</span>
+              <ArrowRight className="size-4" />
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* 5. CONTACT & CONSULTATION FAQS */}

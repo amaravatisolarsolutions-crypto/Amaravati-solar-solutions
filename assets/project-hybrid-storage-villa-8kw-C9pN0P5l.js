@@ -1,0 +1,1 @@
+var e=`/assets/project-residential-inverter-10kw-D_nvaaFM.jpg`,t=`/assets/project-hybrid-storage-villa-8kw-BCFw4zku.jpg`;export{e as n,t};

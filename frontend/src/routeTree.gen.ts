@@ -15,7 +15,13 @@ import { Route as BookADemoRouteImport } from './routes/book-a-demo'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as OnePointOfContactRouteImport } from './routes/one-point-of-contact'
+import { Route as PowerBackPromiseRouteImport } from './routes/power-back-promise'
+import { Route as PowercareRouteImport } from './routes/powercare'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProcessRouteImport } from './routes/process'
+import { Route as SolarCalculationRouteImport } from './routes/solar-calculation'
+import { Route as SolarCalculatorRouteImport } from './routes/solar-calculator'
 import { Route as SolarSolutionsRouteImport } from './routes/solar-solutions'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
@@ -55,9 +61,39 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OnePointOfContactRoute = OnePointOfContactRouteImport.update({
+  id: '/one-point-of-contact',
+  path: '/one-point-of-contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PowerBackPromiseRoute = PowerBackPromiseRouteImport.update({
+  id: '/power-back-promise',
+  path: '/power-back-promise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PowercareRoute = PowercareRouteImport.update({
+  id: '/powercare',
+  path: '/powercare',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProcessRoute = ProcessRouteImport.update({
+  id: '/process',
+  path: '/process',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolarCalculationRoute = SolarCalculationRouteImport.update({
+  id: '/solar-calculation',
+  path: '/solar-calculation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolarCalculatorRoute = SolarCalculatorRouteImport.update({
+  id: '/solar-calculator',
+  path: '/solar-calculator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SolarSolutionsRoute = SolarSolutionsRouteImport.update({
@@ -108,7 +144,13 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
+  '/one-point-of-contact': typeof OnePointOfContactRoute
+  '/power-back-promise': typeof PowerBackPromiseRoute
+  '/powercare': typeof PowercareRoute
   '/privacy': typeof PrivacyRoute
+  '/process': typeof ProcessRoute
+  '/solar-calculation': typeof SolarCalculationRoute
+  '/solar-calculator': typeof SolarCalculatorRoute
   '/solar-solutions': typeof SolarSolutionsRoute
   '/terms': typeof TermsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -125,7 +167,13 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
+  '/one-point-of-contact': typeof OnePointOfContactRoute
+  '/power-back-promise': typeof PowerBackPromiseRoute
+  '/powercare': typeof PowercareRoute
   '/privacy': typeof PrivacyRoute
+  '/process': typeof ProcessRoute
+  '/solar-calculation': typeof SolarCalculationRoute
+  '/solar-calculator': typeof SolarCalculatorRoute
   '/solar-solutions': typeof SolarSolutionsRoute
   '/terms': typeof TermsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -143,7 +191,13 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
+  '/one-point-of-contact': typeof OnePointOfContactRoute
+  '/power-back-promise': typeof PowerBackPromiseRoute
+  '/powercare': typeof PowercareRoute
   '/privacy': typeof PrivacyRoute
+  '/process': typeof ProcessRoute
+  '/solar-calculation': typeof SolarCalculationRoute
+  '/solar-calculator': typeof SolarCalculatorRoute
   '/solar-solutions': typeof SolarSolutionsRoute
   '/terms': typeof TermsRoute
   '/admin/login': typeof AdminLoginRoute
@@ -162,7 +216,13 @@ export interface FileRouteTypes {
     | '/contact'
     | '/gallery'
     | '/login'
+    | '/one-point-of-contact'
+    | '/power-back-promise'
+    | '/powercare'
     | '/privacy'
+    | '/process'
+    | '/solar-calculation'
+    | '/solar-calculator'
     | '/solar-solutions'
     | '/terms'
     | '/admin/login'
@@ -179,7 +239,13 @@ export interface FileRouteTypes {
     | '/contact'
     | '/gallery'
     | '/login'
+    | '/one-point-of-contact'
+    | '/power-back-promise'
+    | '/powercare'
     | '/privacy'
+    | '/process'
+    | '/solar-calculation'
+    | '/solar-calculator'
     | '/solar-solutions'
     | '/terms'
     | '/admin/login'
@@ -196,7 +262,13 @@ export interface FileRouteTypes {
     | '/contact'
     | '/gallery'
     | '/login'
+    | '/one-point-of-contact'
+    | '/power-back-promise'
+    | '/powercare'
     | '/privacy'
+    | '/process'
+    | '/solar-calculation'
+    | '/solar-calculator'
     | '/solar-solutions'
     | '/terms'
     | '/admin/login'
@@ -214,7 +286,13 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   GalleryRoute: typeof GalleryRoute
   LoginRoute: typeof LoginRoute
+  OnePointOfContactRoute: typeof OnePointOfContactRoute
+  PowerBackPromiseRoute: typeof PowerBackPromiseRoute
+  PowercareRoute: typeof PowercareRoute
   PrivacyRoute: typeof PrivacyRoute
+  ProcessRoute: typeof ProcessRoute
+  SolarCalculationRoute: typeof SolarCalculationRoute
+  SolarCalculatorRoute: typeof SolarCalculatorRoute
   SolarSolutionsRoute: typeof SolarSolutionsRoute
   TermsRoute: typeof TermsRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -269,11 +347,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/one-point-of-contact': {
+      id: '/one-point-of-contact'
+      path: '/one-point-of-contact'
+      fullPath: '/one-point-of-contact'
+      preLoaderRoute: typeof OnePointOfContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/power-back-promise': {
+      id: '/power-back-promise'
+      path: '/power-back-promise'
+      fullPath: '/power-back-promise'
+      preLoaderRoute: typeof PowerBackPromiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/powercare': {
+      id: '/powercare'
+      path: '/powercare'
+      fullPath: '/powercare'
+      preLoaderRoute: typeof PowercareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/process': {
+      id: '/process'
+      path: '/process'
+      fullPath: '/process'
+      preLoaderRoute: typeof ProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solar-calculation': {
+      id: '/solar-calculation'
+      path: '/solar-calculation'
+      fullPath: '/solar-calculation'
+      preLoaderRoute: typeof SolarCalculationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solar-calculator': {
+      id: '/solar-calculator'
+      path: '/solar-calculator'
+      fullPath: '/solar-calculator'
+      preLoaderRoute: typeof SolarCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/solar-solutions': {
@@ -342,7 +462,13 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   GalleryRoute: GalleryRoute,
   LoginRoute: LoginRoute,
+  OnePointOfContactRoute: OnePointOfContactRoute,
+  PowerBackPromiseRoute: PowerBackPromiseRoute,
+  PowercareRoute: PowercareRoute,
   PrivacyRoute: PrivacyRoute,
+  ProcessRoute: ProcessRoute,
+  SolarCalculationRoute: SolarCalculationRoute,
+  SolarCalculatorRoute: SolarCalculatorRoute,
   SolarSolutionsRoute: SolarSolutionsRoute,
   TermsRoute: TermsRoute,
   AdminLoginRoute: AdminLoginRoute,

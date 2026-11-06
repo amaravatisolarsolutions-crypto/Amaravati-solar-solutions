@@ -16,12 +16,28 @@ import { useEffect, useMemo, useState } from "react";
 import industrial from "@/assets/hero-industrial.jpg";
 import residential from "@/assets/hero-residential.jpg";
 import commercial from "@/assets/hero-commercial.jpg";
-import future from "@/assets/hero-future.jpg";
-import installation from "@/assets/installation.jpg";
+import heroSunriseClassic from "@/assets/hero-sunrise-classic.jpg";
+import heroElevatedDrone from "@/assets/hero-elevated-drone.jpg";
 import solarFarm from "@/assets/solar-farm.jpg";
 import solarHyderabadRooftop from "@/assets/solar-hyderabad-rooftop.jpg";
 import solarPanelsArray from "@/assets/solar-panels-array.jpg";
 import solarCarport from "@/assets/solar-carport.jpg";
+import solarInverter from "@/assets/solar-inverter.jpg";
+import processInspection from "@/assets/process-step-2-inspection.jpg";
+import processInstallation from "@/assets/process-step-4-installation.jpg";
+import projectCommercialRooftop from "@/assets/project-commercial-rooftop-75kwp.jpg";
+import projectCommercialElevatedSuperstructure from "@/assets/project-commercial-elevated-superstructure.jpg";
+import projectResidentialVilla from "@/assets/project-residential-villa-10kw.jpg";
+import projectResidentialRooftopPergola from "@/assets/project-residential-rooftop-pergola.jpg";
+import projectResidentialInverter10kw from "@/assets/project-residential-inverter-10kw.jpg";
+import projectOfficeRooftop from "@/assets/project-office-rooftop-120kw.jpg";
+import projectCorporateBifacialModules from "@/assets/project-corporate-bifacial-modules.jpg";
+import projectWarehouseIndustrial from "@/assets/project-warehouse-industrial-500kw.jpg";
+import projectIndustrialMetalRoofClamps from "@/assets/project-industrial-metal-roof-clamps.jpg";
+import projectHybridStorageVilla from "@/assets/project-hybrid-storage-villa-8kw.jpg";
+import projectAgriculturalSolarPump from "@/assets/project-agricultural-solar-pump-25hp.jpg";
+import projectCommercialCarportCanopy from "@/assets/project-commercial-carport-canopy-75kw.jpg";
+import solarWatermark from "@/assets/solar-watermark-bg.jpg";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -76,7 +92,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Residential",
     description:
       "Rooftop systems with DISCOM bi-directional net-metering. Cut domestic electricity bills by up to 90% without battery replacements.",
-    image: residential,
+    image: projectResidentialVilla,
     capacity: "3 kW – 15 kW",
     highlights: [
       "Up to 90% bill reduction",
@@ -93,7 +109,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Residential",
     description:
       "Multi-mode solar system with lithium battery storage. Delivers automatic millisecond backup during grid load shedding & outages.",
-    image: solarHyderabadRooftop,
+    image: projectHybridStorageVilla,
     capacity: "5 kW – 20 kW + Battery",
     highlights: [
       "24/7 uninterrupted power for entire home",
@@ -110,7 +126,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Residential",
     description:
       "Autonomous solar electrification for luxury farmhouses and gated villas without reliable utility connection. 100% self-reliance.",
-    image: future,
+    image: projectResidentialRooftopPergola,
     capacity: "3 kW – 25 kW Standalone",
     highlights: [
       "100% grid independence & zero bills",
@@ -127,7 +143,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Residential",
     description:
       "End-to-end liaisoning for Central Government subsidies. We manage national portal registration, DISCOM inspection, and direct DBT transfer.",
-    image: installation,
+    image: heroSunriseClassic,
     capacity: "Up to ₹78,000 Subsidy",
     highlights: [
       "100% portal documentation & sanction",
@@ -146,7 +162,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Commercial",
     description:
       "Turnkey solar rooftop plants engineered for business complexes, IT parks, and retail centers to slash expensive commercial tariffs.",
-    image: commercial,
+    image: projectOfficeRooftop,
     capacity: "25 kW – 500 kW",
     highlights: [
       "Substantial daytime tariff reduction",
@@ -163,7 +179,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Commercial",
     description:
       "Clean, silent, and highly reliable daytime power for educational campuses, healthcare centers, and nursing homes across AP.",
-    image: solarFarm,
+    image: projectCorporateBifacialModules,
     capacity: "50 kW – 300 kW",
     highlights: [
       "Zero noise & green campus leadership",
@@ -180,7 +196,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Commercial",
     description:
       "Turn commercial parking bays into power generators with waterproof steel canopies and integrated Level-2 AC/DC EV charging points.",
-    image: solarCarport,
+    image: projectCommercialCarportCanopy,
     capacity: "Custom Parking Bays",
     highlights: [
       "Dual benefit: car shade + clean electricity",
@@ -197,7 +213,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Commercial",
     description:
       "Flexible financing architectures. Choose direct purchase (CAPEX) or zero-investment OPEX / PPA models paying only for units consumed.",
-    image: installation,
+    image: projectCommercialElevatedSuperstructure,
     capacity: "Zero-Capex Models",
     highlights: [
       "Zero upfront capital investment options",
@@ -233,7 +249,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Industrial",
     description:
       "Custom non-penetrative mounting for Pre-Engineered Buildings (PEB) and metal sheet roofs. 100% leak-proof guaranteed.",
-    image: industrial,
+    image: projectWarehouseIndustrial,
     capacity: "100 kW to 2 MW",
     highlights: [
       "100% seam clamps — zero roof puncture risk",
@@ -250,7 +266,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Industrial",
     description:
       "Specialized high-tension electrical division: 11kV/33kV power transformers, VCB switchgear, earth mats, and CEIG liaisoning.",
-    image: solarPanelsArray,
+    image: solarInverter,
     capacity: "Up to 33 kV Substation",
     highlights: [
       "A-Grade licensed electrical contractor team",
@@ -267,7 +283,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Industrial",
     description:
       "Enterprise plant supervision. Cloud-connected IoT SCADA dashboards stream real-time string voltages and drone thermal inspections.",
-    image: installation,
+    image: heroElevatedDrone,
     capacity: "Enterprise Analytics",
     highlights: [
       "24/7 cloud SCADA monitoring with instant alerts",
@@ -286,7 +302,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Electrical Works",
     description:
       "Custom fabrication and on-site commissioning of PCC, MCC, and APFC panels maintaining power factor near unity to eliminate DISCOM penalties.",
-    image: industrial,
+    image: projectResidentialInverter10kw,
     capacity: "Custom Ratings",
     highlights: [
       "Eliminates DISCOM low power factor penalties",
@@ -305,7 +321,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Agriculture",
     description:
       "Reliable AC and DC solar water pumps for borewells and farm irrigation under PM-KUSUM subsidy schemes. Zero diesel or power costs.",
-    image: solarPanelsArray,
+    image: projectAgriculturalSolarPump,
     capacity: "3 HP – 10 HP Pumps",
     highlights: [
       "Continuous daytime irrigation for crops",
@@ -324,7 +340,7 @@ const ALL_SERVICES_CATALOG: ServiceItem[] = [
     sectorLabel: "Maintenance",
     description:
       "Protect your investment with preventive care: demineralized water module washing, string audits, and quick breakdown repairs.",
-    image: installation,
+    image: processInstallation,
     capacity: "All kW / MW Systems",
     highlights: [
       "Scheduled demineralized module washing",
@@ -484,10 +500,17 @@ function AllServices() {
   const spotlight = SECTOR_SPOTLIGHTS[selectedCategory];
 
   return (
-    <div className="min-h-screen bg-slate-50/60 pb-8">
-      {/* Top Breadcrumb & Page Header - Ultra Sleek & Space-Saving */}
-      <section className="bg-white border-b border-slate-200/80 py-2 sm:py-2.5 shadow-2xs">
-        <div className="container-site">
+    <div className="min-h-screen bg-transparent pb-8 relative">
+      {/* Top Breadcrumb & Page Header With Warm Solar Ambient Tint */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-orange-50/90 via-white/80 to-amber-50/70 backdrop-blur-md border-b border-orange-200/90 py-2.5 sm:py-3 shadow-2xs">
+        {/* Subtle Solar Watermark Decoration in Header */}
+        <div
+          className="absolute -right-8 -bottom-8 w-80 sm:w-96 h-48 sm:h-56 opacity-[0.09] pointer-events-none select-none bg-contain bg-no-repeat bg-right-bottom mix-blend-multiply"
+          style={{ backgroundImage: `url(${solarWatermark})` }}
+        />
+        <div className="absolute top-0 right-1/4 w-72 h-72 rounded-full bg-orange-400/10 blur-3xl pointer-events-none" />
+
+        <div className="container-site relative z-10">
           <div className="flex flex-wrap items-center justify-between gap-1.5 mb-1.5">
             <Link
               to="/"
@@ -496,7 +519,7 @@ function AllServices() {
               <ArrowLeft className="size-3.5 text-primary" /> Back to Home
             </Link>
 
-            <div className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold text-primary">
+            <div className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] sm:text-[11px] font-bold text-primary border border-primary/20 shadow-2xs">
               <Sparkles className="size-3" /> RESIDENTIAL • COMMERCIAL • INDUSTRIAL
             </div>
           </div>
@@ -563,7 +586,9 @@ function AllServices() {
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <Button asChild variant="cta" size="sm" className="h-7 sm:h-8 px-4 text-xs shadow-2xs font-bold rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white">
-                    <Link to="/book-a-demo">Book Free Survey</Link>
+                    <Link to="/book-a-demo" search={{ service: spotlight.title, type: spotlight.name, tab: "calendar" }}>
+                      Book Free Survey
+                    </Link>
                   </Button>
                   <a
                     href="tel:+917989641899"
@@ -684,7 +709,7 @@ function AllServices() {
                   {/* Card Action Buttons - Compact 2-column Grid */}
                   <div className="mt-3 pt-2.5 border-t border-orange-100/80 grid grid-cols-2 gap-1.5">
                     <Button asChild variant="cta" size="sm" className="h-7 text-[11px] font-bold px-2 shadow-2xs w-full rounded-[30px] bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] text-white">
-                      <Link to="/book-a-demo">
+                      <Link to="/book-a-demo" search={{ service: service.title, type: service.sectorLabel, tab: "calendar" }}>
                         Book Visit <ArrowRight className="size-3 ml-0.5" />
                       </Link>
                     </Button>
@@ -695,7 +720,9 @@ function AllServices() {
                       size="sm"
                       className="h-7 text-[11px] font-bold px-2 rounded-[30px] border border-orange-300 bg-white text-[#B83A16] hover:bg-[#E04F16] hover:text-white hover:border-[#E04F16] w-full"
                     >
-                      <Link to="/contact">Get Quote</Link>
+                      <Link to="/book-a-demo" search={{ service: service.title, type: service.sectorLabel, tab: "proposal" }}>
+                        Get Quote
+                      </Link>
                     </Button>
                   </div>
                 </div>

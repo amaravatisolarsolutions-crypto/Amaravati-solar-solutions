@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -16,6 +17,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Preloader } from "@/components/site/Preloader";
 import { FloatingContactButtons } from "@/components/site/FloatingContactButtons";
+import { SolarSiteBackground } from "@/components/site/SolarSiteBackground";
 
 function NotFoundComponent() {
   return (
@@ -99,6 +101,34 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function ScrollToTopOnNavigate() {
+  const location = useRouterState({ select: (s) => s.location });
+  const pathname = location.pathname;
+  const searchStr = location.searchStr;
+  const hash = location.hash;
+
+  useEffect(() => {
+    // If navigating to an in-page anchor hash, scroll smoothly to target
+    if (hash) {
+      const targetId = hash.replace("#", "");
+      const timer = setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+
+    // Force instant scroll to top immediately when route changes
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [pathname, searchStr, hash]);
+
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
@@ -107,9 +137,11 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ScrollToTopOnNavigate />
       {!isAdmin && <Preloader />}
       {!isAdmin && <SiteHeader />}
-      <main>
+      <main className={!isAdmin ? "relative min-h-[80vh] overflow-x-hidden text-foreground" : ""}>
+        {!isAdmin && <SolarSiteBackground />}
         <Outlet />
       </main>
       {!isAdmin && <SiteFooter />}

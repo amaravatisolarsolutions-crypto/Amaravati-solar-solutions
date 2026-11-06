@@ -112,7 +112,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
   body {
     background-color: var(--color-background);
@@ -142,7 +142,7 @@
   }
 
   /* User Defined Button Styling: Background #B83A16, Color #FFFFFF, Border-Radius 30px, Hover #A33112 */
-  button:not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button),
+  button:not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([data-accordion]):not(.accordion-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button),
   .btn-primary,
   button[type="submit"] {
     background-color: #B83A16;
@@ -150,7 +150,7 @@
     border-radius: 30px;
   }
 
-  button:not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button):hover,
+  button:not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([data-accordion]):not(.accordion-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button):hover,
   .btn-primary:hover,
   button[type="submit"]:hover {
     background-color: #A33112;
@@ -346,27 +346,42 @@ body.scroll-anim-ready .scroll-pop.in-view {
 .scroll-pop-6 { transition-delay: 350ms; }
 
 /* =========================================================================
-   Parallax Image & Card Hover Depth Transitions
+   Parallax Image, Floating Layers & 3D Tilt Depth Transitions
    ========================================================================= */
 .parallax-wrap {
   overflow: hidden;
   position: relative;
 }
 
-.parallax-img {
+.parallax-img,
+[data-parallax="image"] {
   will-change: transform;
-  transform: translate3d(0, 0, 0) scale(1.08);
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate3d(0, 0, 0) scale(1.12);
+  transition: transform 0.1s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+[data-parallax="bg"] {
+  will-change: transform;
+  transform: translate3d(0, 0, 0) scale(1.06);
+  transition: transform 0.1s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+[data-parallax="float"] {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .parallax-card {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
   will-change: transform, box-shadow;
 }
 
 .parallax-card:hover {
-  transform: translateY(-8px) scale(1.008);
-  box-shadow: 0 20px 40px -15px rgba(8, 43, 76, 0.15), 0 0 1px 1px rgba(8, 43, 76, 0.05);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 22px 45px -12px rgba(224, 79, 22, 0.18), 0 0 1px 1px rgba(224, 79, 22, 0.08);
 }
 
 .parallax-card:active {

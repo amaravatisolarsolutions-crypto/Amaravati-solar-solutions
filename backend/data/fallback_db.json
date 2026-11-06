@@ -1,0 +1,38 @@
+{
+  "enquiries": [
+    {
+      "id": 1,
+      "full_name": "V. Rama Rao",
+      "phone": "9876543210",
+      "email": "inquiry-9876543210@amaravatisolarsolutions.com",
+      "customer_type": "Residential",
+      "service": "Residential Hybrid Solar (Solar + Battery)",
+      "city": "Guntur",
+      "message": "Interested in 8 kW Hybrid with 15 kWh battery backup",
+      "status": "New",
+      "notes": null,
+      "created_at": "2026-11-06T17:22:01.314Z",
+      "updated_at": "2026-11-06T17:22:01.314Z"
+    }
+  ],
+  "demo_bookings": [
+    {
+      "id": 1,
+      "reference": "ASS-G18JH1Q2",
+      "full_name": "K. Satyanarayana",
+      "phone": "9848033445",
+      "email": "9848033445@inquiry.amaravatisolar.com",
+      "customer_type": "Residential",
+      "solution": "Residential Rooftop Solar (On-Grid)",
+      "property_type": "Independent House / Villa",
+      "city": "Vijayawada",
+      "preferred_date": "2026-11-12",
+      "preferred_time": "10:00 AM – 01:00 PM (Mid-Day)",
+      "requirements": "Test inquiry for 5kW with PM Surya Ghar subsidy | Monthly Bill: ₹3,000 – ₹5,000 / month",
+      "status": "pending",
+      "notes": null,
+      "created_at": "2026-11-06T17:21:06.681Z",
+      "updated_at": "2026-11-06T17:21:06.683Z"
+    }
+  ]
+}

@@ -4,15 +4,24 @@ import logo from "@/assets/logo.png";
 export function Preloader() {
   const [progress, setProgress] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
-  const [isMounted, setIsMounted] = useState(true);
+  const [isMounted, setIsMounted] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return !sessionStorage.getItem("has_seen_preloader");
+  });
 
   useEffect(() => {
+    if (!isMounted) return;
+
+    try {
+      sessionStorage.setItem("has_seen_preloader", "true");
+    } catch {}
+
     // Disable body scroll while loading
     document.body.style.overflow = "hidden";
 
-    // Progress animation timeline
+    // Snappy progress animation timeline
     const startTime = performance.now();
-    const duration = 1400; // 1.4 seconds total load experience
+    const duration = 500; // 500ms quick entrance on first visit only
 
     const interval = setInterval(() => {
       const elapsed = performance.now() - startTime;
@@ -22,26 +31,21 @@ export function Preloader() {
 
       if (rawProgress >= 100) {
         clearInterval(interval);
-        // Start exit animation
         setTimeout(() => {
           setIsExiting(true);
           document.body.style.overflow = "";
-          if (window.location.pathname === "/") {
-            window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
-          }
-          // Unmount after exit transition finishes
           setTimeout(() => {
             setIsMounted(false);
-          }, 650);
-        }, 200);
+          }, 350);
+        }, 80);
       }
-    }, 25);
+    }, 20);
 
     return () => {
       clearInterval(interval);
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [isMounted]);
 
   if (!isMounted) return null;
 

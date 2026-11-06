@@ -1,0 +1,1 @@
+var e=`/assets/process-step-4-installation-BvoFmDhA.jpg`,t=`/assets/hero-sunrise-classic-nDMHjEup.jpg`;export{e as n,t};

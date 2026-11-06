@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   ArrowUp,
@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { COMPANY } from "@/lib/site-data";
-import { scrollToTarget } from "@/lib/scroll-utils";
 
 const SOCIAL_LINKS = [
   {
@@ -68,64 +67,46 @@ const SOCIAL_LINKS = [
 ];
 
 export function SiteFooter() {
-  const navigate = useNavigate();
-
-  const handleTargetClick = (e: React.MouseEvent, targetId: string) => {
-    e.preventDefault();
-    const isHomePage = window.location.pathname === "/";
-    if (isHomePage) {
-      scrollToTarget(targetId);
-      setTimeout(() => scrollToTarget(targetId, false, true), 150);
-      setTimeout(() => scrollToTarget(targetId, false, true), 400);
-    } else {
-      navigate({ to: "/" }).then(() => {
-        setTimeout(() => scrollToTarget(targetId, false, false), 80);
-        setTimeout(() => scrollToTarget(targetId, true, true), 250);
-        setTimeout(() => scrollToTarget(targetId, false, true), 600);
-      });
-    }
-  };
-
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   };
 
   return (
     <footer className="relative bg-[#051829] text-slate-300 overflow-hidden">
-      {/* Top Dual Accent Gradient Divider */}
-      <div className="h-1.5 w-full bg-gradient-to-r from-[#082B4C] via-[#E04F16] to-[#F59E0B]" />
+      {/* Top Accent Line — Direct Clean Orange */}
+      <div className="h-1 w-full bg-[#E04F16]" />
 
       {/* Subtle Background Radial Ambient Glows */}
       <div className="absolute top-0 right-1/4 -mt-32 size-96 rounded-full bg-[#E04F16]/10 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-10 -mb-32 size-80 rounded-full bg-[#0756B9]/15 blur-3xl pointer-events-none" />
 
-      {/* Main 4-Column Footer Grid */}
-      <div className="container-site relative py-10 sm:py-14 grid gap-8 sm:gap-10 md:grid-cols-2 lg:grid-cols-12">
+      {/* Main 4-Column Footer Grid — Compact & Tight Spacing (No Unwanted Gaps) */}
+      <div className="container-site relative pt-7 sm:pt-9 pb-5 sm:pb-6 grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-12 items-start">
         {/* Col 1: Brand Info & Trust (4 cols) */}
-        <div className="lg:col-span-4 space-y-4">
-          <Link to="/" onClick={scrollToTop} className="inline-block rounded-2xl bg-white p-3 shadow-md hover:opacity-95 transition-opacity">
+        <div className="lg:col-span-4 space-y-3">
+          <Link to="/" onClick={scrollToTop} className="inline-block rounded-2xl bg-white p-2.5 shadow-md hover:opacity-95 transition-opacity">
             <img
               src={logo}
               alt="Amaravati Solar Solutions"
               width={1016}
               height={307}
               loading="lazy"
-              className="h-10 sm:h-11 w-auto object-contain"
+              className="h-9 sm:h-10 w-auto object-contain"
             />
           </Link>
 
-          <p className="text-xs sm:text-sm leading-relaxed text-slate-300 max-w-sm">
+          <p className="text-xs sm:text-[13px] leading-relaxed text-slate-300 max-w-sm">
             Smart, dependable, and sustainable solar energy solutions for homes, commercial complexes, and industrial installations across Andhra Pradesh &amp; Telangana.
           </p>
 
           {/* Trust Badges Pill Row */}
-          <div className="space-y-2 pt-1">
+          <div className="space-y-1.5 pt-0.5">
             <div className="flex items-center gap-2 text-xs font-semibold text-white/90">
               <ShieldCheck className="size-4 text-emerald-400 shrink-0" />
               <span>PM Surya Ghar Govt Subsidy (Up to ₹78,000)</span>
             </div>
             <div className="flex items-center gap-2 text-xs font-semibold text-white/90">
-              <Zap className="size-4 text-amber-400 shrink-0" />
+              <Zap className="size-4 text-[#E04F16] shrink-0" />
               <span>AP Discom Net-Metering Fast-Track Approval</span>
             </div>
             <div className="flex items-center gap-2 text-xs font-semibold text-white/90">
@@ -135,8 +116,8 @@ export function SiteFooter() {
           </div>
 
           {/* Social Profiles */}
-          <div className="pt-2">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2.5">
+          <div className="pt-1">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
               Connect With Us
             </span>
             <div className="flex items-center gap-2.5">
@@ -147,9 +128,9 @@ export function SiteFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Visit our ${name} page`}
-                  className={`grid size-8.5 place-items-center rounded-xl transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 ${badgeClass}`}
+                  className={`grid size-8 place-items-center rounded-xl transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 ${badgeClass}`}
                 >
-                  <Icon className="size-4" />
+                  <Icon className="size-3.5" />
                 </a>
               ))}
             </div>
@@ -157,18 +138,18 @@ export function SiteFooter() {
         </div>
 
         {/* Col 2: Solar Solutions (3 cols) */}
-        <div className="lg:col-span-3 space-y-3">
-          <div className="flex items-center gap-2 pb-2 border-b border-white/10">
+        <div className="lg:col-span-3 space-y-2.5">
+          <div className="flex items-center gap-2 pb-1.5 border-b border-white/10">
             <div className="h-4 w-1 rounded-full bg-[#E04F16]" />
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-white">Solar Solutions</h4>
           </div>
 
-          <ul className="space-y-2.5 text-xs sm:text-[13px]">
+          <ul className="space-y-2 text-xs sm:text-[13px]">
             <li>
               <Link
                 to="/services/on-grid-solar-systems"
                 onClick={scrollToTop}
-                className="hover:text-amber-400 transition-colors flex items-center justify-between group cursor-pointer"
+                className="hover:text-[#E04F16] transition-colors flex items-center justify-between group cursor-pointer"
               >
                 <span>On-Grid Rooftop Solar</span>
                 <span className="text-[10px] text-emerald-400 font-bold bg-emerald-950/80 border border-emerald-500/30 px-1.5 py-0.5 rounded group-hover:border-emerald-400">
@@ -180,10 +161,10 @@ export function SiteFooter() {
               <Link
                 to="/services/off-grid-solar-systems"
                 onClick={scrollToTop}
-                className="hover:text-amber-400 transition-colors flex items-center justify-between group cursor-pointer"
+                className="hover:text-[#E04F16] transition-colors flex items-center justify-between group cursor-pointer"
               >
                 <span>Off-Grid Solar Systems</span>
-                <span className="text-[10px] text-amber-300 font-bold bg-amber-950/80 border border-amber-500/30 px-1.5 py-0.5 rounded group-hover:border-amber-400">
+                <span className="text-[10px] text-[#FF7A45] font-bold bg-orange-950/80 border border-orange-500/30 px-1.5 py-0.5 rounded group-hover:border-[#E04F16]">
                   Battery
                 </span>
               </Link>
@@ -192,7 +173,7 @@ export function SiteFooter() {
               <Link
                 to="/services/hybrid-solar-systems"
                 onClick={scrollToTop}
-                className="hover:text-amber-400 transition-colors flex items-center justify-between group cursor-pointer"
+                className="hover:text-[#E04F16] transition-colors flex items-center justify-between group cursor-pointer"
               >
                 <span>Hybrid Solar Solutions</span>
                 <span className="text-[10px] text-sky-400 font-bold bg-sky-950/80 border border-sky-500/30 px-1.5 py-0.5 rounded group-hover:border-sky-400">
@@ -204,10 +185,10 @@ export function SiteFooter() {
               <Link
                 to="/solar-solutions"
                 onClick={scrollToTop}
-                className="hover:text-amber-400 transition-colors flex items-center justify-between group cursor-pointer text-amber-300 font-semibold"
+                className="hover:text-[#E04F16] transition-colors flex items-center justify-between group cursor-pointer text-[#FF7A45] font-semibold"
               >
                 <span>All Solar Solutions Overview</span>
-                <span className="text-[10px] text-amber-400 font-bold bg-amber-950/80 border border-amber-500/30 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] text-[#FF7A45] font-bold bg-orange-950/80 border border-orange-500/30 px-1.5 py-0.5 rounded">
                   Explore
                 </span>
               </Link>
@@ -217,7 +198,7 @@ export function SiteFooter() {
                 to="/services"
                 search={{ category: "residential" } as any}
                 onClick={scrollToTop}
-                className="hover:text-amber-400 transition-colors block"
+                className="hover:text-[#E04F16] transition-colors block"
               >
                 Residential Rooftop Solar
               </Link>
@@ -227,7 +208,7 @@ export function SiteFooter() {
                 to="/services"
                 search={{ category: "commercial" } as any}
                 onClick={scrollToTop}
-                className="hover:text-amber-400 transition-colors block"
+                className="hover:text-[#E04F16] transition-colors block"
               >
                 Commercial &amp; Industrial Solar
               </Link>
@@ -237,12 +218,12 @@ export function SiteFooter() {
                 to="/services"
                 search={{ category: "industrial" } as any}
                 onClick={scrollToTop}
-                className="hover:text-amber-400 transition-colors block"
+                className="hover:text-[#E04F16] transition-colors block"
               >
                 Agricultural Solar Water Pumps
               </Link>
             </li>
-            <li className="pt-2 border-t border-white/10">
+            <li className="pt-1.5 border-t border-white/10">
               <Link
                 to="/services"
                 search={{ category: undefined } as any}
@@ -250,7 +231,7 @@ export function SiteFooter() {
                   window.dispatchEvent(new CustomEvent("reset-services-view"));
                   scrollToTop();
                 }}
-                className="font-bold text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1.5"
+                className="font-bold text-[#E04F16] hover:text-orange-400 transition-colors flex items-center gap-1.5"
               >
                 <span>Explore All 15 Services</span>
                 <ArrowRight className="size-3.5" />
@@ -260,64 +241,64 @@ export function SiteFooter() {
         </div>
 
         {/* Col 3: Company & Trust Commitments (2 cols) */}
-        <div className="lg:col-span-2 space-y-3">
-          <div className="flex items-center gap-2 pb-2 border-b border-white/10">
-            <div className="h-4 w-1 rounded-full bg-amber-400" />
+        <div className="lg:col-span-2 space-y-2.5">
+          <div className="flex items-center gap-2 pb-1.5 border-b border-white/10">
+            <div className="h-4 w-1 rounded-full bg-[#E04F16]" />
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-white">Company</h4>
           </div>
 
-          <ul className="space-y-2.5 text-xs sm:text-[13px]">
+          <ul className="space-y-2 text-xs sm:text-[13px]">
             <li>
               <Link
                 to="/about"
                 onClick={scrollToTop}
-                className="hover:text-amber-400 transition-colors cursor-pointer"
+                className="hover:text-[#E04F16] transition-colors cursor-pointer block"
               >
                 About Our Company
               </Link>
             </li>
             <li>
-              <a
-                href="/#how-it-works"
-                onClick={(e) => handleTargetClick(e, "how-it-works")}
-                className="hover:text-amber-400 transition-colors cursor-pointer"
+              <Link
+                to="/process"
+                onClick={scrollToTop}
+                className="hover:text-[#E04F16] transition-colors cursor-pointer block"
               >
                 Our 4-Step Process
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/#powercare"
-                onClick={(e) => handleTargetClick(e, "powercare")}
-                className="hover:text-amber-400 transition-colors flex items-center gap-1.5 cursor-pointer text-amber-300 font-bold"
+              <Link
+                to="/powercare"
+                onClick={scrollToTop}
+                className="hover:text-[#E04F16] transition-colors flex items-center gap-1.5 cursor-pointer text-[#FF7A45] font-bold"
               >
-                <ShieldCheck className="size-3.5 text-amber-400" />
+                <ShieldCheck className="size-3.5 text-[#E04F16]" />
                 <span>PowerCare (5-Yr Care)</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/#one-point-contact"
-                onClick={(e) => handleTargetClick(e, "one-point-contact")}
-                className="hover:text-amber-400 transition-colors cursor-pointer"
+              <Link
+                to="/one-point-of-contact"
+                onClick={scrollToTop}
+                className="hover:text-[#E04F16] transition-colors cursor-pointer block"
               >
                 One Point of Contact
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="/#power-back-promise"
-                onClick={(e) => handleTargetClick(e, "power-back-promise")}
-                className="hover:text-amber-400 transition-colors cursor-pointer"
+              <Link
+                to="/power-back-promise"
+                onClick={scrollToTop}
+                className="hover:text-[#E04F16] transition-colors cursor-pointer block"
               >
                 Power Back Promise
-              </a>
+              </Link>
             </li>
             <li>
               <Link
                 to="/projects"
                 onClick={scrollToTop}
-                className="hover:text-amber-400 transition-colors"
+                className="hover:text-[#E04F16] transition-colors block"
               >
                 Projects
               </Link>
@@ -326,7 +307,7 @@ export function SiteFooter() {
               <Link
                 to="/book-a-demo"
                 onClick={scrollToTop}
-                className="hover:text-amber-400 transition-colors font-bold text-white"
+                className="hover:text-[#E04F16] transition-colors font-bold text-white block"
               >
                 Request Quick Quote
               </Link>
@@ -335,23 +316,23 @@ export function SiteFooter() {
         </div>
 
         {/* Col 4: Regional Office & Support (3 cols) */}
-        <div className="lg:col-span-3 space-y-3">
-          <div className="flex items-center gap-2 pb-2 border-b border-white/10">
-            <div className="h-4 w-1 rounded-full bg-emerald-400" />
+        <div className="lg:col-span-3 space-y-2.5">
+          <div className="flex items-center gap-2 pb-1.5 border-b border-white/10">
+            <div className="h-4 w-1 rounded-full bg-[#E04F16]" />
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-white">Contact &amp; Support</h4>
           </div>
 
-          <div className="space-y-3 text-xs sm:text-[13px]">
+          <div className="space-y-2.5 text-xs sm:text-[13px]">
             {/* Phone */}
             <div className="flex items-start gap-2.5">
-              <div className="grid size-7 shrink-0 place-items-center rounded-lg bg-white/10 text-amber-400 mt-0.5">
+              <div className="grid size-6.5 shrink-0 place-items-center rounded-lg bg-[#E04F16]/15 text-[#E04F16] border border-[#E04F16]/30 mt-0.5">
                 <Phone className="size-3.5" />
               </div>
               <div>
                 <span className="text-[10px] uppercase font-bold text-slate-400 block">Phone Support (24/7)</span>
                 <a
                   href={`tel:${COMPANY.phone.replace(/[^0-9+]/g, "")}`}
-                  className="font-bold text-white hover:text-amber-300 transition-colors text-sm"
+                  className="font-bold text-white hover:text-[#E04F16] transition-colors text-sm"
                 >
                   {COMPANY.phone}
                 </a>
@@ -360,14 +341,14 @@ export function SiteFooter() {
 
             {/* Email */}
             <div className="flex items-start gap-2.5">
-              <div className="grid size-7 shrink-0 place-items-center rounded-lg bg-white/10 text-amber-400 mt-0.5">
+              <div className="grid size-6.5 shrink-0 place-items-center rounded-lg bg-[#E04F16]/15 text-[#E04F16] border border-[#E04F16]/30 mt-0.5">
                 <Mail className="size-3.5" />
               </div>
               <div className="min-w-0">
                 <span className="text-[10px] uppercase font-bold text-slate-400 block">Direct Email</span>
                 <a
                   href={`mailto:${COMPANY.email}`}
-                  className="font-medium text-white/90 hover:text-amber-300 transition-colors block truncate"
+                  className="font-medium text-white/90 hover:text-[#E04F16] transition-colors block truncate"
                 >
                   {COMPANY.email}
                 </a>
@@ -376,7 +357,7 @@ export function SiteFooter() {
 
             {/* Office Address */}
             <div className="flex items-start gap-2.5">
-              <div className="grid size-7 shrink-0 place-items-center rounded-lg bg-white/10 text-amber-400 mt-0.5">
+              <div className="grid size-6.5 shrink-0 place-items-center rounded-lg bg-[#E04F16]/15 text-[#E04F16] border border-[#E04F16]/30 mt-0.5">
                 <MapPin className="size-3.5" />
               </div>
               <div>
@@ -389,7 +370,7 @@ export function SiteFooter() {
 
             {/* Operational Hours */}
             <div className="flex items-start gap-2.5">
-              <div className="grid size-7 shrink-0 place-items-center rounded-lg bg-white/10 text-amber-400 mt-0.5">
+              <div className="grid size-6.5 shrink-0 place-items-center rounded-lg bg-[#E04F16]/15 text-[#E04F16] border border-[#E04F16]/30 mt-0.5">
                 <Clock className="size-3.5" />
               </div>
               <div>
@@ -397,18 +378,18 @@ export function SiteFooter() {
                 <span className="text-slate-300 text-xs block">
                   Mon – Sat: 10:00 AM – 7:00 PM
                 </span>
-                <span className="text-amber-400/90 text-[11px] font-semibold block">
+                <span className="text-[#FF7A45] text-[11px] font-semibold block">
                   Sunday: Holiday (Emergency Support Active)
                 </span>
               </div>
             </div>
 
             {/* Quick Contact CTA */}
-            <div className="pt-2">
+            <div className="pt-1">
               <Link
                 to="/contact"
                 onClick={scrollToTop}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors group"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E04F16] hover:text-orange-400 transition-colors group"
               >
                 <span>Send Enquiry or Visit Us</span>
                 <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
@@ -418,9 +399,9 @@ export function SiteFooter() {
         </div>
       </div>
 
-      {/* Bottom Bar: Copyright & Back-to-Top */}
-      <div className="border-t border-white/10 bg-black/40 py-4">
-        <div className="container-site flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+      {/* Bottom Bar: Copyright & Back-to-Top — Compact py-3 */}
+      <div className="border-t border-white/10 bg-black/40 py-3 sm:py-3.5">
+        <div className="container-site flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs text-slate-400">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
             <p>© {new Date().getFullYear()} Amaravati Solar Solutions. All rights reserved.</p>
             <span className="hidden sm:inline text-white/20">|</span>
@@ -428,16 +409,16 @@ export function SiteFooter() {
           </div>
 
           <div className="flex items-center gap-5">
-            <Link to="/privacy" onClick={scrollToTop} className="hover:text-amber-400 transition-colors">
+            <Link to="/privacy" onClick={scrollToTop} className="hover:text-[#E04F16] transition-colors">
               Privacy Policy
             </Link>
-            <Link to="/terms" onClick={scrollToTop} className="hover:text-amber-400 transition-colors">
+            <Link to="/terms" onClick={scrollToTop} className="hover:text-[#E04F16] transition-colors">
               Terms of Service
             </Link>
             <button
               type="button"
               onClick={scrollToTop}
-              className="grid size-8 place-items-center rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer ml-1"
+              className="grid size-7.5 place-items-center rounded-lg bg-white/10 hover:bg-[#E04F16] text-white transition-colors cursor-pointer ml-1"
               aria-label="Scroll back to top"
               title="Back to top"
             >

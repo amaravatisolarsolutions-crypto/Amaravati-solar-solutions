@@ -15,9 +15,12 @@ import {
 } from "lucide-react";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import residential from "@/assets/hero-residential.jpg";
-import future from "@/assets/hero-future.jpg";
-import installation from "@/assets/installation.jpg";
+import heroSunriseClassic from "@/assets/hero-sunrise-classic.jpg";
+import projectResidentialRooftopPergola from "@/assets/project-residential-rooftop-pergola.jpg";
+import projectHybridStorageVilla from "@/assets/project-hybrid-storage-villa-8kw.jpg";
+import projectCommercialRooftop from "@/assets/project-commercial-rooftop-75kwp.jpg";
+import projectAgriculturalSolarPump from "@/assets/project-agricultural-solar-pump-25hp.jpg";
+import solarWatermark from "@/assets/solar-watermark-bg.jpg";
 import { COMPANY } from "@/lib/site-data";
 import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
 import { cn } from "@/lib/utils";
@@ -49,7 +52,7 @@ const SOLUTIONS_CATALOG = [
     title: "A) On - Grid Rooftop Solar Systems",
     shortTitle: "On-Grid Solar",
     slug: "on-grid-solar-systems",
-    image: residential,
+    image: heroSunriseClassic,
     tagline: "Grid-connected system delivering up to 90% monthly electricity bill reduction through net-metering.",
     description:
       "An on-grid rooftop solar system works in tandem with your existing DISCOM utility power supply. During sunny hours, solar electricity powers your premises first. Any surplus generation is automatically exported back to the grid via a bi-directional net-meter, earning credits that drastically reduce your monthly power bill.",
@@ -74,7 +77,7 @@ const SOLUTIONS_CATALOG = [
     title: "B) Off - Grid Rooftop Solar Systems",
     shortTitle: "Off-Grid Solar",
     slug: "off-grid-solar-systems",
-    image: installation,
+    image: projectResidentialRooftopPergola,
     tagline: "Independent solar power with dedicated battery storage for 100% energy self-reliance.",
     description:
       "Off-grid solar systems operate independently of the electric utility grid. High-capacity battery storage banks store daytime surplus generation, ensuring 24/7 continuous electricity even in areas with frequent power cuts, voltage fluctuations, or zero grid access.",
@@ -99,7 +102,7 @@ const SOLUTIONS_CATALOG = [
     title: "C) Hybrid Rooftop Solar Systems",
     shortTitle: "Hybrid Solar",
     slug: "hybrid-solar-systems",
-    image: future,
+    image: projectHybridStorageVilla,
     tagline: "The best of both worlds: Daytime grid export plus seamless nighttime battery backup.",
     description:
       "A hybrid solar architecture combines grid synchronization with intelligent battery storage. When utility power is active, you enjoy all the cost-saving benefits of net-metering. If the grid fails, intelligent inverters switch to battery backup in milliseconds without restarting computers or appliances.",
@@ -116,6 +119,56 @@ const SOLUTIONS_CATALOG = [
       { label: "Switchover", value: "< 20 Milliseconds" },
       { label: "Net-Meter", value: "Fully Supported" },
       { label: "Ideal For", value: "Offices, Hospitals & Luxury Homes" },
+    ],
+  },
+  {
+    id: "commercial",
+    badge: "HIGH ROI • ACCELERATED DEPRECIATION",
+    title: "D) Commercial & Industrial Solar Solutions",
+    shortTitle: "Commercial & Industrial",
+    slug: "commercial-solar-installations",
+    image: projectCommercialRooftop,
+    tagline: "High-yield 25 kW to 500 kW+ turnkey solar plants slashing operating expenditure for enterprises.",
+    description:
+      "Engineered for educational institutions, healthcare facilities, cold storage units, and manufacturing plants. Turn empty rooftops and factory sheds into dependable green power stations, locking in low power tariffs for 25 years with maximum tax savings via 40% accelerated depreciation.",
+    highlights: [
+      "Cut commercial & industrial electricity tariffs (HT/LT slabs) up to 80%",
+      "40% Accelerated Depreciation tax benefit in the very first fiscal year",
+      "Custom elevated superstructures maintaining full rooftop utility",
+      "Tier-1 TOPCon bifacial modules paired with smart IP65 multi-MPPT inverters",
+      "Comprehensive statutory approvals: CEIG safety clearance and DISCOM sync",
+      "Flexible CapEx and OPEX / RESCO zero-investment power purchase models",
+    ],
+    specs: [
+      { label: "Plant Scale", value: "25 kW to 1 MW+" },
+      { label: "Payback", value: "3 – 4 Years" },
+      { label: "Tax Benefit", value: "40% Accelerated Depr." },
+      { label: "Ideal For", value: "Factories, Hospitals & Colleges" },
+    ],
+  },
+  {
+    id: "agricultural",
+    badge: "PM-KUSUM SUBSIDY • ZERO DIESEL EXPENSE",
+    title: "E) Agricultural Solar Water Pumping Systems",
+    shortTitle: "Agricultural Solar",
+    slug: "agricultural-solar-water-pumps",
+    image: projectAgriculturalSolarPump,
+    tagline: "Heavy-duty 3 HP to 25 HP solar water pumping arrays ensuring reliable daytime crop irrigation.",
+    description:
+      "Designed specifically for agricultural farms, orchards, and aquaculture across Andhra Pradesh and Telangana. Operates submersible and open-well water pumps directly from solar arrays with smart VFD controllers, freeing farmers from erratic night-time grid power and costly diesel pumps.",
+    highlights: [
+      "Up to 60% PM-KUSUM Central & State Government subsidies supported",
+      "100% elimination of expensive diesel fuel expenditure",
+      "Smart VFD pump controller with MPPT for high discharge even in low light",
+      "Automated dry-run sensor protection and motor overload safeguards",
+      "Heavy-duty galvanized mounting structures with manual seasonal tilt",
+      "Supports drip irrigation, canal flooding, and commercial borewells",
+    ],
+    specs: [
+      { label: "Pump Power", value: "3 HP to 25 HP" },
+      { label: "Govt Subsidy", value: "Up to 60% (PM-KUSUM)" },
+      { label: "Fuel Cost", value: "₹0 (Zero Diesel)" },
+      { label: "Ideal For", value: "Farms, Orchards & Aquaculture" },
     ],
   },
 ];
@@ -138,10 +191,17 @@ function SolarSolutionsPage() {
   }, []);
 
   return (
-    <div className="bg-slate-50/60 pb-16">
-      {/* 1. HERO HEADER */}
-      <section className="bg-white border-b border-orange-100/80 pt-2.5 sm:pt-3 pb-4 sm:pb-5">
-        <div className="container-site">
+    <div className="bg-transparent pb-16 relative">
+      {/* 1. HERO HEADER WITH WARM SOLAR AMBIENT TINT */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-orange-50/90 via-white/80 to-amber-50/70 backdrop-blur-md border-b border-orange-200/90 pt-3.5 pb-5 sm:pb-6">
+        {/* Subtle Solar Watermark Decoration in Header */}
+        <div
+          className="absolute -right-8 -bottom-8 w-80 sm:w-96 h-48 sm:h-56 opacity-[0.09] pointer-events-none select-none bg-contain bg-no-repeat bg-right-bottom mix-blend-multiply"
+          style={{ backgroundImage: `url(${solarWatermark})` }}
+        />
+        <div className="absolute top-0 right-1/4 w-72 h-72 rounded-full bg-orange-400/10 blur-3xl pointer-events-none" />
+
+        <div className="container-site relative z-10">
           <div className="flex flex-wrap items-center justify-between gap-1.5 mb-1.5">
             <Link
               to="/"
@@ -150,7 +210,7 @@ function SolarSolutionsPage() {
               <ArrowLeft className="size-3.5 text-primary" /> Back to Home
             </Link>
 
-            <div className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-primary">
+            <div className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold text-primary border border-primary/20 shadow-2xs">
               <Sparkles className="size-3" /> TURNKEY SOLAR ARCHITECTURES
             </div>
           </div>
@@ -158,7 +218,7 @@ function SolarSolutionsPage() {
           <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-[#082B4C] tracking-tight">
             Our Solar Solutions
           </h1>
-          <p className="mt-1 text-xs sm:text-sm text-slate-600 max-w-none leading-relaxed">
+          <p className="mt-1 text-xs sm:text-sm text-slate-700 max-w-none leading-relaxed font-medium">
             Engineered rooftop and ground-mounted solar power systems: On-Grid, Off-Grid, and Hybrid architectures built with Tier-1 components for Andhra Pradesh & Telangana.
           </p>
 
@@ -261,7 +321,9 @@ function SolarSolutionsPage() {
                   {/* Action CTAs */}
                   <div className="mt-5 pt-4 border-t border-orange-100/80 flex flex-wrap items-center gap-3">
                     <Button asChild variant="cta" size="sm" className="h-8 px-4 text-xs font-bold rounded-[30px] bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] text-white shadow-sm hover:shadow-md">
-                      <Link to="/book-a-demo">Book Free Site Survey</Link>
+                      <Link to="/book-a-demo" search={{ service: solution.title, type: "Residential", tab: "calendar" }}>
+                        Book Free Site Survey
+                      </Link>
                     </Button>
 
                     <Button asChild variant="outline" size="sm" className="h-8 px-4 text-xs font-bold rounded-[30px] border border-orange-300 bg-white text-[#B83A16] hover:bg-[#E04F16] hover:text-white hover:border-[#E04F16]">

@@ -1,0 +1,1 @@
+var e=`/assets/process-step-4-installation-CsUnWGu7.jpg`;export{e as t};

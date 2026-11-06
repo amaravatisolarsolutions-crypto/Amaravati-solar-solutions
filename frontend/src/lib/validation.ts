@@ -23,16 +23,14 @@ export function todayISO(now = new Date()) {
 export const bookingSchema = z.object({
   full_name: z.string().trim().min(2, "Enter your full name").max(100),
   phone,
-  email: z.string().trim().email("Enter a valid email").max(255),
-  customer_type: z.enum(["Residential", "Commercial", "Industrial"], { errorMap: () => ({ message: "Select a customer type" }) }),
-  solution: z.string().trim().min(1, "Select a solution").max(100),
+  email: z.string().trim().email("Enter a valid email").max(255).optional().or(z.literal("")),
+  customer_type: z.string().trim().default("Residential"),
+  solution: z.string().trim().min(1, "Select a solution").max(200),
   property_type: z.string().trim().min(1, "Select a property type").max(100),
-  city: z.string().trim().min(2, "Enter your city").max(100),
-  preferred_date: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "Choose a date")
-    .refine((d) => d >= todayISO(), "Date cannot be in the past"),
-  preferred_time: z.string().trim().min(1, "Choose a time slot").max(50),
+  city: z.string().trim().min(2, "Enter your city / location").max(100),
+  monthly_bill: z.string().trim().max(100).optional().default(""),
+  preferred_date: z.string().optional().default(""),
+  preferred_time: z.string().optional().default(""),
   requirements: z.string().trim().max(1000).optional().default(""),
 });
 

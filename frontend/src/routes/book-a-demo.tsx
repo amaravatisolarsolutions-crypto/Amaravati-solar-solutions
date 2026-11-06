@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouterState } from "@tanstack/react-router";
 import {
   Clock,
   ExternalLink,
@@ -7,7 +7,7 @@ import {
   MessageSquare,
   Phone,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BookingForm } from "@/components/site/BookingForm";
 import { ProposalForm } from "@/components/site/ProposalForm";
 import { COMPANY } from "@/lib/site-data";
@@ -34,12 +34,33 @@ export const Route = createFileRoute("/book-a-demo")({
 });
 
 function BookDemoPage() {
+  const routerSearch = useRouterState({
+    select: (s) => (s.location.search as Record<string, string>) || {},
+  });
+
+  const [urlService, setUrlService] = useState<string>("");
+  const [urlType, setUrlType] = useState<string>("");
   const [formTab, setFormTab] = useState<"proposal" | "calendar">("proposal");
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    if (typeof window !== "undefined") {
+      const sp = new URLSearchParams(window.location.search);
+      const s = sp.get("service") || sp.get("solution") || routerSearch.service || routerSearch.solution || "";
+      const t = sp.get("type") || sp.get("category") || routerSearch.type || routerSearch.category || "";
+      const tab = sp.get("tab") || routerSearch.tab || "";
+      if (s) setUrlService(s);
+      if (t) setUrlType(t);
+      if (tab === "calendar" || tab === "booking" || tab === "visit") {
+        setFormTab("calendar");
+      }
+    }
+  }, [routerSearch]);
 
   const cleanWhatsapp = COMPANY.whatsapp.replace(/[^0-9]/g, "");
 
   return (
-    <section className="bg-[#f8fafc] pt-2 sm:pt-2.5 md:pt-3 pb-8 md:pb-12">
+    <section className="bg-transparent pt-2 sm:pt-2.5 md:pt-3 pb-8 md:pb-12 relative">
       <div className="container-site">
         <div className="grid gap-8 lg:grid-cols-[1fr_1.35fr] lg:items-start">
           {/* ================= LEFT COLUMN: Get In Touch ================= */}
@@ -221,7 +242,19 @@ function BookDemoPage() {
                 </div>
               </div>
 
-              {formTab === "proposal" ? <ProposalForm /> : <BookingForm />}
+              {formTab === "proposal" ? (
+                <ProposalForm
+                  initialSolution={urlService}
+                  initialCustomerType={urlType}
+                  sourceContext={urlService ? `Preselected: ${urlService}` : "Book A Demo"}
+                />
+              ) : (
+                <BookingForm
+                  initialSolution={urlService}
+                  initialCustomerType={urlType}
+                  sourceContext={urlService ? `Preselected: ${urlService}` : "Book A Demo"}
+                />
+              )}
             </div>
 
             {/* Maps Grid directly below Form */}

@@ -1,0 +1,1 @@
+var e=`/assets/process-step-2-inspection-aDLFYoIY.jpg`;export{e as t};

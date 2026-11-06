@@ -1,7 +1,41 @@
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const FALLBACK_DATA_DIR = path.join(__dirname, "..", "data");
+const FALLBACK_FILE = path.join(FALLBACK_DATA_DIR, "fallback_db.json");
+
+function getFallbackData() {
+  try {
+    if (!fs.existsSync(FALLBACK_DATA_DIR)) {
+      fs.mkdirSync(FALLBACK_DATA_DIR, { recursive: true });
+    }
+    if (!fs.existsSync(FALLBACK_FILE)) {
+      fs.writeFileSync(FALLBACK_FILE, JSON.stringify({ enquiries: [], demo_bookings: [] }, null, 2));
+    }
+    const raw = fs.readFileSync(FALLBACK_FILE, "utf-8");
+    return JSON.parse(raw);
+  } catch {
+    return { enquiries: [], demo_bookings: [] };
+  }
+}
+
+function saveFallbackData(data) {
+  try {
+    if (!fs.existsSync(FALLBACK_DATA_DIR)) {
+      fs.mkdirSync(FALLBACK_DATA_DIR, { recursive: true });
+    }
+    fs.writeFileSync(FALLBACK_FILE, JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.warn("Could not save fallback data:", err.message);
+  }
+}
 
 const dbHost = (process.env.DB_HOST || process.env.HOST || "localhost").toLowerCase();
 const rawDbUser = process.env.DB_USER || process.env.USERNAME || process.env.DB_USERNAME || "u236567282_Amaravthisolar";
@@ -256,43 +290,74 @@ export async function queryTable(tableName, options = {}) {
   const sanitizedSort = sort.replace(/[^a-zA-Z0-9_]/g, "");
   const sanitizedOrder = order.toUpperCase() === "ASC" ? "ASC" : "DESC";
 
-  // Count total matching records
-  const countQuery = `SELECT COUNT(*) AS total FROM \`${tableName}\` ${whereClause}`;
-  const [countResult] = await pool.query(countQuery, params);
-  const total = countResult[0]?.total || 0;
+  try {
+    const countQuery = `SELECT COUNT(*) AS total FROM \`${tableName}\` ${whereClause}`;
+    const [countResult] = await pool.query(countQuery, params);
+    const total = countResult[0]?.total || 0;
 
-  // Pagination calculation
-  const offset = (Math.max(1, Number(page)) - 1) * Math.max(1, Number(limit));
-  const pagedLimit = Math.max(1, Number(limit));
+    // Pagination calculation
+    const offset = (Math.max(1, Number(page)) - 1) * Math.max(1, Number(limit));
+    const pagedLimit = Math.max(1, Number(limit));
 
-  // Query records
-  const dataQuery = `
-    SELECT * FROM \`${tableName}\`
-    ${whereClause}
-    ORDER BY \`${sanitizedSort}\` ${sanitizedOrder}
-    LIMIT ? OFFSET ?
-  `;
-  const [rows] = await pool.query(dataQuery, [...params, pagedLimit, offset]);
+    // Query records
+    const dataQuery = `
+      SELECT * FROM \`${tableName}\`
+      ${whereClause}
+      ORDER BY \`${sanitizedSort}\` ${sanitizedOrder}
+      LIMIT ? OFFSET ?
+    `;
+    const [rows] = await pool.query(dataQuery, [...params, pagedLimit, offset]);
 
-  return {
-    data: rows,
-    total,
-    page: Number(page),
-    limit: pagedLimit,
-    totalPages: Math.ceil(total / pagedLimit),
-  };
+    return {
+      data: rows,
+      total,
+      page: Number(page),
+      limit: pagedLimit,
+      totalPages: Math.ceil(total / pagedLimit),
+    };
+  } catch (err) {
+    console.warn(`[DB Notice] MySQL query on ${tableName} failed (${err.code || err.message}). Reading from fallback storage...`);
+    const fb = getFallbackData();
+    let rows = fb[tableName] || [];
+    if (search) {
+      const q = String(search).toLowerCase();
+      rows = rows.filter((r) => JSON.stringify(r).toLowerCase().includes(q));
+    }
+    return {
+      data: rows,
+      total: rows.length,
+      page: 1,
+      limit: rows.length || 50,
+      totalPages: 1,
+    };
+  }
 }
 
 /**
  * Universal Insert / Create
  */
 export async function insertRow(tableName, data) {
-  const fields = Object.keys(data);
-  const values = Object.values(data);
-  const placeholders = fields.map(() => "?").join(", ");
-  const query = `INSERT INTO \`${tableName}\` (\`${fields.join("`, `")}\`) VALUES (${placeholders})`;
-  const [result] = await pool.query(query, values);
-  return result;
+  try {
+    const fields = Object.keys(data);
+    const values = Object.values(data);
+    const placeholders = fields.map(() => "?").join(", ");
+    const query = `INSERT INTO \`${tableName}\` (\`${fields.join("`, `")}\`) VALUES (${placeholders})`;
+    const [result] = await pool.query(query, values);
+    return result;
+  } catch (err) {
+    console.warn(`[DB Notice] MySQL insert to ${tableName} failed (${err.code || err.message}). Saving to fallback storage...`);
+    const fb = getFallbackData();
+    fb[tableName] = fb[tableName] || [];
+    const newRow = {
+      id: fb[tableName].length + 1,
+      ...data,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    fb[tableName].unshift(newRow);
+    saveFallbackData(fb);
+    return { insertId: newRow.id };
+  }
 }
 
 /**
