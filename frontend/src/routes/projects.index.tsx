@@ -10,6 +10,13 @@ import future from "@/assets/hero-future.jpg";
 import installation from "@/assets/installation.jpg";
 import solarHyderabadRooftop from "@/assets/solar-hyderabad-rooftop.jpg";
 import solarPanelsArray from "@/assets/solar-panels-array.jpg";
+import projectCommercialRooftop from "@/assets/project-commercial-rooftop-75kwp.jpg";
+import projectResidentialVilla from "@/assets/project-residential-villa-10kw.jpg";
+import projectOfficeRooftop from "@/assets/project-office-rooftop-120kw.jpg";
+import projectWarehouseIndustrial from "@/assets/project-warehouse-industrial-500kw.jpg";
+import projectHybridStorageVilla from "@/assets/project-hybrid-storage-villa-8kw.jpg";
+import projectAgriculturalSolarPump from "@/assets/project-agricultural-solar-pump-25hp.jpg";
+import projectCommercialCarportCanopy from "@/assets/project-commercial-carport-canopy-75kw.jpg";
 import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
 
 export const Route = createFileRoute("/projects/")({
@@ -36,15 +43,17 @@ function Projects() {
       .then((d) => {
         if (d?.success && Array.isArray(d.data) && d.data.length > 0) {
           const mapped: Project[] = d.data.map((p: any) => {
-            let img = p.image || commercial;
-            const imgStr = String(p.image || "");
-            if (imgStr.includes("rooftop") || imgStr.includes("hyderabad")) img = solarHyderabadRooftop;
-            else if (imgStr.includes("residential")) img = residential;
-            else if (imgStr.includes("commercial")) img = commercial;
-            else if (imgStr.includes("future")) img = future;
-            else if (imgStr.includes("industrial")) img = industrial;
-            else if (imgStr.includes("array") || imgStr.includes("panels")) img = solarPanelsArray;
-            else if (imgStr.includes("installation")) img = installation;
+            let img = projectCommercialRooftop;
+            const pid = String(p.id || "").toLowerCase();
+            const title = String(p.title || "").toLowerCase();
+            if (pid === "p0" || title.includes("roof top solar power plant")) img = projectCommercialRooftop;
+            else if (pid === "p1" || title.includes("family home")) img = projectResidentialVilla;
+            else if (pid === "p2" || title.includes("office building")) img = projectOfficeRooftop;
+            else if (pid === "p3" || title.includes("warehouse")) img = projectWarehouseIndustrial;
+            else if (pid === "p4" || title.includes("hybrid")) img = projectHybridStorageVilla;
+            else if (pid === "p5" || title.includes("agricultural") || title.includes("water pump")) img = projectAgriculturalSolarPump;
+            else if (pid === "p6" || title.includes("carport")) img = projectCommercialCarportCanopy;
+            else if (p.image) img = p.image;
 
             return {
               id: String(p.id),
