@@ -121,16 +121,22 @@ export function EnquiryForm({ initialService = "", initialMessage = "" }: Enquir
       <Field id="message" label="Message" error={errors["message"]} className="sm:col-span-2">
         <textarea
           {...a("message")}
-          rows={2}
+          rows={3}
           className={inputClass}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Your requirements or queries..."
+          placeholder="Your requirements, roof size or queries..."
         />
       </Field>
       {status === "error" && <p role="alert" className="text-xs text-destructive sm:col-span-2">{serverError}</p>}
-      <Button type="submit" variant="cta" size="default" disabled={status === "sending"} className="sm:col-span-2 py-2.5 sm:py-3 text-xs sm:text-sm font-bold shadow-sm">
-        {status === "sending" && <Loader2 className="animate-spin size-4" />} Submit Enquiry
+      <Button type="submit" variant="cta" size="default" disabled={status === "sending"} className="sm:col-span-2 py-3 text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all rounded-none cursor-pointer">
+        {status === "sending" ? (
+          <span className="flex items-center justify-center gap-2">
+            <Loader2 className="animate-spin size-4" /> Submitting Request...
+          </span>
+        ) : (
+          <span>Submit Consultation Request</span>
+        )}
       </Button>
     </form>
   );

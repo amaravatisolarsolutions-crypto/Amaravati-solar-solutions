@@ -8,6 +8,7 @@ const routes = [
   '/contact',
   '/services',
   '/projects',
+  '/solar-solutions',
   '/book-a-demo',
   '/privacy',
   '/terms',
@@ -70,12 +71,35 @@ async function runPrerender() {
               fs.mkdirSync(path.dirname(outputOut), { recursive: true });
               fs.writeFileSync(outputOut, html, 'utf8');
 
-              console.log(`[Prerender] ✓ ${route} -> frontend/dist/${cleanPath} (${html.length} bytes)`);
+              // Also write to root directory for direct Hostinger/Apache static serving
+              const rootOut = path.join(__dirname, '..', cleanPath);
+              fs.mkdirSync(path.dirname(rootOut), { recursive: true });
+              fs.writeFileSync(rootOut, html, 'utf8');
+
+              console.log(`[Prerender] ✓ ${route} -> frontend/dist/${cleanPath} and root (${html.length} bytes)`);
             } else {
               console.warn(`[Prerender] ✗ ${route} returned status ${res.status}`);
             }
           }
-          console.log('[Prerender] Complete: All routes prerendered into frontend/dist successfully.');
+
+          // Mirror assets to root assets/ directory for direct server access
+          const rootAssetsDir = path.join(__dirname, '../assets');
+          const distAssetsDir = path.join(distDir, 'assets');
+          if (fs.existsSync(distAssetsDir)) {
+            copyFolderRecursiveSync(distAssetsDir, rootAssetsDir);
+            console.log('[Prerender] Assets synced to root /assets directory.');
+          }
+
+          // Copy common static root files
+          ['favicon.png', 'logo.png', 'robots.txt'].forEach((f) => {
+            const src = path.join(distDir, f);
+            const dst = path.join(__dirname, '..', f);
+            if (fs.existsSync(src)) {
+              fs.copyFileSync(src, dst);
+            }
+          });
+
+          console.log('[Prerender] Complete: All routes prerendered into frontend/dist and root successfully.');
         } catch (err) {
           console.error('[Prerender] Error during rendering:', err);
         } finally {

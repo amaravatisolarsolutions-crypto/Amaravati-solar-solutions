@@ -1,0 +1,1 @@
+var e=`/assets/installation-BoaTIU5-.jpg`;export{e as t};
