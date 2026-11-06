@@ -45,11 +45,11 @@ export const COMPANY = {
 };
 
 export const NAV = [
-  { label: "Home", to: "/", targetId: "home" },
-  { label: "About Us", to: "/about", targetId: "about" },
+  { label: "Home", to: "/" },
+  { label: "About Us", to: "/about" },
   { label: "Services", to: "/services" },
-  { label: "Our Solar Solutions", to: "/#on-grid", targetId: "on-grid" },
-  { label: "Gallery", to: "/projects" },
+  { label: "Our Solar Solutions", to: "/solar-solutions" },
+  { label: "Projects", to: "/projects" },
   { label: "Contact Us", to: "/contact" },
 ] as const;
 

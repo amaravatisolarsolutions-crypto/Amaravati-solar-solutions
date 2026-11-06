@@ -94,7 +94,7 @@ function Contact() {
   ];
 
   return (
-    <div className="bg-slate-50/60 pt-3 sm:pt-5 pb-10 md:pb-14 space-y-8 sm:space-y-10">
+    <div className="bg-slate-50/60 pt-2 sm:pt-2.5 md:pt-3 pb-10 md:pb-14 space-y-6 sm:space-y-8">
       {/* 1. Send an Enquiry Form & Office Details - First Section */}
       <section id="enquiry-section" className="container-site grid gap-6 sm:gap-8 lg:grid-cols-[3fr_2fr]">
         <div id="enquiry-form-card" className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-6 shadow-xs scroll-mt-24">

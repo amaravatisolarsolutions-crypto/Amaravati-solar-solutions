@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { PROJECTS, type Project, type ProjectCategory } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
@@ -15,9 +15,9 @@ import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
 export const Route = createFileRoute("/projects/")({
   head: () => ({
     meta: [
-      { title: "Solar Gallery & Projects — Amaravati Solar Solutions" },
+      { title: "Solar Projects — Amaravati Solar Solutions" },
       { name: "description", content: "Browse residential, commercial and industrial solar installations by Amaravati Solar Solutions." },
-      { property: "og:title", content: "Solar Projects & Gallery — Amaravati Solar Solutions" },
+      { property: "og:title", content: "Solar Projects — Amaravati Solar Solutions" },
       { property: "og:description", content: "Residential, commercial and industrial solar installations." },
     ],
   }),
@@ -86,12 +86,12 @@ function Projects() {
   const list = filter === "All" ? projectList : projectList.filter((p) => p.category === filter);
 
   return (
-    <section className="container-site pt-4 sm:pt-6 md:pt-8 pb-12 md:pb-16">
+    <section className="container-site pt-1.5 sm:pt-2 md:pt-2.5 pb-10 md:pb-14">
       {/* Header & Back Link with Pop-in Entrance */}
-      <div className="mb-6 animate-pop-in pop-stagger-1">
+      <div className="mb-3.5 sm:mb-4 animate-pop-in pop-stagger-1">
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-navy hover:text-primary transition-colors mb-3"
+          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-navy hover:text-primary transition-colors mb-1.5"
         >
           <ArrowLeft className="size-4 text-primary" /> Back to Home
         </Link>
@@ -100,10 +100,10 @@ function Projects() {
             <Sparkles className="size-3" /> Project Showcase
           </span>
         </div>
-        <h1 className="mt-1.5 text-2xl sm:text-3xl md:text-4xl font-extrabold text-navy">
+        <h1 className="mt-1 text-2xl sm:text-3xl md:text-4xl font-extrabold text-navy tracking-tight">
           All Projects & Installations
         </h1>
-        <p className="mt-1.5 text-xs sm:text-sm text-slate-500 max-w-2xl">
+        <p className="mt-1 text-xs sm:text-sm text-slate-500 max-w-none leading-relaxed">
           Browse our complete portfolio of residential, commercial, and industrial turnkey solar installations across Vijayawada, Guntur, and Andhra Pradesh.
         </p>
       </div>
@@ -131,7 +131,7 @@ function Projects() {
         })}
       </div>
 
-      <p className="mt-3.5 text-xs sm:text-sm text-muted-foreground animate-pop-in pop-stagger-3">
+      <p className="mt-3 text-xs sm:text-sm text-muted-foreground animate-pop-in pop-stagger-3 max-w-none">
         These are sample placeholders. Verified project photos and details will be added soon.
       </p>
 
@@ -141,66 +141,70 @@ function Projects() {
         </div>
       ) : (
         /* Re-trigger spring pop animation on category switch */
-        <div key={filter} className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div key={filter} className="mt-5 sm:mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4.5 sm:gap-5 xl:gap-6">
           {list.map((p, index) => {
             const staggerClass = `pop-stagger-${Math.min((index % 6) + 1, 6)}`;
+            const eyebrow =
+              p.category?.toLowerCase() === "residential"
+                ? "FOR HOMES"
+                : p.category?.toLowerCase() === "commercial"
+                ? "FOR BUSINESSES"
+                : p.category?.toLowerCase() === "industrial"
+                ? "FOR INDUSTRY"
+                : "SOLAR PROJECT";
+
             return (
               <Link
                 key={p.id}
                 to="/projects/$id"
                 params={{ id: p.id }}
                 className={cn(
-                  "group overflow-hidden rounded-2xl bg-card text-left shadow-card transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 active:scale-[0.98] flex flex-col parallax-card animate-pop-in",
+                  "group relative overflow-hidden rounded-none bg-gradient-to-br from-[#FFFDF9] via-white to-[#FFF5EA] text-left p-4 sm:p-5 shadow-[0_4px_16px_rgba(224,79,22,0.06)] border border-orange-200/70 hover:border-[#E04F16] hover:shadow-[0_16px_36px_rgba(224,79,22,0.15)] hover:-translate-y-1.5 transition-all duration-300 flex flex-row items-center justify-between gap-3 sm:gap-4 parallax-card animate-pop-in",
                   staggerClass
                 )}
               >
-                {/* Parallax Image Viewport */}
-                <div className="relative aspect-[4/3] overflow-hidden parallax-wrap">
+                {/* Left: Content & Circular Arrow Button */}
+                <div className="flex-1 flex flex-col justify-between h-full min-w-0 pr-1">
+                  <div>
+                    <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#E04F16] bg-[#E04F16]/10 border border-[#E04F16]/20 px-2.5 py-0.5 rounded-full inline-block">
+                      {eyebrow}
+                    </span>
+                    <h2 className="mt-1.5 text-sm sm:text-base font-extrabold text-[#082B4C] leading-snug line-clamp-2 group-hover:text-[#E04F16] transition-colors">
+                      {p.title}
+                    </h2>
+                    {p.summary && (
+                      <p className="mt-1.5 text-[11px] sm:text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                        {p.summary}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mt-3.5 sm:mt-4 flex items-center justify-between">
+                    <div className="size-8 sm:size-8.5 rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] text-white shadow-md shadow-[#E04F16]/25 group-hover:shadow-lg group-hover:scale-110 transition-all duration-300 grid place-items-center">
+                      <ArrowRight className="size-3.5 sm:size-4 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                    {p.capacity ? (
+                      <span className="text-[10px] sm:text-[11px] font-bold text-[#B83A16] bg-white border border-orange-200/80 px-2 py-0.5 rounded-md shadow-2xs">
+                        {p.capacity}
+                      </span>
+                    ) : p.location ? (
+                      <span className="text-[10px] sm:text-[11px] font-semibold text-slate-500 bg-white border border-orange-100 px-2 py-0.5 rounded-md">
+                        {p.location}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+
+                {/* Right: Square Image Viewport */}
+                <div className="w-28 sm:w-32 md:w-36 aspect-square rounded-none overflow-hidden shrink-0 shadow-2xs border border-orange-100/80 relative bg-slate-100">
                   <img
                     src={p.image}
                     alt={p.title}
                     width={1920}
                     height={1088}
                     loading="lazy"
-                    data-parallax
-                    data-parallax-rate="0.08"
-                    className="parallax-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-108"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-85" />
-                  <span className="absolute left-3.5 top-3.5 rounded-full bg-white/95 backdrop-blur-md px-3 py-1 text-xs font-extrabold text-navy shadow-sm">
-                    {p.category}
-                  </span>
-                  {p.capacity ? (
-                    <span className="absolute right-3.5 top-3.5 rounded-full bg-primary/95 backdrop-blur-md px-2.5 py-1 text-[11px] font-bold text-white shadow-sm">
-                      {p.capacity}
-                    </span>
-                  ) : p.placeholder ? (
-                    <span className="absolute right-3.5 top-3.5 rounded-full bg-navy/80 px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm">
-                      Sample
-                    </span>
-                  ) : null}
-                </div>
-
-                {/* Card Body */}
-                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between bg-white">
-                  <div>
-                    <h2 className="text-base sm:text-lg font-bold text-navy group-hover:text-primary transition-colors line-clamp-2">
-                      {p.title}
-                    </h2>
-                    {p.summary && (
-                      <p className="mt-1.5 text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                        {p.summary}
-                      </p>
-                    )}
-                  </div>
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <span className="text-xs font-bold text-primary flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                      View Project Details →
-                    </span>
-                    <span className="text-[11px] font-semibold text-slate-400">
-                      {p.location || "AP"}
-                    </span>
-                  </div>
                 </div>
               </Link>
             );

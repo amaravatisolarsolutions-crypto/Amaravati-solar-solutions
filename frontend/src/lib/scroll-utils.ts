@@ -22,9 +22,10 @@ export function scrollToTarget(targetId: string, updateHash = true, smooth = tru
   window.dispatchEvent(new CustomEvent("section-scrolled", { detail: targetId }));
 
   // Subtle pulse highlight animation on target card
-  el.classList.add("ring-4", "ring-primary/40", "transition-all", "duration-500");
+  const cardEl = el.querySelector<HTMLElement>("[data-rooftop-card]") || el;
+  cardEl.classList.add("ring-2", "ring-primary/40", "rounded-2xl", "transition-all", "duration-500");
   setTimeout(() => {
-    el.classList.remove("ring-4", "ring-primary/40");
+    cardEl.classList.remove("ring-2", "ring-primary/40", "rounded-2xl");
   }, 1800);
 
   return true;

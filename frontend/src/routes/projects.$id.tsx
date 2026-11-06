@@ -54,9 +54,22 @@ function ProjectDetail() {
 
   return (
     <div className="bg-slate-50/60 pb-16">
-      <div className="container-site pt-3 sm:pt-4 space-y-6 sm:space-y-7">
+      <div className="container-site pt-2 sm:pt-3 space-y-5 sm:space-y-6">
+        {/* Back to Projects Breadcrumb Link - Aligned with Logo */}
+        <div className="flex items-center justify-between pb-1">
+          <Link
+            to="/projects"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-navy hover:text-primary transition-colors"
+          >
+            <ArrowLeft className="size-4 text-primary" /> Back to All Projects
+          </Link>
+          <span className="text-[11px] sm:text-xs text-slate-500 font-semibold">
+            Projects • {project.category}
+          </span>
+        </div>
+
         {/* TOP SECTION: PROJECT SHOWCASE & KEY METRICS (IMAGE SHOWCASE ON LEFT, 4 METRICS ON RIGHT) */}
-        <div className="max-w-[980px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4 items-stretch">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 items-stretch">
           {/* Left Column: Project Image Showcase (1st Image) */}
           <div className="lg:col-span-8 flex">
             <ProjectImageShowcase project={project} className="h-full flex flex-col justify-between" />
@@ -65,7 +78,7 @@ function ProjectDetail() {
           {/* Right Column: 4 Key Metrics Cards Line-by-Line (2nd Image) */}
           <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-col justify-between gap-2.5 sm:gap-3">
             {/* System Capacity */}
-            <div className="rounded-xl border border-slate-200/90 bg-white p-3 sm:p-3.5 shadow-xs flex-1 flex flex-col justify-center">
+            <div className="rounded-2xl border border-orange-200/80 hover:border-[#E04F16] bg-white p-3.5 sm:p-4 shadow-xs flex-1 flex flex-col justify-center transition-all">
               <div className="flex items-center gap-1.5 text-primary font-bold text-[11px] uppercase tracking-wider">
                 <Zap className="size-3.5 text-primary" /> System Capacity
               </div>
@@ -74,7 +87,7 @@ function ProjectDetail() {
             </div>
 
             {/* Annual Generation */}
-            <div className="rounded-xl border border-slate-200/90 bg-white p-3 sm:p-3.5 shadow-xs flex-1 flex flex-col justify-center">
+            <div className="rounded-2xl border border-orange-200/80 hover:border-[#E04F16] bg-white p-3.5 sm:p-4 shadow-xs flex-1 flex flex-col justify-center transition-all">
               <div className="flex items-center gap-1.5 text-slate-600 font-bold text-[11px] uppercase tracking-wider">
                 <Sun className="size-3.5 text-slate-500" /> Annual Generation
               </div>
@@ -83,7 +96,7 @@ function ProjectDetail() {
             </div>
 
             {/* CO2 Offset */}
-            <div className="rounded-xl border border-slate-200/90 bg-white p-3 sm:p-3.5 shadow-xs flex-1 flex flex-col justify-center">
+            <div className="rounded-2xl border border-orange-200/80 hover:border-[#E04F16] bg-white p-3.5 sm:p-4 shadow-xs flex-1 flex flex-col justify-center transition-all">
               <div className="flex items-center gap-1.5 text-[#059669] font-bold text-[11px] uppercase tracking-wider">
                 <Leaf className="size-3.5 text-[#059669]" /> CO₂ Offset
               </div>
@@ -92,7 +105,7 @@ function ProjectDetail() {
             </div>
 
             {/* Economic Savings */}
-            <div className="rounded-xl border border-slate-200/90 bg-white p-3 sm:p-3.5 shadow-xs flex-1 flex flex-col justify-center">
+            <div className="rounded-2xl border border-orange-200/80 hover:border-[#E04F16] bg-white p-3.5 sm:p-4 shadow-xs flex-1 flex flex-col justify-center transition-all">
               <div className="flex items-center gap-1.5 text-primary font-bold text-[11px] uppercase tracking-wider">
                 <Award className="size-3.5 text-primary" /> Economic Savings
               </div>
@@ -104,12 +117,12 @@ function ProjectDetail() {
           </div>
         </div>
 
-        {/* 4. TWO-COLUMN CONTENT & SPECIFICATIONS */}
-        <div className="grid gap-8 lg:grid-cols-[1.8fr_1fr] items-start">
+        {/* 4. TWO-COLUMN CONTENT & SPECIFICATIONS (PERFECTLY ALIGNED WITH TOP 8:4 SPLIT) */}
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
           {/* LEFT: Project Overview, Features & Specs Table */}
-          <div className="space-y-8">
+          <div className="lg:col-span-8 space-y-6 sm:space-y-7">
             {/* Project Overview */}
-            <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-xs">
+            <div className="rounded-2xl border border-orange-200/80 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-muted-foreground border-b border-slate-100 pb-3">
                 <span className="flex items-center gap-1 text-slate-700">
                   <MapPin className="size-3.5 text-primary" /> {project.location}
@@ -141,7 +154,7 @@ function ProjectDetail() {
             </div>
 
             {/* Technical Specifications Table */}
-            <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-xs">
+            <div className="rounded-2xl border border-orange-200/80 bg-white p-6 sm:p-8 shadow-xs">
               <h2 className="text-xl sm:text-2xl font-extrabold text-navy flex items-center gap-2">
                 <Wrench className="size-5 text-primary" /> Technical Specifications
               </h2>
@@ -191,7 +204,7 @@ function ProjectDetail() {
           </div>
 
           {/* RIGHT: Consultation Card & Support Contacts */}
-          <div className="space-y-6 lg:sticky lg:top-24">
+          <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
             {/* Consultation Card */}
             <div className="rounded-2xl sm:rounded-3xl bg-[#082B4C] text-white p-6 sm:p-7 shadow-xl border border-navy/40 relative overflow-hidden flex flex-col justify-between">
               <div className="pointer-events-none absolute -right-16 -top-16 size-48 rounded-full bg-primary opacity-25 blur-2xl" />
@@ -235,14 +248,14 @@ function ProjectDetail() {
             </div>
 
             {/* Direct Support Contacts */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs">
+            <div className="rounded-2xl border border-orange-200/80 bg-white p-5 sm:p-6 shadow-xs">
               <h4 className="text-sm sm:text-base font-bold text-navy flex items-center gap-2">
                 <Phone className="size-4 sm:size-5 text-primary" /> Need Technical Assistance?
               </h4>
               <p className="mt-2 text-xs text-slate-600 leading-relaxed">
                 Our solar engineers are available Monday to Saturday to answer queries regarding capacity, roof structural analysis, and grid subsidies.
               </p>
-              <div className="mt-3.5 pt-3 border-t border-slate-100 flex flex-col gap-2 text-xs sm:text-sm font-bold text-slate-800">
+              <div className="mt-3.5 pt-3 border-t border-orange-100/80 flex flex-col gap-2 text-xs sm:text-sm font-bold text-slate-800">
                 <a
                   href={`tel:${COMPANY.phone.replace(/[^0-9+]/g, "")}`}
                   className="flex items-center gap-2 text-navy hover:text-primary transition-colors"
@@ -259,7 +272,7 @@ function ProjectDetail() {
             </div>
 
             {/* Quality Guarantees Card */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs space-y-3">
+            <div className="rounded-2xl border border-orange-200/80 bg-white p-5 shadow-xs space-y-3">
               <h4 className="text-sm font-bold text-navy flex items-center gap-1.5">
                 <ShieldCheck className="size-4 text-emerald-600" /> Guaranteed Quality Standards
               </h4>
@@ -306,7 +319,7 @@ function ProjectDetail() {
                 key={p.id}
                 to="/projects/$id"
                 params={{ id: p.id }}
-                className="group overflow-hidden rounded-2xl bg-white border border-slate-200/90 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md flex flex-col"
+                className="group overflow-hidden rounded-2xl bg-white border border-orange-200/80 hover:border-[#E04F16] shadow-xs transition-all hover:-translate-y-1 hover:shadow-md flex flex-col"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img

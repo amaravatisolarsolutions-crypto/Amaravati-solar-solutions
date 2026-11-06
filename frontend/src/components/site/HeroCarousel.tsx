@@ -205,7 +205,7 @@ export function HeroCarousel() {
               />
               <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/35 sm:bg-hero-overlay" />
               <div className="absolute inset-0 flex items-start pt-3 sm:pt-5 md:pt-6 lg:pt-8 pb-12 sm:pb-16">
-                <div className="container-site px-4 sm:px-6">
+                <div className="container-site">
                   {i === index && (
                     <div className="max-w-[320px] sm:max-w-2xl lg:max-w-3xl">
                       <p className="eyebrow animate-rise text-gold text-[10px] sm:text-xs md:text-sm font-extrabold uppercase tracking-widest">{s.tag}</p>

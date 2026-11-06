@@ -7,7 +7,6 @@ import {
   Factory,
   Home,
   Phone,
-  ShieldCheck,
   Sparkles,
   Sprout,
   Wrench,
@@ -522,7 +521,7 @@ function AllServices() {
                     "flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-all duration-200 active:scale-95 cursor-pointer select-none",
                     isSelected
                       ? "border-[#082B4C] bg-[#082B4C] text-white shadow-xs scale-[1.02]"
-                      : "border-slate-200 bg-white text-slate-700 hover:border-primary hover:text-primary hover:bg-slate-50"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-[#E04F16] hover:text-[#E04F16] hover:bg-orange-50/50"
                   )}
                 >
                   <Icon className={cn("size-3.5", isSelected ? "text-amber-400" : "text-slate-400")} />
@@ -558,7 +557,7 @@ function AllServices() {
                   {spotlight.title}
                 </h2>
 
-                <p className="mt-1 text-xs text-slate-600 leading-relaxed max-w-2xl">
+                <p className="mt-1 text-xs text-slate-600 leading-relaxed max-w-none">
                   {spotlight.description}
                 </p>
 
@@ -627,7 +626,7 @@ function AllServices() {
               <div
                 key={service.id}
                 className={cn(
-                  "group overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-2xs transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col animate-pop-in",
+                  "group overflow-hidden rounded-none border border-orange-200/80 hover:border-[#E04F16] bg-gradient-to-br from-[#FFFDF9] via-white to-[#FFF5EA] shadow-[0_4px_16px_rgba(224,79,22,0.06)] hover:shadow-[0_16px_32px_rgba(224,79,22,0.14)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col animate-pop-in",
                   staggerClass
                 )}
               >
@@ -648,7 +647,7 @@ function AllServices() {
                       {service.sectorLabel}
                     </span>
                     {service.capacity && (
-                      <span className="rounded-full bg-amber-500/95 backdrop-blur px-2 py-0.5 text-[10px] font-bold text-white shadow-xs">
+                      <span className="rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] backdrop-blur px-2 py-0.5 text-[10px] font-bold text-white shadow-xs">
                         {service.capacity}
                       </span>
                     )}
@@ -662,7 +661,7 @@ function AllServices() {
                 {/* Card Details & Concise Bullets */}
                 <div className="p-3.5 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-sm sm:text-base font-bold text-[#082B4C] group-hover:text-primary transition-colors leading-snug line-clamp-2">
+                    <h3 className="text-sm sm:text-base font-bold text-[#082B4C] group-hover:text-[#E04F16] transition-colors leading-snug line-clamp-2">
                       {service.title}
                     </h3>
                     <p className="mt-1 text-xs text-slate-600 line-clamp-2 leading-relaxed">
@@ -671,7 +670,7 @@ function AllServices() {
 
                     {/* Highlights Bullet List */}
                     {service.highlights && service.highlights.length > 0 && (
-                      <ul className="mt-2.5 pt-2 border-t border-slate-100 space-y-1 text-[11px] text-slate-700 font-medium">
+                      <ul className="mt-2.5 pt-2 border-t border-orange-100/80 space-y-1 text-[11px] text-slate-700 font-medium">
                         {service.highlights.map((h, i) => (
                           <li key={i} className="flex items-start gap-1.5">
                             <CheckCircle2 className="size-3.5 shrink-0 text-emerald-600 mt-0.5" />
@@ -683,8 +682,8 @@ function AllServices() {
                   </div>
 
                   {/* Card Action Buttons - Compact 2-column Grid */}
-                  <div className="mt-3 pt-2.5 border-t border-slate-100 grid grid-cols-2 gap-1.5">
-                    <Button asChild variant="cta" size="sm" className="h-7 text-[11px] font-bold px-2 shadow-2xs w-full rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white">
+                  <div className="mt-3 pt-2.5 border-t border-orange-100/80 grid grid-cols-2 gap-1.5">
+                    <Button asChild variant="cta" size="sm" className="h-7 text-[11px] font-bold px-2 shadow-2xs w-full rounded-[30px] bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] text-white">
                       <Link to="/book-a-demo">
                         Book Visit <ArrowRight className="size-3 ml-0.5" />
                       </Link>
@@ -694,7 +693,7 @@ function AllServices() {
                       asChild
                       variant="outline"
                       size="sm"
-                      className="h-7 text-[11px] font-bold px-2 rounded-[30px] border border-[#B83A16] bg-white text-[#B83A16] hover:bg-[#A33112] hover:text-white hover:border-[#A33112] w-full"
+                      className="h-7 text-[11px] font-bold px-2 rounded-[30px] border border-orange-300 bg-white text-[#B83A16] hover:bg-[#E04F16] hover:text-white hover:border-[#E04F16] w-full"
                     >
                       <Link to="/contact">Get Quote</Link>
                     </Button>
@@ -710,36 +709,6 @@ function AllServices() {
             No services found in this category.
           </div>
         )}
-      </section>
-
-      {/* Bottom Consultation CTA Banner - Compact & Visible Heading */}
-      <section className="container-site pt-2 pb-6">
-        <div className="rounded-2xl bg-[#082B4C] p-5 sm:p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
-          <div className="relative z-10 max-w-2xl">
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/20 px-2.5 py-0.5 text-[11px] font-bold text-amber-300 uppercase tracking-wider">
-              <ShieldCheck className="size-3" /> FREE CONSULTATION & DISCOM LIAISONING
-            </span>
-            <h2 className="mt-2 text-lg sm:text-xl md:text-2xl font-black !text-white tracking-tight">
-              Ready to power your property with clean solar energy?
-            </h2>
-            <p className="mt-1.5 text-xs sm:text-sm text-slate-200 leading-relaxed max-w-xl">
-              Our certified solar engineers are ready to inspect your site, calculate potential savings, and design a
-              tailored turnkey solar plant.
-            </p>
-
-            <div className="mt-4 flex flex-wrap items-center gap-2.5">
-              <Button asChild variant="cta" size="sm" className="h-8 px-5 text-xs font-bold shadow-xs rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white">
-                <Link to="/book-a-demo">Book Free Site Visit</Link>
-              </Button>
-              <a
-                href="tel:+917989641899"
-                className="inline-flex items-center gap-1.5 rounded-[30px] border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-white/20 transition-colors h-8"
-              >
-                <Phone className="size-3.5" /> Call: +91 79896 41899
-              </a>
-            </div>
-          </div>
-        </div>
       </section>
     </div>
   );

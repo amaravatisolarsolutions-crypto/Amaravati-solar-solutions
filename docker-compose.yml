@@ -1,0 +1,48 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=${DB_USER:-u236567282_Amaravthisolar}
+      - DB_PASSWORD=${DB_PASSWORD:-Amaravathi@123}
+      - DB_NAME=${DB_NAME:-u236567282_Amaravthisolar}
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+      - VITE_SUPABASE_PUBLISHABLE_KEY=${VITE_SUPABASE_PUBLISHABLE_KEY}
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-Amaravathi@123}
+      MYSQL_DATABASE: ${DB_NAME:-u236567282_Amaravthisolar}
+      MYSQL_USER: ${DB_USER:-u236567282_Amaravthisolar}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-Amaravathi@123}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+

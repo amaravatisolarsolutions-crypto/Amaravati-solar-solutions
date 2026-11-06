@@ -39,7 +39,7 @@ function BookDemoPage() {
   const cleanWhatsapp = COMPANY.whatsapp.replace(/[^0-9]/g, "");
 
   return (
-    <section className="bg-[#f8fafc] pt-2.5 sm:pt-3.5 md:pt-4 pb-8 md:pb-12">
+    <section className="bg-[#f8fafc] pt-2 sm:pt-2.5 md:pt-3 pb-8 md:pb-12">
       <div className="container-site">
         <div className="grid gap-8 lg:grid-cols-[1fr_1.35fr] lg:items-start">
           {/* ================= LEFT COLUMN: Get In Touch ================= */}
@@ -48,10 +48,8 @@ function BookDemoPage() {
               <h1 className="text-3xl font-extrabold tracking-tight text-[#0c2340] sm:text-4xl">
                 Get In Touch
               </h1>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-                Our regional technical officers and estimation managers are
-                available to assist you with layout diagrams, ROI estimates, and
-                feasibility checklists.
+              <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 max-w-none">
+                Our regional technical officers and estimation managers are available to assist you with layout diagrams, ROI estimates, and feasibility checklists.
               </p>
             </div>
 
@@ -189,27 +187,33 @@ function BookDemoPage() {
                     ? "Estimate Site / Inquiry Proposal"
                     : "Schedule a Consultation Demo"}
                 </h2>
-                <div className="flex rounded-lg bg-slate-100 p-0.5 text-xs font-semibold">
+                <div className="flex rounded-full bg-slate-100 p-1 text-xs font-semibold shadow-inner border border-slate-200/80">
                   <button
                     type="button"
+                    role="tab"
+                    data-unstyled="true"
+                    aria-selected={formTab === "proposal"}
                     onClick={() => setFormTab("proposal")}
                     className={cn(
-                      "rounded-md px-3 py-1.5 transition-all",
+                      "rounded-full px-4 py-1.5 transition-all text-xs font-bold cursor-pointer select-none",
                       formTab === "proposal"
-                        ? "bg-white text-navy shadow-sm font-bold"
-                        : "text-slate-500 hover:text-navy"
+                        ? "!bg-[#E04F16] !text-white shadow-md"
+                        : "!bg-transparent !text-slate-600 hover:!text-[#E04F16] hover:!bg-orange-100/50"
                     )}
                   >
                     Quick Quote
                   </button>
                   <button
                     type="button"
+                    role="tab"
+                    data-unstyled="true"
+                    aria-selected={formTab === "calendar"}
                     onClick={() => setFormTab("calendar")}
                     className={cn(
-                      "rounded-md px-3 py-1.5 transition-all",
+                      "rounded-full px-4 py-1.5 transition-all text-xs font-bold cursor-pointer select-none",
                       formTab === "calendar"
-                        ? "bg-white text-navy shadow-sm font-bold"
-                        : "text-slate-500 hover:text-navy"
+                        ? "!bg-[#E04F16] !text-white shadow-md"
+                        : "!bg-transparent !text-slate-600 hover:!text-[#E04F16] hover:!bg-orange-100/50"
                     )}
                   >
                     Book Slot

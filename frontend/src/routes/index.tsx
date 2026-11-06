@@ -31,7 +31,6 @@ import step1Consultation from "@/assets/process-step-1-consultation.jpg";
 import step2Inspection from "@/assets/process-step-2-inspection.jpg";
 import step3Design from "@/assets/process-step-3-design.jpg";
 import step4Installation from "@/assets/process-step-4-installation.jpg";
-import powerCareBanner from "@/assets/powercare-banner.jpg";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeroSection } from "@/components/site/HeroSection";
@@ -168,7 +167,6 @@ const FEATURE_HIGHLIGHTS = [
     line1: "Power Care",
     line2: "5-Yr Solar Care",
     href: "#powercare",
-    isPowerCare: true,
     icon: () => (
       <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -177,13 +175,27 @@ const FEATURE_HIGHLIGHTS = [
     ),
   },
   {
-    line1: "30+ Years",
-    line2: "Lifetime",
-    href: "#about",
+    id: "one-point-contact",
+    line1: "One Point",
+    line2: "of Contact",
+    href: "#one-point-contact",
     icon: () => (
       <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        <path d="M12 7.5l1.3 2.6 2.9.4-2.1 2 .5 2.9-2.6-1.4-2.6 1.4.5-2.9-2.1-2 2.9-.4z" />
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+  },
+  {
+    id: "power-back-promise",
+    line1: "Power Back",
+    line2: "Promise",
+    href: "#power-back-promise",
+    icon: () => (
+      <svg className="size-5 sm:size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3a4.5 4.5 0 0 0 4.5-4.5V8" />
       </svg>
     ),
   },
@@ -193,7 +205,6 @@ const FILTERS: ("All" | ProjectCategory)[] = ["All", "Residential", "Commercial"
 
 function Index() {
   const [galleryFilter, setGalleryFilter] = useState<"All" | ProjectCategory>("All");
-  const [isPowerCareModalOpen, setIsPowerCareModalOpen] = useState(false);
 
   useEffect(() => {
     // When opening Home page, ensure it starts at the very top
@@ -223,25 +234,16 @@ function Index() {
 
       {/* QUICK HIGHLIGHT FEATURES ROW (MATCHING SCREENSHOT) */}
       <section className="bg-slate-50/60 sm:bg-slate-50/70 py-2 sm:py-5">
-        <div className="container-site px-2.5 sm:px-4">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
+        <div className="container-site">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3">
             {FEATURE_HIGHLIGHTS.map((item, idx) => (
               <a
                 key={idx}
                 href={item.href}
                 onClick={(e) => {
-                  if (item.isPowerCare) {
-                    e.preventDefault();
-                    setIsPowerCareModalOpen(true);
-                    const el = document.getElementById("powercare");
-                    if (el) {
-                      el.scrollIntoView({ behavior: "smooth" });
-                    }
-                    return;
-                  }
+                  e.preventDefault();
                   const targetId = item.href.replace("#", "");
                   if (targetId && document.getElementById(targetId)) {
-                    e.preventDefault();
                     scrollToTarget(targetId);
                   }
                 }}
@@ -260,59 +262,59 @@ function Index() {
         </div>
       </section>
 
-      {/* 2. ABOUT US SECTION - Clean, Borderless Layout with Left-Aligned Headings */}
-      <section id="about" className="bg-gradient-to-b from-[#082B4C] via-[#093259] to-[#082B4C] py-5 sm:py-8 text-white scroll-mt-28">
-        <div className="container-site max-w-5xl">
-          {/* Main About Statement - Left Aligned */}
-          <div className="text-left scroll-pop scroll-pop-1 mb-5 sm:mb-7">
-            <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-0.5 text-[10px] font-bold text-gold uppercase tracking-wider mb-2 border border-white/15">
-              <Sparkles className="size-3" /> Amaravati Solar Solutions
+      {/* 2. ABOUT US SECTION - Perfectly Aligned with Logo & Navbar (container-site) */}
+      <section id="about" className="bg-gradient-to-b from-[#082B4C] via-[#093259] to-[#082B4C] py-8 sm:py-12 text-white scroll-mt-28">
+        <div className="container-site">
+          {/* Main About Statement - Perfectly Aligned with Logo */}
+          <div className="scroll-pop scroll-pop-1 mb-6 sm:mb-8">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold text-amber-300 uppercase tracking-wider mb-2.5 border border-white/15">
+              <Sparkles className="size-3 text-amber-300" /> Amaravati Solar Solutions
             </span>
-            <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               ABOUT
             </h2>
-            <p className="mt-1 text-sm sm:text-base md:text-lg font-bold text-white/95 leading-snug max-w-3xl">
+            <p className="mt-1.5 text-base sm:text-lg md:text-xl font-bold text-white/95 leading-snug">
               We don't just install solar. We create a smarter way to power life.
             </p>
-            <div className="mt-3 flex items-start gap-2.5 max-w-3xl">
-              <span className="size-1.5 rounded-full bg-[#B83A16] mt-2 shrink-0" />
-              <p className="text-xs sm:text-sm text-white/85 leading-relaxed">
+            <div className="mt-3.5 flex items-start gap-3 w-full">
+              <span className="size-2 rounded-full bg-[#E04F16] mt-2 shrink-0 shadow-[0_0_8px_rgba(224,79,22,0.7)]" />
+              <p className="text-xs sm:text-sm md:text-[15px] text-white/90 leading-relaxed text-justify [text-align-last:left] w-full">
                 At Amaravati Solar Solutions, we believe the future of energy should be efficient, dependable, and sustainable. Our approach combines thoughtful solar system design, quality components, precision installation, and end-to-end customer support to deliver solutions built around the needs of every customer.
               </p>
             </div>
           </div>
 
-          {/* Vision & Mission - Clean, Borderless 2-Column Grid */}
-          <div className="grid gap-6 sm:gap-8 md:grid-cols-2 pt-3 border-t border-white/10">
+          {/* Vision & Mission - Full-Width 2-Column Symmetrical Grid (Aligned with Navbar edges) */}
+          <div className="grid gap-8 md:grid-cols-2 pt-6 border-t border-white/15 w-full">
             {/* Our Vision */}
             <div className="flex flex-col justify-between scroll-pop scroll-pop-2">
               <div>
-                <div className="flex items-center gap-2.5 mb-2.5">
-                  <div className="grid size-7 place-items-center rounded-lg bg-white/10 text-gold">
-                    <Eye className="size-3.5" />
+                <div className="flex items-center gap-2.5 mb-3">
+                  <div className="grid size-8 place-items-center rounded-xl bg-amber-400/15 text-amber-300 border border-amber-400/30">
+                    <Eye className="size-4" />
                   </div>
                   <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
                     Our Vision
                   </h3>
                 </div>
-                <ul className="space-y-2.5 text-xs sm:text-sm text-white/85 leading-relaxed">
-                  <li className="flex items-start gap-2">
-                    <span className="size-1.5 rounded-full bg-gold mt-2 shrink-0" />
-                    <span className="font-bold text-white">
+                <ul className="space-y-3 text-xs sm:text-sm text-white/85 leading-relaxed">
+                  <li className="flex items-start gap-2.5">
+                    <span className="size-1.5 rounded-full bg-amber-400 mt-2 shrink-0" />
+                    <p className="flex-1 font-bold text-white text-justify [text-align-last:left]">
                       To redefine the way people experience energy.
-                    </span>
+                    </p>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="size-1.5 rounded-full bg-gold mt-2 shrink-0" />
-                    <span className="text-white/80">
+                  <li className="flex items-start gap-2.5">
+                    <span className="size-1.5 rounded-full bg-amber-400 mt-2 shrink-0" />
+                    <p className="flex-1 text-white/80 text-justify [text-align-last:left]">
                       We envision a future where every suitable rooftop becomes a source of clean power, every household has greater control over its energy costs, and sustainability becomes a natural part of everyday living.
-                    </span>
+                    </p>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="size-1.5 rounded-full bg-gold mt-2 shrink-0" />
-                    <span className="text-white/80">
+                  <li className="flex items-start gap-2.5">
+                    <span className="size-1.5 rounded-full bg-amber-400 mt-2 shrink-0" />
+                    <p className="flex-1 text-white/80 text-justify [text-align-last:left]">
                       Our ambition is to build a trusted solar brand that stands for engineering excellence, lasting reliability, and a cleaner tomorrow.
-                    </span>
+                    </p>
                   </li>
                 </ul>
               </div>
@@ -321,78 +323,77 @@ function Index() {
             {/* Our Mission */}
             <div className="flex flex-col justify-between scroll-pop scroll-pop-3">
               <div>
-                <div className="flex items-center gap-2.5 mb-2.5">
-                  <div className="grid size-7 place-items-center rounded-lg bg-[#B83A16]/20 text-[#D9531E]">
-                    <Target className="size-3.5" />
+                <div className="flex items-center gap-2.5 mb-3">
+                  <div className="grid size-8 place-items-center rounded-xl bg-orange-500/20 text-[#FF7A1A] border border-orange-400/30">
+                    <Target className="size-4" />
                   </div>
                   <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
                     Our Mission
                   </h3>
                 </div>
-                <ul className="space-y-2.5 text-xs sm:text-sm text-white/85 leading-relaxed">
-                  <li className="flex items-start gap-2">
-                    <span className="size-1.5 rounded-full bg-[#D9531E] mt-2 shrink-0" />
-                    <div>
-                      <p className="font-bold text-white">
+                <ul className="space-y-3 text-xs sm:text-sm text-white/85 leading-relaxed">
+                  <li className="flex items-start gap-2.5">
+                    <span className="size-1.5 rounded-full bg-[#E04F16] mt-2 shrink-0" />
+                    <div className="flex-1">
+                      <p className="font-bold text-white text-justify [text-align-last:left]">
                         To make the transition to solar simple, seamless, and worthwhile.
                       </p>
-                      <p className="mt-1 text-white/80">
+                      <p className="mt-1 text-white/80 text-justify [text-align-last:left]">
                         To accelerate the transition towards clean energy by making solar power accessible and reliable, reducing environmental impact, and inspiring communities to embrace a greener, more sustainable future.
                       </p>
                     </div>
                   </li>
-                  <li className="flex items-start gap-2">
-                    <span className="size-1.5 rounded-full bg-[#D9531E] mt-2 shrink-0" />
-                    <span className="font-bold text-white">
-                      Together, building a greener society for generations to come
-                    </span>
+                  <li className="flex items-start gap-2.5">
+                    <span className="size-1.5 rounded-full bg-[#E04F16] mt-2 shrink-0" />
+                    <p className="flex-1 font-bold text-white text-justify [text-align-last:left]">
+                      Together, building a greener society for generations to come.
+                    </p>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
 
-          {/* Action CTA - Left Aligned */}
-          <div className="mt-6 sm:mt-8 flex flex-wrap gap-3 scroll-pop scroll-pop-4">
-            <Button asChild variant="cta" className="h-9 sm:h-9.5 rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white px-5 sm:px-6 text-xs sm:text-sm font-bold shadow-xs">
+          {/* Action CTAs - Aligned with Left Edge */}
+          <div className="mt-8 sm:mt-10 flex flex-wrap gap-3.5 scroll-pop scroll-pop-4">
+            <Button asChild variant="cta" className="h-10 sm:h-10.5 rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] text-white px-6 sm:px-7 text-xs sm:text-sm font-bold shadow-md hover:shadow-lg active:scale-95 transition-all">
               <Link to="/about">
                 <span>More About Our Company</span>
-                <ArrowRight className="size-3.5 ml-1" />
+                <ArrowRight className="size-4 ml-1.5" />
               </Link>
             </Button>
-            <Button asChild variant="heroOutline" className="h-9 sm:h-9.5 rounded-[30px] border-white/40 text-white hover:bg-white/10 px-4 sm:px-5 text-xs sm:text-sm font-bold">
+            <Button asChild variant="heroOutline" className="h-10 sm:h-10.5 rounded-full border-white/35 text-white hover:bg-white/10 px-5 sm:px-6 text-xs sm:text-sm font-bold active:scale-95 transition-all">
               <Link to="/contact">Contact Us</Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Solutions Header - Side Heading matching Featured projects style */}
-      <div className="container-site pt-5 pb-2">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3">
-          <div>
-            <SectionHeading
-              eyebrow="PRODUCTS & SOLUTIONS"
-              title="Rooftop Solar Solutions"
-              className="max-w-none"
-            />
-            <p className="text-xs md:text-sm text-muted-foreground mt-0.5">
-              Customised rooftop solar installations: On-Grid, Off-Grid, and Hybrid architectures for homes & businesses.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <Button asChild variant="cta" className="rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white font-bold text-xs md:text-sm px-5 py-2 shadow-sm transition-all hover:shadow hover:scale-[1.02] active:scale-98">
-              <Link to="/services">
-                <span>View All Services</span>
-                <ArrowRight className="size-3.5 ml-1.5" />
-              </Link>
-            </Button>
+      {/* 3. SOLUTIONS HEADER + A) ON-GRID ROOFTOP SOLAR SYSTEMS */}
+      <section id="on-grid" className="container-site pt-6 pb-2 md:pb-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
+        <div id="solar-solutions" className="scroll-mt-24 sm:scroll-mt-28">
+          {/* Solutions Header - Side Heading matching Featured projects style */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-slate-100">
+            <div>
+              <SectionHeading
+                eyebrow="PRODUCTS & SOLUTIONS"
+                title="Rooftop Solar Solutions"
+                className="max-w-none"
+              />
+              <p className="text-xs md:text-sm text-muted-foreground mt-0.5">
+                Customised rooftop solar installations: On-Grid, Off-Grid, and Hybrid architectures for homes & businesses.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <Button asChild variant="cta" className="rounded-[30px] bg-[#B83A16] hover:bg-[#A33112] text-white font-bold text-xs md:text-sm px-5 py-2 shadow-sm transition-all hover:shadow hover:scale-[1.02] active:scale-98">
+                <Link to="/services">
+                  <span>View All Services</span>
+                  <ArrowRight className="size-3.5 ml-1.5" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* 3. A) ON-GRID ROOFTOP SOLAR SYSTEMS */}
-      <section id="on-grid" className="container-site py-2 md:py-3 scroll-mt-24 sm:scroll-mt-28 overflow-x-clip">
         <div data-rooftop-card="on-grid" className="grid items-stretch gap-6 md:gap-8 lg:grid-cols-2 py-3 sm:py-4 overflow-hidden">
           <div className="slide-rtl flex flex-col justify-center">
             <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-primary/10 px-3 py-0.5 text-xs font-bold text-primary">
@@ -565,8 +566,8 @@ function Index() {
       {/* OUR 4-STEP PROCESS - Premium Visual Layout matching exact user specifications */}
       <section id="how-it-works" className="bg-gradient-to-b from-slate-50 via-white to-slate-50 pt-2 sm:pt-3 md:pt-4 pb-3 sm:pb-4 scroll-mt-20 sm:scroll-mt-24 overflow-hidden">
         <div className="container-site">
-          {/* Section Header with Curved Orange Swoosh Underline */}
-          <div className="text-center mb-3 sm:mb-4 md:mb-5 scroll-pop scroll-pop-1">
+          {/* Section Header with Curved Orange Swoosh Underline - Left-aligned per user specification */}
+          <div className="text-left mb-4 sm:mb-5 scroll-pop scroll-pop-1">
             <div className="inline-flex items-center gap-1 rounded-full bg-[#B83A16]/10 px-3 py-0.5 text-[10px] sm:text-[11px] font-black text-[#B83A16] uppercase tracking-wider mb-1.5">
               <Sparkles className="size-3" /> Seamless End-to-End Execution
             </div>
@@ -574,12 +575,12 @@ function Index() {
               Our <span className="text-[#B83A16]">4-Step Process</span>
             </h2>
             {/* Orange Swoosh Curve */}
-            <div className="relative mx-auto mt-1 h-2.5 w-32 sm:w-44 overflow-hidden">
+            <div className="relative mt-1 h-2.5 w-32 sm:w-44 overflow-hidden">
               <svg viewBox="0 0 200 14" fill="none" className="w-full h-full text-[#B83A16]">
                 <path d="M4 11C60 2 140 2 196 11" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
               </svg>
             </div>
-            <p className="mt-1.5 text-xs sm:text-[13px] text-slate-600 max-w-xl mx-auto leading-relaxed">
+            <p className="mt-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed max-w-none">
               From your initial site survey to 25 years of clean power generation — clear, engineered, and transparent solar journey.
             </p>
           </div>
@@ -670,200 +671,394 @@ function Index() {
         </div>
       </section>
 
-      {/* 5. POWERCARE SECTION - 5 YEARS OF COMPREHENSIVE SOLAR CARE */}
-      <section id="powercare" className="scroll-mt-20 sm:scroll-mt-24 py-5 sm:py-8 md:py-10 bg-gradient-to-b from-white via-slate-50/70 to-white border-t border-b border-slate-200/80">
-        <div className="container-site px-3.5 sm:px-6 lg:px-8">
-          {/* Eyebrow & Section Heading */}
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#B83A16]/10 px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-[#B83A16] border border-[#B83A16]/20">
-              <ShieldCheck className="size-3.5" />
-              <span>5 YEARS COMPREHENSIVE SOLAR CARE</span>
-            </div>
-            <h2 className="mt-1.5 text-xl sm:text-2xl md:text-3xl font-black text-[#0B2B4C] tracking-tight">
-              Power Care
-            </h2>
-            <p className="mt-1 text-xs sm:text-[13.5px] md:text-sm text-[#53647C] leading-snug font-normal max-w-2xl">
-              More than routine maintenance, <strong className="text-[#B83A16] font-bold">PowerCare</strong> is our commitment to keeping your solar system in top condition. Through dedicated structural, electrical, and mechanical inspections, preventive maintenance, and reliable service support, we help maintain system safety, reliability, and long-term performance.
-            </p>
-            <p className="mt-1 text-xs sm:text-sm font-extrabold text-[#0756B9]">
-              Complete Care. Reliable Power. Greener Tomorrow.
-            </p>
-          </div>
+      {/* 5. POWERCARE SECTION - COMPACT VIEWPORT-FIT DESIGN */}
+      <section id="powercare" className="scroll-mt-24 sm:scroll-mt-28 py-3 sm:py-5 bg-gradient-to-b from-slate-50/70 via-white to-slate-50/80 border-t border-b border-slate-200/80">
+        <div className="container-site">
+          {/* Main PowerCare Container - Engineered to fit 100% in a single screen view without scrolling */}
+          <div className="relative overflow-hidden rounded-2xl bg-[#082B4C] text-white shadow-xl border border-[#0d3b66]">
+            {/* Ambient Radial Lighting */}
+            <div className="absolute top-0 right-0 -mr-20 -mt-20 size-72 rounded-full bg-gradient-to-br from-[#E04F16]/20 via-[#0756B9]/15 to-transparent blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 -ml-20 -mb-20 size-64 rounded-full bg-gradient-to-tr from-[#0756B9]/20 to-transparent blur-3xl pointer-events-none" />
 
-          {/* Main Visual Poster Image (Image 3) - reduced compact size */}
-          <div className="mt-4 sm:mt-5 max-w-xl md:max-w-2xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden shadow-[0_10px_28px_rgba(11,43,76,0.12)] border border-slate-200/90 bg-slate-900 group relative">
-            <img
-              src={powerCareBanner}
-              alt="PowerCare 5 Years of Comprehensive Solar Care - Amaravati Solar Solutions"
-              className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.01]"
-              loading="lazy"
-            />
-            {/* Overlay button to open full modal */}
-            <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3">
-              <button
-                type="button"
-                onClick={() => setIsPowerCareModalOpen(true)}
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#0B2B4C]/85 hover:bg-[#0B2B4C] px-2.5 py-1 text-[11px] font-bold text-white shadow-md backdrop-blur cursor-pointer transition-all active:scale-95"
-              >
-                <Eye className="size-3" />
-                <span>View Full Brochure</span>
-              </button>
-            </div>
-          </div>
-
-          {/* 3 Core Inspection Protocols */}
-          <div className="mt-8 sm:mt-12">
-            <div className="text-center sm:text-left mb-4 sm:mb-6">
-              <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#0756B9]">
-                THOROUGH ENGINEERING PROTOCOLS
-              </span>
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#0B2B4C] mt-1">
-                Structural, Electrical & Mechanical Inspections
-              </h3>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-              {/* Structural Inspection */}
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                  <div className="grid size-10 place-items-center rounded-xl bg-[#B83A16]/10 text-[#B83A16]">
-                    <Wrench className="size-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm sm:text-base font-black uppercase tracking-wide text-[#0B2B4C]">
-                      Structural Inspection
-                    </h4>
-                    <span className="text-[11px] text-[#53647C]">Civil & mounting stability</span>
-                  </div>
+            {/* Compact Header Bar */}
+            <div className="relative border-b border-white/10 px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-3 bg-white/[0.03]">
+              <div className="flex items-center gap-2.5">
+                <div className="grid size-8 sm:size-9 place-items-center rounded-lg bg-gradient-to-br from-[#E04F16] to-[#B83A16] text-white shadow-sm shrink-0">
+                  <ShieldCheck className="size-4 sm:size-5" />
                 </div>
-                <ul className="mt-4 space-y-2.5 text-xs sm:text-sm text-[#53647C]">
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="size-4 text-[#B83A16] shrink-0" />
-                    <span className="font-semibold text-slate-700">Structure stability check</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="size-4 text-[#B83A16] shrink-0" />
-                    <span className="font-semibold text-slate-700">Tightness & alignment</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="size-4 text-[#B83A16] shrink-0" />
-                    <span className="font-semibold text-slate-700">Rust and coating condition</span>
-                  </li>
-                </ul>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg sm:text-xl font-black tracking-tight text-white">PowerCare</span>
+                    <span className="rounded-full bg-[#E04F16]/25 border border-[#E04F16]/50 px-2 py-0.5 text-[9px] sm:text-[10px] font-black uppercase text-amber-300 tracking-wider">
+                      5-Year Guarantee
+                    </span>
+                  </div>
+                  <p className="text-[10px] sm:text-[11px] text-white/75 font-semibold tracking-wide uppercase">
+                    5 Years of Comprehensive Solar Care • Amaravati Solar Solutions
+                  </p>
+                </div>
               </div>
 
-              {/* Electrical Inspection */}
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                  <div className="grid size-10 place-items-center rounded-xl bg-[#0756B9]/10 text-[#0756B9]">
-                    <PlugZap className="size-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm sm:text-base font-black uppercase tracking-wide text-[#0B2B4C]">
-                      Electrical Inspection
-                    </h4>
-                    <span className="text-[11px] text-[#53647C]">Cabling & inverter safety</span>
-                  </div>
+              {/* 5Y Badge */}
+              <div className="hidden sm:flex items-center gap-2 rounded-lg bg-white/10 border border-white/15 px-3 py-1 backdrop-blur-md">
+                <div className="grid size-6 place-items-center rounded bg-gradient-to-br from-amber-400 to-[#E04F16] text-[#082B4C] font-black text-xs">
+                  5Y
                 </div>
-                <ul className="mt-4 space-y-2.5 text-xs sm:text-sm text-[#53647C]">
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="size-4 text-[#0756B9] shrink-0" />
-                    <span className="font-semibold text-slate-700">Cable and connection check</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="size-4 text-[#0756B9] shrink-0" />
-                    <span className="font-semibold text-slate-700">Protection devices check</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="size-4 text-[#0756B9] shrink-0" />
-                    <span className="font-semibold text-slate-700">Inverter performance check</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Mechanical Inspection */}
-              <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                  <div className="grid size-10 place-items-center rounded-xl bg-[#B83A16]/10 text-[#B83A16]">
-                    <HardHat className="size-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm sm:text-base font-black uppercase tracking-wide text-[#0B2B4C]">
-                      Mechanical Inspection
-                    </h4>
-                    <span className="text-[11px] text-[#53647C]">Modules & fastener integrity</span>
-                  </div>
+                <div className="text-left leading-none">
+                  <div className="text-[10px] font-black text-white">COMPREHENSIVE</div>
+                  <div className="text-[8.5px] font-bold text-amber-300">SOLAR CARE</div>
                 </div>
-                <ul className="mt-4 space-y-2.5 text-xs sm:text-sm text-[#53647C]">
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="size-4 text-[#B83A16] shrink-0" />
-                    <span className="font-semibold text-slate-700">Module and mounting check</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="size-4 text-[#B83A16] shrink-0" />
-                    <span className="font-semibold text-slate-700">Fixture and fasteners check</span>
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <CheckCircle2 className="size-4 text-[#B83A16] shrink-0" />
-                    <span className="font-semibold text-slate-700">Overall system condition</span>
-                  </li>
-                </ul>
               </div>
             </div>
-          </div>
 
-          {/* 5 Value Pillars */}
-          <div className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-            <div className="rounded-xl sm:rounded-2xl bg-white p-3.5 sm:p-4 text-center border border-slate-200/80 shadow-2xs">
-              <span className="text-[11px] sm:text-xs font-black uppercase text-[#0B2B4C] block">Preventive Maintenance</span>
-              <span className="text-[10px] sm:text-xs text-[#53647C] mt-1 block">Regular cleaning and system care</span>
-            </div>
-            <div className="rounded-xl sm:rounded-2xl bg-white p-3.5 sm:p-4 text-center border border-slate-200/80 shadow-2xs">
-              <span className="text-[11px] sm:text-xs font-black uppercase text-[#0B2B4C] block">Dedicated Support</span>
-              <span className="text-[10px] sm:text-xs text-[#53647C] mt-1 block">Prompt & reliable assistance</span>
-            </div>
-            <div className="rounded-xl sm:rounded-2xl bg-white p-3.5 sm:p-4 text-center border border-slate-200/80 shadow-2xs">
-              <span className="text-[11px] sm:text-xs font-black uppercase text-[#0B2B4C] block">Better Performance</span>
-              <span className="text-[10px] sm:text-xs text-[#53647C] mt-1 block">Helps maintain optimal generation</span>
-            </div>
-            <div className="rounded-xl sm:rounded-2xl bg-white p-3.5 sm:p-4 text-center border border-slate-200/80 shadow-2xs">
-              <span className="text-[11px] sm:text-xs font-black uppercase text-[#0B2B4C] block">Greater Reliability</span>
-              <span className="text-[10px] sm:text-xs text-[#53647C] mt-1 block">Safe and dependable operation</span>
-            </div>
-            <div className="col-span-2 sm:col-span-1 rounded-xl sm:rounded-2xl bg-white p-3.5 sm:p-4 text-center border border-slate-200/80 shadow-2xs">
-              <span className="text-[11px] sm:text-xs font-black uppercase text-[#0B2B4C] block">Planned Service Visits</span>
-              <span className="text-[10px] sm:text-xs text-[#53647C] mt-1 block">Scheduled 5-year inspections</span>
-            </div>
-          </div>
+            {/* Core Overview & 3 Protocols + Compact Visual Grid */}
+            <div className="relative px-4 sm:px-6 py-3 sm:py-4 grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4 lg:gap-5 items-stretch">
+              {/* Left Column (7 cols): Statement + 3 Compact Protocols */}
+              <div className="lg:col-span-7 flex flex-col justify-between space-y-2.5 sm:space-y-3">
+                <div>
+                  <h3 className="text-base sm:text-lg lg:text-xl font-black text-white leading-snug">
+                    More than routine maintenance. <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-[#E04F16]">A long-term commitment.</span>
+                  </h3>
+                  <p className="mt-1 text-[11px] sm:text-xs text-white/80 leading-relaxed line-clamp-2">
+                    More than routine maintenance, <strong className="text-white font-bold">PowerCare</strong> is our commitment to keeping your solar system in top condition. Through dedicated structural, electrical, and mechanical inspections, preventive maintenance, and reliable service support, we help maintain system safety and peak generation.
+                  </p>
+                </div>
 
-          {/* Bottom Action Strip */}
-          <div className="mt-8 sm:mt-10 rounded-2xl bg-gradient-to-r from-[#0B2B4C] via-[#0756B9] to-[#B83A16] p-5 sm:p-7 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <p className="text-sm sm:text-base font-extrabold">Ready to secure your solar investment with 5 Years PowerCare?</p>
-              <p className="text-xs text-white/80 mt-0.5">Talk to our certified solar engineers in Vijayawada & Amaravati region.</p>
+                {/* 3 Inspection Protocols (Structural, Electrical, Mechanical) */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5">
+                  {/* Structural */}
+                  <div className="rounded-lg bg-white/[0.06] border border-white/10 p-2.5 backdrop-blur-sm">
+                    <div className="flex items-center gap-1.5 pb-1.5 border-b border-white/10 text-amber-300">
+                      <Wrench className="size-3.5 shrink-0" />
+                      <h4 className="text-[11px] font-black uppercase tracking-wider text-white">Structural</h4>
+                    </div>
+                    <ul className="mt-1.5 space-y-1 text-[10px] sm:text-[10.5px] text-white/80">
+                      <li className="flex items-center gap-1.5">
+                        <CheckCircle2 className="size-2.5 text-[#E04F16] shrink-0" />
+                        <span className="truncate">Stability check</span>
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <CheckCircle2 className="size-2.5 text-[#E04F16] shrink-0" />
+                        <span className="truncate">Tightness & align</span>
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <CheckCircle2 className="size-2.5 text-[#E04F16] shrink-0" />
+                        <span className="truncate">Rust condition</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Electrical */}
+                  <div className="rounded-lg bg-white/[0.06] border border-white/10 p-2.5 backdrop-blur-sm">
+                    <div className="flex items-center gap-1.5 pb-1.5 border-b border-white/10 text-sky-300">
+                      <PlugZap className="size-3.5 shrink-0" />
+                      <h4 className="text-[11px] font-black uppercase tracking-wider text-white">Electrical</h4>
+                    </div>
+                    <ul className="mt-1.5 space-y-1 text-[10px] sm:text-[10.5px] text-white/80">
+                      <li className="flex items-center gap-1.5">
+                        <CheckCircle2 className="size-2.5 text-sky-400 shrink-0" />
+                        <span className="truncate">Cable & connectors</span>
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <CheckCircle2 className="size-2.5 text-sky-400 shrink-0" />
+                        <span className="truncate">Protection devices</span>
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <CheckCircle2 className="size-2.5 text-sky-400 shrink-0" />
+                        <span className="truncate">Inverter check</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Mechanical */}
+                  <div className="rounded-lg bg-white/[0.06] border border-white/10 p-2.5 backdrop-blur-sm">
+                    <div className="flex items-center gap-1.5 pb-1.5 border-b border-white/10 text-emerald-300">
+                      <HardHat className="size-3.5 shrink-0" />
+                      <h4 className="text-[11px] font-black uppercase tracking-wider text-white">Mechanical</h4>
+                    </div>
+                    <ul className="mt-1.5 space-y-1 text-[10px] sm:text-[10.5px] text-white/80">
+                      <li className="flex items-center gap-1.5">
+                        <CheckCircle2 className="size-2.5 text-emerald-400 shrink-0" />
+                        <span className="truncate">Module & mounting</span>
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <CheckCircle2 className="size-2.5 text-emerald-400 shrink-0" />
+                        <span className="truncate">Fasteners check</span>
+                      </li>
+                      <li className="flex items-center gap-1.5">
+                        <CheckCircle2 className="size-2.5 text-emerald-400 shrink-0" />
+                        <span className="truncate">Overall condition</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column (5 cols): Engineer On-Site Inspection Visual with Glass Badges */}
+              <div className="lg:col-span-5 relative w-full h-[180px] sm:h-[195px] lg:h-full min-h-[180px] rounded-xl overflow-hidden border border-white/15 shadow-md group">
+                <img
+                  src={step2Inspection}
+                  alt="Certified solar engineer performing PowerCare rooftop inspection"
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#082B4C] via-[#082B4C]/25 to-transparent" />
+
+                {/* Floating Glass Badges */}
+                <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 rounded-full bg-navy/90 border border-white/20 px-2.5 py-0.5 text-[10px] font-black text-white backdrop-blur shadow-sm">
+                  <ShieldCheck className="size-3 text-amber-400" />
+                  <span>Certified Solar Engineers</span>
+                </div>
+
+                <div className="absolute bottom-2 left-2 right-2 p-2 rounded-lg bg-navy/90 border border-white/20 backdrop-blur-md">
+                  <div className="flex items-center justify-between text-[11px] text-white">
+                    <span className="font-extrabold text-amber-300">Scheduled 5-Year Maintenance</span>
+                    <span className="text-[9px] bg-white/20 px-1.5 py-0.5 rounded font-bold">Free with All Systems</span>
+                  </div>
+                  <p className="text-[9.5px] text-white/80 mt-0.5 leading-snug truncate">
+                    Periodic physical audit, string voltage testing, and dust cleaning verification across AP.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <Link
-                to="/book-a-demo"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-[#0B2B4C] shadow-md hover:bg-slate-100 hover:shadow-lg active:scale-95 transition-all"
-              >
-                <span>Book Free Consultation</span>
-                <ArrowRight className="size-4" />
-              </Link>
-              <a
-                href="tel:+917989641899"
-                className="inline-flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white active:scale-95 transition-all"
-              >
-                <Phone className="size-4" />
-                <span>+91 79896 41899</span>
-              </a>
+
+            {/* 5 Value Pillars Streamlined Strip */}
+            <div className="relative border-t border-white/10 bg-black/25 px-4 sm:px-6 py-2">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 sm:gap-2">
+                <div className="rounded bg-white/[0.04] border border-white/10 px-2 py-1 text-center">
+                  <span className="text-[10px] sm:text-[11px] font-black uppercase text-amber-300 block truncate">Preventive Maintenance</span>
+                  <span className="text-[8.5px] sm:text-[9px] text-white/70 block truncate">Regular cleaning & care</span>
+                </div>
+                <div className="rounded bg-white/[0.04] border border-white/10 px-2 py-1 text-center">
+                  <span className="text-[10px] sm:text-[11px] font-black uppercase text-amber-300 block truncate">Dedicated Support</span>
+                  <span className="text-[8.5px] sm:text-[9px] text-white/70 block truncate">Prompt on-site assistance</span>
+                </div>
+                <div className="rounded bg-white/[0.04] border border-white/10 px-2 py-1 text-center">
+                  <span className="text-[10px] sm:text-[11px] font-black uppercase text-amber-300 block truncate">Better Performance</span>
+                  <span className="text-[8.5px] sm:text-[9px] text-white/70 block truncate">Peak generation guarantee</span>
+                </div>
+                <div className="rounded bg-white/[0.04] border border-white/10 px-2 py-1 text-center">
+                  <span className="text-[10px] sm:text-[11px] font-black uppercase text-amber-300 block truncate">Greater Reliability</span>
+                  <span className="text-[8.5px] sm:text-[9px] text-white/70 block truncate">Safe & dependable life</span>
+                </div>
+                <div className="col-span-2 sm:col-span-1 rounded bg-white/[0.04] border border-white/10 px-2 py-1 text-center">
+                  <span className="text-[10px] sm:text-[11px] font-black uppercase text-amber-300 block truncate">Planned Service Visits</span>
+                  <span className="text-[8.5px] sm:text-[9px] text-white/70 block truncate">Regular 5-year audits</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Compact Bottom Tagline & CTA Bar */}
+            <div className="relative border-t border-white/10 bg-gradient-to-r from-[#B83A16] via-[#D9410E] to-[#E04F16] px-4 sm:px-6 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-white">
+              <div className="text-center sm:text-left">
+                <p className="text-xs sm:text-sm font-black tracking-tight">Complete Care. Reliable Power. Greener Tomorrow.</p>
+                <p className="text-[10px] sm:text-[11px] text-white/90">Talk to certified Amaravati Solar engineers for free inspection scheduling.</p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <Link
+                  to="/book-a-demo"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-1.5 text-xs font-bold text-[#082B4C] shadow hover:bg-slate-100 transition-all active:scale-95"
+                >
+                  <span>Book Free Consultation</span>
+                  <ArrowRight className="size-3" />
+                </Link>
+                <a
+                  href="tel:+917989641899"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-black/25 hover:bg-black/35 border border-white/30 px-3 py-1.5 text-xs font-bold text-white transition-all active:scale-95"
+                >
+                  <Phone className="size-3" />
+                  <span>Call Us</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. GALLERY / PROJECTS - Pop & Parallax Transitions */}
-      <section id="gallery" className="container-site pt-2 sm:pt-3 pb-6 md:pb-8 scroll-mt-24 sm:scroll-mt-28">
+      {/* 5B. ONE POINT OF CONTACT - Your Complete Solar Journey. One Trusted Partner */}
+      <section id="one-point-contact" className="scroll-mt-24 sm:scroll-mt-28 py-8 sm:py-12 bg-white border-b border-slate-200/80">
+        <div className="container-site">
+          <div className="max-w-none scroll-pop scroll-pop-1">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#E04F16]/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-[#E04F16] border border-[#E04F16]/20">
+              <Users className="size-3.5" />
+              <span>ONE TRUSTED PARTNER • COMPLETE SOLAR JOURNEY</span>
+            </div>
+            <h2 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-black text-[#082B4C] tracking-tight">
+              One Point of Contact
+            </h2>
+            <p className="mt-1.5 text-base sm:text-lg md:text-xl font-bold text-[#E04F16]">
+              Your Complete Solar Journey. One Trusted Partner.
+            </p>
+            <p className="mt-1 text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed max-w-none">
+              From the first conversation to long-term support, we take care of your solar journey at every step.
+            </p>
+          </div>
+
+          {/* 9-Step End-to-End Workflow Grid */}
+          <div className="mt-6 sm:mt-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2.5 sm:gap-3">
+              {[
+                { step: "01", title: "Consultation", icon: Headphones },
+                { step: "02", title: "Site Check", icon: ClipboardCheck },
+                { step: "03", title: "System Design", icon: SlidersHorizontal },
+                { step: "04", title: "Installation", icon: Wrench },
+                { step: "05", title: "Subsidy Assistance", icon: FileText },
+                { step: "06", title: "Loan Assistance", icon: BadgeCheck },
+                { step: "07", title: "Commissioning", icon: PlugZap },
+                { step: "08", title: "Servicing", icon: ShieldCheck },
+                { step: "09", title: "Post-Sales Support", icon: Phone },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.step}
+                    className="group relative flex flex-col items-center text-center p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-[#E04F16]/40 hover:bg-white hover:shadow-md transition-all duration-300"
+                  >
+                    <span className="text-[10px] font-black text-[#E04F16] tracking-wider mb-1.5">
+                      STEP {item.step}
+                    </span>
+                    <div className="grid size-9 place-items-center rounded-lg bg-white border border-slate-200 text-[#082B4C] group-hover:bg-[#E04F16] group-hover:text-white transition-colors duration-300 mb-2 shadow-2xs">
+                      <Icon className="size-4" />
+                    </div>
+                    <span className="text-[11px] sm:text-xs font-extrabold text-[#082B4C] leading-tight">
+                      {item.title}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Tagline & Call-to-action Strip */}
+          <div className="mt-6 sm:mt-8 rounded-2xl bg-gradient-to-r from-[#082B4C] via-[#0b3c6a] to-[#E04F16] p-5 sm:p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="space-y-1">
+              <p className="text-sm sm:text-base font-extrabold">
+                One partner. Complete solar solutions. A greener tomorrow.
+              </p>
+              <p className="text-xs text-white/80">
+                Single dedicated project manager assigned for your rooftop project from start to finish.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <Link
+                to="/book-a-demo"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-[#082B4C] shadow-md hover:bg-slate-100 transition-all active:scale-95"
+              >
+                <span>Book Free Consultation</span>
+                <ArrowRight className="size-4" />
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2.5 text-xs sm:text-sm font-bold text-white transition-all active:scale-95"
+              >
+                <span>Contact Dedicated Manager</span>
+                <ArrowRight className="size-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5C. POWER BACK PROMISE - Solar Performance. Financial Assurance. */}
+      <section id="power-back-promise" className="scroll-mt-24 sm:scroll-mt-28 py-8 sm:py-12 bg-gradient-to-b from-white via-emerald-50/20 to-white border-b border-slate-200/80">
+        <div className="container-site">
+          <div className="max-w-none scroll-pop scroll-pop-1">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-emerald-700 border border-emerald-600/20">
+              <ShieldCheck className="size-3.5" />
+              <span>PERFORMANCE GUARANTEE • FINANCIAL ASSURANCE</span>
+            </div>
+            <h2 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-black text-[#082B4C] tracking-tight">
+              Power Back Promise
+            </h2>
+            <p className="mt-1.5 text-base sm:text-lg md:text-xl font-bold text-[#E04F16]">
+              Solar Performance. Financial Assurance.
+            </p>
+            <p className="mt-2 text-xs sm:text-sm md:text-base text-slate-700 leading-relaxed max-w-none">
+              At Amaravati Solar Solutions, we stand behind our commitment to reliable solar performance. With our Power-Back Promise, eligible customers can receive <strong className="text-emerald-700 font-extrabold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">₹6 /Unit compensation</strong> when actual solar generation falls below the agreed performance benchmark, subject to applicable terms and conditions.
+            </p>
+          </div>
+
+          {/* 3 Pillars of Power Back Promise */}
+          <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
+                <div className="grid size-11 place-items-center rounded-xl bg-emerald-100 text-emerald-700 font-black text-xl shadow-2xs">
+                  ₹6
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-extrabold text-[#082B4C]">₹6 /Unit Compensation</h3>
+                  <span className="text-[11px] text-slate-500 font-medium">Generation shortfall backup</span>
+                </div>
+              </div>
+              <p className="mt-3.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Direct financial assurance if generation falls below committed benchmarks, protecting your monthly return on investment.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
+                <div className="grid size-11 place-items-center rounded-xl bg-[#082B4C]/10 text-[#082B4C] shadow-2xs">
+                  <Target className="size-5 text-[#082B4C]" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-extrabold text-[#082B4C]">Transparent Benchmarks</h3>
+                  <span className="text-[11px] text-slate-500 font-medium">Clear energy auditing</span>
+                </div>
+              </div>
+              <p className="mt-3.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Our goal is to give you greater confidence in your solar investment with transparent commitments and dependable support.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
+                <div className="grid size-11 place-items-center rounded-xl bg-[#E04F16]/10 text-[#E04F16] shadow-2xs">
+                  <Sparkles className="size-5 text-[#E04F16]" />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-extrabold text-[#082B4C]">Smarter Solar Value</h3>
+                  <span className="text-[11px] text-slate-500 font-medium">More confidence, more value</span>
+                </div>
+              </div>
+              <p className="mt-3.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                More Confidence. More Value. Smarter Solar. Engineered with Tier-1 components and continuous remote monitoring.
+              </p>
+            </div>
+          </div>
+
+          {/* Action Strip */}
+          <div className="mt-6 sm:mt-8 rounded-2xl bg-gradient-to-r from-emerald-800 via-[#082B4C] to-[#E04F16] p-5 sm:p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="space-y-1">
+              <p className="text-sm sm:text-base font-extrabold">
+                More Confidence. More Value. Smarter Solar.
+              </p>
+              <p className="text-xs text-white/80">
+                Talk to our technical team about eligible rooftop solar systems with Power-Back Promise.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <Link
+                to="/book-a-demo"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-[#082B4C] shadow-md hover:bg-slate-100 transition-all active:scale-95"
+              >
+                <span>Book Free Consultation</span>
+                <ArrowRight className="size-4" />
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2.5 text-xs sm:text-sm font-bold text-white transition-all active:scale-95"
+              >
+                <span>Inquire About Terms</span>
+                <ArrowRight className="size-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. PROJECTS - Pop & Parallax Transitions */}
+      <section id="projects" className="container-site pt-2 sm:pt-3 pb-6 md:pb-8 scroll-mt-24 sm:scroll-mt-28">
+        <span id="gallery" className="sr-only" />
         <div className="flex flex-wrap gap-2 scroll-pop scroll-pop-1" role="tablist" aria-label="Filter projects">
           {FILTERS.map((f) => (
             <button
@@ -882,49 +1077,72 @@ function Index() {
             </button>
           ))}
         </div>
-        <p className="mt-4 text-sm text-muted-foreground scroll-pop scroll-pop-2">
+        <p className="mt-3 text-xs sm:text-sm text-muted-foreground scroll-pop scroll-pop-2 max-w-none">
           These are sample placeholders. Verified project photos and details will be added soon.
         </p>
 
-        <div key={galleryFilter} className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div key={galleryFilter} className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((p, i) => {
             const staggerClass = `pop-stagger-${Math.min((i % 6) + 1, 6)}`;
+            const eyebrow =
+              p.category?.toLowerCase() === "residential"
+                ? "FOR HOMES"
+                : p.category?.toLowerCase() === "commercial"
+                ? "FOR BUSINESSES"
+                : p.category?.toLowerCase() === "industrial"
+                ? "FOR INDUSTRY"
+                : "SOLAR PROJECT";
+
             return (
               <Link
                 key={p.id}
                 to="/projects/$id"
                 params={{ id: p.id }}
                 className={cn(
-                  "group overflow-hidden rounded-2xl bg-card text-left shadow-card transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 active:scale-[0.98] flex flex-col parallax-card animate-pop-in",
+                  "group relative overflow-hidden rounded-none bg-gradient-to-br from-[#FFFDF9] via-white to-[#FFF5EA] text-left p-4 sm:p-5 shadow-[0_4px_16px_rgba(224,79,22,0.06)] border border-orange-200/70 hover:border-[#E04F16] hover:shadow-[0_16px_36px_rgba(224,79,22,0.15)] hover:-translate-y-1.5 transition-all duration-300 flex flex-row items-center justify-between gap-3 sm:gap-4 parallax-card animate-pop-in",
                   staggerClass
                 )}
               >
-                <div className="relative aspect-[4/3] overflow-hidden parallax-wrap">
+                {/* Left: Content & Circular Arrow */}
+                <div className="flex-1 flex flex-col justify-between h-full min-w-0 pr-1">
+                  <div>
+                    <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#E04F16] bg-[#E04F16]/10 border border-[#E04F16]/20 px-2.5 py-0.5 rounded-full inline-block">
+                      {eyebrow}
+                    </span>
+                    <h3 className="mt-1.5 text-sm sm:text-base font-extrabold text-[#082B4C] leading-snug line-clamp-2 group-hover:text-[#E04F16] transition-colors">
+                      {p.title}
+                    </h3>
+                    <p className="mt-1.5 text-[11px] sm:text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                      {p.summary || "High-yield precision-engineered solar installation."}
+                    </p>
+                  </div>
+
+                  <div className="mt-3.5 sm:mt-4 flex items-center justify-between">
+                    <div className="size-8 sm:size-8.5 rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] text-white shadow-md shadow-[#E04F16]/25 group-hover:shadow-lg group-hover:scale-110 transition-all duration-300 grid place-items-center">
+                      <ArrowRight className="size-3.5 sm:size-4 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                    {p.capacity ? (
+                      <span className="text-[10px] sm:text-[11px] font-bold text-[#B83A16] bg-white border border-orange-200/80 px-2 py-0.5 rounded-md shadow-2xs">
+                        {p.capacity}
+                      </span>
+                    ) : (
+                      <span className="text-[10px] sm:text-[11px] font-semibold text-slate-500 bg-white border border-orange-100 px-2 py-0.5 rounded-md">
+                        {p.category}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Right: Square Image Viewport */}
+                <div className="w-28 sm:w-32 md:w-36 aspect-square rounded-none overflow-hidden shrink-0 shadow-2xs border border-orange-100/80 relative bg-slate-100">
                   <img
                     src={p.image}
                     alt={p.title}
                     width={1920}
                     height={1088}
                     loading="lazy"
-                    data-parallax
-                    data-parallax-rate="0.08"
-                    className="parallax-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-108"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent opacity-60 transition-opacity group-hover:opacity-85" />
-                  <span className="absolute left-4 top-4 rounded-full bg-white/95 backdrop-blur-md px-3 py-1 text-xs font-extrabold text-navy shadow-sm">
-                    {p.category}
-                  </span>
-                  {p.placeholder && (
-                    <span className="absolute right-4 top-4 rounded-full bg-navy/80 px-3 py-1 text-xs font-semibold text-navy-foreground shadow-sm">
-                      Sample
-                    </span>
-                  )}
-                </div>
-                <div className="p-6 flex-1 flex flex-col justify-between bg-white">
-                  <h3 className="text-lg font-bold text-navy line-clamp-2 group-hover:text-primary transition-colors">{p.title}</h3>
-                  <span className="mt-2 inline-block text-sm font-bold text-primary group-hover:translate-x-1 transition-transform">
-                    View Project →
-                  </span>
                 </div>
               </Link>
             );
@@ -941,193 +1159,6 @@ function Index() {
         </div>
       </section>
 
-      {/* 7. POWERCARE MODAL DIALOG (OPENS ON CLICKING THE POWERCARE CARD) */}
-      {isPowerCareModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200"
-          onClick={() => setIsPowerCareModalOpen(false)}
-        >
-          <div
-            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Sticky Header with Title and Close Button */}
-            <div className="sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white/95 px-4 sm:px-6 py-3 sm:py-3.5 backdrop-blur">
-              <div className="flex items-center gap-2.5">
-                <div className="grid size-8 sm:size-9 place-items-center rounded-lg bg-[#B83A16]/10 text-[#B83A16]">
-                  <ShieldCheck className="size-5" />
-                </div>
-                <div>
-                  <h3 className="text-base sm:text-lg font-black text-[#0B2B4C] leading-tight">
-                    PowerCare
-                  </h3>
-                  <p className="text-[11px] sm:text-xs font-semibold text-[#53647C]">
-                    5 Years of Comprehensive Solar Care
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsPowerCareModalOpen(false)}
-                className="grid size-8 sm:size-9 place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-900 transition-colors cursor-pointer"
-                aria-label="Close PowerCare modal"
-              >
-                <X className="size-4 sm:size-5" />
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-4 sm:p-5 space-y-4">
-              {/* Full Image 3 Poster Graphic - compact */}
-              <div className="max-w-2xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200 shadow-md bg-slate-900">
-                <img
-                  src={powerCareBanner}
-                  alt="Amaravati Solar Solutions - PowerCare 5 Years of Comprehensive Solar Care"
-                  className="w-full h-auto object-contain"
-                />
-              </div>
-
-              {/* Exact Text from Image 2 */}
-              <div className="max-w-2xl mx-auto rounded-xl bg-gradient-to-br from-[#0B2B4C]/5 via-[#0756B9]/5 to-transparent p-4 sm:p-5 border border-slate-200/80">
-                <h4 className="text-base sm:text-lg font-black text-[#0B2B4C]">
-                  Power Care
-                </h4>
-                <ul className="mt-2 space-y-1.5 text-xs sm:text-[13.5px] text-[#53647C] leading-snug">
-                  <li className="flex items-start gap-2 font-bold text-[#0B2B4C]">
-                    <span className="text-[#B83A16] font-black text-base leading-none mt-0.5">•</span>
-                    <span>5 Years of Comprehensive Solar Care</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#B83A16] font-black text-base leading-none mt-0.5">•</span>
-                    <span>
-                      More than routine maintenance, <strong className="text-[#B83A16] font-bold">PowerCare</strong> is our commitment to keeping your solar system in top condition. Through dedicated structural, electrical, and mechanical inspections, preventive maintenance, and reliable service support, we help maintain system safety, reliability, and long-term performance.
-                    </span>
-                  </li>
-                  <li className="flex items-start gap-2 font-bold text-[#0756B9]">
-                    <span className="text-[#B83A16] font-black text-base leading-none mt-0.5">•</span>
-                    <span>Complete Care. Reliable Power. Greener Tomorrow.</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* 3 Inspection Protocols from Image 3 */}
-              <div>
-                <h5 className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-[#0B2B4C] mb-3">
-                  Core Inspection Protocols
-                </h5>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-                  {/* Structural Inspection */}
-                  <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <div className="text-xs font-black uppercase text-[#0B2B4C] tracking-wide mb-2.5 pb-2 border-b border-slate-100 flex items-center gap-1.5">
-                      <span className="size-2 rounded-full bg-[#B83A16]" />
-                      STRUCTURAL INSPECTION
-                    </div>
-                    <ul className="space-y-1.5 text-xs text-[#53647C]">
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="size-3.5 text-[#B83A16] shrink-0" />
-                        <span>Structure stability check</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="size-3.5 text-[#B83A16] shrink-0" />
-                        <span>Tightness & alignment</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="size-3.5 text-[#B83A16] shrink-0" />
-                        <span>Rust and coating condition</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Electrical Inspection */}
-                  <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <div className="text-xs font-black uppercase text-[#0B2B4C] tracking-wide mb-2.5 pb-2 border-b border-slate-100 flex items-center gap-1.5">
-                      <span className="size-2 rounded-full bg-[#0756B9]" />
-                      ELECTRICAL INSPECTION
-                    </div>
-                    <ul className="space-y-1.5 text-xs text-[#53647C]">
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="size-3.5 text-[#0756B9] shrink-0" />
-                        <span>Cable and connection check</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="size-3.5 text-[#0756B9] shrink-0" />
-                        <span>Protection devices check</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="size-3.5 text-[#0756B9] shrink-0" />
-                        <span>Inverter performance check</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Mechanical Inspection */}
-                  <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <div className="text-xs font-black uppercase text-[#0B2B4C] tracking-wide mb-2.5 pb-2 border-b border-slate-100 flex items-center gap-1.5">
-                      <span className="size-2 rounded-full bg-[#B83A16]" />
-                      MECHANICAL INSPECTION
-                    </div>
-                    <ul className="space-y-1.5 text-xs text-[#53647C]">
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="size-3.5 text-[#B83A16] shrink-0" />
-                        <span>Module and mounting check</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="size-3.5 text-[#B83A16] shrink-0" />
-                        <span>Fixture and fasteners check</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <CheckCircle2 className="size-3.5 text-[#B83A16] shrink-0" />
-                        <span>Overall system condition</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* 5 Service Features Row from Image 3 */}
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-2">
-                <div className="rounded-xl bg-slate-50 p-3 text-center border border-slate-200/60">
-                  <div className="text-[11px] font-black text-[#0B2B4C] uppercase">Preventive Maint.</div>
-                  <div className="text-[10px] text-[#53647C] mt-0.5">Regular cleaning & system care</div>
-                </div>
-                <div className="rounded-xl bg-slate-50 p-3 text-center border border-slate-200/60">
-                  <div className="text-[11px] font-black text-[#0B2B4C] uppercase">Service Support</div>
-                  <div className="text-[10px] text-[#53647C] mt-0.5">Prompt & reliable assistance</div>
-                </div>
-                <div className="rounded-xl bg-slate-50 p-3 text-center border border-slate-200/60">
-                  <div className="text-[11px] font-black text-[#0B2B4C] uppercase">Better Output</div>
-                  <div className="text-[10px] text-[#53647C] mt-0.5">Maintains optimal generation</div>
-                </div>
-                <div className="rounded-xl bg-slate-50 p-3 text-center border border-slate-200/60">
-                  <div className="text-[11px] font-black text-[#0B2B4C] uppercase">Reliability</div>
-                  <div className="text-[10px] text-[#53647C] mt-0.5">Safe & dependable operation</div>
-                </div>
-                <div className="col-span-2 sm:col-span-1 rounded-xl bg-slate-50 p-3 text-center border border-slate-200/60">
-                  <div className="text-[11px] font-black text-[#0B2B4C] uppercase">Planned Visits</div>
-                  <div className="text-[10px] text-[#53647C] mt-0.5">Scheduled 5-year visits</div>
-                </div>
-              </div>
-
-              {/* Modal Actions */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-200">
-                <p className="text-xs font-bold text-[#B83A16] italic">
-                  Complete Care. Reliable Power. Greener Tomorrow.
-                </p>
-                <div className="flex items-center gap-2.5">
-                  <Link
-                    to="/book-a-demo"
-                    onClick={() => setIsPowerCareModalOpen(false)}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#B83A16] to-[#D44A20] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow hover:brightness-110 active:scale-95 transition-all"
-                  >
-                    <span>Book PowerCare Assessment</span>
-                    <ArrowRight className="size-4" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

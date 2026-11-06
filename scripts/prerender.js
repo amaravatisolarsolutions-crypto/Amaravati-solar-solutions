@@ -60,7 +60,7 @@ async function runPrerender() {
               const html = await res.text();
               const cleanPath = route === '/' ? 'index.html' : path.join(route.replace(/^\//, ''), 'index.html');
               
-              // Write to frontend/dist/ (visible, non-hidden for Hostinger)
+              // Write to frontend/dist/
               const distOut = path.join(distDir, cleanPath);
               fs.mkdirSync(path.dirname(distOut), { recursive: true });
               fs.writeFileSync(distOut, html, 'utf8');
@@ -69,11 +69,6 @@ async function runPrerender() {
               const outputOut = path.join(outputPubDir, cleanPath);
               fs.mkdirSync(path.dirname(outputOut), { recursive: true });
               fs.writeFileSync(outputOut, html, 'utf8');
-
-              // Also write to root directory (e.g. root/about/index.html, root/index.html) for native static server fallback
-              const rootOut = path.join(__dirname, '..', cleanPath);
-              fs.mkdirSync(path.dirname(rootOut), { recursive: true });
-              fs.writeFileSync(rootOut, html, 'utf8');
 
               console.log(`[Prerender] ✓ ${route} -> frontend/dist/${cleanPath} (${html.length} bytes)`);
             } else {

@@ -84,7 +84,7 @@ export function ProjectImageShowcase({
   return (
     <div
       className={cn(
-        "w-full rounded-2xl bg-white p-3 sm:p-4 shadow-sm border border-slate-200/90 transition-all",
+        "w-full rounded-2xl bg-white p-3.5 sm:p-4.5 shadow-xs border border-orange-200/80 transition-all",
         className
       )}
     >
@@ -129,7 +129,7 @@ export function ProjectImageShowcase({
       <div
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className="relative mt-2.5 sm:mt-3 overflow-hidden rounded-xl bg-slate-950 aspect-[16/10] sm:aspect-[16/9] max-h-[250px] sm:max-h-[280px] w-full flex items-center justify-center select-none shadow-sm touch-pan-y"
+        className="relative mt-2.5 sm:mt-3 overflow-hidden rounded-xl bg-slate-950 aspect-[16/10] sm:aspect-[16/9] max-h-[340px] sm:max-h-[380px] md:max-h-[420px] w-full flex items-center justify-center select-none shadow-sm touch-pan-y"
       >
         {/* Previous Button (<) */}
         <button
