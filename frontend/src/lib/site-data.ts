@@ -9,9 +9,14 @@ import solarInverter from "@/assets/solar-inverter.jpg";
 import solarHyderabadRooftop from "@/assets/solar-hyderabad-rooftop.jpg";
 import solarPanelsArray from "@/assets/solar-panels-array.jpg";
 import projectCommercialRooftop from "@/assets/project-commercial-rooftop-75kwp.jpg";
+import projectCommercialElevatedSuperstructure from "@/assets/project-commercial-elevated-superstructure.jpg";
 import projectResidentialVilla from "@/assets/project-residential-villa-10kw.jpg";
+import projectResidentialRooftopPergola from "@/assets/project-residential-rooftop-pergola.jpg";
+import projectResidentialInverter10kw from "@/assets/project-residential-inverter-10kw.jpg";
 import projectOfficeRooftop from "@/assets/project-office-rooftop-120kw.jpg";
+import projectCorporateBifacialModules from "@/assets/project-corporate-bifacial-modules.jpg";
 import projectWarehouseIndustrial from "@/assets/project-warehouse-industrial-500kw.jpg";
+import projectIndustrialMetalRoofClamps from "@/assets/project-industrial-metal-roof-clamps.jpg";
 import projectHybridStorageVilla from "@/assets/project-hybrid-storage-villa-8kw.jpg";
 import projectAgriculturalSolarPump from "@/assets/project-agricultural-solar-pump-25hp.jpg";
 import projectCommercialCarportCanopy from "@/assets/project-commercial-carport-canopy-75kw.jpg";
@@ -202,7 +207,7 @@ export const PROJECTS: Project[] = [
     title: "Roof Top solar power plant",
     category: "Commercial",
     image: projectCommercialRooftop,
-    images: [projectCommercialRooftop, solarInverter, solarPanelsArray, commercial, installation],
+    images: [projectCommercialRooftop, projectCommercialElevatedSuperstructure, solarHyderabadRooftop, solarPanelsArray],
     summary: "75 kWp high-yield commercial rooftop solar power plant installed in Hyderabad with elevated structure and DISCOM net-metering synchronization.",
     placeholder: false,
     capacity: "75KWP",
@@ -234,7 +239,7 @@ export const PROJECTS: Project[] = [
     title: "Rooftop solar for a family home",
     category: "Residential",
     image: projectResidentialVilla,
-    images: [projectResidentialVilla, solarInverter, future, residential, installation],
+    images: [projectResidentialVilla, projectResidentialRooftopPergola, projectResidentialInverter10kw, residential],
     summary: "High-efficiency 10 kW rooftop solar plant powering an independent luxury villa with net-metering export.",
     placeholder: true,
     capacity: "10 kW On-Grid System",
@@ -267,7 +272,7 @@ export const PROJECTS: Project[] = [
     title: "Office building rooftop array",
     category: "Commercial",
     image: projectOfficeRooftop,
-    images: [projectOfficeRooftop, commercial, solarPanelsArray, solarInverter, residential],
+    images: [projectOfficeRooftop, projectCorporateBifacialModules, commercial, solarPanelsArray],
     summary: "120 kW commercial rooftop installation powering corporate office workloads, central HVAC, and workstations.",
     placeholder: true,
     capacity: "120 kW Commercial Solar Array",
@@ -300,7 +305,7 @@ export const PROJECTS: Project[] = [
     title: "Warehouse rooftop solar plant",
     category: "Industrial",
     image: projectWarehouseIndustrial,
-    images: [projectWarehouseIndustrial, industrial, solarInverter, solarPanelsArray, solarCarport],
+    images: [projectWarehouseIndustrial, projectIndustrialMetalRoofClamps, industrial, solarPanelsArray],
     summary: "Heavy-duty 500 kW solar energy installation across industrial metal shed roofing for cold storage and warehouse logistics.",
     placeholder: true,
     capacity: "500 kW Industrial Rooftop Plant",
@@ -333,7 +338,7 @@ export const PROJECTS: Project[] = [
     title: "Hybrid residential power storage",
     category: "Residential",
     image: projectHybridStorageVilla,
-    images: [projectHybridStorageVilla, installation, solarInverter, future, residential],
+    images: [projectHybridStorageVilla, projectResidentialInverter10kw, projectResidentialRooftopPergola, installation],
     summary: "Smart hybrid solar setup combining rooftop solar panels with modular lithium-ion battery storage for uninterrupted 24/7 power security.",
     placeholder: true,
     capacity: "8 kW Hybrid Solar + 15 kWh Lithium Storage",
@@ -367,7 +372,7 @@ export const PROJECTS: Project[] = [
     title: "Agricultural solar water pump array",
     category: "Industrial",
     image: projectAgriculturalSolarPump,
-    images: [projectAgriculturalSolarPump, solarFarm, solarInverter, solarPanelsArray, residential],
+    images: [projectAgriculturalSolarPump, solarFarm, solarInverter, solarPanelsArray],
     summary: "Ground-mounted solar pump array delivering consistent, high-volume irrigation for farmland without relying on unpredictable rural power grids.",
     placeholder: true,
     capacity: "25 HP Ground-Mounted Solar Pumping System",
@@ -400,7 +405,7 @@ export const PROJECTS: Project[] = [
     title: "Commercial solar carport canopy",
     category: "Commercial",
     image: projectCommercialCarportCanopy,
-    images: [projectCommercialCarportCanopy, solarCarport, commercial, solarInverter, industrial],
+    images: [projectCommercialCarportCanopy, solarCarport, projectCommercialElevatedSuperstructure, commercial],
     summary: "Architectural solar carport canopy providing sheltered vehicle parking while generating clean solar power for hospital campus lighting and EV charging.",
     placeholder: true,
     capacity: "75 kW Elevated Solar Carport System",

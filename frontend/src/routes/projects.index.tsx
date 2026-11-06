@@ -55,13 +55,14 @@ function Projects() {
             else if (pid === "p6" || title.includes("carport")) img = projectCommercialCarportCanopy;
             else if (p.image) img = p.image;
 
+            const matched = PROJECTS.find((orig) => orig.id === String(p.id) || orig.title?.toLowerCase() === title);
             return {
               id: String(p.id),
               slug: String(p.id),
               title: p.title || "Solar Project",
               category: (p.category as any) || "Commercial",
               image: img,
-              images: [img],
+              images: matched?.images || [img],
               summary: p.description || "",
               placeholder: false,
               capacity: p.capacity || "",

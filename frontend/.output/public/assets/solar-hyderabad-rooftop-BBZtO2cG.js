@@ -1,1 +1,0 @@
-var e=`/assets/solar-hyderabad-rooftop-DRo-ta6t.jpg`;export{e as t};
