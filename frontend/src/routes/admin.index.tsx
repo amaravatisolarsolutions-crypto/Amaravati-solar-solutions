@@ -3683,9 +3683,9 @@ function QuotationViewModal({
                   Roof Top Solar EPC • On-Grid • Off-Grid • Hybrid
                 </p>
                 <div className="text-[10px] sm:text-[11px] text-slate-600 mt-1.5 space-y-0.5 leading-tight">
-                  <p>74-12/1-12/5, 2nd Floor, Electricity Colony, 9th Line, Vijayawada – 520010</p>
-                  <p>Contact / WhatsApp: +91 79896 41899 | Mon - Sat: 10:00AM - 7:00PM</p>
-                  <p>Email: amaravatisolarsolutions@gmail.com</p>
+                  <p>74-12/1-12/5, Electricity Colony, 9th Line, opp to Auto Nagar gate, Patamata, Vijayawada – 520010</p>
+                  <p>Contact / WhatsApp: +91 63058 25402 | Mon - Sat: 10:00AM - 7:00PM</p>
+                  <p>Email: sales@amaravatisolarsolutions.com | info@amaravatisolarsolutions.com</p>
                 </div>
               </div>
             </div>

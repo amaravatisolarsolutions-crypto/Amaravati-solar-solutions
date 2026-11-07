@@ -137,19 +137,19 @@ export function SiteHeader() {
           {/* Left: Email & Phone Support in Single Line */}
           <div className="flex items-center justify-center gap-1.5 sm:gap-3 shrink-0 whitespace-nowrap text-[9px] min-[360px]:text-[10px] sm:text-xs font-semibold">
             <a
-              href="mailto:amaravatisolarsolutions@gmail.com"
+              href="mailto:info@amaravatisolarsolutions.com"
               className="flex items-center gap-1 text-white/95 hover:text-white hover:underline transition-colors"
             >
               <Mail className="size-2.5 sm:size-3 text-amber-200 shrink-0" />
-              <span>amaravatisolarsolutions@gmail.com</span>
+              <span>info@amaravatisolarsolutions.com</span>
             </a>
             <span className="text-white/40 text-[8px] sm:text-xs">|</span>
             <a
-              href="tel:+917989641899"
+              href="tel:+916305825402"
               className="flex items-center gap-1 text-white/95 hover:text-white hover:underline transition-colors font-bold"
             >
               <Phone className="size-2.5 sm:size-3 text-amber-200 shrink-0" />
-              <span>+91 79896 41899</span>
+              <span>+91 63058 25402</span>
             </a>
           </div>
 
@@ -159,8 +159,6 @@ export function SiteHeader() {
               <Clock className="size-3.5 text-amber-200 shrink-0" />
               <span>Mon - Sat: 10:00 AM - 7:00 PM</span>
             </div>
-            <span className="text-white/40">|</span>
-            <span className="text-white/90">Sunday - Holiday</span>
             <span className="text-white/40">|</span>
             <div className="flex items-center gap-1.5">
               <a
@@ -235,7 +233,7 @@ export function SiteHeader() {
           scrolled ? "shadow-md border-b border-slate-200/80" : "border-b border-slate-100"
         )}
       >
-        <div className="container-site flex h-16 sm:h-[4.5rem] lg:h-[4.85rem] xl:h-[5.25rem] items-center justify-between gap-2 sm:gap-3 xl:gap-4">
+        <div className="container-site flex h-15 sm:h-16 lg:h-[4.15rem] xl:h-[4.65rem] items-center justify-between gap-2 sm:gap-3 xl:gap-4">
         {/* Logo */}
         <Link
           to="/"
@@ -254,7 +252,7 @@ export function SiteHeader() {
             alt="Amaravati Solar Solutions"
             width={1016}
             height={307}
-            className="h-11 sm:h-12 md:h-13 lg:h-14 xl:h-[3.85rem] 2xl:h-[4.15rem] w-auto object-contain transition-transform duration-200 hover:scale-102"
+            className="h-10 sm:h-11 md:h-12 lg:h-[3.15rem] xl:h-[3.5rem] w-auto object-contain transition-transform duration-200 hover:scale-102"
           />
         </Link>
 

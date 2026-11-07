@@ -18,9 +18,9 @@ export function FloatingContactButtons() {
   const [showCallModal, setShowCallModal] = useState(false);
 
   // Exact same primary number for both Call and WhatsApp
-  const primaryNumber = COMPANY.phone || "+91 79896 41899";
+  const primaryNumber = COMPANY.phone || "+91 63058 25402";
   const cleanPhone = primaryNumber.replace(/[^0-9+]/g, "");
-  const cleanWhatsapp = cleanPhone.replace("+", ""); // "917989641899"
+  const cleanWhatsapp = cleanPhone.replace("+", ""); // "916305825402"
 
   const whatsappUrl = `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(
     "Hello Amaravati Solar Solutions, I am interested in solar rooftop systems. Please share more details."
@@ -31,9 +31,9 @@ export function FloatingContactButtons() {
       {/* Floating Buttons on Right Side - Compact & Perfectly Aligned */}
       <aside
         aria-label="Quick contact actions"
-        className="fixed right-4 bottom-6 z-40 flex flex-col items-end gap-2.5 select-none"
+        className="fixed right-3 sm:right-4 bottom-3 sm:bottom-4 lg:bottom-20 xl:bottom-22 z-40 flex flex-col items-end gap-2 select-none"
       >
-        {/* Call Option Button (Solar Gold) - Compact size-11 (44px) */}
+        {/* Call Option Button (Solar Gold) - Compact size-10 (40px) */}
         <div className="group relative flex items-center">
           {/* Tooltip on hover */}
           <span className="pointer-events-none absolute right-full mr-2.5 whitespace-nowrap rounded-lg bg-navy/95 px-2.5 py-1 text-[11px] font-semibold text-white opacity-0 shadow-lg backdrop-blur transition-opacity duration-200 group-hover:opacity-100">
@@ -49,13 +49,13 @@ export function FloatingContactButtons() {
               }
             }}
             aria-label={`Call Amaravati Solar Solutions at ${primaryNumber}`}
-            className="flex size-11 items-center justify-center rounded-full bg-[#F5A623] text-white shadow-[0_3px_12px_rgba(245,166,35,0.45)] transition-all duration-300 hover:scale-110 hover:bg-[#e09315] hover:shadow-[0_5px_18px_rgba(245,166,35,0.65)] active:scale-95"
+            className="flex size-10 sm:size-11 items-center justify-center rounded-full bg-[#F5A623] text-white shadow-[0_3px_12px_rgba(245,166,35,0.45)] transition-all duration-300 hover:scale-110 hover:bg-[#e09315] hover:shadow-[0_5px_18px_rgba(245,166,35,0.65)] active:scale-95"
           >
-            <PhoneCallIcon className="size-5 text-white" />
+            <PhoneCallIcon className="size-4.5 sm:size-5 text-white" />
           </a>
         </div>
 
-        {/* WhatsApp Option Button (Official WhatsApp Green) - Compact size-11 (44px) */}
+        {/* WhatsApp Option Button (Official WhatsApp Green) - Compact size-10 (40px) */}
         <div className="group relative flex items-center">
           {/* Tooltip on hover */}
           <span className="pointer-events-none absolute right-full mr-2.5 whitespace-nowrap rounded-lg bg-navy/95 px-2.5 py-1 text-[11px] font-semibold text-white opacity-0 shadow-lg backdrop-blur transition-opacity duration-200 group-hover:opacity-100">
@@ -66,9 +66,9 @@ export function FloatingContactButtons() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Chat with Amaravati Solar Solutions on WhatsApp at ${primaryNumber}`}
-            className="flex size-11 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_3px_12px_rgba(37,211,102,0.45)] transition-all duration-300 hover:scale-110 hover:bg-[#20bd5a] hover:shadow-[0_5px_18px_rgba(37,211,102,0.65)] active:scale-95"
+            className="flex size-10 sm:size-11 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_3px_12px_rgba(37,211,102,0.45)] transition-all duration-300 hover:scale-110 hover:bg-[#20bd5a] hover:shadow-[0_5px_18px_rgba(37,211,102,0.65)] active:scale-95"
           >
-            <WhatsAppIcon className="size-5.5 text-white" />
+            <WhatsAppIcon className="size-5 sm:size-5.5 text-white" />
           </a>
         </div>
       </aside>

@@ -86,9 +86,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "bingbot", content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" },
       { name: "google-site-verification", content: "dfef471ef71211f1" },
       { name: "geo.region", content: "IN-AP" },
-      { name: "geo.placename", content: "Amaravati, Andhra Pradesh" },
-      { name: "geo.position", content: "16.5131;80.5165" },
-      { name: "ICBM", content: "16.5131, 80.5165" },
+      { name: "geo.placename", content: "Patamata, Vijayawada, Andhra Pradesh 520010" },
+      { name: "geo.position", content: "16.486879;80.665757" },
+      { name: "ICBM", content: "16.486879, 80.665757" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Amaravati Solar Solutions" },
       { property: "og:locale", content: "en_IN" },
@@ -96,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Smart, reliable, high-efficiency solar energy solutions for homes, businesses, and industries across Andhra Pradesh. Save up to 90% on electricity bills.",
+          "Smart, reliable, high-efficiency solar energy solutions for homes, businesses, and industries across Andhra Pradesh and beyond. Save up to 90% on electricity bills.",
       },
       { property: "og:url", content: "https://amaravatisolarsolutions.com/" },
       { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
@@ -144,20 +144,23 @@ const STRUCTURED_DATA = {
       },
       "image": "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg",
       "description": "Amaravati Solar Solutions is Andhra Pradesh's premier rooftop solar EPC provider. Offering high-efficiency on-grid, off-grid, and hybrid solar installations for residential, commercial, and industrial clients with PM Surya Ghar subsidy support and 5-year PowerCare warranty.",
-      "telephone": "+91 79896 41899",
-      "email": "amaravatisolarsolutions@gmail.com",
+      "telephone": "+91 63058 25402",
+      "email": "info@amaravatisolarsolutions.com",
       "priceRange": "₹₹ - ₹₹₹",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Amaravati",
+        "streetAddress": "74-12/1-12/5, Electricity Colony, 9th Line, opp to Auto Nagar gate, Patamata",
+        "addressLocality": "Vijayawada",
         "addressRegion": "Andhra Pradesh",
+        "postalCode": "520010",
         "addressCountry": "IN"
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": 16.5131,
-        "longitude": 80.5165
+        "latitude": 16.486879,
+        "longitude": 80.665757
       },
+      "hasMap": "https://www.google.com/maps?q=16.4868787,80.6657567",
       "areaServed": [
         { "@type": "City", "name": "Amaravati" },
         { "@type": "City", "name": "Vijayawada" },
@@ -259,8 +262,8 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        {/* Google Tag (gtag.js) - Google Analytics & Google Tag Manager */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-M52LL656" />
+        {/* Google Tag Manager (GTM-M52LL656) */}
+        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-M52LL656" />
         <script
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GTM-M52LL656');`,
@@ -276,6 +279,15 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        {/* Google Tag Manager (noscript fallback) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-M52LL656"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         {children}
         <Scripts />
       </body>

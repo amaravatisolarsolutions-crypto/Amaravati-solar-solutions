@@ -156,7 +156,7 @@ function PowerBackPromisePage() {
             Power Sure: <span className="text-[#E04F16]">Solar Performance Guaranteed</span>
           </h1>
           <p className="mt-2 text-xs sm:text-sm md:text-base text-slate-700 max-w-3xl leading-relaxed font-medium">
-            At Amaravati Solar Solutions, we stand firmly behind our engineering. If your system's annual solar generation falls below our committed benchmark, we provide direct financial compensation at <strong className="text-emerald-700 font-extrabold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">₹7 / Unit</strong>.
+            At Amaravati Solar Solutions, we stand firmly behind our engineering. If your system's annual solar generation falls below our committed benchmark, we provide direct financial compensation at <strong className="inline-block whitespace-nowrap text-emerald-700 font-extrabold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">₹7 / Unit</strong>.
           </p>
 
           {/* 4 Feature Badges */}
@@ -358,11 +358,11 @@ function PowerBackPromisePage() {
             </Button>
 
             <a
-              href="tel:+917989641899"
+              href="tel:+916305825402"
               className="inline-flex items-center gap-2 rounded-full bg-black/25 hover:bg-black/35 border border-white/30 px-5 h-12 text-xs sm:text-sm font-bold text-white transition-all active:scale-95"
             >
               <Phone className="size-4" />
-              <span>Call +91 79896 41899</span>
+              <span>Call +91 63058 25402</span>
             </a>
           </div>
         </div>

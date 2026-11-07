@@ -1,3 +1,4 @@
+// Amaravati Solar Solutions - Home Route
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -44,7 +45,7 @@ import step4Installation from "@/assets/process-step-4-installation.jpg";
 import stepSubsidyLoan from "@/assets/process-step-subsidy-loan.jpg";
 import projectResidentialInverter10kw from "@/assets/project-residential-inverter-10kw.jpg";
 import powercarePanelCleaning from "@/assets/powercare-panel-cleaning.jpg";
-import powerSureShield from "@/assets/power-sure-shield.jpg";
+import powerSureAssuranceShield from "@/assets/power-sure-assurance-shield.jpg";
 import solarPanelsArray from "@/assets/solar-panels-array.jpg";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -64,7 +65,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Amaravati Solar Solutions is the #1 trusted rooftop solar installer in Amaravati, Vijayawada, Guntur & AP. On-grid, off-grid & hybrid solar systems with ₹78,000 PM Surya Ghar subsidy support, 5-year PowerCare, and free site survey. Call +91 79896 41899.",
+          "Amaravati Solar Solutions is the #1 trusted rooftop solar installer in Amaravati, Vijayawada, Guntur & AP. On-grid, off-grid & hybrid solar systems with ₹78,000 PM Surya Ghar subsidy support, 5-year PowerCare, and free site survey. Call +91 63058 25402.",
       },
       {
         name: "keywords",
@@ -475,6 +476,17 @@ const FEATURE_HIGHLIGHTS = [
     ),
   },
   {
+    id: "power-back-promise",
+    line1: "Power",
+    line2: "Sure",
+    to: "/power-back-promise",
+    icon: () => (
+      <svg className="size-4.5 sm:size-5.5 lg:size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3a4.5 4.5 0 0 0 4.5-4.5V8" />
+      </svg>
+    ),
+  },
+  {
     id: "one-point-contact",
     line1: "One Point",
     line2: "of Contact",
@@ -485,17 +497,6 @@ const FEATURE_HIGHLIGHTS = [
         <circle cx="9" cy="7" r="4" />
         <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-      </svg>
-    ),
-  },
-  {
-    id: "power-back-promise",
-    line1: "Power",
-    line2: "Sure",
-    to: "/power-back-promise",
-    icon: () => (
-      <svg className="size-4.5 sm:size-5.5 lg:size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3a4.5 4.5 0 0 0 4.5-4.5V8" />
       </svg>
     ),
   },
@@ -555,19 +556,19 @@ function Index() {
       {/* QUICK HIGHLIGHT FEATURES ROW (7 CARDS - COMPACT VIEWPORT FIT) */}
       <section className="bg-gradient-to-b from-orange-50/20 via-slate-50/80 to-white py-1 sm:py-1.5 border-b border-orange-200/90 shadow-2xs">
         <div className="container-site">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-1 sm:gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-1 sm:gap-1.5 lg:gap-2">
             {FEATURE_HIGHLIGHTS.map((item, idx) => (
               <Link
                 key={idx}
                 to={item.to}
                 preload="intent"
                 data-tilt="true"
-                className="parallax-card group flex flex-col items-center justify-center rounded-xl bg-white py-1.5 sm:py-2 px-1 sm:px-1.5 text-center shadow-[0_2px_8px_rgba(224,79,22,0.05)] hover:shadow-md transition-all duration-200 select-none cursor-pointer border border-orange-200/80 hover:border-[#E04F16]"
+                className="parallax-card group flex flex-col items-center justify-center rounded-xl bg-white py-1 sm:py-1.5 px-1 sm:px-1.5 text-center shadow-[0_2px_6px_rgba(224,79,22,0.06)] hover:shadow-md transition-all duration-200 select-none cursor-pointer border border-orange-200/80 hover:border-[#E04F16] min-h-[46px] sm:min-h-[50px]"
               >
-                <div className="flex size-5.5 sm:size-6 lg:size-7 items-center justify-center text-[#D9531E] transition-transform duration-200 group-hover:scale-110">
+                <div className="flex size-4.5 sm:size-5 lg:size-5 items-center justify-center text-[#D9531E] transition-transform duration-200 group-hover:scale-110">
                   <item.icon />
                 </div>
-                <div className="mt-0.5 sm:mt-1 text-[9.5px] sm:text-[10.5px] lg:text-[11px] font-bold text-[#082B4C] leading-tight group-hover:text-[#D9531E] transition-colors">
+                <div className="mt-0.5 text-[10px] sm:text-[10.5px] lg:text-[11px] xl:text-[11.5px] font-bold text-[#082B4C] leading-tight group-hover:text-[#D9531E] transition-colors">
                   <div>{item.line1}</div>
                   <div>{item.line2}</div>
                 </div>
@@ -961,22 +962,6 @@ function Index() {
                         <p className="text-slate-600 leading-relaxed text-[11px] sm:text-[11.5px] line-clamp-3 mb-3 font-medium">
                           {item.desc}
                         </p>
-
-                        {/* Tangible Engineering Deliverables Box */}
-                        <div className={cn("p-2.5 rounded-xl border mb-3 space-y-1.5", item.theme.deliverableBg)}>
-                          <div className="text-[10px] font-black uppercase tracking-wider text-slate-700 flex items-center justify-between">
-                            <span>Key Deliverables</span>
-                            <span className="text-[9px] font-bold text-slate-500">Verified</span>
-                          </div>
-                          <ul className="space-y-1 text-[10.5px] font-semibold text-slate-700">
-                            {item.deliverables.map((d, i) => (
-                              <li key={i} className="flex items-start gap-1.5 leading-tight">
-                                <CheckCircle2 className={cn("size-3 shrink-0 mt-0.5", item.theme.checkIcon)} />
-                                <span>{d}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
                       </div>
 
                       {/* Direct Contextual CTA */}
@@ -1108,7 +1093,7 @@ function Index() {
             
             {/* Left Column (5 Cols): Rooftop Engineer Cleaning Visual Card (Aligned 100% to Height of 6 Cards) */}
             <div className="w-full lg:w-5/12 flex flex-col shrink-0">
-              <div className="parallax-wrap relative h-[320px] sm:h-[350px] lg:h-full rounded-2xl overflow-hidden border border-orange-200/90 shadow-md shadow-orange-500/5 group flex flex-col justify-between">
+              <div className="parallax-wrap relative h-[220px] sm:h-[240px] lg:h-full rounded-2xl overflow-hidden border border-orange-200/90 shadow-md shadow-orange-500/5 group flex flex-col justify-between">
                 <img
                   src={powercarePanelCleaning}
                   alt="Amaravati Solar certified engineer actively washing solar panels with water-fed brush on rooftop"
@@ -1126,199 +1111,134 @@ function Index() {
                   <span>PowerCare • Certified Engineer On-Site</span>
                 </div>
 
-                {/* Floating Bottom Card at Bottom-Left: Leaves Cleaning Action on Right 100% Clear */}
-                <div
-                  data-parallax="float"
-                  data-parallax-rate="-0.08"
-                  data-parallax-max="12"
-                  className="absolute bottom-2.5 left-2.5 max-w-[210px] sm:max-w-[230px] p-2 rounded-xl bg-[#082B4C]/92 border border-white/20 text-white backdrop-blur-md shadow-xl"
-                >
-                  <div className="flex items-center justify-between gap-1.5">
-                    <span className="text-[10.5px] font-black text-amber-300">5-Yr Free Care</span>
-                    <span className="text-[8px] font-black uppercase bg-[#E04F16] text-white px-1.5 py-0.5 rounded-full shadow-2xs">
-                      100% Free
-                    </span>
+                {/* Floating Bottom Glass Bar */}
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between rounded-xl bg-[#082B4C]/92 border border-white/20 px-3 py-1.5 text-white backdrop-blur-md shadow-xl">
+                  <div className="flex items-center gap-1.5 text-[10px] font-black text-amber-300">
+                    <ShieldCheck className="size-3.5 text-amber-400 shrink-0" />
+                    <span>5-Yr Free PowerCare Included</span>
                   </div>
-                  <p className="mt-0.5 text-[9px] text-white/90 leading-tight font-medium">
-                    Scheduled visits every 45 days: Demineralized washing &amp; checks.
-                  </p>
-                  <div className="mt-1 pt-1 border-t border-white/15 flex items-center justify-between text-[8px] text-white/90 font-bold">
-                    <span className="flex items-center gap-0.5"><CheckCircle2 className="size-2 text-amber-400 shrink-0" /> 45 Days Visit</span>
-                    <span className="flex items-center gap-0.5"><CheckCircle2 className="size-2 text-amber-400 shrink-0" /> 48-Hour SLA</span>
-                  </div>
+                  <span className="text-[9px] font-extrabold uppercase bg-[#E04F16] text-white px-2 py-0.5 rounded-full shadow-2xs">
+                    45-Day Visits
+                  </span>
                 </div>
               </div>
             </div>
 
             {/* Right Column (7 Cols): 6 Dedicated PowerCare Protocol & Commitment Cards (Tight & Compact - Zero Gap) */}
-            <div className="w-full lg:w-7/12 grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="w-full lg:w-7/12 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
               
               {/* Point 1: Structural Check */}
               <div
                 data-tilt="true"
-                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#FFF8F0] p-2 sm:p-2.5 border border-orange-200/90 hover:border-[#E04F16] shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#FFF8F0] p-2.5 sm:p-3 border border-orange-200/90 hover:border-[#E04F16] shadow-2xs hover:shadow-md transition-all duration-300 flex items-center justify-between gap-2"
               >
-                <div className="flex items-center justify-between gap-1.5 mb-1">
-                  <div className="flex items-center gap-1.5">
-                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-orange-100/90 text-[#E04F16] border border-orange-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                      <Wrench className="size-3" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">1. Structural Check</h3>
-                      <span className="text-[8px] font-black uppercase text-amber-700 tracking-wider">Civil Integrity</span>
-                    </div>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="grid size-8 sm:size-8.5 place-items-center rounded-lg bg-orange-100/90 text-[#E04F16] border border-orange-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                    <Wrench className="size-4" />
                   </div>
-                  <span className="rounded-full bg-orange-50 border border-orange-200/80 px-1.5 py-0.5 text-[8px] font-extrabold text-[#E04F16]">
-                    Every 45 Days
-                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight truncate">1. Structural Check</h3>
+                    <span className="text-[9px] font-black uppercase text-amber-700 tracking-wider">Civil Integrity</span>
+                  </div>
                 </div>
-                <p className="text-[10px] text-slate-600 font-medium leading-tight">
-                  Rooftop structure stability, RCC anchor torque &amp; cyclone wind resistance audits.
-                </p>
-                <div className="mt-1.5 pt-1 border-t border-orange-100/90 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-[#E04F16] shrink-0" /> RCC Anchor Torque</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-[#E04F16] shrink-0" /> Rust &amp; Clamp Audit</span>
-                </div>
+                <span className="rounded-full bg-orange-50 border border-orange-200/80 px-2 py-0.5 text-[9px] font-extrabold text-[#E04F16] shrink-0 whitespace-nowrap">
+                  Every 45 Days
+                </span>
               </div>
 
               {/* Point 2: Electrical Check */}
               <div
                 data-tilt="true"
-                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F0F7FF] p-2 sm:p-2.5 border border-blue-200/80 hover:border-[#0756B9] shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F0F7FF] p-2.5 sm:p-3 border border-blue-200/80 hover:border-[#0756B9] shadow-2xs hover:shadow-md transition-all duration-300 flex items-center justify-between gap-2"
               >
-                <div className="flex items-center justify-between gap-1.5 mb-1">
-                  <div className="flex items-center gap-1.5">
-                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-blue-100/90 text-[#0756B9] border border-blue-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                      <PlugZap className="size-3" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">2. Electrical Check</h3>
-                      <span className="text-[8px] font-black uppercase text-[#0756B9] tracking-wider">Fire &amp; Yield Safety</span>
-                    </div>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="grid size-8 sm:size-8.5 place-items-center rounded-lg bg-blue-100/90 text-[#0756B9] border border-blue-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                    <PlugZap className="size-4" />
                   </div>
-                  <span className="rounded-full bg-blue-50 border border-blue-200 px-1.5 py-0.5 text-[8px] font-extrabold text-[#0756B9]">
-                    Every 45 Days
-                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight truncate">2. Electrical Check</h3>
+                    <span className="text-[9px] font-black uppercase text-[#0756B9] tracking-wider">Fire &amp; Yield Safety</span>
+                  </div>
                 </div>
-                <p className="text-[10px] text-slate-600 font-medium leading-tight">
-                  FLIR infrared scan, string Voc/Isc generation analysis &amp; earthing pit resistance.
-                </p>
-                <div className="mt-1.5 pt-1 border-t border-blue-100/90 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-[#0756B9] shrink-0" /> FLIR Thermal Scan</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-[#0756B9] shrink-0" /> Earthing &lt; 2Ω</span>
-                </div>
+                <span className="rounded-full bg-blue-50 border border-blue-200 px-2 py-0.5 text-[9px] font-extrabold text-[#0756B9] shrink-0 whitespace-nowrap">
+                  Every 45 Days
+                </span>
               </div>
 
               {/* Point 3: Mechanical Check */}
               <div
                 data-tilt="true"
-                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F8FAFC] p-2 sm:p-2.5 border border-slate-200/90 hover:border-slate-500 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F8FAFC] p-2.5 sm:p-3 border border-slate-200/90 hover:border-slate-500 shadow-2xs hover:shadow-md transition-all duration-300 flex items-center justify-between gap-2"
               >
-                <div className="flex items-center justify-between gap-1.5 mb-1">
-                  <div className="flex items-center gap-1.5">
-                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-slate-100/90 text-slate-700 border border-slate-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                      <Settings2 className="size-3" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">3. Mechanical Check</h3>
-                      <span className="text-[8px] font-black uppercase text-slate-600 tracking-wider">Hardware Longevity</span>
-                    </div>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="grid size-8 sm:size-8.5 place-items-center rounded-lg bg-slate-100/90 text-slate-700 border border-slate-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                    <Settings2 className="size-4" />
                   </div>
-                  <span className="rounded-full bg-slate-100 border border-slate-200 px-1.5 py-0.5 text-[8px] font-extrabold text-slate-700">
-                    Every 45 Days
-                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight truncate">3. Mechanical Check</h3>
+                    <span className="text-[9px] font-black uppercase text-slate-600 tracking-wider">Hardware Longevity</span>
+                  </div>
                 </div>
-                <p className="text-[10px] text-slate-600 font-medium leading-tight">
-                  UV conduit pipe inspection, inverter heat-sink dust blow-out &amp; fastenings check.
-                </p>
-                <div className="mt-1.5 pt-1 border-t border-slate-200 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-slate-600 shrink-0" /> UV Conduit Pipes</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-slate-600 shrink-0" /> Inverter Dust Blow-Out</span>
-                </div>
+                <span className="rounded-full bg-slate-100 border border-slate-200 px-2 py-0.5 text-[9px] font-extrabold text-slate-700 shrink-0 whitespace-nowrap">
+                  Every 45 Days
+                </span>
               </div>
 
               {/* Point 4: Panel Cleaning */}
               <div
                 data-tilt="true"
-                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F0FDF4] p-2 sm:p-2.5 border border-emerald-200/90 hover:border-emerald-600 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F0FDF4] p-2.5 sm:p-3 border border-emerald-200/90 hover:border-emerald-600 shadow-2xs hover:shadow-md transition-all duration-300 flex items-center justify-between gap-2"
               >
-                <div className="flex items-center justify-between gap-1.5 mb-1">
-                  <div className="flex items-center gap-1.5">
-                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-emerald-100/90 text-emerald-700 border border-emerald-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                      <Sparkles className="size-3" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">4. Panel Cleaning</h3>
-                      <span className="text-[8px] font-black uppercase text-emerald-700 tracking-wider">Yield Optimization</span>
-                    </div>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="grid size-8 sm:size-8.5 place-items-center rounded-lg bg-emerald-100/90 text-emerald-700 border border-emerald-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                    <Sparkles className="size-4" />
                   </div>
-                  <span className="rounded-full bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 text-[8px] font-extrabold text-emerald-700">
-                    Every 45 Days
-                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight truncate">4. Panel Cleaning</h3>
+                    <span className="text-[9px] font-black uppercase text-emerald-700 tracking-wider">Yield Optimization</span>
+                  </div>
                 </div>
-                <p className="text-[10px] text-slate-600 font-medium leading-tight">
-                  Low-TDS demineralized washing with soft micro-fiber brushes to restore max power.
-                </p>
-                <div className="mt-1.5 pt-1 border-t border-emerald-100/90 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-emerald-600 shrink-0" /> Demineralized Water</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-emerald-600 shrink-0" /> Zero Dust Soiling Loss</span>
-                </div>
+                <span className="rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[9px] font-extrabold text-emerald-700 shrink-0 whitespace-nowrap">
+                  Every 45 Days
+                </span>
               </div>
 
               {/* Point 5: Every 45 Days Visit */}
               <div
                 data-tilt="true"
-                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#FFFBEB] p-2 sm:p-2.5 border border-amber-300/90 hover:border-amber-500 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#FFFBEB] p-2.5 sm:p-3 border border-amber-300/90 hover:border-amber-500 shadow-2xs hover:shadow-md transition-all duration-300 flex items-center justify-between gap-2"
               >
-                <div className="flex items-center justify-between gap-1.5 mb-1">
-                  <div className="flex items-center gap-1.5">
-                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-amber-100/90 text-amber-700 border border-amber-300 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                      <Clock className="size-3" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">5. Every 45 Days Visit</h3>
-                      <span className="text-[8px] font-black uppercase text-amber-800 tracking-wider">Proactive Schedule</span>
-                    </div>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="grid size-8 sm:size-8.5 place-items-center rounded-lg bg-amber-100/90 text-amber-700 border border-amber-300 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                    <Clock className="size-4" />
                   </div>
-                  <span className="rounded-full bg-amber-100 border border-amber-300 px-1.5 py-0.5 text-[8px] font-extrabold text-amber-900">
-                    Guaranteed
-                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight truncate">5. Every 45 Days Visit</h3>
+                    <span className="text-[9px] font-black uppercase text-amber-800 tracking-wider">Proactive Schedule</span>
+                  </div>
                 </div>
-                <p className="text-[10px] text-slate-600 font-medium leading-tight">
-                  Fixed scheduled visits every 45 days at your doorstep — zero follow-up needed.
-                </p>
-                <div className="mt-1.5 pt-1 border-t border-amber-100 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-amber-600 shrink-0" /> Automated Schedule</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-amber-600 shrink-0" /> On-Site Logbook Sync</span>
-                </div>
+                <span className="rounded-full bg-amber-100 border border-amber-300 px-2 py-0.5 text-[9px] font-extrabold text-amber-900 shrink-0 whitespace-nowrap">
+                  Guaranteed
+                </span>
               </div>
 
-              {/* Point 6: 5 Years Comprehensive Solar Care */}
+              {/* Point 6: 5-Yr Comprehensive Care */}
               <div
                 data-tilt="true"
-                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#FEF2F2] p-2 sm:p-2.5 border border-rose-200/90 hover:border-rose-500 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#FEF2F2] p-2.5 sm:p-3 border border-rose-200/90 hover:border-rose-500 shadow-2xs hover:shadow-md transition-all duration-300 flex items-center justify-between gap-2"
               >
-                <div className="flex items-center justify-between gap-1.5 mb-1">
-                  <div className="flex items-center gap-1.5">
-                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-rose-100/90 text-rose-700 border border-rose-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                      <ShieldCheck className="size-3" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">6. 5-Yr Comprehensive Care</h3>
-                      <span className="text-[8px] font-black uppercase text-rose-700 tracking-wider">100% Free Included</span>
-                    </div>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="grid size-8 sm:size-8.5 place-items-center rounded-lg bg-rose-100/90 text-rose-700 border border-rose-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                    <ShieldCheck className="size-4" />
                   </div>
-                  <span className="rounded-full bg-rose-50 border border-rose-200 px-1.5 py-0.5 text-[8px] font-extrabold text-rose-700">
-                    Zero Fee
-                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight truncate">6. 5-Yr Comprehensive Care</h3>
+                    <span className="text-[9px] font-black uppercase text-rose-700 tracking-wider">100% Free Included</span>
+                  </div>
                 </div>
-                <p className="text-[10px] text-slate-600 font-medium leading-tight">
-                  All 5 years of labor, audits, visits &amp; cleaning covered 100% free with 48-hr SLA.
-                </p>
-                <div className="mt-1.5 pt-1 border-t border-rose-100/90 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-rose-600 shrink-0" /> 100% Free for 5 Years</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-rose-600 shrink-0" /> 48-Hour Rapid SLA</span>
-                </div>
+                <span className="rounded-full bg-rose-50 border border-rose-200 px-2 py-0.5 text-[9px] font-extrabold text-rose-700 shrink-0 whitespace-nowrap">
+                  Zero Fee
+                </span>
               </div>
 
             </div>
@@ -1401,11 +1321,11 @@ function Index() {
                 <ArrowRight className="size-3.5" />
               </Link>
               <a
-                href="tel:+917989641899"
+                href="tel:+916305825402"
                 className="inline-flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 px-4 py-2.5 text-xs sm:text-sm font-bold text-white transition-all active:scale-95"
               >
                 <Phone className="size-3.5 text-amber-300" />
-                <span>+91 79896 41899</span>
+                <span>+91 63058 25402</span>
               </a>
             </div>
           </div>
@@ -1413,7 +1333,162 @@ function Index() {
         </div>
       </section>
 
-      {/* 5B. ONE POINT OF CONTACT - Single Window Accountability */}
+      {/* 5B. POWER SURE - Performance Guarantee & Guaranteed Solar Savings Plan */}
+      <section id="power-back-promise" className="scroll-mt-24 sm:scroll-mt-28 py-6 sm:py-10 bg-gradient-to-b from-white via-slate-50/50 to-white border-b border-orange-200/90">
+        <div className="container-site">
+          <div className="relative overflow-hidden rounded-3xl sm:rounded-[32px] border border-orange-200/80 bg-gradient-to-br from-white via-orange-50/30 to-amber-50/40 p-6 sm:p-8 md:p-10 shadow-xl shadow-slate-900/5">
+            {/* Ambient Background Decorative Glows */}
+            <div className="pointer-events-none absolute -top-24 -left-24 size-72 rounded-full bg-gradient-to-br from-orange-400/15 via-amber-300/10 to-transparent blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -right-20 size-80 rounded-full bg-gradient-to-tl from-orange-400/25 via-amber-300/20 to-transparent blur-3xl" />
+
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-center">
+              {/* Left Column: Eyebrow, Title, Subtitle, Description, CTA */}
+              <div className="lg:col-span-4 flex flex-col justify-between">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600/10 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-emerald-700 border border-emerald-600/20 mb-2">
+                    <ShieldCheck className="size-3 text-emerald-600" />
+                    <span>Performance Guarantee • Financial Assurance</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#082B4C] tracking-tight leading-tight">
+                    Power Sure
+                  </h2>
+                  <p className="mt-1 text-xs sm:text-sm font-bold text-[#E04F16]">
+                    Solar Performance. Financial Assurance.
+                  </p>
+                  <p className="mt-2 text-xs sm:text-[12.5px] text-slate-600 leading-relaxed font-medium">
+                    At Amaravati Solar Solutions, we stand behind our commitment to reliable solar yield. With Power Sure, eligible customers receive <strong className="inline-block whitespace-nowrap text-emerald-700 font-extrabold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">₹7/Unit compensation</strong> when actual generation falls below agreed performance benchmarks, subject to applicable terms.
+                  </p>
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <Link
+                    to="/power-back-promise"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[#082B4C] hover:bg-[#E04F16] text-white px-4 sm:px-5 py-2 text-xs font-bold shadow-md hover:shadow-xl transition-all duration-300 active:scale-95 group"
+                  >
+                    <span>Know More about Power Sure</span>
+                    <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                  <Link
+                    to="/book-a-demo"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] text-white px-4 py-2 text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-95"
+                  >
+                    <span>Free Consultation</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Middle Column: 2x3 Grid with 6 Clean Points (NO TRUNCATE, NO CUTOFF) */}
+              <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
+                {/* 1. ₹7/Unit Compensation */}
+                <div className="rounded-xl bg-white/95 p-2.5 sm:p-3 border border-orange-200/90 shadow-2xs hover:border-[#E04F16] hover:shadow-md transition-all flex items-center gap-2.5">
+                  <div className="size-8 rounded-lg bg-emerald-100 text-emerald-700 grid place-items-center shrink-0 shadow-2xs">
+                    <Coins className="size-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight">₹7/Unit Money Back</h3>
+                    <span className="text-[9.5px] font-bold text-emerald-700 uppercase tracking-wide block">Shortfall Compensation</span>
+                  </div>
+                </div>
+
+                {/* 2. 5-Year Warranty */}
+                <div className="rounded-xl bg-white/95 p-2.5 sm:p-3 border border-orange-200/90 shadow-2xs hover:border-[#E04F16] hover:shadow-md transition-all flex items-center gap-2.5">
+                  <div className="size-8 rounded-lg bg-orange-100 text-[#E04F16] grid place-items-center shrink-0 shadow-2xs">
+                    <ShieldCheck className="size-4 text-[#E04F16]" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight">5-Year Warranty</h3>
+                    <span className="text-[9.5px] font-bold text-[#E04F16] uppercase tracking-wide block">100% Free PowerCare</span>
+                  </div>
+                </div>
+
+                {/* 3. 25-Year Performance */}
+                <div className="rounded-xl bg-white/95 p-2.5 sm:p-3 border border-orange-200/90 shadow-2xs hover:border-amber-500 hover:shadow-md transition-all flex items-center gap-2.5">
+                  <div className="size-8 rounded-lg bg-amber-100 text-amber-800 grid place-items-center shrink-0 shadow-2xs">
+                    <Award className="size-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight">25-Year Performance</h3>
+                    <span className="text-[9.5px] font-bold text-amber-800 uppercase tracking-wide block">Linear Output Guarantee</span>
+                  </div>
+                </div>
+
+                {/* 4. Transparent Audits */}
+                <div className="rounded-xl bg-white/95 p-2.5 sm:p-3 border border-orange-200/90 shadow-2xs hover:border-blue-500 hover:shadow-md transition-all flex items-center gap-2.5">
+                  <div className="size-8 rounded-lg bg-blue-100 text-blue-700 grid place-items-center shrink-0 shadow-2xs">
+                    <Target className="size-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight">Transparent Audits</h3>
+                    <span className="text-[9.5px] font-bold text-blue-700 uppercase tracking-wide block">PVsyst Solar Target</span>
+                  </div>
+                </div>
+
+                {/* 5. Tier-1 ALMM Specs */}
+                <div className="rounded-xl bg-white/95 p-2.5 sm:p-3 border border-orange-200/90 shadow-2xs hover:border-[#082B4C] hover:shadow-md transition-all flex items-center gap-2.5">
+                  <div className="size-8 rounded-lg bg-sky-100 text-[#082B4C] grid place-items-center shrink-0 shadow-2xs">
+                    <BadgeCheck className="size-4 text-[#082B4C]" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight">Tier-1 ALMM Specs</h3>
+                    <span className="text-[9.5px] font-bold text-sky-800 uppercase tracking-wide block">BIS Certified Modules</span>
+                  </div>
+                </div>
+
+                {/* 6. 48-Hour Service SLA */}
+                <div className="rounded-xl bg-white/95 p-2.5 sm:p-3 border border-orange-200/90 shadow-2xs hover:border-rose-500 hover:shadow-md transition-all flex items-center gap-2.5">
+                  <div className="size-8 rounded-lg bg-rose-100 text-rose-700 grid place-items-center shrink-0 shadow-2xs">
+                    <Clock className="size-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-xs sm:text-[13px] font-black text-[#082B4C] leading-tight">48-Hour Service SLA</h3>
+                    <span className="text-[9.5px] font-bold text-rose-700 uppercase tracking-wide block">Rapid On-Site Support</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: 3D Luxury Orange Assurance Shield Emblem */}
+              <div className="lg:col-span-3 flex justify-center lg:justify-end">
+                <div className="relative group">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#E04F16]/30 via-amber-400/25 to-[#F97316]/35 blur-2xl group-hover:from-[#E04F16]/45 group-hover:to-amber-400/40 transition-all duration-500" />
+                  <img
+                    src={powerSureAssuranceShield}
+                    alt="Power Sure 100% Performance Assurance & Guarantee Emblem"
+                    className="relative z-10 w-44 h-44 sm:w-52 sm:h-52 lg:w-56 lg:h-56 object-contain drop-shadow-[0_16px_36px_rgba(224,79,22,0.35)] hover:scale-105 transition-all duration-500 select-none rounded-2xl"
+                    style={{
+                      WebkitMaskImage: "radial-gradient(circle at center, black 65%, transparent 95%)",
+                      maskImage: "radial-gradient(circle at center, black 65%, transparent 95%)",
+                    }}
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Trust Strip */}
+            <div className="mt-6 pt-4 border-t border-slate-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs text-slate-600">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-bold text-slate-700">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-3.5 text-emerald-600" />
+                  <span>Andhra Pradesh &amp; Telangana Guaranteed</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-3.5 text-emerald-600" />
+                  <span>Tier-1 Tested Components</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-3.5 text-emerald-600" />
+                  <span>48-Hour Service Response SLA</span>
+                </span>
+              </div>
+              <span className="text-[11px] font-extrabold text-[#082B4C]">
+                More Confidence. More Value. Smarter Solar.
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5C. ONE POINT OF CONTACT - Single Window Accountability */}
       <section id="one-point-contact" className="scroll-mt-24 sm:scroll-mt-28 py-10 sm:py-14 bg-gradient-to-b from-white via-orange-50/15 to-white border-b border-orange-200/90">
         <div className="container-site">
           {/* Section Header: Aligned with Site Style */}
@@ -1580,165 +1655,12 @@ function Index() {
                 <ArrowRight className="size-3.5" />
               </Link>
               <a
-                href="tel:+917989641899"
+                href="tel:+916305825402"
                 className="inline-flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 px-4 py-2.5 text-xs sm:text-sm font-bold text-white transition-all active:scale-95"
               >
                 <Phone className="size-3.5 text-amber-300" />
-                <span>Call +91 79896 41899</span>
+                <span>Call +91 63058 25402</span>
               </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5C. POWER SURE - Performance Guarantee & Guaranteed Solar Savings Plan */}
-      <section id="power-back-promise" className="scroll-mt-24 sm:scroll-mt-28 py-6 sm:py-10 bg-gradient-to-b from-white via-slate-50/50 to-white border-b border-orange-200/90">
-        <div className="container-site">
-          <div className="relative overflow-hidden rounded-3xl sm:rounded-[32px] border border-orange-200/80 bg-gradient-to-br from-white via-orange-50/25 to-sky-50/40 p-6 sm:p-8 md:p-10 shadow-xl shadow-slate-900/5">
-            {/* Ambient Background Decorative Glows */}
-            <div className="pointer-events-none absolute -top-24 -left-24 size-72 rounded-full bg-gradient-to-br from-orange-400/15 via-amber-300/10 to-transparent blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-24 -right-20 size-80 rounded-full bg-gradient-to-tl from-cyan-400/20 via-sky-400/15 to-transparent blur-3xl" />
-
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-              {/* Left Column: Eyebrow, Title, Subtitle, Description, CTA */}
-              <div className="lg:col-span-5 flex flex-col justify-between">
-                <div>
-                  <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600/10 px-2.5 py-0.5 text-[10.5px] font-black uppercase tracking-wider text-emerald-700 border border-emerald-600/20 mb-2">
-                    <ShieldCheck className="size-3 text-emerald-600" />
-                    <span>Performance Guarantee • Financial Assurance</span>
-                  </div>
-                  <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-[#082B4C] tracking-tight leading-tight">
-                    Power Sure
-                  </h2>
-                  <p className="mt-1 text-xs sm:text-sm font-bold text-[#E04F16]">
-                    Solar Performance. Financial Assurance.
-                  </p>
-                  <p className="mt-2.5 text-xs sm:text-[13px] text-slate-600 leading-relaxed font-medium">
-                    At Amaravati Solar Solutions, we stand behind our commitment to reliable solar yield. With Power Sure, eligible customers receive <strong className="text-emerald-700 font-extrabold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">₹7 /Unit compensation</strong> when actual generation falls below agreed performance benchmarks, subject to applicable terms.
-                  </p>
-                </div>
-
-                <div className="mt-5 flex flex-wrap items-center gap-2.5">
-                  <Link
-                    to="/power-back-promise"
-                    className="inline-flex items-center gap-2 rounded-full bg-[#082B4C] hover:bg-[#E04F16] text-white px-5 sm:px-6 py-2.5 text-xs sm:text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 active:scale-95 group"
-                  >
-                    <span>Know More about Power Sure</span>
-                    <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                  <Link
-                    to="/book-a-demo"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-white hover:bg-orange-50/80 border border-orange-200/90 px-4 py-2.5 text-xs font-bold text-[#082B4C] hover:text-[#E04F16] shadow-2xs transition-all active:scale-95"
-                  >
-                    <span>Free Consultation</span>
-                  </Link>
-                </div>
-              </div>
-
-              {/* Middle Column: 2x2 Feature Grid with Rich Content */}
-              <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* 1. ₹7/Unit Compensation */}
-                <div className="rounded-xl bg-white/90 p-3 border border-orange-200/80 shadow-2xs hover:border-[#E04F16] transition-all">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <div className="size-7 rounded-lg bg-emerald-100 text-emerald-700 grid place-items-center shrink-0">
-                      <Coins className="size-3.5" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">₹7/Unit Money Back</h3>
-                      <span className="text-[8.5px] font-bold text-emerald-700 uppercase tracking-wide">Generation Shortfall Backup</span>
-                    </div>
-                  </div>
-                  <p className="text-[10.5px] text-slate-600 leading-snug font-medium">
-                    Direct financial assurance if solar yield falls below committed benchmarks, protecting your monthly ROI.
-                  </p>
-                </div>
-
-                {/* 2. ₹0 Repair and Replacement Cost */}
-                <div className="rounded-xl bg-white/90 p-3 border border-orange-200/80 shadow-2xs hover:border-[#087FC1] transition-all">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <div className="size-7 rounded-lg bg-sky-100 text-sky-700 grid place-items-center shrink-0">
-                      <ShieldCheck className="size-3.5" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">₹0 Repair &amp; Replace</h3>
-                      <span className="text-[8.5px] font-bold text-sky-700 uppercase tracking-wide">100% Free Coverage</span>
-                    </div>
-                  </div>
-                  <p className="text-[10.5px] text-slate-600 leading-snug font-medium">
-                    Zero repair, audit &amp; component replacement expenses during your coverage period with 48-hr SLA.
-                  </p>
-                </div>
-
-                {/* 3. Transparent Benchmarks & Proactive Visits */}
-                <div className="rounded-xl bg-white/90 p-3 border border-orange-200/80 shadow-2xs hover:border-amber-500 transition-all">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <div className="size-7 rounded-lg bg-amber-100 text-amber-700 grid place-items-center shrink-0">
-                      <Target className="size-3.5" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">Transparent Audits</h3>
-                      <span className="text-[8.5px] font-bold text-amber-800 uppercase tracking-wide">Every 45 Days Visits</span>
-                    </div>
-                  </div>
-                  <p className="text-[10.5px] text-slate-600 leading-snug font-medium">
-                    Scheduled on-site inspections, FLIR infrared scans, and certified energy audits to ensure peak generation.
-                  </p>
-                </div>
-
-                {/* 4. Real-time Telemetry App & Smarter Solar Value */}
-                <div className="rounded-xl bg-white/90 p-3 border border-orange-200/80 shadow-2xs hover:border-[#082B4C] transition-all">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <div className="size-7 rounded-lg bg-indigo-100 text-indigo-700 grid place-items-center shrink-0">
-                      <Laptop className="size-3.5" />
-                    </div>
-                    <div>
-                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">Live App Tracking</h3>
-                      <span className="text-[8.5px] font-bold text-indigo-700 uppercase tracking-wide">Continuous IoT Sync</span>
-                    </div>
-                  </div>
-                  <p className="text-[10.5px] text-slate-600 leading-snug font-medium">
-                    Track real-time power generation, export units, inverter health, and monthly savings from your smartphone.
-                  </p>
-                </div>
-              </div>
-
-              {/* Right Column: 3D Glowing Shield */}
-              <div className="lg:col-span-3 flex justify-center lg:justify-end">
-                <div className="relative group">
-                  <div className="absolute inset-0 rounded-full bg-cyan-400/25 blur-2xl group-hover:bg-cyan-400/35 transition-all duration-500" />
-                  <img
-                    src={powerSureShield}
-                    alt="Power Sure 3D Performance Guarantee Shield"
-                    className="relative z-10 w-44 h-44 sm:w-52 sm:h-52 lg:w-56 lg:h-56 object-contain drop-shadow-2xl hover:scale-105 transition-all duration-500 select-none rounded-2xl"
-                    style={{
-                      WebkitMaskImage: "radial-gradient(circle at center, black 68%, transparent 98%)",
-                      maskImage: "radial-gradient(circle at center, black 68%, transparent 98%)",
-                    }}
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom Trust Strip */}
-            <div className="mt-6 pt-4 border-t border-slate-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs text-slate-600">
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-bold text-slate-700">
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="size-3.5 text-emerald-600" />
-                  <span>Andhra Pradesh &amp; Telangana Guaranteed</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="size-3.5 text-emerald-600" />
-                  <span>Tier-1 Tested Components</span>
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="size-3.5 text-emerald-600" />
-                  <span>48-Hour Service Response SLA</span>
-                </span>
-              </div>
-              <span className="text-[11px] font-extrabold text-[#082B4C]">
-                More Confidence. More Value. Smarter Solar.
-              </span>
             </div>
           </div>
         </div>

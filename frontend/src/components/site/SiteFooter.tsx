@@ -366,9 +366,6 @@ export function SiteFooter() {
                 <span className="text-slate-300 text-xs block">
                   Mon – Sat: 10:00 AM – 7:00 PM
                 </span>
-                <span className="text-white/80 text-[11px] font-semibold block">
-                  Sunday: Holiday (Emergency Support Active)
-                </span>
               </div>
             </div>
 

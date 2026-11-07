@@ -231,7 +231,8 @@ export function SolarCalculator({ className, hideHeader = false, onApplyPlan }: 
           : "Hi Amaravati Solar Solutions, I applied for this solar plan on your website. Please connect with me for site survey and subsidy filing!",
       ].filter(Boolean);
 
-      const waUrl = `https://wa.me/917989641899?text=${encodeURIComponent(waLines.join("\n"))}`;
+      const cleanWa = (COMPANY.whatsapp || "+91 63058 25402").replace(/[^0-9]/g, "");
+      const waUrl = `https://wa.me/${cleanWa}?text=${encodeURIComponent(waLines.join("\n"))}`;
 
       setSubmittedWaUrl(waUrl);
       setSubmittedRef(refCode);

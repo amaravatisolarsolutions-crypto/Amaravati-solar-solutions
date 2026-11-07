@@ -30,12 +30,12 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Contact Amaravati Solar Solutions for rooftop solar installation, free site survey, and subsidy assistance in Amaravati, Vijayawada, and Guntur. Call +91 79896 41899 or email amaravatisolarsolutions@gmail.com.",
+          "Contact Amaravati Solar Solutions for rooftop solar installation, free site survey, and subsidy assistance in Amaravati, Vijayawada, and Guntur. Call +91 63058 25402 or email sales@amaravatisolarsolutions.com, info@amaravatisolarsolutions.com.",
       },
       {
         name: "keywords",
         content:
-          "contact amaravati solar solutions, solar company contact number vijayawada, solar phone number guntur, rooftop solar consultation ap, amaravatisolarsolutions gmail com",
+          "contact amaravati solar solutions, solar company contact number vijayawada, solar phone number guntur, rooftop solar consultation ap, amaravatisolarsolutions",
       },
       { property: "og:title", content: "Contact Us & Solar Consultation — Amaravati Solar Solutions" },
       {
@@ -50,7 +50,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "twitter:description",
         content:
-          "Connect with rooftop solar experts in Andhra Pradesh. Phone: +91 79896 41899.",
+          "Connect with rooftop solar experts in Andhra Pradesh. Phone: +91 63058 25402.",
       },
     ],
     links: [
@@ -63,7 +63,7 @@ export const Route = createFileRoute("/contact")({
 const CONTACT_FAQS = [
   {
     q: "How quickly will an engineer respond after I submit an enquiry?",
-    a: "Our Vijayawada technical desk reviews incoming requests within 2 to 4 business hours. If you need immediate assistance, call us directly at +91 79896 41899 or WhatsApp us.",
+    a: "Our Vijayawada technical desk reviews incoming requests within 2 to 4 business hours. If you need immediate assistance, call us directly at +91 63058 25402 or WhatsApp us.",
   },
   {
     q: "Is the rooftop site survey and feasibility report really free?",
@@ -162,7 +162,7 @@ function ContactPage() {
                 Direct Engineering Helpline
               </span>
               <h2 className="text-lg font-black text-[#082B4C] mt-0.5 group-hover:text-[#B83A16] transition-colors">
-                +91 79896 41899
+                {COMPANY.phone}
               </h2>
               <p className="mt-1.5 text-xs text-slate-600 leading-relaxed">
                 Speak directly with an experienced rooftop solar engineer for fast technical advice and quotes.
@@ -173,7 +173,7 @@ function ContactPage() {
                 href={`tel:${cleanPhone}`}
                 className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 text-xs font-bold text-white bg-[#B83A16] hover:bg-[#A33112] transition-colors shadow-xs"
               >
-                <Phone className="size-3.5" /> Call Now: +91 79896 41899
+                <Phone className="size-3.5" /> Call Now: {COMPANY.phone}
               </a>
             </div>
           </div>
@@ -228,10 +228,10 @@ function ContactPage() {
                 Headquarters &amp; Hub
               </span>
               <h2 className="text-lg font-black text-[#082B4C] mt-0.5">
-                Electricity Colony, 9th Line
+                Electricity Colony, 9th Line, opp Auto Nagar gate
               </h2>
               <p className="mt-1.5 text-xs text-slate-600 leading-relaxed">
-                Walk in for an in-person demonstration of Tier-1 solar panels, inverters, and mounting structures.
+                Patamata, Vijayawada – 520010. Walk in for an in-person demonstration of Tier-1 solar panels, inverters, and mounting structures.
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-orange-100/80">
@@ -323,13 +323,36 @@ function ContactPage() {
                     <Mail className="size-4 text-amber-300" />
                   </div>
                   <div>
-                    <span className="font-extrabold text-[#082B4C] block">Email Support</span>
-                    <a
-                      href={`mailto:${COMPANY.email}`}
-                      className="text-slate-600 hover:text-[#B83A16] transition-colors mt-0.5 block break-all font-medium"
-                    >
-                      {COMPANY.email}
-                    </a>
+                    <span className="font-extrabold text-[#082B4C] block">Email Addresses</span>
+                    <div className="space-y-1 mt-1 text-xs">
+                      <div>
+                        <span className="text-slate-400 font-semibold block text-[10px] uppercase">Sales &amp; Quotations:</span>
+                        <a
+                          href="mailto:sales@amaravatisolarsolutions.com"
+                          className="text-[#B83A16] hover:underline font-semibold"
+                        >
+                          sales@amaravatisolarsolutions.com
+                        </a>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 font-semibold block text-[10px] uppercase">General Info:</span>
+                        <a
+                          href="mailto:info@amaravatisolarsolutions.com"
+                          className="text-slate-700 hover:text-[#B83A16] font-medium"
+                        >
+                          info@amaravatisolarsolutions.com
+                        </a>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 font-semibold block text-[10px] uppercase">Technical Support:</span>
+                        <a
+                          href="mailto:support@amaravatisolarsolutions.com"
+                          className="text-slate-700 hover:text-[#B83A16] font-medium"
+                        >
+                          support@amaravatisolarsolutions.com
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </li>
 
@@ -340,8 +363,7 @@ function ContactPage() {
                   <div>
                     <span className="font-extrabold text-[#082B4C] block">Operating Hours</span>
                     <p className="text-slate-600 mt-0.5 leading-relaxed font-medium">
-                      {COMPANY.operationalHours.weekdays}<br />
-                      <span className="text-amber-700 font-bold">{COMPANY.operationalHours.sunday}</span>
+                      {COMPANY.operationalHours.weekdays}
                     </p>
                   </div>
                 </li>
