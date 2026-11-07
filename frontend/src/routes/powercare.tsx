@@ -29,18 +29,35 @@ import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
 export const Route = createFileRoute("/powercare")({
   head: () => ({
     meta: [
-      { title: "PowerCare 5-Yr Comprehensive Solar Care — Amaravati Solar Solutions" },
+      { title: "PowerCare 5-Yr Comprehensive Solar Maintenance & Cleaning | Amaravati Solar" },
       {
         name: "description",
         content:
-          "PowerCare provides 5 years of certified structural, electrical, and mechanical solar maintenance. Thermal imaging, string testing, chemical earthing audits, and 48-hour resolution SLA.",
+          "PowerCare provides 5 years of certified structural, electrical, and mechanical solar maintenance in Andhra Pradesh. Thermal imaging, string testing, chemical earthing audits, and 48-hour resolution SLA.",
+      },
+      {
+        name: "keywords",
+        content:
+          "solar panel maintenance andhra pradesh, solar cleaning services vijayawada, solar amc contract amaravati, solar inverter servicing guntur, solar power plant maintenance",
       },
       { property: "og:title", content: "PowerCare 5-Yr Comprehensive Solar Care — Amaravati Solar Solutions" },
       {
         property: "og:description",
         content:
-          "Peak generation assurance, scheduled on-site audits, and 48-hour issue resolution across Andhra Pradesh and Telangana.",
+          "Peak generation assurance, scheduled on-site audits, periodic panel cleaning, and 48-hour issue resolution across Andhra Pradesh.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/powercare" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "PowerCare 5-Yr Solar Care & Maintenance" },
+      {
+        name: "twitter:description",
+        content:
+          "Protect your rooftop solar investment with Amaravati Solar Solutions' 5-year maintenance plan.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/powercare" },
     ],
   }),
   component: PowerCarePage,
@@ -272,25 +289,25 @@ function PowerCarePage() {
 
       {/* 3. ENGINEER SPOTLIGHT BANNER */}
       <section className="container-site pt-12">
-        <div className="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-lg grid grid-cols-1 lg:grid-cols-12 items-center">
-          <div className="lg:col-span-5 relative aspect-[16/11] lg:h-full bg-slate-900 group">
+        <div className="rounded-3xl border border-orange-200/90 bg-white overflow-hidden shadow-lg flex flex-col lg:flex-row items-stretch">
+          <div className="w-full lg:w-5/12 relative min-h-[300px] sm:min-h-[360px] lg:min-h-[440px] bg-slate-900 group shrink-0 overflow-hidden">
             <img
               src={step2Inspection}
               alt="Certified solar engineer performing PowerCare rooftop inspection"
               width={800}
               height={550}
               loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#082B4C]/80 via-transparent to-black/20" />
-            <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-navy/90 border border-white/20 text-white backdrop-blur">
+            <div className="absolute inset-0 bg-gradient-to-t from-[#082B4C]/85 via-[#082B4C]/25 to-transparent pointer-events-none" />
+            <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-[#082B4C]/95 border border-white/20 text-white backdrop-blur z-10 shadow-lg">
               <span className="text-[10px] font-black uppercase text-amber-300">Certified Solar Field Engineers</span>
-              <p className="text-xs font-bold leading-tight mt-0.5">Equipped with calibrated FLIR thermal sensors & earth testers.</p>
+              <p className="text-xs font-bold leading-tight mt-0.5">Equipped with calibrated FLIR thermal sensors &amp; earth testers.</p>
             </div>
           </div>
 
-          <div className="lg:col-span-7 p-6 sm:p-10 space-y-4 text-left">
-            <span className="inline-block text-[11px] font-black uppercase tracking-wider text-[#E04F16] bg-[#E04F16]/10 px-3 py-1 rounded-full">
+          <div className="w-full lg:w-7/12 p-6 sm:p-8 lg:p-10 space-y-4 text-left flex flex-col justify-center">
+            <span className="inline-block text-[11px] font-black uppercase tracking-wider text-[#E04F16] bg-[#E04F16]/10 px-3 py-1 rounded-full w-fit">
               WHY POWERCARE MATTERS
             </span>
             <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#082B4C] tracking-tight leading-tight">
@@ -304,7 +321,7 @@ function PowerCarePage() {
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-3">
-              <Button asChild size="default" className="rounded-full bg-[#E04F16] hover:bg-[#C93F0C] text-white font-bold text-xs shadow-md">
+              <Button asChild size="default" className="rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] text-white font-bold text-xs shadow-md">
                 <Link to="/book-a-demo">Schedule Free Solar Health Check</Link>
               </Button>
               <a

@@ -149,48 +149,36 @@ export function SiteFooter() {
               <Link
                 to="/services/on-grid-solar-systems"
                 onClick={scrollToTop}
-                className="hover:text-[#E04F16] transition-colors flex items-center justify-between group cursor-pointer"
+                className="hover:text-[#E04F16] transition-colors block"
               >
-                <span>On-Grid Rooftop Solar</span>
-                <span className="text-[10px] text-emerald-400 font-bold bg-emerald-950/80 border border-emerald-500/30 px-1.5 py-0.5 rounded group-hover:border-emerald-400">
-                  Net-Meter
-                </span>
+                On-Grid Rooftop Solar
               </Link>
             </li>
             <li>
               <Link
                 to="/services/off-grid-solar-systems"
                 onClick={scrollToTop}
-                className="hover:text-[#E04F16] transition-colors flex items-center justify-between group cursor-pointer"
+                className="hover:text-[#E04F16] transition-colors block"
               >
-                <span>Off-Grid Solar Systems</span>
-                <span className="text-[10px] text-[#FF7A45] font-bold bg-orange-950/80 border border-orange-500/30 px-1.5 py-0.5 rounded group-hover:border-[#E04F16]">
-                  Battery
-                </span>
+                Off-Grid Solar Systems
               </Link>
             </li>
             <li>
               <Link
                 to="/services/hybrid-solar-systems"
                 onClick={scrollToTop}
-                className="hover:text-[#E04F16] transition-colors flex items-center justify-between group cursor-pointer"
+                className="hover:text-[#E04F16] transition-colors block"
               >
-                <span>Hybrid Solar Solutions</span>
-                <span className="text-[10px] text-sky-400 font-bold bg-sky-950/80 border border-sky-500/30 px-1.5 py-0.5 rounded group-hover:border-sky-400">
-                  24/7 Power
-                </span>
+                Hybrid Solar Solutions
               </Link>
             </li>
             <li>
               <Link
                 to="/solar-solutions"
                 onClick={scrollToTop}
-                className="hover:text-[#E04F16] transition-colors flex items-center justify-between group cursor-pointer text-[#FF7A45] font-semibold"
+                className="hover:text-[#E04F16] transition-colors block text-white font-semibold"
               >
-                <span>All Solar Solutions Overview</span>
-                <span className="text-[10px] text-[#FF7A45] font-bold bg-orange-950/80 border border-orange-500/30 px-1.5 py-0.5 rounded">
-                  Explore
-                </span>
+                All Solar Solutions Overview
               </Link>
             </li>
             <li>
@@ -231,10 +219,10 @@ export function SiteFooter() {
                   window.dispatchEvent(new CustomEvent("reset-services-view"));
                   scrollToTop();
                 }}
-                className="font-bold text-[#E04F16] hover:text-orange-400 transition-colors flex items-center gap-1.5"
+                className="font-bold text-white hover:text-[#E04F16] transition-colors flex items-center gap-1.5"
               >
                 <span>Explore All 15 Services</span>
-                <ArrowRight className="size-3.5" />
+                <ArrowRight className="size-3.5 text-[#E04F16]" />
               </Link>
             </li>
           </ul>
@@ -263,16 +251,16 @@ export function SiteFooter() {
                 onClick={scrollToTop}
                 className="hover:text-[#E04F16] transition-colors cursor-pointer block"
               >
-                Our 4-Step Process
+                Our 7-Step Process
               </Link>
             </li>
             <li>
               <Link
                 to="/powercare"
                 onClick={scrollToTop}
-                className="hover:text-[#E04F16] transition-colors flex items-center gap-1.5 cursor-pointer text-[#FF7A45] font-bold"
+                className="hover:text-[#E04F16] transition-colors flex items-center gap-1.5 cursor-pointer text-white font-bold"
               >
-                <ShieldCheck className="size-3.5 text-[#E04F16]" />
+                <ShieldCheck className="size-3.5 text-amber-400" />
                 <span>PowerCare (5-Yr Care)</span>
               </Link>
             </li>
@@ -291,7 +279,7 @@ export function SiteFooter() {
                 onClick={scrollToTop}
                 className="hover:text-[#E04F16] transition-colors cursor-pointer block"
               >
-                Power Back Promise
+                Power Sure
               </Link>
             </li>
             <li>
@@ -378,7 +366,7 @@ export function SiteFooter() {
                 <span className="text-slate-300 text-xs block">
                   Mon – Sat: 10:00 AM – 7:00 PM
                 </span>
-                <span className="text-[#FF7A45] text-[11px] font-semibold block">
+                <span className="text-white/80 text-[11px] font-semibold block">
                   Sunday: Holiday (Emergency Support Active)
                 </span>
               </div>
@@ -389,10 +377,10 @@ export function SiteFooter() {
               <Link
                 to="/contact"
                 onClick={scrollToTop}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E04F16] hover:text-orange-400 transition-colors group"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-[#E04F16] transition-colors group"
               >
                 <span>Send Enquiry or Visit Us</span>
-                <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="size-3.5 text-[#E04F16] group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>

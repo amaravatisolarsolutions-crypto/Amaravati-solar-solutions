@@ -1,16 +1,20 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowRight,
+  Award,
   BadgeCheck,
   Battery,
+  Calculator,
   CheckCircle2,
   ChevronRight,
   ClipboardCheck,
   ClipboardList,
   Clock,
+  Coins,
   Eye,
   FileCheck2,
   FileText,
+  HandCoins,
   HardHat,
   Headphones,
   Laptop,
@@ -22,6 +26,7 @@ import {
   Sparkles,
   Sun,
   Target,
+  TrendingUp,
   Users,
   Wrench,
   X,
@@ -38,10 +43,14 @@ import step3Design from "@/assets/process-step-3-design.jpg";
 import step4Installation from "@/assets/process-step-4-installation.jpg";
 import stepSubsidyLoan from "@/assets/process-step-subsidy-loan.jpg";
 import projectResidentialInverter10kw from "@/assets/project-residential-inverter-10kw.jpg";
+import powercarePanelCleaning from "@/assets/powercare-panel-cleaning.jpg";
+import powerSureShield from "@/assets/power-sure-shield.jpg";
+import solarPanelsArray from "@/assets/solar-panels-array.jpg";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeroSection } from "@/components/site/HeroSection";
 import { SectionHeading } from "@/components/site/Sections";
+import { SolarCalculator } from "@/components/site/SolarCalculator";
 import { setupRooftopScrollAnimation } from "@/lib/scroll-animation";
 import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
 import { PROJECTS, type ProjectCategory } from "@/lib/site-data";
@@ -51,18 +60,35 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Amaravati Solar Solutions — Rooftop Solar for Homes & Business" },
+      { title: "Amaravati Solar Solutions — Rooftop Solar for Homes & Business | Andhra Pradesh" },
       {
         name: "description",
         content:
-          "On-grid, off-grid and hybrid solar systems for homes, businesses and industries. Book a free solar consultation.",
+          "Amaravati Solar Solutions is the #1 trusted rooftop solar installer in Amaravati, Vijayawada, Guntur & AP. On-grid, off-grid & hybrid solar systems with ₹78,000 PM Surya Ghar subsidy support, 5-year PowerCare, and free site survey. Call +91 79896 41899.",
       },
-      { property: "og:title", content: "Amaravati Solar Solutions — Clean Energy. Brighter Tomorrow." },
+      {
+        name: "keywords",
+        content:
+          "Amaravati Solar Solutions, solar solutions amaravati, solar panels vijayawada, rooftop solar guntur, best solar company andhra pradesh, pm surya ghar subsidy ap, residential rooftop solar, commercial solar systems, solar inverter price, solar net metering andhra pradesh",
+      },
+      { property: "og:title", content: "Amaravati Solar Solutions — #1 Rooftop Solar Company in Andhra Pradesh" },
       {
         property: "og:description",
         content:
-          "Smart, reliable and sustainable solar energy solutions for homes, businesses and industries.",
+          "Smart, reliable and sustainable solar energy solutions for homes, businesses and industries across Amaravati, Vijayawada, and Guntur.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:title", content: "Amaravati Solar Solutions — Rooftop Solar for Homes & Business" },
+      {
+        name: "twitter:description",
+        content:
+          "Leading solar rooftop company in Andhra Pradesh. High-efficiency solar panels, PM Surya Ghar subsidy, and 25-year warranty.",
+      },
+      { name: "twitter:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/" },
     ],
   }),
   component: Index,
@@ -77,16 +103,16 @@ const WHY = [
   { icon: Wrench, title: "Maintenance & Service", text: "Cleaning, checks and technical help when you need it." },
 ];
 
-const FOUR_STEP_PROCESS = [
+const SEVEN_STEP_PROCESS = [
   {
     step: "01",
     phaseBadge: "PHASE 01 • CONSULTATION",
     stepperLabel: "Consultation",
     duration: "Day 1 • 1 Business Day",
-    title: "Energy Audit & Sizing",
-    icon: Users,
+    title: "Consultation & Energy Audit",
+    icon: Headphones,
     image: step1Consultation,
-    desc: "Personalized analysis of your past 12-month power bills, daytime appliances & roof space to recommend the ideal solar architecture.",
+    desc: "Personalized solar energy assessment analyzing your past 12-month power bills, daytime appliances & roof space to recommend the optimal solar capacity.",
     photoPill: "Free 1-on-1 Advisory",
     deliverables: [
       "12-Month DISCOM Bill & Peak Load Profile",
@@ -107,7 +133,7 @@ const FOUR_STEP_PROCESS = [
       ctaBtn: "text-amber-700 bg-amber-50 hover:bg-amber-500 hover:text-white border-amber-200 hover:border-amber-500",
       stepperActive: "bg-amber-50 text-amber-800 border-amber-300",
       stepperNum: "bg-amber-500 text-white",
-      tagText: "Zero Obligation",
+      tagText: "Zero Obligation Advisory",
     },
   },
   {
@@ -115,14 +141,14 @@ const FOUR_STEP_PROCESS = [
     phaseBadge: "PHASE 02 • SITE SURVEY",
     stepperLabel: "3D Roof Survey",
     duration: "Days 2–3 • On-Site",
-    title: "Site Inspection & 3D Modeling",
-    icon: HardHat,
+    title: "Site Check & 3D Modeling",
+    icon: ClipboardCheck,
     image: step2Inspection,
-    desc: "Certified engineers visit your rooftop across AP & Telangana to map azimuth tilt, civil load-bearing capacity & 365-day shadow paths.",
+    desc: "Certified engineers visit your rooftop across AP & Telangana to map azimuth tilt, civil load-bearing capacity & 365-day drone shadow paths.",
     photoPill: "3D LiDAR & Drone Scan",
     deliverables: [
       "365-Day Seasonal Solar Shadow Heatmap",
-      "RCC Slab / Shed Structural Load Certificate",
+      "RCC Slab / Shed Structural Load Audit",
       "DISCOM Transformer Feasibility Sanction",
     ],
     ctaText: "Schedule Site Survey",
@@ -145,64 +171,160 @@ const FOUR_STEP_PROCESS = [
   {
     step: "03",
     phaseBadge: "PHASE 03 • ENGINEERING",
-    stepperLabel: "CAD & Subsidy",
-    duration: "Days 4–7 • Digital Sync",
-    title: "Custom CAD Design & Subsidy",
-    icon: Laptop,
+    stepperLabel: "CAD Blueprint",
+    duration: "Days 4–5 • Digital Sync",
+    title: "Custom 3D CAD Design & SLD",
+    icon: SlidersHorizontal,
     image: step3Design,
-    desc: "Precision engineering team prepares 3D AutoCAD string layouts, electrical Single-Line Diagrams (SLD) & files for DBT portal subsidy token.",
+    desc: "Precision engineering team prepares customized 3D AutoCAD string layouts, electrical Single-Line Diagrams (SLD) & cyclone-certified mounting designs.",
     photoPill: "AutoCAD & SLD Simulation",
     deliverables: [
       "Custom 3D CAD Rooftop String Blueprint",
       "170 km/h Wind-Rated HDG Mounting Design",
-      "PM Surya Ghar National Portal DBT Token",
+      "Tier-1 ALMM & BIS Component Sizing",
     ],
     ctaText: "Review Engineering Specs",
     ctaLink: "/process",
     theme: {
-      cardBorder: "border-indigo-200/90 hover:border-indigo-500",
-      cardShadow: "hover:shadow-[0_22px_45px_rgba(99,102,241,0.18)]",
-      headerBg: "bg-gradient-to-r from-indigo-500/10 via-indigo-500/5 to-transparent",
-      headerBorder: "border-indigo-100",
-      badgeText: "text-indigo-800 bg-indigo-100/80 border-indigo-300/80",
-      iconWrap: "bg-indigo-600 text-white shadow-indigo-600/30",
-      deliverableBg: "bg-indigo-50/50 border-indigo-100/80 text-indigo-950",
-      checkIcon: "text-indigo-600",
-      ctaBtn: "text-indigo-700 bg-indigo-50 hover:bg-indigo-600 hover:text-white border-indigo-200 hover:border-indigo-600",
-      stepperActive: "bg-indigo-50 text-indigo-800 border-indigo-300",
-      stepperNum: "bg-indigo-600 text-white",
+      cardBorder: "border-purple-200/90 hover:border-purple-500",
+      cardShadow: "hover:shadow-[0_22px_45px_rgba(168,85,247,0.18)]",
+      headerBg: "bg-gradient-to-r from-purple-500/10 via-purple-500/5 to-transparent",
+      headerBorder: "border-purple-100",
+      badgeText: "text-purple-800 bg-purple-100/80 border-purple-300/80",
+      iconWrap: "bg-purple-600 text-white shadow-purple-600/30",
+      deliverableBg: "bg-purple-50/50 border-purple-100/80 text-purple-950",
+      checkIcon: "text-purple-600",
+      ctaBtn: "text-purple-700 bg-purple-50 hover:bg-purple-600 hover:text-white border-purple-200 hover:border-purple-600",
+      stepperActive: "bg-purple-50 text-purple-800 border-purple-300",
+      stepperNum: "bg-purple-600 text-white",
       tagText: "Tier-1 Module Spec",
     },
   },
   {
     step: "04",
-    phaseBadge: "PHASE 04 • TURNKEY EPC",
-    stepperLabel: "Installation & SLA",
-    duration: "Days 8–14 • Commissioned",
-    title: "Turnkey EPC & Grid Sync",
-    icon: PlugZap,
+    phaseBadge: "PHASE 04 • GOVT APPROVAL",
+    stepperLabel: "Subsidy & Loans",
+    duration: "Days 5–7 • Direct DBT",
+    title: "Subsidy Filing & Loan Guidance",
+    icon: FileText,
+    image: stepSubsidyLoan,
+    desc: "Dedicated subsidy team handles complete national portal documentation for ₹78,000 PM Surya Ghar DBT subsidy & paperless low-interest bank loans.",
+    photoPill: "Direct ₹78,000 DBT Portal",
+    deliverables: [
+      "PM Surya Ghar National Portal Token",
+      "Paperless Low-Interest Loan Assistance",
+      "DISCOM Technical Feasibility Sanction",
+    ],
+    ctaText: "Check Subsidy Sizing",
+    ctaLink: "/solar-calculator",
+    theme: {
+      cardBorder: "border-emerald-200/90 hover:border-emerald-500",
+      cardShadow: "hover:shadow-[0_22px_45px_rgba(16,185,129,0.18)]",
+      headerBg: "bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-transparent",
+      headerBorder: "border-emerald-100",
+      badgeText: "text-emerald-800 bg-emerald-100/80 border-emerald-300/80",
+      iconWrap: "bg-emerald-600 text-white shadow-emerald-600/30",
+      deliverableBg: "bg-emerald-50/50 border-emerald-100/80 text-emerald-950",
+      checkIcon: "text-emerald-600",
+      ctaBtn: "text-emerald-700 bg-emerald-50 hover:bg-emerald-600 hover:text-white border-emerald-200 hover:border-emerald-600",
+      stepperActive: "bg-emerald-50 text-emerald-800 border-emerald-300",
+      stepperNum: "bg-emerald-600 text-white",
+      tagText: "Direct Bank Transfer",
+    },
+  },
+  {
+    step: "05",
+    phaseBadge: "PHASE 05 • TURNKEY EPC",
+    stepperLabel: "EPC Installation",
+    duration: "Days 8–10 • On-Site",
+    title: "Certified Turnkey Installation",
+    icon: Wrench,
     image: step4Installation,
-    desc: "Certified technicians install Tier-1 modules, dual chemical earthing (< 2Ω) & coordinate AP/TS DISCOM bi-directional net-meter sync.",
+    desc: "Certified technicians install Tier-1 modules with leak-free anchor fastening, hot-dip galvanized mounting structures, and dual chemical earthing (< 2.0Ω).",
+    photoPill: "Hot-Dip Galvanized Mounts",
+    deliverables: [
+      "Leak-Free RCC Fastening & 80µ HDG Mounts",
+      "Dual Chemical Earthing (< 2Ω) + Lightning SPD",
+      "UV-Resistant DC/AC Cabling in Conduit",
+    ],
+    ctaText: "View Installation Specs",
+    ctaLink: "/process",
+    theme: {
+      cardBorder: "border-orange-200/90 hover:border-[#E04F16]",
+      cardShadow: "hover:shadow-[0_22px_45px_rgba(224,79,22,0.18)]",
+      headerBg: "bg-gradient-to-r from-orange-500/10 via-orange-500/5 to-transparent",
+      headerBorder: "border-orange-100",
+      badgeText: "text-orange-900 bg-orange-100/80 border-orange-300/80",
+      iconWrap: "bg-[#E04F16] text-white shadow-orange-500/30",
+      deliverableBg: "bg-orange-50/50 border-orange-100/80 text-orange-950",
+      checkIcon: "text-[#E04F16]",
+      ctaBtn: "text-[#E04F16] bg-orange-50 hover:bg-[#E04F16] hover:text-white border-orange-200 hover:border-[#E04F16]",
+      stepperActive: "bg-orange-50 text-orange-900 border-orange-300",
+      stepperNum: "bg-[#E04F16] text-white",
+      tagText: "170 km/h Wind-Rated",
+    },
+  },
+  {
+    step: "06",
+    phaseBadge: "PHASE 06 • GRID SYNC",
+    stepperLabel: "Net-Meter Sync",
+    duration: "Days 11–14 • Commissioned",
+    title: "DISCOM Net-Meter Synchronization",
+    icon: PlugZap,
+    image: projectResidentialInverter10kw,
+    desc: "APCPDCL / APEPDCL / TGSPDCL liaisoning for bi-directional net-meter installation, CEIG safety testing, grid synchronization, and IoT app setup.",
     photoPill: "Net-Meter Synchronized",
     deliverables: [
-      "Bi-Directional Utility Net-Meter Testing",
-      "Dual Chemical Earthing (< 2Ω) + Lightning SPD",
-      "25-Yr Performance Warranty + PowerCare SLA",
+      "Bi-Directional Net-Meter Testing & Seal",
+      "CEIG Safety Sanction & Synchronization",
+      "IoT Mobile Telemetry App Activation",
+    ],
+    ctaText: "Learn Grid Sync",
+    ctaLink: "/services/on-grid-solar-systems",
+    theme: {
+      cardBorder: "border-blue-200/90 hover:border-blue-500",
+      cardShadow: "hover:shadow-[0_22px_45px_rgba(59,130,246,0.18)]",
+      headerBg: "bg-gradient-to-r from-blue-500/10 via-blue-500/5 to-transparent",
+      headerBorder: "border-blue-100",
+      badgeText: "text-blue-800 bg-blue-100/80 border-blue-300/80",
+      iconWrap: "bg-blue-600 text-white shadow-blue-600/30",
+      deliverableBg: "bg-blue-50/50 border-blue-100/80 text-blue-950",
+      checkIcon: "text-blue-600",
+      ctaBtn: "text-blue-700 bg-blue-50 hover:bg-blue-600 hover:text-white border-blue-200 hover:border-blue-600",
+      stepperActive: "bg-blue-50 text-blue-800 border-blue-300",
+      stepperNum: "bg-blue-600 text-white",
+      tagText: "AP/TS DISCOM Clearance",
+    },
+  },
+  {
+    step: "07",
+    phaseBadge: "PHASE 07 • LIFETIME CARE",
+    stepperLabel: "PowerCare SLA",
+    duration: "25 Years • Lifetime Care",
+    title: "PowerCare & 25-Yr Support",
+    icon: ShieldCheck,
+    image: projectHybridStorageVilla,
+    desc: "Scheduled bi-annual physical audits, FLIR thermal scans, demineralized module washing, 48-hour resolution SLA, and dedicated engineering support.",
+    photoPill: "5-Yr Included Care Pack",
+    deliverables: [
+      "5-Year Free Scheduled Preventive Audits",
+      "FLIR Thermal Hotspot Scans & Module Wash",
+      "25-Yr Performance Guarantee + 48h SLA",
     ],
     ctaText: "Explore PowerCare SLA",
     ctaLink: "/powercare",
     theme: {
-      cardBorder: "border-emerald-300/90 hover:border-emerald-500",
-      cardShadow: "hover:shadow-[0_22px_45px_rgba(16,185,129,0.2)]",
-      headerBg: "bg-gradient-to-r from-emerald-500/15 via-teal-500/5 to-transparent",
-      headerBorder: "border-emerald-200",
-      badgeText: "text-emerald-900 bg-emerald-100/90 border-emerald-300",
-      iconWrap: "bg-emerald-600 text-white shadow-emerald-600/30",
-      deliverableBg: "bg-emerald-50/60 border-emerald-100/90 text-emerald-950",
-      checkIcon: "text-emerald-600",
-      ctaBtn: "text-emerald-800 bg-emerald-50 hover:bg-emerald-600 hover:text-white border-emerald-300 hover:border-emerald-600",
-      stepperActive: "bg-emerald-50 text-emerald-800 border-emerald-300",
-      stepperNum: "bg-emerald-600 text-white",
+      cardBorder: "border-teal-200/90 hover:border-teal-500",
+      cardShadow: "hover:shadow-[0_22px_45px_rgba(20,184,166,0.2)]",
+      headerBg: "bg-gradient-to-r from-teal-500/10 via-teal-500/5 to-transparent",
+      headerBorder: "border-teal-100",
+      badgeText: "text-teal-900 bg-teal-100/90 border-teal-300",
+      iconWrap: "bg-teal-600 text-white shadow-teal-600/30",
+      deliverableBg: "bg-teal-50/60 border-teal-100/90 text-teal-950",
+      checkIcon: "text-teal-600",
+      ctaBtn: "text-teal-800 bg-teal-50 hover:bg-teal-600 hover:text-white border-teal-300 hover:border-teal-600",
+      stepperActive: "bg-teal-50 text-teal-800 border-teal-300",
+      stepperNum: "bg-teal-600 text-white",
       tagText: "25-Yr Performance Guarantee",
     },
   },
@@ -368,8 +490,8 @@ const FEATURE_HIGHLIGHTS = [
   },
   {
     id: "power-back-promise",
-    line1: "Power Back",
-    line2: "Promise",
+    line1: "Power",
+    line2: "Sure",
     to: "/power-back-promise",
     icon: () => (
       <svg className="size-4.5 sm:size-5.5 lg:size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -382,7 +504,27 @@ const FEATURE_HIGHLIGHTS = [
 const FILTERS: ("All" | ProjectCategory)[] = ["All", "Residential", "Commercial", "Industrial"];
 
 function Index() {
+  const navigate = useNavigate();
   const [galleryFilter, setGalleryFilter] = useState<"All" | ProjectCategory>("All");
+
+  const handleApplyPlan = (summary: {
+    bill: number;
+    location: string;
+    load: string;
+    propertyType: string;
+    systemKw: number;
+    monthlySavings: number;
+    subsidy: number;
+  }) => {
+    navigate({
+      to: "/book-a-demo",
+      search: {
+        service: `Solar Rooftop System (${summary.systemKw} kW)`,
+        type: summary.propertyType.includes("Residential") ? "Residential" : "Commercial",
+        tab: "calendar",
+      } as any,
+    });
+  };
 
   useEffect(() => {
     // When opening Home page, ensure it starts at the very top
@@ -435,275 +577,313 @@ function Index() {
         </div>
       </section>
 
-      {/* 2. ABOUT US SECTION - Perfectly Aligned with Logo & Navbar (container-site) */}
-      <section id="about" className="relative bg-gradient-to-b from-[#082B4C] via-[#093259] to-[#082B4C] py-8 sm:py-12 text-white scroll-mt-28 border-t border-b border-orange-500/40 overflow-hidden">
-        {/* Subtle orange accent glow line on top & bottom */}
-        <div className="absolute top-0 left-0 w-full h-[1.5px] bg-gradient-to-r from-transparent via-[#E04F16] to-transparent pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-full h-[1.5px] bg-gradient-to-r from-transparent via-[#E04F16] to-transparent pointer-events-none" />
+      {/* 2. WHY CHOOSE US (EXTRAORDINARY CINEMATIC SOLAR BACKDROP & SLANTED VALUE CARDS) */}
+      <section id="why-choose-us" className="relative bg-[#061e35] py-10 sm:py-14 text-white scroll-mt-28 border-t border-b border-orange-500/50 overflow-hidden">
+        <div id="about" className="absolute -top-28" />
+
+        {/* Ambient Photographic Solar Background with Multi-Layer Cinematic Shading */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          {/* Subtle real solar panel array photo texture */}
+          <img
+            src={solarPanelsArray}
+            alt=""
+            aria-hidden="true"
+            data-parallax="bg"
+            data-parallax-rate="0.18"
+            className="w-full h-full object-cover object-center scale-110 opacity-20 mix-blend-luminosity filter contrast-125 brightness-90"
+          />
+
+          {/* Deep Navy & Charcoal Vignette Overlays for Maximum Contrast & Readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#061e35]/95 via-[#082B4C]/82 to-[#061e35]/96" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#061e35]/90 via-transparent to-[#061e35]/90" />
+
+          {/* Radiant Solar Flare & Amber Glow radiating behind the cards */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] sm:w-[950px] h-[350px] sm:h-[480px] bg-[radial-gradient(ellipse_at_center,rgba(224,79,22,0.22),rgba(245,158,11,0.12),transparent_70%)] blur-2xl pointer-events-none" />
+
+          {/* Subtle Tech Micro-Grid Ambient Texture */}
+          <div
+            className="absolute inset-0 opacity-[0.035] pointer-events-none"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)`,
+              backgroundSize: "28px 28px",
+            }}
+          />
+        </div>
+
+        {/* Glowing Orange Neon Horizon Accent Lines on Top & Bottom */}
+        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#E04F16] to-transparent shadow-[0_0_14px_#E04F16] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#E04F16] to-transparent shadow-[0_0_14px_#E04F16] pointer-events-none" />
+        
         <div className="container-site relative z-10">
-          {/* Main About Statement - Perfectly Aligned with Logo */}
-          <div className="scroll-pop scroll-pop-1 mb-6 sm:mb-8">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold text-amber-300 uppercase tracking-wider mb-2.5 border border-white/15">
+          {/* Main Statement & Headline - Left-Aligned & Single Clean Line */}
+          <div className="scroll-pop scroll-pop-1 text-left mb-6 sm:mb-8 pb-3 border-b border-white/10">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-0.5 text-[11px] font-bold text-amber-300 uppercase tracking-wider mb-1.5 border border-white/15 shadow-2xs">
               <Sparkles className="size-3 text-amber-300" /> Amaravati Solar Solutions
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              ABOUT
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">
+              Why Choose Us
             </h2>
-            <p className="mt-1.5 text-base sm:text-lg md:text-xl font-bold text-white/95 leading-snug">
+            <p className="mt-1 text-xs sm:text-sm md:text-base text-white/90 font-medium">
               We don't just install solar. We create a smarter way to power life.
             </p>
-            <div className="mt-3.5 flex items-start gap-3 w-full">
-              <span className="size-2 rounded-full bg-[#E04F16] mt-2 shrink-0 shadow-[0_0_8px_rgba(224,79,22,0.7)]" />
-              <p className="text-xs sm:text-sm md:text-[15px] text-white/90 leading-relaxed text-justify [text-align-last:left] w-full">
-                At Amaravati Solar Solutions, we believe the future of energy should be efficient, dependable, and sustainable. Our approach combines thoughtful solar system design, quality components, precision installation, and end-to-end customer support to deliver solutions built around the needs of every customer.
+          </div>
+
+          {/* 5 Distinctive Value Cards in Compact Slanted Parallelogram Shape (Exact Flyer Match) */}
+          {/* Row 1: 3 Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-6 pt-3">
+            
+            {/* Card 1: 10+ Years of Experience */}
+            <div className="group relative pt-7 sm:pt-8 scroll-pop scroll-pop-2 transition-transform duration-300 ease-out hover:-translate-y-2">
+              {/* Luxury 3D Medal Floating Icon Badge */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 size-12 sm:size-13 rounded-full bg-gradient-to-b from-white via-white to-orange-50/80 border-2 border-[#E04F16] ring-4 ring-orange-500/25 ring-offset-2 ring-offset-[#082B4C] shadow-[0_8px_20px_rgba(224,79,22,0.38)] flex items-center justify-center text-[#E04F16] group-hover:scale-108 group-hover:-translate-y-1 group-hover:ring-orange-400/40 group-hover:shadow-[0_12px_28px_rgba(224,79,22,0.55)] transition-all duration-300">
+                <Award className="size-6 sm:size-6.5 text-[#E04F16] drop-shadow-xs" />
+              </div>
+
+              {/* Slanted / Skewed Card Body */}
+              <div className="-skew-x-[8deg] sm:-skew-x-[9deg] rounded-2xl sm:rounded-3xl border-2 border-[#E04F16] bg-white shadow-[0_14px_34px_rgba(4,21,38,0.5),0_4px_14px_rgba(224,79,22,0.22)] group-hover:shadow-[0_22px_50px_rgba(224,79,22,0.4)] group-hover:border-orange-400 transition-all duration-300 overflow-hidden">
+                {/* Navy Blue Header Bar with Glossy Glass Reflection */}
+                <div className="relative bg-gradient-to-b from-[#0b365e] via-[#082B4C] to-[#051c33] pt-9 sm:pt-10 pb-3 px-3 text-center border-b border-orange-500/30">
+                  {/* Subtle metallic top shine line */}
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+
+                  <div className="skew-x-[8deg] sm:skew-x-[9deg]">
+                    <h3 className="font-black text-sm sm:text-base text-white tracking-wide drop-shadow-xs">
+                      10+ Years of Experience
+                    </h3>
+                  </div>
+                </div>
+
+                {/* White Bottom Body with High-Definition Styling */}
+                <div className="bg-gradient-to-b from-white via-[#FCFDFE] to-[#F8FAFC] py-3.5 sm:py-4 px-4 text-center min-h-[58px] sm:min-h-[62px] flex items-center justify-center border-t border-slate-100">
+                  <div className="skew-x-[8deg] sm:skew-x-[9deg]">
+                    <p className="font-extrabold text-xs sm:text-[13px] text-[#082B4C] leading-snug tracking-tight">
+                      Proven EPC engineering &amp; reliable installation
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: End-to-End Support */}
+            <div className="group relative pt-7 sm:pt-8 scroll-pop scroll-pop-2 transition-transform duration-300 ease-out hover:-translate-y-2">
+              {/* Luxury 3D Medal Floating Icon Badge */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 size-12 sm:size-13 rounded-full bg-gradient-to-b from-white via-white to-orange-50/80 border-2 border-[#E04F16] ring-4 ring-orange-500/25 ring-offset-2 ring-offset-[#082B4C] shadow-[0_8px_20px_rgba(224,79,22,0.38)] flex items-center justify-center text-[#E04F16] group-hover:scale-108 group-hover:-translate-y-1 group-hover:ring-orange-400/40 group-hover:shadow-[0_12px_28px_rgba(224,79,22,0.55)] transition-all duration-300">
+                <Headphones className="size-6 sm:size-6.5 text-[#E04F16] drop-shadow-xs" />
+              </div>
+
+              {/* Slanted / Skewed Card Body */}
+              <div className="-skew-x-[8deg] sm:-skew-x-[9deg] rounded-2xl sm:rounded-3xl border-2 border-[#E04F16] bg-white shadow-[0_14px_34px_rgba(4,21,38,0.5),0_4px_14px_rgba(224,79,22,0.22)] group-hover:shadow-[0_22px_50px_rgba(224,79,22,0.4)] group-hover:border-orange-400 transition-all duration-300 overflow-hidden">
+                {/* Navy Blue Header Bar with Glossy Glass Reflection */}
+                <div className="relative bg-gradient-to-b from-[#0b365e] via-[#082B4C] to-[#051c33] pt-9 sm:pt-10 pb-3 px-3 text-center border-b border-orange-500/30">
+                  {/* Subtle metallic top shine line */}
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+
+                  <div className="skew-x-[8deg] sm:skew-x-[9deg]">
+                    <h3 className="font-black text-sm sm:text-base text-white tracking-wide drop-shadow-xs">
+                      End-to-End Support
+                    </h3>
+                  </div>
+                </div>
+
+                {/* White Bottom Body with High-Definition Styling */}
+                <div className="bg-gradient-to-b from-white via-[#FCFDFE] to-[#F8FAFC] py-3.5 sm:py-4 px-4 text-center min-h-[58px] sm:min-h-[62px] flex items-center justify-center border-t border-slate-100">
+                  <div className="skew-x-[8deg] sm:skew-x-[9deg]">
+                    <p className="font-extrabold text-xs sm:text-[13px] text-[#082B4C] leading-snug tracking-tight">
+                      From consultation to post-sales service
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Trusted Quality */}
+            <div className="group relative pt-7 sm:pt-8 scroll-pop scroll-pop-2 transition-transform duration-300 ease-out hover:-translate-y-2">
+              {/* Luxury 3D Medal Floating Icon Badge */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 size-12 sm:size-13 rounded-full bg-gradient-to-b from-white via-white to-orange-50/80 border-2 border-[#E04F16] ring-4 ring-orange-500/25 ring-offset-2 ring-offset-[#082B4C] shadow-[0_8px_20px_rgba(224,79,22,0.38)] flex items-center justify-center text-[#E04F16] group-hover:scale-108 group-hover:-translate-y-1 group-hover:ring-orange-400/40 group-hover:shadow-[0_12px_28px_rgba(224,79,22,0.55)] transition-all duration-300">
+                <BadgeCheck className="size-6 sm:size-6.5 text-[#E04F16] drop-shadow-xs" />
+              </div>
+
+              {/* Slanted / Skewed Card Body */}
+              <div className="-skew-x-[8deg] sm:-skew-x-[9deg] rounded-2xl sm:rounded-3xl border-2 border-[#E04F16] bg-white shadow-[0_14px_34px_rgba(4,21,38,0.5),0_4px_14px_rgba(224,79,22,0.22)] group-hover:shadow-[0_22px_50px_rgba(224,79,22,0.4)] group-hover:border-orange-400 transition-all duration-300 overflow-hidden">
+                {/* Navy Blue Header Bar with Glossy Glass Reflection */}
+                <div className="relative bg-gradient-to-b from-[#0b365e] via-[#082B4C] to-[#051c33] pt-9 sm:pt-10 pb-3 px-3 text-center border-b border-orange-500/30">
+                  {/* Subtle metallic top shine line */}
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+
+                  <div className="skew-x-[8deg] sm:skew-x-[9deg]">
+                    <h3 className="font-black text-sm sm:text-base text-white tracking-wide drop-shadow-xs">
+                      Trusted Quality
+                    </h3>
+                  </div>
+                </div>
+
+                {/* White Bottom Body with High-Definition Styling */}
+                <div className="bg-gradient-to-b from-white via-[#FCFDFE] to-[#F8FAFC] py-3.5 sm:py-4 px-4 text-center min-h-[58px] sm:min-h-[62px] flex items-center justify-center border-t border-slate-100">
+                  <div className="skew-x-[8deg] sm:skew-x-[9deg]">
+                    <p className="font-extrabold text-xs sm:text-[13px] text-[#082B4C] leading-snug tracking-tight">
+                      Premium materials, certified &amp; reliable brands
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Row 2: 2 Cards Centered (Matched Proportional Width) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-6 max-w-[760px] mx-auto w-full pt-8 sm:pt-6">
+            
+            {/* Card 4: Assured Warranties */}
+            <div className="group relative pt-7 sm:pt-8 scroll-pop scroll-pop-3 transition-transform duration-300 ease-out hover:-translate-y-2">
+              {/* Luxury 3D Medal Floating Icon Badge */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 size-12 sm:size-13 rounded-full bg-gradient-to-b from-white via-white to-orange-50/80 border-2 border-[#E04F16] ring-4 ring-orange-500/25 ring-offset-2 ring-offset-[#082B4C] shadow-[0_8px_20px_rgba(224,79,22,0.38)] flex items-center justify-center text-[#E04F16] group-hover:scale-108 group-hover:-translate-y-1 group-hover:ring-orange-400/40 group-hover:shadow-[0_12px_28px_rgba(224,79,22,0.55)] transition-all duration-300">
+                <ShieldCheck className="size-6 sm:size-6.5 text-[#E04F16] drop-shadow-xs" />
+              </div>
+
+              {/* Slanted / Skewed Card Body */}
+              <div className="-skew-x-[8deg] sm:-skew-x-[9deg] rounded-2xl sm:rounded-3xl border-2 border-[#E04F16] bg-white shadow-[0_14px_34px_rgba(4,21,38,0.5),0_4px_14px_rgba(224,79,22,0.22)] group-hover:shadow-[0_22px_50px_rgba(224,79,22,0.4)] group-hover:border-orange-400 transition-all duration-300 overflow-hidden">
+                {/* Navy Blue Header Bar with Glossy Glass Reflection */}
+                <div className="relative bg-gradient-to-b from-[#0b365e] via-[#082B4C] to-[#051c33] pt-9 sm:pt-10 pb-3 px-3 text-center border-b border-orange-500/30">
+                  {/* Subtle metallic top shine line */}
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+
+                  <div className="skew-x-[8deg] sm:skew-x-[9deg]">
+                    <h3 className="font-black text-sm sm:text-base text-white tracking-wide drop-shadow-xs">
+                      Assured Warranties
+                    </h3>
+                  </div>
+                </div>
+
+                {/* White Bottom Body with High-Definition Styling */}
+                <div className="bg-gradient-to-b from-white via-[#FCFDFE] to-[#F8FAFC] py-3.5 sm:py-4 px-4 text-center min-h-[58px] sm:min-h-[62px] flex items-center justify-center border-t border-slate-100">
+                  <div className="skew-x-[8deg] sm:skew-x-[9deg]">
+                    <p className="font-extrabold text-xs sm:text-[13px] text-[#082B4C] leading-snug tracking-tight">
+                      Long-term performance &amp; peace of mind
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 5: Higher Savings */}
+            <div className="group relative pt-7 sm:pt-8 scroll-pop scroll-pop-3 transition-transform duration-300 ease-out hover:-translate-y-2">
+              {/* Luxury 3D Medal Floating Icon Badge */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20 size-12 sm:size-13 rounded-full bg-gradient-to-b from-white via-white to-orange-50/80 border-2 border-[#E04F16] ring-4 ring-orange-500/25 ring-offset-2 ring-offset-[#082B4C] shadow-[0_8px_20px_rgba(224,79,22,0.38)] flex items-center justify-center text-[#E04F16] group-hover:scale-108 group-hover:-translate-y-1 group-hover:ring-orange-400/40 group-hover:shadow-[0_12px_28px_rgba(224,79,22,0.55)] transition-all duration-300">
+                <TrendingUp className="size-6 sm:size-6.5 text-[#E04F16] drop-shadow-xs" />
+              </div>
+
+              {/* Slanted / Skewed Card Body */}
+              <div className="-skew-x-[8deg] sm:-skew-x-[9deg] rounded-2xl sm:rounded-3xl border-2 border-[#E04F16] bg-white shadow-[0_14px_34px_rgba(4,21,38,0.5),0_4px_14px_rgba(224,79,22,0.22)] group-hover:shadow-[0_22px_50px_rgba(224,79,22,0.4)] group-hover:border-orange-400 transition-all duration-300 overflow-hidden">
+                {/* Navy Blue Header Bar with Glossy Glass Reflection */}
+                <div className="relative bg-gradient-to-b from-[#0b365e] via-[#082B4C] to-[#051c33] pt-9 sm:pt-10 pb-3 px-3 text-center border-b border-orange-500/30">
+                  {/* Subtle metallic top shine line */}
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+
+                  <div className="skew-x-[8deg] sm:skew-x-[9deg]">
+                    <h3 className="font-black text-sm sm:text-base text-white tracking-wide drop-shadow-xs">
+                      Higher Savings
+                    </h3>
+                  </div>
+                </div>
+
+                {/* White Bottom Body with High-Definition Styling */}
+                <div className="bg-gradient-to-b from-white via-[#FCFDFE] to-[#F8FAFC] py-3.5 sm:py-4 px-4 text-center min-h-[58px] sm:min-h-[62px] flex items-center justify-center border-t border-slate-100">
+                  <div className="skew-x-[8deg] sm:skew-x-[9deg]">
+                    <p className="font-extrabold text-xs sm:text-[13px] text-[#082B4C] leading-snug tracking-tight">
+                      Lower electricity bills &amp; faster ROI
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 3. INTERACTIVE SOLAR SIZING & FINANCIAL ROI CALCULATOR */}
+      <section id="solar-calculator" className="pt-5 sm:pt-6 pb-6 sm:pb-7 scroll-mt-24 sm:scroll-mt-28 border-b border-orange-200/90 bg-gradient-to-b from-white via-[#FFFDF9] to-orange-50/15 relative">
+        <div className="container-site">
+          {/* Section Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2.5 pb-2.5 sm:pb-3 border-b border-orange-200/80 mb-3.5 sm:mb-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 border border-orange-200/80 px-2.5 py-0.5 text-[10.5px] font-black uppercase tracking-wider text-[#D9410E] mb-1">
+                <Calculator className="size-3 text-[#E04F16]" /> Instant Solar Sizing Engine
+              </div>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#082B4C] tracking-tight">
+                Solar <span className="text-[#E04F16]">Calculation &amp; Subsidy Estimator</span>
+              </h2>
+              <p className="text-xs sm:text-[13px] text-slate-600 mt-0.5 max-w-2xl font-medium">
+                Slide your average monthly electricity bill to calculate the optimal kW system, required rooftop space, ₹78,000 PM Surya Ghar DBT subsidy, and 25-year financial savings in Andhra Pradesh.
               </p>
             </div>
-          </div>
-
-          {/* Vision & Mission - Full-Width 2-Column Symmetrical Grid (Aligned with Navbar edges) */}
-          <div className="grid gap-8 md:grid-cols-2 pt-6 border-t border-white/15 w-full">
-            {/* Our Vision */}
-            <div className="flex flex-col justify-between scroll-pop scroll-pop-2">
-              <div>
-                <div className="flex items-center gap-2.5 mb-3">
-                  <div className="grid size-8 place-items-center rounded-xl bg-amber-400/15 text-amber-300 border border-amber-400/30">
-                    <Eye className="size-4" />
-                  </div>
-                  <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
-                    Our Vision
-                  </h3>
-                </div>
-                <ul className="space-y-3 text-xs sm:text-sm text-white/85 leading-relaxed">
-                  <li className="flex items-start gap-2.5">
-                    <span className="size-1.5 rounded-full bg-amber-400 mt-2 shrink-0" />
-                    <p className="flex-1 font-bold text-white text-justify [text-align-last:left]">
-                      To redefine the way people experience energy.
-                    </p>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="size-1.5 rounded-full bg-amber-400 mt-2 shrink-0" />
-                    <p className="flex-1 text-white/80 text-justify [text-align-last:left]">
-                      We envision a future where every suitable rooftop becomes a source of clean power, every household has greater control over its energy costs, and sustainability becomes a natural part of everyday living.
-                    </p>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="size-1.5 rounded-full bg-amber-400 mt-2 shrink-0" />
-                    <p className="flex-1 text-white/80 text-justify [text-align-last:left]">
-                      Our ambition is to build a trusted solar brand that stands for engineering excellence, lasting reliability, and a cleaner tomorrow.
-                    </p>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Our Mission */}
-            <div className="flex flex-col justify-between scroll-pop scroll-pop-3">
-              <div>
-                <div className="flex items-center gap-2.5 mb-3">
-                  <div className="grid size-8 place-items-center rounded-xl bg-orange-500/20 text-[#FF7A1A] border border-orange-400/30">
-                    <Target className="size-4" />
-                  </div>
-                  <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
-                    Our Mission
-                  </h3>
-                </div>
-                <ul className="space-y-3 text-xs sm:text-sm text-white/85 leading-relaxed">
-                  <li className="flex items-start gap-2.5">
-                    <span className="size-1.5 rounded-full bg-[#E04F16] mt-2 shrink-0" />
-                    <div className="flex-1">
-                      <p className="font-bold text-white text-justify [text-align-last:left]">
-                        To make the transition to solar simple, seamless, and worthwhile.
-                      </p>
-                      <p className="mt-1 text-white/80 text-justify [text-align-last:left]">
-                        To accelerate the transition towards clean energy by making solar power accessible and reliable, reducing environmental impact, and inspiring communities to embrace a greener, more sustainable future.
-                      </p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="size-1.5 rounded-full bg-[#E04F16] mt-2 shrink-0" />
-                    <p className="flex-1 font-bold text-white text-justify [text-align-last:left]">
-                      Together, building a greener society for generations to come.
-                    </p>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Action CTAs - Aligned with Left Edge */}
-          <div className="mt-8 sm:mt-10 flex flex-wrap gap-3.5 scroll-pop scroll-pop-4">
-            <Button asChild variant="cta" className="h-10 sm:h-10.5 rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] text-white px-6 sm:px-7 text-xs sm:text-sm font-bold shadow-md hover:shadow-lg active:scale-95 transition-all">
-              <Link to="/about">
-                <span>More About Our Company</span>
-                <ArrowRight className="size-4 ml-1.5" />
+            <div className="flex items-center gap-2 shrink-0">
+              <Link
+                to="/solar-calculator"
+                className="rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] text-white font-bold text-xs sm:text-[13px] px-4 py-2 shadow-xs transition-all hover:shadow hover:scale-[1.01] active:scale-95 inline-flex items-center gap-1.5"
+              >
+                <span>Full Calculator Page</span>
+                <ArrowRight className="size-3.5" />
               </Link>
-            </Button>
-            <Button asChild variant="heroOutline" className="h-10 sm:h-10.5 rounded-full border-white/35 text-white hover:bg-white/10 px-5 sm:px-6 text-xs sm:text-sm font-bold active:scale-95 transition-all">
-              <Link to="/contact">Contact Us</Link>
-            </Button>
+            </div>
+          </div>
+
+          {/* Interactive Calculator Card (Compact, Instant Real-Time Display with zero dead gaps) */}
+          <div className="rounded-2xl sm:rounded-3xl bg-white border border-orange-200/90 shadow-md overflow-hidden p-3 sm:p-5 lg:p-6">
+            <SolarCalculator onApplyPlan={handleApplyPlan} hideHeader className="border-none shadow-none p-0 bg-transparent" />
           </div>
         </div>
       </section>
 
-      {/* 3. ROOFTOP & COMMERCIAL SOLAR SOLUTIONS - 4 COMPACT PREMIUM CARDS */}
-      <section id="solar-solutions" className="pt-6 sm:pt-8 pb-6 sm:pb-8 scroll-mt-24 sm:scroll-mt-28 border-b border-orange-200/90 bg-gradient-to-b from-white via-[#FFFDF9] to-orange-50/15">
-        <div className="container-site">
-          {/* Solutions Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pb-3 sm:pb-4 border-b border-orange-200/80 mb-5 sm:mb-6">
-          <div>
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 border border-orange-200/80 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-[#D9410E] mb-1.5">
-              <Sparkles className="size-3 text-[#E04F16]" /> High-Performance Engineering
-            </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#082B4C] tracking-tight">
-              Solar <span className="text-[#E04F16]">Power Architectures</span>
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-xl font-medium">
-              Customised On-Grid, Off-Grid, Hybrid, and Commercial architectures engineered for homes, villas &amp; enterprises across AP &amp; Telangana.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <Button asChild variant="cta" className="rounded-full bg-[#E04F16] hover:bg-[#C03507] text-white font-bold text-xs sm:text-sm px-5 py-2 shadow-sm transition-all hover:shadow-md hover:scale-[1.02] active:scale-95">
-              <Link to="/services">
-                <span>View All 15 Services</span>
-                <ArrowRight className="size-3.5 ml-1.5" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-
-        {/* 4 Compact, Ultra-Premium Solar Solution Cards (Grid 4-Cols on Desktop, 2 on Tablet, 1 on Mobile) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-4.5 xl:gap-5 items-stretch">
-          {SOLAR_SYSTEMS_SHOWCASE.map((item) => (
-            <div
-              key={item.id}
-              data-tilt="true"
-              className="parallax-card group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-b from-[#FFFDF9] via-white to-[#FFF8F0] border border-orange-200/90 hover:border-[#E04F16] shadow-[0_4px_16px_rgba(224,79,22,0.06)] hover:shadow-[0_16px_36px_rgba(224,79,22,0.15)] transition-all duration-300"
-            >
-              {/* Top Accent Line */}
-              <div className="h-1 w-full bg-gradient-to-r from-orange-200 via-orange-300 to-orange-200 group-hover:from-[#D9410E] group-hover:via-[#E04F16] group-hover:to-[#F97316] transition-all" />
-
-              {/* Photo Area with Parallax Gliding Motion */}
-              <Link to={item.to} preload="intent" className="parallax-wrap block relative aspect-[16/10] w-full overflow-hidden bg-slate-900 shrink-0">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  width={800}
-                  height={500}
-                  loading="lazy"
-                  data-parallax="image"
-                  data-parallax-rate="0.14"
-                  data-parallax-max="28"
-                  className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#082B4C]/80 via-transparent to-transparent opacity-35 group-hover:opacity-15 transition-opacity" />
-
-                {/* Top Badge */}
-                <div className="absolute top-2.5 left-2.5">
-                  <span className={cn("inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider border shadow-xs bg-white/95 backdrop-blur-xs", item.badgeColor)}>
-                    {item.badge}
-                  </span>
-                </div>
-
-                {/* Bottom Pill */}
-                <div className="absolute bottom-2.5 right-2.5">
-                  <span className={cn("inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-extrabold shadow-sm", item.pillColor)}>
-                    {item.pill}
-                  </span>
-                </div>
-              </Link>
-
-              {/* Card Body */}
-              <div className="p-4 sm:p-4.5 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="text-[10px] font-black uppercase tracking-wider text-[#E04F16]">
-                    {item.subtitle}
-                  </div>
-                  <h3 className="text-base sm:text-[17px] font-black text-[#082B4C] group-hover:text-[#E04F16] transition-colors leading-snug mt-0.5">
-                    <Link to={item.to} preload="intent" className="hover:underline">
-                      {item.title}
-                    </Link>
-                  </h3>
-                  <p className="mt-2 text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium">
-                    {item.desc}
-                  </p>
-
-                  {/* 3 Key Checkmarks */}
-                  <ul className="mt-3 space-y-1.5 border-t border-orange-100/80 pt-2.5 text-[11px] font-semibold text-slate-700">
-                    {item.perks.map((perk, i) => (
-                      <li key={i} className="flex items-center gap-1.5">
-                        <CheckCircle2 className="size-3.5 shrink-0 text-[#E04F16]" />
-                        <span className="truncate">{perk}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Bottom CTA Button */}
-                <div className="mt-4 pt-3 border-t border-orange-100">
-                  <Link
-                    to={item.to}
-                    preload="intent"
-                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-full bg-orange-50/70 hover:bg-[#E04F16] border border-orange-200/90 hover:border-[#E04F16] text-[#082B4C] hover:text-white text-xs font-bold py-2 px-3 shadow-2xs hover:shadow transition-all select-none group/btn"
-                  >
-                    <span>{item.ctaText}</span>
-                    <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        </div>
-      </section>
-
-      {/* OUR 4-STEP PROCESS - Non-Identical, Photorealistic Engineering Stepper Layout */}
+      {/* OUR 7-STEP PROCESS - Photorealistic Engineering Stepper Layout */}
       <section id="how-it-works" className="bg-gradient-to-b from-slate-50 via-white to-slate-50 pt-4 sm:pt-6 pb-6 sm:pb-8 scroll-mt-20 sm:scroll-mt-24 overflow-hidden border-b border-orange-200/90">
         <div className="container-site">
           {/* Section Header with Curved Orange Swoosh Underline */}
           <div className="text-left mb-5 sm:mb-6 scroll-pop scroll-pop-1">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#B83A16]/10 px-3 py-1 text-[10px] sm:text-[11px] font-black text-[#B83A16] uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-[#E04F16]/10 px-3 py-1 text-[10px] sm:text-[11px] font-black text-[#E04F16] uppercase tracking-wider mb-2 border border-orange-200/60 shadow-2xs">
               <Sparkles className="size-3" /> Seamless End-to-End Execution
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#082B4C] tracking-tight">
-              Our <span className="text-[#B83A16]">4-Step Process</span>
+              Our <span className="text-[#E04F16]">7-Step Process</span>
             </h2>
             {/* Orange Swoosh Curve */}
             <div className="relative mt-1.5 h-2.5 w-32 sm:w-44 overflow-hidden">
-              <svg viewBox="0 0 200 14" fill="none" className="w-full h-full text-[#B83A16]">
+              <svg viewBox="0 0 200 14" fill="none" className="w-full h-full text-[#E04F16]">
                 <path d="M4 11C60 2 140 2 196 11" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
               </svg>
             </div>
-            <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl">
-              From your initial site survey to 25 years of clean power generation — clear, engineered, and transparent solar journey across Andhra Pradesh & Telangana.
+            <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl font-medium">
+              From your initial consultation to 25 years of clean power generation — clear, engineered, and transparent solar journey across Andhra Pradesh &amp; Telangana.
             </p>
           </div>
 
-          {/* Connected Progress Pipeline Track (Desktop & Tablet) */}
-          <div className="mb-6 hidden md:grid grid-cols-4 gap-3 p-2 rounded-2xl bg-white/90 border border-orange-200/80 shadow-2xs backdrop-blur-xs">
-            {FOUR_STEP_PROCESS.map((item) => (
+          {/* Connected Progress Pipeline Track (Desktop & Tablet: 7 Milestones) */}
+          <div className="mb-6 hidden md:grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 p-2 rounded-2xl bg-white/90 border border-orange-200/80 shadow-2xs backdrop-blur-xs">
+            {SEVEN_STEP_PROCESS.map((item) => (
               <div
                 key={item.step}
                 className={cn(
-                  "flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all border",
+                  "flex items-center gap-2 px-2.5 py-2 rounded-xl transition-all border",
                   item.theme.stepperActive
                 )}
               >
-                <span className={cn("grid size-6 place-items-center rounded-full text-xs font-black shrink-0", item.theme.stepperNum)}>
+                <span className={cn("grid size-5.5 place-items-center rounded-full text-[11px] font-black shrink-0", item.theme.stepperNum)}>
                   {item.step}
                 </span>
                 <div className="min-w-0">
-                  <div className="text-[11.5px] font-black tracking-tight text-slate-900 truncate">{item.stepperLabel}</div>
-                  <div className="text-[10px] text-slate-500 font-medium truncate">{item.duration}</div>
+                  <div className="text-[11px] font-black tracking-tight text-slate-900 truncate">{item.stepperLabel}</div>
+                  <div className="text-[9.5px] text-slate-500 font-medium truncate">{item.duration.split("•")[0]}</div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* 4 Non-Identical Process Cards Grid */}
-          <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-3 xl:gap-4 items-stretch">
-            {FOUR_STEP_PROCESS.map((item, index) => {
+          {/* 7 Process Cards + 1 Dedicated Senior Manager Spotlight Card = 8 Balanced Cards (2 Rows of 4 on Desktop) */}
+          <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-3.5 xl:gap-4.5 items-stretch">
+            {SEVEN_STEP_PROCESS.map((item, index) => {
               const Icon = item.icon;
-              const staggerClass = `scroll-pop-${index + 1}`;
+              const staggerClass = `scroll-pop-${(index % 4) + 1}`;
               return (
                 <div key={item.step} className="relative flex flex-col group/card">
                   {/* Distinct Process Card */}
@@ -768,7 +948,7 @@ function Index() {
                             <Icon className="size-4" />
                           </div>
                           <div className="min-w-0">
-                            <h3 className="text-sm font-extrabold text-[#082B4C] leading-snug group-hover/card:text-[#B83A16] transition-colors">
+                            <h3 className="text-sm font-extrabold text-[#082B4C] leading-snug group-hover/card:text-[#E04F16] transition-colors">
                               {item.title}
                             </h3>
                             <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">
@@ -778,7 +958,7 @@ function Index() {
                         </div>
 
                         {/* Description */}
-                        <p className="text-slate-600 leading-relaxed text-[11px] sm:text-[11.5px] line-clamp-3 mb-3">
+                        <p className="text-slate-600 leading-relaxed text-[11px] sm:text-[11.5px] line-clamp-3 mb-3 font-medium">
                           {item.desc}
                         </p>
 
@@ -813,236 +993,331 @@ function Index() {
                       </Link>
                     </div>
                   </div>
-
-                  {/* Circular Step Connector on Desktop */}
-                  {index < FOUR_STEP_PROCESS.length - 1 && (
-                    <div
-                      aria-hidden="true"
-                      className="hidden lg:grid absolute top-[28%] -right-2.5 xl:-right-3 z-20 size-6 xl:size-6.5 place-items-center rounded-full bg-white text-slate-600 shadow-md border border-slate-200 pointer-events-none transition-transform duration-300 group-hover/card:scale-110"
-                    >
-                      <ChevronRight className="size-3.5" strokeWidth={2.5} />
-                    </div>
-                  )}
                 </div>
               );
             })}
+
+            {/* Card 8: Dedicated Senior Project Manager Spotlight Card */}
+            <div
+              data-tilt="true"
+              className="parallax-card relative flex flex-col justify-between rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#082B4C] via-[#093259] to-[#E04F16] p-4 sm:p-5 text-white shadow-xl border border-[#0d3b66] overflow-hidden group scroll-pop scroll-pop-4"
+            >
+              <div className="absolute top-0 right-0 -mr-10 -mt-10 size-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="inline-block rounded-full bg-amber-400 text-[#082B4C] text-[9.5px] font-black uppercase px-2.5 py-0.5 tracking-wider shadow-sm">
+                    100% Turnkey Ownership
+                  </span>
+                  <span className="text-[10px] font-bold text-amber-200">Single Window</span>
+                </div>
+
+                <h3 className="text-base sm:text-lg font-black text-white tracking-tight leading-snug">
+                  One Dedicated Senior Engineer
+                </h3>
+                <p className="mt-2 text-[11px] sm:text-xs text-white/90 leading-relaxed font-medium">
+                  Zero middlemen. Never run between electricians, panel dealers, DISCOM offices, or banks. 1 Senior Solar Engineer oversees all 7 milestones with zero finger-pointing.
+                </p>
+
+                <div className="mt-4 space-y-2 pt-3 border-t border-white/15 text-[11px] font-bold text-white/95">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="size-3.5 text-amber-300 shrink-0" />
+                    <span>Single Point of Contact for All 7 Milestones</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="size-3.5 text-amber-300 shrink-0" />
+                    <span>Direct WhatsApp &amp; Phone Line with Engineer</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="size-3.5 text-amber-300 shrink-0" />
+                    <span>25-Year Performance Assurance Guarantee</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 pt-3">
+                <Link
+                  to="/one-point-of-contact"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white text-[#082B4C] hover:bg-slate-100 font-bold text-xs py-2.5 px-4 shadow-md transition-all active:scale-95 group/btn"
+                >
+                  <span>Explore One Point of Contact</span>
+                  <ArrowRight className="size-3.5 text-[#E04F16] transition-transform duration-200 group-hover/btn:translate-x-1" />
+                </Link>
+              </div>
+            </div>
           </div>
 
-          {/* Bottom Action CTA for 4-Step Process */}
+          {/* Bottom Action CTA for 7-Step Process */}
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 scroll-pop">
             <Button asChild variant="cta" size="sm" className="rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] text-white px-7 py-3 text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all active:scale-95">
-              <Link to="/book-a-demo" search={{ service: "Our 4-Step Solar Process", tab: "calendar" }}>
-                <span>Start Your 4-Step Solar Journey</span>
+              <Link to="/book-a-demo" search={{ service: "Our 7-Step Solar Process", tab: "calendar" }}>
+                <span>Start Your 7-Step Solar Journey</span>
                 <ArrowRight className="size-4 ml-1.5" />
               </Link>
             </Button>
             <Link
-              to="/process"
+              to="/one-point-of-contact"
               className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#082B4C] hover:text-[#E04F16] transition-colors px-4 py-2"
             >
-              <span>Learn More About Our Process</span>
+              <span>Explore One Point of Contact</span>
+              <ArrowRight className="size-3.5 text-[#E04F16]" />
+            </Link>
+            <Link
+              to="/process"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-600 hover:text-[#E04F16] transition-colors px-4 py-2"
+            >
+              <span>Detailed Process Guide</span>
               <ArrowRight className="size-3.5 text-[#E04F16]" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 5. POWERCARE SECTION - ULTRA-PREMIUM REDESIGN */}
-      <section id="powercare" className="scroll-mt-24 sm:scroll-mt-28 py-12 sm:py-16 bg-gradient-to-b from-[#FFFDF9] via-white to-slate-50/70 border-b border-orange-200/90">
+      {/* 5. POWERCARE SECTION - ULTRA-PREMIUM COMPACT REDESIGN (SCREEN FIT) */}
+      <section id="powercare" className="scroll-mt-20 sm:scroll-mt-24 py-4 sm:py-6 bg-gradient-to-b from-[#FFFDF9] via-white to-slate-50/70 border-b border-orange-200/90">
         <div className="container-site">
           
-          {/* Section Header: Aligned with Site Style */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 sm:mb-12 scroll-pop">
+          {/* Section Header: Compact & Screen Fit */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-2.5 mb-3 sm:mb-4 scroll-pop">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 rounded-full bg-orange-100/80 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-[#E04F16] border border-orange-200/90 mb-3 shadow-2xs">
-                <ShieldCheck className="size-3.5 text-[#E04F16]" />
-                <span>5-Year Comprehensive Solar Care</span>
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-orange-100/80 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#E04F16] border border-orange-200/90 mb-1 shadow-2xs">
+                <ShieldCheck className="size-3 text-[#E04F16]" />
+                <span>5 Years of Comprehensive Solar Care • Every 45 Days Visit</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-black text-[#082B4C] tracking-tight leading-[1.15]">
-                PowerCare: <span className="text-[#E04F16]">More Than Maintenance,</span>
-                <span className="block text-[#082B4C] sm:inline sm:ml-2">A Long-Term Commitment.</span>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-[#082B4C] tracking-tight leading-tight">
+                PowerCare: <span className="text-[#E04F16]">5 Years of Comprehensive Solar Care</span>
               </h2>
-              <p className="mt-3 text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-medium">
-                Every solar installation from Amaravati Solar Solutions includes 5 years of certified comprehensive health audits, infrared thermography, and preventive care at zero extra cost — ensuring uninterrupted peak generation across AP &amp; Telangana.
+              <p className="mt-0.5 text-xs sm:text-[13px] text-slate-600 leading-snug font-medium">
+                Every solar installation includes guaranteed <strong>Every 45 Days Visit</strong> for Structural Check, Electrical Check, Mechanical Check, and Demineralized Panel Cleaning at zero extra cost.
               </p>
             </div>
 
-            <div className="shrink-0 flex items-center gap-3">
+            <div className="shrink-0 flex items-center gap-2">
               <Link
                 to="/powercare"
-                className="group inline-flex items-center gap-2 rounded-full bg-white hover:bg-orange-50/60 border border-orange-200/90 hover:border-[#E04F16] px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-[#082B4C] hover:text-[#E04F16] shadow-xs hover:shadow-sm transition-all"
+                className="group inline-flex items-center gap-1.5 rounded-full bg-white hover:bg-orange-50/60 border border-orange-200/90 hover:border-[#E04F16] px-3.5 py-1.5 text-xs font-bold text-[#082B4C] hover:text-[#E04F16] shadow-xs hover:shadow-sm transition-all"
               >
-                <span>View Full PowerCare Program</span>
-                <ArrowRight className="size-4 text-[#E04F16] transition-transform duration-200 group-hover:translate-x-1" />
+                <span>View Full Program</span>
+                <ArrowRight className="size-3.5 text-[#E04F16] transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
 
-          {/* Main 2-Column Showcase: Left Image Feature Card + Right 3 Protocol Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+          {/* Main 2-Column Showcase: Left Image Feature Card + Right 6 Dedicated Protocol Cards (Aligned to Same Height & Screen Fit) */}
+          <div className="flex flex-col lg:flex-row gap-3 lg:gap-4 items-stretch">
             
-            {/* Left Column (5 Cols): Rooftop Engineer Inspection Visual Card with Parallax Depth */}
-            <div className="lg:col-span-5 flex flex-col">
-              <div className="parallax-wrap relative h-[340px] sm:h-[400px] lg:h-full min-h-[340px] rounded-2xl sm:rounded-3xl overflow-hidden border border-orange-200/90 shadow-lg shadow-orange-500/5 group">
+            {/* Left Column (5 Cols): Rooftop Engineer Cleaning Visual Card (Aligned 100% to Height of 6 Cards) */}
+            <div className="w-full lg:w-5/12 flex flex-col shrink-0">
+              <div className="parallax-wrap relative h-[320px] sm:h-[350px] lg:h-full rounded-2xl overflow-hidden border border-orange-200/90 shadow-md shadow-orange-500/5 group flex flex-col justify-between">
                 <img
-                  src={step2Inspection}
-                  alt="Certified solar engineer performing PowerCare rooftop inspection"
+                  src={powercarePanelCleaning}
+                  alt="Amaravati Solar certified engineer actively washing solar panels with water-fed brush on rooftop"
                   data-parallax="image"
-                  data-parallax-rate="0.14"
-                  data-parallax-max="34"
-                  className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-108"
+                  data-parallax-rate="0.08"
+                  data-parallax-max="12"
+                  className="w-full h-full object-cover object-[center_2%] transition-transform duration-300 ease-out group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#082B4C] via-[#082B4C]/35 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/15 pointer-events-none" />
 
                 {/* Floating Top Glass Badge */}
-                <div className="absolute top-3.5 left-3.5 flex items-center gap-2 rounded-full bg-[#082B4C]/90 border border-white/20 px-3.5 py-1.5 text-xs font-black text-white backdrop-blur-md shadow-md">
-                  <ShieldCheck className="size-4 text-amber-400" />
-                  <span>Certified Solar Engineers • On-Site</span>
+                <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 rounded-full bg-[#082B4C]/90 border border-white/20 px-2.5 py-1 text-[9.5px] font-black text-white backdrop-blur-md shadow-md">
+                  <ShieldCheck className="size-3 text-amber-400" />
+                  <span>PowerCare • Certified Engineer On-Site</span>
                 </div>
 
-                {/* Floating Bottom Card with Counter Parallax */}
+                {/* Floating Bottom Card at Bottom-Left: Leaves Cleaning Action on Right 100% Clear */}
                 <div
                   data-parallax="float"
-                  data-parallax-rate="-0.12"
-                  data-parallax-max="20"
-                  className="absolute bottom-3.5 left-3.5 right-3.5 p-4 rounded-xl sm:rounded-2xl bg-[#082B4C]/92 border border-white/20 text-white backdrop-blur-md shadow-xl"
+                  data-parallax-rate="-0.08"
+                  data-parallax-max="12"
+                  className="absolute bottom-2.5 left-2.5 max-w-[210px] sm:max-w-[230px] p-2 rounded-xl bg-[#082B4C]/92 border border-white/20 text-white backdrop-blur-md shadow-xl"
                 >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs sm:text-sm font-extrabold text-amber-300">Scheduled 5-Year Maintenance</span>
-                    <span className="text-[10px] font-black uppercase bg-[#E04F16] text-white px-2 py-0.5 rounded-full shadow-2xs">
+                  <div className="flex items-center justify-between gap-1.5">
+                    <span className="text-[10.5px] font-black text-amber-300">5-Yr Free Care</span>
+                    <span className="text-[8px] font-black uppercase bg-[#E04F16] text-white px-1.5 py-0.5 rounded-full shadow-2xs">
                       100% Free
                     </span>
                   </div>
-                  <p className="mt-1.5 text-[11px] sm:text-xs text-white/85 leading-snug">
-                    Periodic physical audits, string voltage benchmark testing, and dust cleaning verification across Andhra Pradesh.
+                  <p className="mt-0.5 text-[9px] text-white/90 leading-tight font-medium">
+                    Scheduled visits every 45 days: Demineralized washing &amp; checks.
                   </p>
-                  <div className="mt-2.5 pt-2 border-t border-white/15 flex items-center justify-between text-[10px] sm:text-[11px] text-white/80 font-bold">
-                    <span className="flex items-center gap-1"><CheckCircle2 className="size-3 text-amber-400" /> FLIR Thermal Scans</span>
-                    <span className="flex items-center gap-1"><CheckCircle2 className="size-3 text-amber-400" /> 48-Hour SLA</span>
-                    <span className="flex items-center gap-1"><CheckCircle2 className="size-3 text-amber-400" /> Free with System</span>
+                  <div className="mt-1 pt-1 border-t border-white/15 flex items-center justify-between text-[8px] text-white/90 font-bold">
+                    <span className="flex items-center gap-0.5"><CheckCircle2 className="size-2 text-amber-400 shrink-0" /> 45 Days Visit</span>
+                    <span className="flex items-center gap-0.5"><CheckCircle2 className="size-2 text-amber-400 shrink-0" /> 48-Hour SLA</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Column (7 Cols): 3 Modern Protocol Cards with 3D Tilt */}
-            <div className="lg:col-span-7 flex flex-col justify-between space-y-3.5 sm:space-y-4">
+            {/* Right Column (7 Cols): 6 Dedicated PowerCare Protocol & Commitment Cards (Tight & Compact - Zero Gap) */}
+            <div className="w-full lg:w-7/12 grid grid-cols-1 sm:grid-cols-2 gap-2">
               
-              {/* Protocol 1: Structural Protocol */}
+              {/* Point 1: Structural Check */}
               <div
                 data-tilt="true"
-                className="parallax-card group rounded-2xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#FFF8F0] p-4 sm:p-5 border border-orange-200/90 hover:border-[#E04F16] shadow-xs hover:shadow-md transition-all duration-300"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#FFF8F0] p-2 sm:p-2.5 border border-orange-200/90 hover:border-[#E04F16] shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="grid size-10 sm:size-11 place-items-center rounded-xl bg-orange-100/80 text-[#E04F16] border border-orange-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                      <Wrench className="size-5" />
+                <div className="flex items-center justify-between gap-1.5 mb-1">
+                  <div className="flex items-center gap-1.5">
+                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-orange-100/90 text-[#E04F16] border border-orange-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                      <Wrench className="size-3" />
                     </div>
                     <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-sm sm:text-base font-black text-[#082B4C]">Structural Protocol</h3>
-                        <span className="rounded-full bg-amber-50 border border-amber-200 px-2 py-0.5 text-[9px] sm:text-[10px] font-extrabold uppercase text-amber-700 tracking-wider">
-                          CIVIL INTEGRITY
-                        </span>
-                      </div>
-                      <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
-                        Rooftop stability check &amp; cyclone-grade wind load resistance audits.
-                      </p>
+                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">1. Structural Check</h3>
+                      <span className="text-[8px] font-black uppercase text-amber-700 tracking-wider">Civil Integrity</span>
                     </div>
                   </div>
+                  <span className="rounded-full bg-orange-50 border border-orange-200/80 px-1.5 py-0.5 text-[8px] font-extrabold text-[#E04F16]">
+                    Every 45 Days
+                  </span>
                 </div>
-                <div className="mt-3 pt-3 border-t border-orange-100/80 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-semibold text-slate-700">
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="size-3.5 text-[#E04F16] shrink-0" />
-                    <span>RCC Anchor Torque Check</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="size-3.5 text-[#E04F16] shrink-0" />
-                    <span>Galvanization Rust Audit</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="size-3.5 text-[#E04F16] shrink-0" />
-                    <span>Module Clamp Tightening</span>
-                  </div>
+                <p className="text-[10px] text-slate-600 font-medium leading-tight">
+                  Rooftop structure stability, RCC anchor torque &amp; cyclone wind resistance audits.
+                </p>
+                <div className="mt-1.5 pt-1 border-t border-orange-100/90 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-[#E04F16] shrink-0" /> RCC Anchor Torque</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-[#E04F16] shrink-0" /> Rust &amp; Clamp Audit</span>
                 </div>
               </div>
 
-              {/* Protocol 2: Electrical Protocol */}
+              {/* Point 2: Electrical Check */}
               <div
                 data-tilt="true"
-                className="parallax-card group rounded-2xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F0F7FF] p-4 sm:p-5 border border-blue-200/80 hover:border-[#0756B9] shadow-xs hover:shadow-md transition-all duration-300"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F0F7FF] p-2 sm:p-2.5 border border-blue-200/80 hover:border-[#0756B9] shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="grid size-10 sm:size-11 place-items-center rounded-xl bg-blue-100/80 text-[#0756B9] border border-blue-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                      <PlugZap className="size-5" />
+                <div className="flex items-center justify-between gap-1.5 mb-1">
+                  <div className="flex items-center gap-1.5">
+                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-blue-100/90 text-[#0756B9] border border-blue-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                      <PlugZap className="size-3" />
                     </div>
                     <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-sm sm:text-base font-black text-[#082B4C]">Electrical Protocol</h3>
-                        <span className="rounded-full bg-blue-50 border border-blue-200 px-2 py-0.5 text-[9px] sm:text-[10px] font-extrabold uppercase text-[#0756B9] tracking-wider">
-                          FIRE &amp; YIELD SAFETY
-                        </span>
-                      </div>
-                      <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
-                        Infrared thermography, string generation analysis, and earthing pit resistance checks.
-                      </p>
+                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">2. Electrical Check</h3>
+                      <span className="text-[8px] font-black uppercase text-[#0756B9] tracking-wider">Fire &amp; Yield Safety</span>
                     </div>
                   </div>
+                  <span className="rounded-full bg-blue-50 border border-blue-200 px-1.5 py-0.5 text-[8px] font-extrabold text-[#0756B9]">
+                    Every 45 Days
+                  </span>
                 </div>
-                <div className="mt-3 pt-3 border-t border-blue-100/80 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-semibold text-slate-700">
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="size-3.5 text-[#0756B9] shrink-0" />
-                    <span>FLIR Infrared Thermal Scan</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="size-3.5 text-[#0756B9] shrink-0" />
-                    <span>String Voc / Isc Testing</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="size-3.5 text-[#0756B9] shrink-0" />
-                    <span>Earthing Resistance &lt; 2Ω</span>
-                  </div>
+                <p className="text-[10px] text-slate-600 font-medium leading-tight">
+                  FLIR infrared scan, string Voc/Isc generation analysis &amp; earthing pit resistance.
+                </p>
+                <div className="mt-1.5 pt-1 border-t border-blue-100/90 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-[#0756B9] shrink-0" /> FLIR Thermal Scan</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-[#0756B9] shrink-0" /> Earthing &lt; 2Ω</span>
                 </div>
               </div>
 
-              {/* Protocol 3: Mechanical & Yield Cleaning */}
+              {/* Point 3: Mechanical Check */}
               <div
                 data-tilt="true"
-                className="parallax-card group rounded-2xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F0FDF4] p-4 sm:p-5 border border-emerald-200/80 hover:border-emerald-600 shadow-xs hover:shadow-md transition-all duration-300"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F8FAFC] p-2 sm:p-2.5 border border-slate-200/90 hover:border-slate-500 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="grid size-10 sm:size-11 place-items-center rounded-xl bg-emerald-100/80 text-emerald-700 border border-emerald-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                      <HardHat className="size-5" />
+                <div className="flex items-center justify-between gap-1.5 mb-1">
+                  <div className="flex items-center gap-1.5">
+                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-slate-100/90 text-slate-700 border border-slate-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                      <Settings2 className="size-3" />
                     </div>
                     <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-sm sm:text-base font-black text-[#082B4C]">Mechanical &amp; Yield Cleaning</h3>
-                        <span className="rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[9px] sm:text-[10px] font-extrabold uppercase text-emerald-700 tracking-wider">
-                          YIELD OPTIMIZATION
-                        </span>
-                      </div>
-                      <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
-                        Low-TDS demineralized washing, conduit inspection, and inverter heat sink maintenance.
-                      </p>
+                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">3. Mechanical Check</h3>
+                      <span className="text-[8px] font-black uppercase text-slate-600 tracking-wider">Hardware Longevity</span>
                     </div>
                   </div>
+                  <span className="rounded-full bg-slate-100 border border-slate-200 px-1.5 py-0.5 text-[8px] font-extrabold text-slate-700">
+                    Every 45 Days
+                  </span>
                 </div>
-                <div className="mt-3 pt-3 border-t border-emerald-100/80 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-semibold text-slate-700">
+                <p className="text-[10px] text-slate-600 font-medium leading-tight">
+                  UV conduit pipe inspection, inverter heat-sink dust blow-out &amp; fastenings check.
+                </p>
+                <div className="mt-1.5 pt-1 border-t border-slate-200 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-slate-600 shrink-0" /> UV Conduit Pipes</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-slate-600 shrink-0" /> Inverter Dust Blow-Out</span>
+                </div>
+              </div>
+
+              {/* Point 4: Panel Cleaning */}
+              <div
+                data-tilt="true"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#F0FDF4] p-2 sm:p-2.5 border border-emerald-200/90 hover:border-emerald-600 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
+              >
+                <div className="flex items-center justify-between gap-1.5 mb-1">
                   <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="size-3.5 text-emerald-600 shrink-0" />
-                    <span>Demineralized Water Wash</span>
+                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-emerald-100/90 text-emerald-700 border border-emerald-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                      <Sparkles className="size-3" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">4. Panel Cleaning</h3>
+                      <span className="text-[8px] font-black uppercase text-emerald-700 tracking-wider">Yield Optimization</span>
+                    </div>
                   </div>
+                  <span className="rounded-full bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 text-[8px] font-extrabold text-emerald-700">
+                    Every 45 Days
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-600 font-medium leading-tight">
+                  Low-TDS demineralized washing with soft micro-fiber brushes to restore max power.
+                </p>
+                <div className="mt-1.5 pt-1 border-t border-emerald-100/90 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-emerald-600 shrink-0" /> Demineralized Water</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-emerald-600 shrink-0" /> Zero Dust Soiling Loss</span>
+                </div>
+              </div>
+
+              {/* Point 5: Every 45 Days Visit */}
+              <div
+                data-tilt="true"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#FFFBEB] p-2 sm:p-2.5 border border-amber-300/90 hover:border-amber-500 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
+              >
+                <div className="flex items-center justify-between gap-1.5 mb-1">
                   <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="size-3.5 text-emerald-600 shrink-0" />
-                    <span>UV Conduit Pipe Inspection</span>
+                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-amber-100/90 text-amber-700 border border-amber-300 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                      <Clock className="size-3" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">5. Every 45 Days Visit</h3>
+                      <span className="text-[8px] font-black uppercase text-amber-800 tracking-wider">Proactive Schedule</span>
+                    </div>
                   </div>
+                  <span className="rounded-full bg-amber-100 border border-amber-300 px-1.5 py-0.5 text-[8px] font-extrabold text-amber-900">
+                    Guaranteed
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-600 font-medium leading-tight">
+                  Fixed scheduled visits every 45 days at your doorstep — zero follow-up needed.
+                </p>
+                <div className="mt-1.5 pt-1 border-t border-amber-100 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-amber-600 shrink-0" /> Automated Schedule</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-amber-600 shrink-0" /> On-Site Logbook Sync</span>
+                </div>
+              </div>
+
+              {/* Point 6: 5 Years Comprehensive Solar Care */}
+              <div
+                data-tilt="true"
+                className="parallax-card group rounded-xl bg-gradient-to-br from-[#FFFDF9] via-white to-[#FEF2F2] p-2 sm:p-2.5 border border-rose-200/90 hover:border-rose-500 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-start"
+              >
+                <div className="flex items-center justify-between gap-1.5 mb-1">
                   <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="size-3.5 text-emerald-600 shrink-0" />
-                    <span>Inverter Fan Dust Blow-Out</span>
+                    <div className="grid size-6 sm:size-6.5 place-items-center rounded-lg bg-rose-100/90 text-rose-700 border border-rose-200 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                      <ShieldCheck className="size-3" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">6. 5-Yr Comprehensive Care</h3>
+                      <span className="text-[8px] font-black uppercase text-rose-700 tracking-wider">100% Free Included</span>
+                    </div>
                   </div>
+                  <span className="rounded-full bg-rose-50 border border-rose-200 px-1.5 py-0.5 text-[8px] font-extrabold text-rose-700">
+                    Zero Fee
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-600 font-medium leading-tight">
+                  All 5 years of labor, audits, visits &amp; cleaning covered 100% free with 48-hr SLA.
+                </p>
+                <div className="mt-1.5 pt-1 border-t border-rose-100/90 flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] font-semibold text-slate-700">
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-rose-600 shrink-0" /> 100% Free for 5 Years</span>
+                  <span className="flex items-center gap-1"><CheckCircle2 className="size-2.5 text-rose-600 shrink-0" /> 48-Hour Rapid SLA</span>
                 </div>
               </div>
 
@@ -1050,56 +1325,56 @@ function Index() {
 
           </div>
 
-          {/* 5 Value Pillars: Clean, Spacious Light Cards Strip */}
-          <div className="mt-8 sm:mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+          {/* 5 Value Pillars: Compact Clean Strip */}
+          <div className="mt-3.5 sm:mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-2.5">
             
-            <div className="rounded-xl sm:rounded-2xl bg-white p-3.5 sm:p-4 border border-orange-200/80 shadow-2xs hover:shadow-md hover:border-[#E04F16] transition-all">
-              <div className="flex items-center gap-2 text-[#E04F16]">
-                <BadgeCheck className="size-4 shrink-0" />
-                <span className="text-xs sm:text-sm font-black text-[#082B4C]">Preventive Care</span>
+            <div className="rounded-xl bg-white p-2.5 sm:p-3 border border-orange-200/80 shadow-2xs hover:shadow-xs hover:border-[#E04F16] transition-all">
+              <div className="flex items-center gap-1.5 text-[#E04F16]">
+                <BadgeCheck className="size-3.5 shrink-0" />
+                <span className="text-xs font-black text-[#082B4C]">Preventive Care</span>
               </div>
-              <p className="mt-1 text-[11px] text-slate-600 font-medium leading-relaxed">
-                Scheduled on-site health audits every 6 months.
+              <p className="mt-0.5 text-[10.5px] text-slate-600 font-medium leading-tight">
+                Scheduled on-site audits every 45 days.
               </p>
             </div>
 
-            <div className="rounded-xl sm:rounded-2xl bg-white p-3.5 sm:p-4 border border-orange-200/80 shadow-2xs hover:shadow-md hover:border-[#E04F16] transition-all">
-              <div className="flex items-center gap-2 text-[#E04F16]">
-                <Phone className="size-4 shrink-0" />
-                <span className="text-xs sm:text-sm font-black text-[#082B4C]">Dedicated Support</span>
+            <div className="rounded-xl bg-white p-2.5 sm:p-3 border border-orange-200/80 shadow-2xs hover:shadow-xs hover:border-[#E04F16] transition-all">
+              <div className="flex items-center gap-1.5 text-[#E04F16]">
+                <Phone className="size-3.5 shrink-0" />
+                <span className="text-xs font-black text-[#082B4C]">Dedicated Support</span>
               </div>
-              <p className="mt-1 text-[11px] text-slate-600 font-medium leading-relaxed">
-                Direct phone &amp; WhatsApp helpline with Vijayawada team.
+              <p className="mt-0.5 text-[10.5px] text-slate-600 font-medium leading-tight">
+                Direct phone &amp; WhatsApp helpline.
               </p>
             </div>
 
-            <div className="rounded-xl sm:rounded-2xl bg-white p-3.5 sm:p-4 border border-orange-200/80 shadow-2xs hover:shadow-md hover:border-[#E04F16] transition-all">
-              <div className="flex items-center gap-2 text-[#E04F16]">
-                <Zap className="size-4 shrink-0" />
-                <span className="text-xs sm:text-sm font-black text-[#082B4C]">Peak Yield</span>
+            <div className="rounded-xl bg-white p-2.5 sm:p-3 border border-orange-200/80 shadow-2xs hover:shadow-xs hover:border-[#E04F16] transition-all">
+              <div className="flex items-center gap-1.5 text-[#E04F16]">
+                <Zap className="size-3.5 shrink-0" />
+                <span className="text-xs font-black text-[#082B4C]">Peak Yield</span>
               </div>
-              <p className="mt-1 text-[11px] text-slate-600 font-medium leading-relaxed">
-                Optimized daily generation so you save maximum on bills.
+              <p className="mt-0.5 text-[10.5px] text-slate-600 font-medium leading-tight">
+                Optimized daily generation on bills.
               </p>
             </div>
 
-            <div className="rounded-xl sm:rounded-2xl bg-white p-3.5 sm:p-4 border border-orange-200/80 shadow-2xs hover:shadow-md hover:border-[#E04F16] transition-all">
-              <div className="flex items-center gap-2 text-[#E04F16]">
-                <Clock className="size-4 shrink-0" />
-                <span className="text-xs sm:text-sm font-black text-[#082B4C]">48-Hour SLA</span>
+            <div className="rounded-xl bg-white p-2.5 sm:p-3 border border-orange-200/80 shadow-2xs hover:shadow-xs hover:border-[#E04F16] transition-all">
+              <div className="flex items-center gap-1.5 text-[#E04F16]">
+                <Clock className="size-3.5 shrink-0" />
+                <span className="text-xs font-black text-[#082B4C]">48-Hour SLA</span>
               </div>
-              <p className="mt-1 text-[11px] text-slate-600 font-medium leading-relaxed">
-                Prompt dispatch of senior solar technicians across AP.
+              <p className="mt-0.5 text-[10.5px] text-slate-600 font-medium leading-tight">
+                Prompt senior engineer dispatch.
               </p>
             </div>
 
-            <div className="col-span-2 sm:col-span-1 rounded-xl sm:rounded-2xl bg-white p-3.5 sm:p-4 border border-orange-200/80 shadow-2xs hover:shadow-md hover:border-[#E04F16] transition-all">
-              <div className="flex items-center gap-2 text-[#E04F16]">
-                <FileCheck2 className="size-4 shrink-0" />
-                <span className="text-xs sm:text-sm font-black text-[#082B4C]">Warranty Shield</span>
+            <div className="col-span-2 sm:col-span-1 rounded-xl bg-white p-2.5 sm:p-3 border border-orange-200/80 shadow-2xs hover:shadow-xs hover:border-[#E04F16] transition-all">
+              <div className="flex items-center gap-1.5 text-[#E04F16]">
+                <FileCheck2 className="size-3.5 shrink-0" />
+                <span className="text-xs font-black text-[#082B4C]">Warranty Shield</span>
               </div>
-              <p className="mt-1 text-[11px] text-slate-600 font-medium leading-relaxed">
-                Service logbooks keep 25-yr panel warranties valid.
+              <p className="mt-0.5 text-[10.5px] text-slate-600 font-medium leading-tight">
+                Logbooks keep 25-yr warranty valid.
               </p>
             </div>
 
@@ -1138,7 +1413,7 @@ function Index() {
         </div>
       </section>
 
-      {/* 5B. ONE POINT OF CONTACT - Your Complete Solar Journey. One Trusted Partner */}
+      {/* 5B. ONE POINT OF CONTACT - Single Window Accountability */}
       <section id="one-point-contact" className="scroll-mt-24 sm:scroll-mt-28 py-10 sm:py-14 bg-gradient-to-b from-white via-orange-50/15 to-white border-b border-orange-200/90">
         <div className="container-site">
           {/* Section Header: Aligned with Site Style */}
@@ -1149,7 +1424,7 @@ function Index() {
                 <span>ONE TRUSTED PARTNER • COMPLETE SOLAR JOURNEY</span>
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-black text-[#082B4C] tracking-tight leading-[1.15]">
-                One Point of Contact: <span className="text-[#E04F16]">Your 7-Step Solar Journey</span>
+                One Point of Contact: <span className="text-[#E04F16]">Single Window Accountability</span>
               </h2>
               <p className="mt-2.5 text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-medium">
                 From the first conversation to 25 years of clean energy generation, your dedicated Amaravati Solar engineer oversees all 7 milestones with zero middlemen, zero finger-pointing, and complete peace of mind.
@@ -1161,193 +1436,127 @@ function Index() {
                 to="/one-point-of-contact"
                 className="group inline-flex items-center gap-2 rounded-full bg-white hover:bg-orange-50/60 border border-orange-200/90 hover:border-[#E04F16] px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-[#082B4C] hover:text-[#E04F16] shadow-xs hover:shadow-sm transition-all"
               >
-                <span>View Complete 7-Step Workflow</span>
+                <span>View Full Accountability Model</span>
                 <ArrowRight className="size-4 text-[#E04F16] transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
 
-          {/* 7-Step Visual Workflow Grid (7 Steps + 1 Dedicated Manager Feature Card = 8 Balanced Cards) */}
+          {/* 4 Pillars of Single-Window Accountability (Why One Point of Contact Matters) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-            {[
-              {
-                step: "01",
-                title: "Consultation & Energy Audit",
-                badge: "ENERGY AUDIT",
-                image: step1Consultation,
-                icon: Headphones,
-                desc: "Personalized solar assessment analyzing monthly power bills & sizing optimal kW capacity.",
-                highlight: "Free Technical Assessment",
-              },
-              {
-                step: "02",
-                title: "Site Check & Shadow Analysis",
-                badge: "DRONE SURVEY",
-                image: step2Inspection,
-                icon: ClipboardCheck,
-                desc: "Physical civil structure survey, azimuth angle, and high-precision drone shadow simulation.",
-                highlight: "3D Shadow Modeling",
-              },
-              {
-                step: "03",
-                title: "Custom CAD System Design",
-                badge: "CAD BLUEPRINT",
-                image: step3Design,
-                icon: SlidersHorizontal,
-                desc: "Tailored 3D CAD rooftop layouts, electrical SLD, and cyclone-rated structure blueprints.",
-                highlight: "Tier-1 Component Sizing",
-              },
-              {
-                step: "04",
-                title: "Subsidy & Loan Guidance",
-                badge: "GOVT SUBSIDY",
-                image: stepSubsidyLoan,
-                icon: FileText,
-                desc: "National portal filing for ₹78,000 PM Surya Ghar DBT subsidy and paperless low-interest loans.",
-                highlight: "Direct ₹78,000 DBT Filing",
-              },
-              {
-                step: "05",
-                title: "Certified Turnkey Installation",
-                badge: "TURNKEY EPC",
-                image: step4Installation,
-                icon: Wrench,
-                desc: "Leak-free RCC mounting, hot-dip galvanized fastening, UV DC cabling, and chemical earthing.",
-                highlight: "Hot-Dip Galvanized Mounts",
-              },
-              {
-                step: "06",
-                title: "Net-Meter Sync & Commissioning",
-                badge: "DISCOM SYNC",
-                image: projectResidentialInverter10kw,
-                icon: PlugZap,
-                desc: "APCPDCL / TGSPDCL liaisoning for bi-directional net-meter, CEIG inspection, and live sync.",
-                highlight: "Bi-Directional Net-Meter",
-              },
-              {
-                step: "07",
-                title: "PowerCare & 25-Yr Support",
-                badge: "LIFETIME CARE",
-                image: projectHybridStorageVilla,
-                icon: ShieldCheck,
-                desc: "5-year scheduled on-site maintenance, FLIR thermal scans, and direct WhatsApp hotline.",
-                highlight: "5 Years Free Maintenance",
-              },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.step}
-                  data-tilt="true"
-                  className="parallax-card group relative rounded-2xl sm:rounded-3xl border border-orange-200/90 bg-white hover:border-[#E04F16] shadow-xs hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Visual 16:9 Image with Parallax Gliding Motion */}
-                    <div className="parallax-wrap relative h-40 sm:h-44 w-full overflow-hidden bg-slate-100">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        data-parallax="image"
-                        data-parallax-rate="0.12"
-                        data-parallax-max="22"
-                        className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-108"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none" />
-
-                      {/* Step Pill */}
-                      <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-0.5 shadow-md border border-orange-200/60 backdrop-blur-sm">
-                        <span className="size-1.5 rounded-full bg-[#E04F16]" />
-                        <span className="text-[10px] font-black text-[#E04F16] tracking-wider">
-                          STEP {item.step}
-                        </span>
-                      </div>
-
-                      {/* Category Tag */}
-                      <div className="absolute top-2.5 right-2.5 rounded-full bg-[#082B4C]/90 text-white border border-white/20 px-2 py-0.5 text-[8.5px] font-black uppercase tracking-wider backdrop-blur-sm shadow-xs">
-                        {item.badge}
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <div className="grid size-7 place-items-center rounded-lg bg-orange-50 text-[#E04F16] border border-orange-200/60 shrink-0 group-hover:scale-110 transition-transform">
-                          <Icon className="size-3.5" />
-                        </div>
-                        <h3 className="text-sm font-black text-[#082B4C] leading-snug line-clamp-1">
-                          {item.title}
-                        </h3>
-                      </div>
-
-                      <p className="mt-1 text-[11px] text-slate-600 leading-relaxed font-medium line-clamp-2">
-                        {item.desc}
-                      </p>
-
-                      <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center gap-1.5 text-[10.5px] font-bold text-[#E04F16]">
-                        <CheckCircle2 className="size-3 text-[#E04F16] shrink-0" />
-                        <span className="truncate">{item.highlight}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bottom Link */}
-                  <div className="px-4 pb-3.5 pt-0">
-                    <Link
-                      to="/one-point-of-contact"
-                      className="inline-flex items-center gap-1 text-[10.5px] font-black text-[#082B4C] group-hover:text-[#E04F16] transition-colors"
-                    >
-                      <span>Explore Milestone</span>
-                      <ArrowRight className="size-3 text-[#E04F16] transition-transform duration-200 group-hover:translate-x-0.5" />
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* 8th Card: Dedicated Project Lead Spotlight with 3D Tilt */}
             <div
               data-tilt="true"
-              className="parallax-card rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#082B4C] via-[#093259] to-[#E04F16] p-5 sm:p-6 text-white shadow-xl flex flex-col justify-between border border-[#0d3b66] relative overflow-hidden group"
+              className="parallax-card rounded-2xl sm:rounded-3xl border border-orange-200/90 bg-white p-5 shadow-xs hover:shadow-xl hover:border-[#E04F16] transition-all flex flex-col justify-between"
             >
-              {/* Radial glow */}
-              <div className="absolute top-0 right-0 -mr-10 -mt-10 size-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-
               <div>
-                <span className="inline-block rounded-full bg-amber-400 text-[#082B4C] text-[9.5px] font-black uppercase px-2.5 py-0.5 tracking-wider shadow-sm">
-                  100% Turnkey Ownership
-                </span>
-                <h3 className="mt-3 text-lg font-black text-white tracking-tight leading-snug">
-                  One Dedicated Project Manager
-                </h3>
-                <p className="mt-2 text-xs text-white/85 leading-relaxed font-medium">
-                  You never have to run between electricians, panel suppliers, DISCOM offices, or banks. 1 Senior Solar Engineer oversees all 7 milestones with zero finger-pointing.
-                </p>
-
-                <div className="mt-4 space-y-1.5 pt-3 border-t border-white/15 text-[11px] font-bold text-white/90">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="size-3.5 text-amber-300 shrink-0" />
-                    <span>Single Window Accountability</span>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="grid size-9 place-items-center rounded-xl bg-orange-50 text-[#E04F16] border border-orange-200/60">
+                    <Users className="size-5" />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="size-3.5 text-amber-300 shrink-0" />
-                    <span>Direct WhatsApp &amp; Phone Line</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="size-3.5 text-amber-300 shrink-0" />
-                    <span>25-Year Long-Term Guarantee</span>
-                  </div>
+                  <span className="rounded-full bg-orange-100 text-[#E04F16] text-[9.5px] font-black px-2.5 py-0.5 uppercase tracking-wider">
+                    Single Lead
+                  </span>
                 </div>
+                <h3 className="text-sm sm:text-base font-black text-[#082B4C]">
+                  Dedicated Project Manager
+                </h3>
+                <p className="mt-1 text-[11px] font-bold text-amber-700">
+                  vs. 5+ Disconnected Vendors
+                </p>
+                <p className="mt-2 text-xs text-slate-600 leading-relaxed font-medium">
+                  One senior solar engineer manages your site check, 3D CAD design, DISCOM paperwork, and commissioning. Never run between uncoordinated freelance contractors.
+                </p>
               </div>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-emerald-700">
+                <CheckCircle2 className="size-3.5 text-emerald-600 shrink-0" />
+                <span>Zero Middlemen</span>
+              </div>
+            </div>
 
-              <div className="mt-5 pt-3">
-                <Link
-                  to="/one-point-of-contact"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white text-[#082B4C] hover:bg-slate-100 font-bold text-xs py-2.5 px-4 shadow-md transition-all active:scale-95"
-                >
-                  <span>View All 7 Steps Details</span>
-                  <ArrowRight className="size-3.5 text-[#E04F16]" />
-                </Link>
+            <div
+              data-tilt="true"
+              className="parallax-card rounded-2xl sm:rounded-3xl border border-orange-200/90 bg-white p-5 shadow-xs hover:shadow-xl hover:border-[#E04F16] transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="grid size-9 place-items-center rounded-xl bg-sky-50 text-sky-600 border border-sky-200/60">
+                    <ShieldCheck className="size-5" />
+                  </div>
+                  <span className="rounded-full bg-sky-100 text-sky-800 text-[9.5px] font-black px-2.5 py-0.5 uppercase tracking-wider">
+                    48-Hr SLA
+                  </span>
+                </div>
+                <h3 className="text-sm sm:text-base font-black text-[#082B4C]">
+                  Zero Finger-Pointing
+                </h3>
+                <p className="mt-1 text-[11px] font-bold text-sky-700">
+                  vs. Blame Games
+                </p>
+                <p className="mt-2 text-xs text-slate-600 leading-relaxed font-medium">
+                  100% turnkey accountability. If panels, inverter, or wiring ever encounter a glitch, Amaravati Solar directly diagnoses and resolves it under our 48-hour service SLA.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-emerald-700">
+                <CheckCircle2 className="size-3.5 text-emerald-600 shrink-0" />
+                <span>25-Yr Support SLA</span>
+              </div>
+            </div>
+
+            <div
+              data-tilt="true"
+              className="parallax-card rounded-2xl sm:rounded-3xl border border-orange-200/90 bg-white p-5 shadow-xs hover:shadow-xl hover:border-[#E04F16] transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="grid size-9 place-items-center rounded-xl bg-purple-50 text-purple-600 border border-purple-200/60">
+                    <PlugZap className="size-5" />
+                  </div>
+                  <span className="rounded-full bg-purple-100 text-purple-800 text-[9.5px] font-black px-2.5 py-0.5 uppercase tracking-wider">
+                    100% Turnkey
+                  </span>
+                </div>
+                <h3 className="text-sm sm:text-base font-black text-[#082B4C]">
+                  DISCOM &amp; CEIG Liaisoning
+                </h3>
+                <p className="mt-1 text-[11px] font-bold text-purple-700">
+                  vs. Customer Office Visits
+                </p>
+                <p className="mt-2 text-xs text-slate-600 leading-relaxed font-medium">
+                  We handle 100% of APCPDCL, APEPDCL &amp; TGSPDCL paperwork, transformer feasibility sanctions, net-meter testing, and safety approvals without you standing in queues.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-emerald-700">
+                <CheckCircle2 className="size-3.5 text-emerald-600 shrink-0" />
+                <span>Complete Regulatory Sync</span>
+              </div>
+            </div>
+
+            <div
+              data-tilt="true"
+              className="parallax-card rounded-2xl sm:rounded-3xl border border-orange-200/90 bg-white p-5 shadow-xs hover:shadow-xl hover:border-[#E04F16] transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="grid size-9 place-items-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200/60">
+                    <FileText className="size-5" />
+                  </div>
+                  <span className="rounded-full bg-emerald-100 text-emerald-800 text-[9.5px] font-black px-2.5 py-0.5 uppercase tracking-wider">
+                    ₹78,000 DBT
+                  </span>
+                </div>
+                <h3 className="text-sm sm:text-base font-black text-[#082B4C]">
+                  Direct Subsidy Tracking
+                </h3>
+                <p className="mt-1 text-[11px] font-bold text-emerald-700">
+                  vs. Application Rejection Risk
+                </p>
+                <p className="mt-2 text-xs text-slate-600 leading-relaxed font-medium">
+                  Our documentation team tracks your PM Surya Ghar national portal application until the direct bank transfer (DBT) credit lands securely in your bank account.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-emerald-700">
+                <CheckCircle2 className="size-3.5 text-emerald-600 shrink-0" />
+                <span>Direct DBT Credit</span>
               </div>
             </div>
           </div>
@@ -1382,98 +1591,154 @@ function Index() {
         </div>
       </section>
 
-      {/* 5C. POWER BACK PROMISE - Solar Performance. Financial Assurance. */}
-      <section id="power-back-promise" className="scroll-mt-24 sm:scroll-mt-28 py-8 sm:py-12 bg-gradient-to-b from-white via-emerald-50/20 to-white border-b border-orange-200/90">
+      {/* 5C. POWER SURE - Performance Guarantee & Guaranteed Solar Savings Plan */}
+      <section id="power-back-promise" className="scroll-mt-24 sm:scroll-mt-28 py-6 sm:py-10 bg-gradient-to-b from-white via-slate-50/50 to-white border-b border-orange-200/90">
         <div className="container-site">
-          <div className="max-w-none scroll-pop scroll-pop-1">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-emerald-700 border border-emerald-600/20">
-              <ShieldCheck className="size-3.5" />
-              <span>PERFORMANCE GUARANTEE • FINANCIAL ASSURANCE</span>
-            </div>
-            <h2 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-black text-[#082B4C] tracking-tight">
-              Power Back Promise
-            </h2>
-            <p className="mt-1.5 text-base sm:text-lg md:text-xl font-bold text-[#E04F16]">
-              Solar Performance. Financial Assurance.
-            </p>
-            <p className="mt-2 text-xs sm:text-sm md:text-base text-slate-700 leading-relaxed max-w-none">
-              At Amaravati Solar Solutions, we stand behind our commitment to reliable solar performance. With our Power-Back Promise, eligible customers can receive <strong className="text-emerald-700 font-extrabold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">₹6 /Unit compensation</strong> when actual solar generation falls below the agreed performance benchmark, subject to applicable terms and conditions.
-            </p>
-          </div>
+          <div className="relative overflow-hidden rounded-3xl sm:rounded-[32px] border border-orange-200/80 bg-gradient-to-br from-white via-orange-50/25 to-sky-50/40 p-6 sm:p-8 md:p-10 shadow-xl shadow-slate-900/5">
+            {/* Ambient Background Decorative Glows */}
+            <div className="pointer-events-none absolute -top-24 -left-24 size-72 rounded-full bg-gradient-to-br from-orange-400/15 via-amber-300/10 to-transparent blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -right-20 size-80 rounded-full bg-gradient-to-tl from-cyan-400/20 via-sky-400/15 to-transparent blur-3xl" />
 
-          {/* 3 Pillars of Power Back Promise with 3D Tilt */}
-          <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            <div data-tilt="true" className="parallax-card rounded-2xl border border-orange-200/80 bg-white p-5 sm:p-6 shadow-2xs hover:border-[#E04F16] hover:shadow-md transition-all">
-              <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                <div className="grid size-11 place-items-center rounded-xl bg-emerald-100 text-emerald-700 font-black text-xl shadow-2xs">
-                  ₹6
-                </div>
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+              {/* Left Column: Eyebrow, Title, Subtitle, Description, CTA */}
+              <div className="lg:col-span-5 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-sm sm:text-base font-extrabold text-[#082B4C]">₹6 /Unit Compensation</h3>
-                  <span className="text-[11px] text-slate-500 font-medium">Generation shortfall backup</span>
+                  <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600/10 px-2.5 py-0.5 text-[10.5px] font-black uppercase tracking-wider text-emerald-700 border border-emerald-600/20 mb-2">
+                    <ShieldCheck className="size-3 text-emerald-600" />
+                    <span>Performance Guarantee • Financial Assurance</span>
+                  </div>
+                  <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-[#082B4C] tracking-tight leading-tight">
+                    Power Sure
+                  </h2>
+                  <p className="mt-1 text-xs sm:text-sm font-bold text-[#E04F16]">
+                    Solar Performance. Financial Assurance.
+                  </p>
+                  <p className="mt-2.5 text-xs sm:text-[13px] text-slate-600 leading-relaxed font-medium">
+                    At Amaravati Solar Solutions, we stand behind our commitment to reliable solar yield. With Power Sure, eligible customers receive <strong className="text-emerald-700 font-extrabold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">₹7 /Unit compensation</strong> when actual generation falls below agreed performance benchmarks, subject to applicable terms.
+                  </p>
+                </div>
+
+                <div className="mt-5 flex flex-wrap items-center gap-2.5">
+                  <Link
+                    to="/power-back-promise"
+                    className="inline-flex items-center gap-2 rounded-full bg-[#082B4C] hover:bg-[#E04F16] text-white px-5 sm:px-6 py-2.5 text-xs sm:text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 active:scale-95 group"
+                  >
+                    <span>Know More about Power Sure</span>
+                    <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                  <Link
+                    to="/book-a-demo"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white hover:bg-orange-50/80 border border-orange-200/90 px-4 py-2.5 text-xs font-bold text-[#082B4C] hover:text-[#E04F16] shadow-2xs transition-all active:scale-95"
+                  >
+                    <span>Free Consultation</span>
+                  </Link>
                 </div>
               </div>
-              <p className="mt-3.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Direct financial assurance if generation falls below committed benchmarks, protecting your monthly return on investment.
-              </p>
-            </div>
 
-            <div data-tilt="true" className="parallax-card rounded-2xl border border-orange-200/80 bg-white p-5 sm:p-6 shadow-2xs hover:border-[#E04F16] hover:shadow-md transition-all">
-              <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                <div className="grid size-11 place-items-center rounded-xl bg-[#082B4C]/10 text-[#082B4C] shadow-2xs">
-                  <Target className="size-5 text-[#082B4C]" />
+              {/* Middle Column: 2x2 Feature Grid with Rich Content */}
+              <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* 1. ₹7/Unit Compensation */}
+                <div className="rounded-xl bg-white/90 p-3 border border-orange-200/80 shadow-2xs hover:border-[#E04F16] transition-all">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <div className="size-7 rounded-lg bg-emerald-100 text-emerald-700 grid place-items-center shrink-0">
+                      <Coins className="size-3.5" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">₹7/Unit Money Back</h3>
+                      <span className="text-[8.5px] font-bold text-emerald-700 uppercase tracking-wide">Generation Shortfall Backup</span>
+                    </div>
+                  </div>
+                  <p className="text-[10.5px] text-slate-600 leading-snug font-medium">
+                    Direct financial assurance if solar yield falls below committed benchmarks, protecting your monthly ROI.
+                  </p>
                 </div>
-                <div>
-                  <h3 className="text-sm sm:text-base font-extrabold text-[#082B4C]">Transparent Benchmarks</h3>
-                  <span className="text-[11px] text-slate-500 font-medium">Clear energy auditing</span>
+
+                {/* 2. ₹0 Repair and Replacement Cost */}
+                <div className="rounded-xl bg-white/90 p-3 border border-orange-200/80 shadow-2xs hover:border-[#087FC1] transition-all">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <div className="size-7 rounded-lg bg-sky-100 text-sky-700 grid place-items-center shrink-0">
+                      <ShieldCheck className="size-3.5" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">₹0 Repair &amp; Replace</h3>
+                      <span className="text-[8.5px] font-bold text-sky-700 uppercase tracking-wide">100% Free Coverage</span>
+                    </div>
+                  </div>
+                  <p className="text-[10.5px] text-slate-600 leading-snug font-medium">
+                    Zero repair, audit &amp; component replacement expenses during your coverage period with 48-hr SLA.
+                  </p>
+                </div>
+
+                {/* 3. Transparent Benchmarks & Proactive Visits */}
+                <div className="rounded-xl bg-white/90 p-3 border border-orange-200/80 shadow-2xs hover:border-amber-500 transition-all">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <div className="size-7 rounded-lg bg-amber-100 text-amber-700 grid place-items-center shrink-0">
+                      <Target className="size-3.5" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">Transparent Audits</h3>
+                      <span className="text-[8.5px] font-bold text-amber-800 uppercase tracking-wide">Every 45 Days Visits</span>
+                    </div>
+                  </div>
+                  <p className="text-[10.5px] text-slate-600 leading-snug font-medium">
+                    Scheduled on-site inspections, FLIR infrared scans, and certified energy audits to ensure peak generation.
+                  </p>
+                </div>
+
+                {/* 4. Real-time Telemetry App & Smarter Solar Value */}
+                <div className="rounded-xl bg-white/90 p-3 border border-orange-200/80 shadow-2xs hover:border-[#082B4C] transition-all">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <div className="size-7 rounded-lg bg-indigo-100 text-indigo-700 grid place-items-center shrink-0">
+                      <Laptop className="size-3.5" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-black text-[#082B4C] leading-tight">Live App Tracking</h3>
+                      <span className="text-[8.5px] font-bold text-indigo-700 uppercase tracking-wide">Continuous IoT Sync</span>
+                    </div>
+                  </div>
+                  <p className="text-[10.5px] text-slate-600 leading-snug font-medium">
+                    Track real-time power generation, export units, inverter health, and monthly savings from your smartphone.
+                  </p>
                 </div>
               </div>
-              <p className="mt-3.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Our goal is to give you greater confidence in your solar investment with transparent commitments and dependable support.
-              </p>
-            </div>
 
-            <div data-tilt="true" className="parallax-card rounded-2xl border border-orange-200/80 bg-white p-5 sm:p-6 shadow-2xs hover:border-[#E04F16] hover:shadow-md transition-all">
-              <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                <div className="grid size-11 place-items-center rounded-xl bg-[#E04F16]/10 text-[#E04F16] shadow-2xs">
-                  <Sparkles className="size-5 text-[#E04F16]" />
-                </div>
-                <div>
-                  <h3 className="text-sm sm:text-base font-extrabold text-[#082B4C]">Smarter Solar Value</h3>
-                  <span className="text-[11px] text-slate-500 font-medium">More confidence, more value</span>
+              {/* Right Column: 3D Glowing Shield */}
+              <div className="lg:col-span-3 flex justify-center lg:justify-end">
+                <div className="relative group">
+                  <div className="absolute inset-0 rounded-full bg-cyan-400/25 blur-2xl group-hover:bg-cyan-400/35 transition-all duration-500" />
+                  <img
+                    src={powerSureShield}
+                    alt="Power Sure 3D Performance Guarantee Shield"
+                    className="relative z-10 w-44 h-44 sm:w-52 sm:h-52 lg:w-56 lg:h-56 object-contain drop-shadow-2xl hover:scale-105 transition-all duration-500 select-none rounded-2xl"
+                    style={{
+                      WebkitMaskImage: "radial-gradient(circle at center, black 68%, transparent 98%)",
+                      maskImage: "radial-gradient(circle at center, black 68%, transparent 98%)",
+                    }}
+                    loading="lazy"
+                  />
                 </div>
               </div>
-              <p className="mt-3.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                More Confidence. More Value. Smarter Solar. Engineered with Tier-1 components and continuous remote monitoring.
-              </p>
             </div>
-          </div>
 
-          {/* Action Strip */}
-          <div className="mt-6 sm:mt-8 rounded-2xl bg-gradient-to-r from-emerald-800 via-[#082B4C] to-[#E04F16] p-5 sm:p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="space-y-1">
-              <p className="text-sm sm:text-base font-extrabold">
+            {/* Bottom Trust Strip */}
+            <div className="mt-6 pt-4 border-t border-slate-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs text-slate-600">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-bold text-slate-700">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-3.5 text-emerald-600" />
+                  <span>Andhra Pradesh &amp; Telangana Guaranteed</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-3.5 text-emerald-600" />
+                  <span>Tier-1 Tested Components</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="size-3.5 text-emerald-600" />
+                  <span>48-Hour Service Response SLA</span>
+                </span>
+              </div>
+              <span className="text-[11px] font-extrabold text-[#082B4C]">
                 More Confidence. More Value. Smarter Solar.
-              </p>
-              <p className="text-xs text-white/80">
-                Talk to our technical team about eligible rooftop solar systems with Power-Back Promise.
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
-              <Link
-                to="/book-a-demo"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-[#082B4C] shadow-md hover:bg-slate-100 transition-all active:scale-95"
-              >
-                <span>Book Free Consultation</span>
-                <ArrowRight className="size-4" />
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2.5 text-xs sm:text-sm font-bold text-white transition-all active:scale-95"
-              >
-                <span>Inquire About Terms</span>
-                <ArrowRight className="size-4" />
-              </Link>
+              </span>
             </div>
           </div>
         </div>
@@ -1584,6 +1849,117 @@ function Index() {
                 View All Projects <ArrowRight className="size-4" />
               </Link>
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. SOLAR POWER ARCHITECTURES (PLACED RIGHT ABOVE FOOTER) */}
+      <section id="solar-solutions" className="pt-8 sm:pt-10 pb-10 sm:pb-14 scroll-mt-24 sm:scroll-mt-28 border-t border-orange-200/90 bg-gradient-to-b from-white via-[#FFFDF9] to-orange-50/20">
+        <div className="container-site">
+          {/* Solutions Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 pb-3 sm:pb-4 border-b border-orange-200/80 mb-6 sm:mb-8">
+            <div>
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 border border-orange-200/80 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-[#D9410E] mb-1.5">
+                <Sparkles className="size-3 text-[#E04F16]" /> High-Performance Engineering
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#082B4C] tracking-tight">
+                Solar <span className="text-[#E04F16]">Power Architectures</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-xl font-medium">
+                Customised On-Grid, Off-Grid, Hybrid, and Commercial architectures engineered for homes, villas &amp; enterprises across AP &amp; Telangana.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <Button asChild variant="cta" className="rounded-full bg-[#E04F16] hover:bg-[#C03507] text-white font-bold text-xs sm:text-sm px-5 py-2 shadow-sm transition-all hover:shadow-md hover:scale-[1.02] active:scale-95">
+                <Link to="/services">
+                  <span>View All 15 Services</span>
+                  <ArrowRight className="size-3.5 ml-1.5" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+
+          {/* 4 Compact, Ultra-Premium Solar Solution Cards (Grid 4-Cols on Desktop, 2 on Tablet, 1 on Mobile) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-4.5 xl:gap-5 items-stretch">
+            {SOLAR_SYSTEMS_SHOWCASE.map((item) => (
+              <div
+                key={item.id}
+                data-tilt="true"
+                className="parallax-card group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-b from-[#FFFDF9] via-white to-[#FFF8F0] border border-orange-200/90 hover:border-[#E04F16] shadow-[0_4px_16px_rgba(224,79,22,0.06)] hover:shadow-[0_16px_36px_rgba(224,79,22,0.15)] transition-all duration-300"
+              >
+                {/* Top Accent Line */}
+                <div className="h-1 w-full bg-gradient-to-r from-orange-200 via-orange-300 to-orange-200 group-hover:from-[#D9410E] group-hover:via-[#E04F16] group-hover:to-[#F97316] transition-all" />
+
+                {/* Photo Area with Parallax Gliding Motion */}
+                <Link to={item.to} preload="intent" className="parallax-wrap block relative aspect-[16/10] w-full overflow-hidden bg-slate-900 shrink-0">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    width={800}
+                    height={500}
+                    loading="lazy"
+                    data-parallax="image"
+                    data-parallax-rate="0.14"
+                    data-parallax-max="28"
+                    className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#082B4C]/80 via-transparent to-transparent opacity-35 group-hover:opacity-15 transition-opacity" />
+
+                  {/* Top Badge */}
+                  <div className="absolute top-2.5 left-2.5">
+                    <span className={cn("inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider border shadow-xs bg-white/95 backdrop-blur-xs", item.badgeColor)}>
+                      {item.badge}
+                    </span>
+                  </div>
+
+                  {/* Bottom Pill */}
+                  <div className="absolute bottom-2.5 right-2.5">
+                    <span className={cn("inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-extrabold shadow-sm", item.pillColor)}>
+                      {item.pill}
+                    </span>
+                  </div>
+                </Link>
+
+                {/* Card Body */}
+                <div className="p-4 sm:p-4.5 flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="text-[10px] font-black uppercase tracking-wider text-[#E04F16]">
+                      {item.subtitle}
+                    </div>
+                    <h3 className="text-base sm:text-[17px] font-black text-[#082B4C] group-hover:text-[#E04F16] transition-colors leading-snug mt-0.5">
+                      <Link to={item.to} preload="intent" className="hover:underline">
+                        {item.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-2 text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium">
+                      {item.desc}
+                    </p>
+
+                    {/* 3 Key Checkmarks */}
+                    <ul className="mt-3 space-y-1.5 border-t border-orange-100/80 pt-2.5 text-[11px] font-semibold text-slate-700">
+                      {item.perks.map((perk, i) => (
+                        <li key={i} className="flex items-center gap-1.5">
+                          <CheckCircle2 className="size-3.5 shrink-0 text-[#E04F16]" />
+                          <span className="truncate">{perk}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Bottom CTA Button */}
+                  <div className="mt-4 pt-3 border-t border-orange-100">
+                    <Link
+                      to={item.to}
+                      preload="intent"
+                      className="w-full inline-flex items-center justify-center gap-1.5 rounded-full bg-orange-50/70 hover:bg-[#E04F16] border border-orange-200/90 hover:border-[#E04F16] text-[#082B4C] hover:text-white text-xs font-bold py-2 px-3 shadow-2xs hover:shadow transition-all select-none group/btn"
+                    >
+                      <span>{item.ctaText}</span>
+                      <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

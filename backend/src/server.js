@@ -204,6 +204,8 @@ app.post("/api/enquiries", async (req, res) => {
       city = "Amaravati",
       message,
       notes,
+      reference,
+      source,
     } = req.body;
 
     if (!full_name || !phone) {
@@ -211,8 +213,17 @@ app.post("/api/enquiries", async (req, res) => {
     }
 
     const emailValue = email || `inquiry-${phone.replace(/[^0-9]/g, "")}@amaravatisolarsolutions.com`;
+    const refId = reference || `ASS-ENQ-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
-    await insertRow("enquiries", {
+    const combinedNotes = [
+      notes,
+      source ? `Source: ${source}` : null,
+      `Ref: ${refId}`,
+    ]
+      .filter(Boolean)
+      .join(" | ");
+
+    const result = await insertRow("enquiries", {
       full_name,
       phone,
       email: emailValue,
@@ -221,12 +232,14 @@ app.post("/api/enquiries", async (req, res) => {
       city,
       message: message || null,
       status: "New",
-      notes: notes || null,
+      notes: combinedNotes || null,
     });
 
-    console.log("[MySQL] Enquiry created:", full_name, service);
+    console.log("[MySQL] Enquiry created:", full_name, service, refId);
     res.status(201).json({
       success: true,
+      reference: refId,
+      id: result?.insertId,
       message: "Enquiry submitted successfully",
     });
   } catch (error) {

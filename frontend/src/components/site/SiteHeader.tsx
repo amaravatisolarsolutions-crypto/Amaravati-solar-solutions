@@ -1,5 +1,6 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
+  ArrowRight,
   ChevronDown,
   Clock,
   Headphones,
@@ -57,7 +58,6 @@ export function SiteHeader() {
     if (label === "About Us") return pathname === "/about" || pathname.startsWith("/about");
     if (label === "Services") return isServicesActive;
     if (label === "Our Solar Solutions") return isSolarActive;
-    if (label === "Solar Calculation" || label === "Solar Calculator") return pathname === "/solar-calculator" || pathname === "/solar-calculation";
     if (label === "Projects") return pathname === "/projects" || pathname.startsWith("/projects");
     if (label === "Contact Us") return pathname === "/contact" || pathname.startsWith("/contact");
     return pathname === to || (to !== "/" && pathname.startsWith(to));
@@ -235,7 +235,7 @@ export function SiteHeader() {
           scrolled ? "shadow-md border-b border-slate-200/80" : "border-b border-slate-100"
         )}
       >
-        <div className="container-site flex h-16 sm:h-[4.25rem] lg:h-[4.5rem] items-center justify-between gap-4">
+        <div className="container-site flex h-16 sm:h-[4.5rem] lg:h-[4.85rem] xl:h-[5.25rem] items-center justify-between gap-2 sm:gap-3 xl:gap-4">
         {/* Logo */}
         <Link
           to="/"
@@ -254,12 +254,12 @@ export function SiteHeader() {
             alt="Amaravati Solar Solutions"
             width={1016}
             height={307}
-            className="h-10 sm:h-11 md:h-12 xl:h-[3.2rem] w-auto object-contain transition-transform duration-200 hover:scale-102"
+            className="h-11 sm:h-12 md:h-13 lg:h-14 xl:h-[3.85rem] 2xl:h-[4.15rem] w-auto object-contain transition-transform duration-200 hover:scale-102"
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-2.5 xl:gap-5 lg:flex">
+        <div className="hidden items-center gap-1.5 lg:gap-2 xl:gap-3 2xl:gap-5 lg:flex min-w-0">
           <nav className="flex items-center gap-0.5 xl:gap-1" aria-label="Main">
             {NAV.map((item) => {
               const isActive = getIsActive(item.label, item.to);
@@ -283,7 +283,7 @@ export function SiteHeader() {
                       href={item.to}
                       onClick={(e) => handleNavClick(e, item)}
                       className={cn(
-                        "relative px-2.5 xl:px-3 py-1.5 rounded-full text-[13px] xl:text-[14px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1",
+                        "relative px-1.5 lg:px-2 xl:px-2.5 2xl:px-3 py-1.5 rounded-full text-[12px] lg:text-[12.5px] xl:text-[13.5px] 2xl:text-[14px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1",
                         isActive
                           ? "bg-primary/10 text-primary font-bold border border-primary/25 shadow-sm"
                           : "text-[#0c2340] hover:text-primary hover:bg-slate-100/80"
@@ -292,7 +292,7 @@ export function SiteHeader() {
                       <span>{item.label}</span>
                       <ChevronDown
                         className={cn(
-                          "size-3.5 text-slate-400 transition-transform duration-200",
+                          "size-3 xl:size-3.5 text-slate-400 transition-transform duration-200",
                           servicesDropdownOpen ? "rotate-180 text-primary" : "group-hover:rotate-180 group-hover:text-primary"
                         )}
                       />
@@ -368,16 +368,17 @@ export function SiteHeader() {
                       href={item.to}
                       onClick={(e) => handleNavClick(e, item)}
                       className={cn(
-                        "relative px-2 xl:px-2.5 py-1.5 rounded-full text-[12.5px] xl:text-[13.5px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1",
+                        "relative px-1.5 lg:px-2 xl:px-2.5 2xl:px-3 py-1.5 rounded-full text-[12px] lg:text-[12.5px] xl:text-[13.5px] 2xl:text-[14px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1",
                         isSolarActive
                           ? "bg-primary/10 text-primary font-bold border border-primary/25 shadow-sm"
                           : "text-[#0c2340] hover:text-primary hover:bg-slate-100/80"
                       )}
                     >
-                      <span>{item.label}</span>
+                      <span className="2xl:hidden">Solar Solutions</span>
+                      <span className="hidden 2xl:inline">{item.label}</span>
                       <ChevronDown
                         className={cn(
-                          "size-3.5 text-slate-400 transition-transform duration-200",
+                          "size-3 xl:size-3.5 text-slate-400 transition-transform duration-200",
                           solutionsDropdownOpen ? "rotate-180 text-primary" : "group-hover:rotate-180 group-hover:text-primary"
                         )}
                       />
@@ -422,7 +423,7 @@ export function SiteHeader() {
                     href={item.to}
                     onClick={(e) => handleNavClick(e, item)}
                     className={cn(
-                      "relative px-2.5 xl:px-3 py-1.5 rounded-full text-[13px] xl:text-[14px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1.5",
+                      "relative px-1.5 lg:px-2 xl:px-2.5 2xl:px-3 py-1.5 rounded-full text-[12px] lg:text-[12.5px] xl:text-[13.5px] 2xl:text-[14px] font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer flex items-center gap-1.5",
                       isActive
                         ? "bg-primary/10 text-primary font-bold border border-primary/25 shadow-sm"
                         : "text-[#0c2340] hover:text-primary hover:bg-slate-100/80"
@@ -432,12 +433,12 @@ export function SiteHeader() {
                   </a>
 
                   {item.label === "Projects" && (
-                    <div className="flex items-center gap-1.5 border-l border-slate-300 pl-2.5 xl:pl-3.5 ml-1">
+                    <div className="hidden 2xl:flex items-center gap-1.5 border-l border-slate-300 pl-2.5 2xl:pl-3.5 ml-1">
                       <a
                         href={`tel:${COMPANY.phone.replace(/[^0-9+]/g, "")}`}
-                        className="flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-full text-[13px] xl:text-[14px] font-bold text-[#082B4C] hover:text-[#087FC1] hover:bg-sky-50 transition-colors whitespace-nowrap"
+                        className="flex items-center gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-full text-[13px] 2xl:text-[14px] font-bold text-[#082B4C] hover:text-[#087FC1] hover:bg-sky-50 transition-colors whitespace-nowrap"
                       >
-                        <Headphones className="size-3.5 xl:size-4 text-[#087FC1]" />
+                        <Headphones className="size-3.5 2xl:size-4 text-[#087FC1]" />
                         <span>24/7 Support</span>
                       </a>
                     </div>
@@ -450,9 +451,10 @@ export function SiteHeader() {
           {/* CTA Button: Get A Quote */}
           <Link
             to="/book-a-demo"
-            className="inline-flex items-center justify-center rounded-[30px] bg-[#B83A16] px-4 xl:px-5 py-2 text-xs xl:text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#A33112] hover:shadow-md hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0"
+            className="group relative inline-flex items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] px-3.5 lg:px-4 xl:px-5 py-2 text-xs xl:text-sm font-extrabold text-white shadow-md shadow-orange-500/20 hover:shadow-lg hover:shadow-orange-500/35 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 whitespace-nowrap shrink-0 border border-orange-400/40"
           >
-            Get A Quote
+            <span>Get A Quote</span>
+            <ArrowRight className="size-3 xl:size-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
           </Link>
         </div>
 
@@ -460,9 +462,10 @@ export function SiteHeader() {
         <div className="hidden md:flex lg:hidden items-center gap-2">
           <Link
             to="/book-a-demo"
-            className="inline-flex items-center justify-center rounded-[30px] bg-[#B83A16] px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#A33112] whitespace-nowrap"
+            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] px-3.5 py-1.5 text-xs font-bold text-white shadow-sm hover:shadow-md transition-all active:scale-95 whitespace-nowrap"
           >
-            Get A Quote
+            <span>Get A Quote</span>
+            <ArrowRight className="size-3" />
           </Link>
         </div>
 
@@ -633,27 +636,6 @@ export function SiteHeader() {
               )}
             </div>
 
-            {/* Solar Calculation */}
-            <a
-              href="/solar-calculator"
-              onClick={(e) => {
-                e.preventDefault();
-                setOpen(false);
-                navigate({ to: "/solar-calculator" });
-              }}
-              className={cn(
-                "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm sm:text-base font-semibold transition-all cursor-pointer",
-                pathname === "/solar-calculator" || pathname === "/solar-calculation"
-                  ? "bg-primary/10 text-primary font-bold border border-primary/20 shadow-xs"
-                  : "text-[#0c2340] hover:bg-slate-50 hover:text-primary active:bg-slate-100"
-              )}
-            >
-              <div className="flex items-center gap-2">
-                <Sparkles className="size-4 text-[#E04F16]" />
-                <span>Solar Calculation</span>
-              </div>
-            </a>
-
             {/* Projects */}
             <a
               href="/projects"
@@ -706,9 +688,10 @@ export function SiteHeader() {
               onClick={() => {
                 setOpen(false);
               }}
-              className="mt-2 inline-flex items-center justify-center rounded-[30px] bg-[#B83A16] py-3 text-sm sm:text-base font-bold text-white shadow-sm transition-all hover:bg-[#A33112] active:scale-95 text-center"
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] hover:from-[#C03507] hover:to-[#D9410E] py-3 px-6 text-sm sm:text-base font-bold text-white shadow-md shadow-orange-500/20 active:scale-95 transition-all text-center"
             >
-              Get A Quote
+              <span>Get A Quote</span>
+              <ArrowRight className="size-4" />
             </Link>
           </div>
         </nav>

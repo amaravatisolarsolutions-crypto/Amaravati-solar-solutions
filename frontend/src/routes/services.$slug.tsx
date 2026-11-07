@@ -41,15 +41,22 @@ export const Route = createFileRoute("/services/$slug")({
     if (!service) throw notFound();
     return { service };
   },
-  head: ({ loaderData }) => ({
+  head: ({ loaderData, params }) => ({
     meta: loaderData
       ? [
-          { title: `${loaderData.service.title} — Amaravati Solar Solutions` },
-          { name: "description", content: loaderData.service.short },
+          { title: `${loaderData.service.title} in Andhra Pradesh — Amaravati Solar Solutions` },
+          { name: "description", content: `${loaderData.service.short} Installed by Amaravati Solar Solutions with ₹78,000 PM Surya Ghar subsidy support and 25-year warranty across AP.` },
+          { name: "keywords", content: `${loaderData.service.title}, ${loaderData.service.slug}, rooftop solar andhra pradesh, solar installation amaravati, solar panels vijayawada, solar power guntur` },
           { property: "og:title", content: `${loaderData.service.title} — Amaravati Solar Solutions` },
           { property: "og:description", content: loaderData.service.short },
+          { property: "og:url", content: `https://amaravatisolarsolutions.com/services/${params.slug}` },
+          { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+          { name: "twitter:card", content: "summary_large_image" },
         ]
       : [{ title: "Service not found" }, { name: "robots", content: "noindex" }],
+    links: loaderData
+      ? [{ rel: "canonical", href: `https://amaravatisolarsolutions.com/services/${params.slug}` }]
+      : [],
   }),
   component: ServiceDetail,
 });

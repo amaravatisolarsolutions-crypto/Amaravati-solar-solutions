@@ -22,10 +22,35 @@ import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
 export const Route = createFileRoute("/projects/")({
   head: () => ({
     meta: [
-      { title: "Solar Projects — Amaravati Solar Solutions" },
-      { name: "description", content: "Browse residential, commercial and industrial solar installations by Amaravati Solar Solutions." },
-      { property: "og:title", content: "Solar Projects — Amaravati Solar Solutions" },
-      { property: "og:description", content: "Residential, commercial and industrial solar installations." },
+      { title: "Solar Projects Portfolio — Amaravati Solar Solutions" },
+      {
+        name: "description",
+        content:
+          "Browse successful residential, commercial and industrial solar installations executed by Amaravati Solar Solutions across Andhra Pradesh. Real photos, kW capacities, and customer savings.",
+      },
+      {
+        name: "keywords",
+        content:
+          "solar projects andhra pradesh, rooftop solar portfolio amaravati, solar installations vijayawada, commercial solar projects guntur, residential solar photos",
+      },
+      { property: "og:title", content: "Solar Projects Portfolio — Amaravati Solar Solutions" },
+      {
+        property: "og:description",
+        content:
+          "Explore real-world rooftop solar installations across Andhra Pradesh: Villas, commercial complexes, and industrial warehouses.",
+      },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/projects" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Completed Solar Projects — Amaravati Solar Solutions" },
+      {
+        name: "twitter:description",
+        content:
+          "Real solar rooftop projects installed by Amaravati Solar Solutions in AP.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/projects" },
     ],
   }),
   component: Projects,

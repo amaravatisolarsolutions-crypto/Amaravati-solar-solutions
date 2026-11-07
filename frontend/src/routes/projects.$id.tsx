@@ -30,15 +30,21 @@ export const Route = createFileRoute("/projects/$id")({
     if (!project) throw notFound();
     return { project };
   },
-  head: ({ loaderData }) => ({
+  head: ({ loaderData, params }) => ({
     meta: loaderData
       ? [
-          { title: `${loaderData.project.title} — Amaravati Solar Solutions` },
-          { name: "description", content: loaderData.project.summary },
+          { title: `${loaderData.project.title} — Solar Installation Case Study | Amaravati Solar Solutions` },
+          { name: "description", content: `${loaderData.project.summary} Installed by Amaravati Solar Solutions in ${loaderData.project.location || "Andhra Pradesh"}. Capacity: ${loaderData.project.capacity || "Solar System"}.` },
           { property: "og:title", content: `${loaderData.project.title} — Solar Installation Case Study` },
           { property: "og:description", content: loaderData.project.summary },
+          { property: "og:url", content: `https://amaravatisolarsolutions.com/projects/${params.id}` },
+          { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+          { name: "twitter:card", content: "summary_large_image" },
         ]
       : [{ title: "Project not found" }, { name: "robots", content: "noindex" }],
+    links: loaderData
+      ? [{ rel: "canonical", href: `https://amaravatisolarsolutions.com/projects/${params.id}` }]
+      : [],
   }),
   component: ProjectDetail,
 });

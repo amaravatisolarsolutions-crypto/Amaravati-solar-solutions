@@ -4,15 +4,18 @@ import {
   ArrowRight,
   BadgeCheck,
   CheckCircle2,
+  ClipboardCheck,
   Clock,
   FileCheck2,
   FileText,
   HardHat,
+  Headphones,
   HelpCircle,
   Laptop,
   Phone,
   PlugZap,
   ShieldCheck,
+  SlidersHorizontal,
   Sparkles,
   Sun,
   Users,
@@ -25,6 +28,9 @@ import step1Consultation from "@/assets/process-step-1-consultation.jpg";
 import step2Inspection from "@/assets/process-step-2-inspection.jpg";
 import step3Design from "@/assets/process-step-3-design.jpg";
 import step4Installation from "@/assets/process-step-4-installation.jpg";
+import stepSubsidyLoan from "@/assets/process-step-subsidy-loan.jpg";
+import projectResidentialInverter10kw from "@/assets/project-residential-inverter-10kw.jpg";
+import projectHybridStorageVilla from "@/assets/project-hybrid-storage-villa-8kw.jpg";
 import solarWatermark from "@/assets/solar-watermark-bg.jpg";
 import { COMPANY } from "@/lib/site-data";
 import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
@@ -32,18 +38,35 @@ import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
 export const Route = createFileRoute("/process")({
   head: () => ({
     meta: [
-      { title: "End-to-End Solar Installation Process — Amaravati Solar Solutions" },
+      { title: "7-Step Turnkey Solar Installation Process — Amaravati Solar Solutions" },
       {
         name: "description",
         content:
-          "Discover our transparent 4-step solar execution process: Consultation, On-Site 3D Shadow Inspection, Custom CAD Design & Subsidy Filing, and Certified Net-Metering Installation.",
+          "Discover our transparent 7-step turnkey solar execution process: Consultation, On-Site 3D Shadow Inspection, Custom CAD Design, PM Surya Ghar Subsidy, Turnkey EPC, Net-Metering, and 25-Year PowerCare. Handover in 10-14 days.",
       },
-      { property: "og:title", content: "End-to-End Solar Execution Process — Amaravati Solar Solutions" },
+      {
+        name: "keywords",
+        content:
+          "solar installation process andhra pradesh, rooftop solar installation steps, solar net metering approval ap, pm surya ghar subsidy process, solar site survey procedure",
+      },
+      { property: "og:title", content: "7-Step Turnkey Solar Execution Process — Amaravati Solar Solutions" },
       {
         property: "og:description",
         content:
-          "Turnkey solar execution across Andhra Pradesh & Telangana. 10-15 day handover, 100% DISCOM liaisoning, and 25-year performance warranty.",
+          "Turnkey solar execution across Andhra Pradesh. 10-14 day handover, 100% DISCOM liaisoning, and 25-year performance warranty.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/process" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "7-Step Solar Installation Process — Amaravati Solar Solutions" },
+      {
+        name: "twitter:description",
+        content:
+          "Transparent rooftop solar installation from audit to DISCOM net-metering synchronization.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/process" },
     ],
   }),
   component: ProcessPage,
@@ -54,7 +77,7 @@ const PROCESS_STEPS = [
     step: "01",
     tagline: "DAY 1 • INITIAL DISCOVERY",
     title: "Consultation & Energy Audit",
-    icon: Users,
+    icon: Headphones,
     image: step1Consultation,
     desc: "Our solar engineers analyze your past 12-month electricity bills, average daylight energy demand, peak wattage spikes, and budget to recommend the most cost-effective solar architecture (On-Grid, Off-Grid, or Hybrid).",
     deliverables: [
@@ -71,9 +94,9 @@ const PROCESS_STEPS = [
     step: "02",
     tagline: "DAYS 2–3 • PRECISION AUDIT",
     title: "Site Inspection & 3D Shadow Modeling",
-    icon: HardHat,
+    icon: ClipboardCheck,
     image: step2Inspection,
-    desc: "A certified solar engineer visits your premises in Vijayawada, Guntur, or across Andhra Pradesh. We assess roof orientation, tilt angle, civil strength of RCC slab or metal shed, and run 365-day 3D solar shadow path simulations.",
+    desc: "A certified solar engineer visits your premises across AP & Telangana. We assess roof orientation, tilt angle, civil strength of RCC slab or metal shed, and run 365-day 3D solar shadow path simulations.",
     deliverables: [
       "Drone / Digital Rooftop Boundary Mapping",
       "3D Seasonal Shadow Analysis (Parapet, Water Tanks, Trees)",
@@ -86,37 +109,86 @@ const PROCESS_STEPS = [
   },
   {
     step: "03",
-    tagline: "DAYS 4–7 • ENGINEERING & APPROVALS",
-    title: "Customized CAD Design & Subsidy Filing",
-    icon: Laptop,
+    tagline: "DAYS 4–5 • ENGINEERING BLUEPRINTS",
+    title: "Customized 3D CAD Design & SLD",
+    icon: SlidersHorizontal,
     image: step3Design,
-    desc: "Our design team creates customized 3D CAD layouts and Single-Line Diagrams (SLD). We select Tier-1 Mono-PERC / TOPCon bifacial panels, wind-load certified galvanised mounting structures, and manage 100% of DISCOM & subsidy portal paperwork.",
+    desc: "Our design team creates customized 3D CAD layouts and Single-Line Diagrams (SLD). We select Tier-1 Mono-PERC / TOPCon bifacial panels, wind-load certified galvanised mounting structures, and electrical protection schematics.",
     deliverables: [
       "Custom 3D CAD Rooftop Blueprint & Panel String Layout",
       "Single-Line Diagram (SLD) & Electrical Protection Schematic",
       "Wind-Load Certified Galvanized Structure Design (170 km/h rating)",
-      "National Portal PM Surya Ghar Subsidy Registration",
+      "Tier-1 ALMM & BIS Certified Component Sizing",
       "Itemized, Transparent BOM Contract with Fixed Price Guarantee",
     ],
-    duration: "3–4 Business Days",
-    highlights: ["Custom 3D CAD Plan", "Direct DBT Subsidy Filing", "No Hidden Charges"],
+    duration: "1–2 Business Days",
+    highlights: ["Custom 3D CAD Plan", "170 km/h Wind Design", "Tier-1 Module Spec"],
   },
   {
     step: "04",
-    tagline: "DAYS 8–14 • COMMISSIONING & HANDOVER",
-    title: "Installation, Net-Metering & PowerCare Handover",
+    tagline: "DAYS 5–7 • SUBSIDY & LOW-INTEREST LOANS",
+    title: "PM Surya Ghar Subsidy & Paperless Loans",
+    icon: FileText,
+    image: stepSubsidyLoan,
+    desc: "Dedicated subsidy team manages complete national portal filing for the ₹78,000 direct bank transfer (DBT) subsidy and paperless low-interest collateral-free bank financing options.",
+    deliverables: [
+      "PM Surya Ghar National Portal Token Registration",
+      "Direct ₹78,000 DBT Application Documentation",
+      "Paperless Low-Interest Loan Assistance (SBI / Canara / PNB)",
+      "DISCOM Technical Feasibility Approval Sanction",
+    ],
+    duration: "2–3 Business Days",
+    highlights: ["Direct ₹78,000 DBT", "Paperless Bank Loans", "DISCOM Sanction"],
+  },
+  {
+    step: "05",
+    tagline: "DAYS 8–10 • TURNKEY EPC INSTALLATION",
+    title: "Certified Turnkey EPC Installation",
     icon: Wrench,
     image: step4Installation,
-    desc: "Our certified installation crew mounts the system with heavy-duty fasteners, runs UV-resistant DC cabling in conduit pipes, sets up chemical earthing pits (< 2Ω) and lightning protection, followed by DISCOM bi-directional net-meter sync.",
+    desc: "Our certified installation crew mounts the system with heavy-duty leak-free mechanical anchors, runs UV-resistant DC cabling in conduit pipes, sets up chemical earthing pits (< 2Ω) and lightning surge arrestors.",
     deliverables: [
       "Precision Rooftop Mounting without Roof Punctures/Leaks",
-      "Dual Chemical Earthing Pits & Class-II SPD Surge Arrestors",
-      "DISCOM Bi-Directional Net-Meter Synchronization",
-      "Mobile IoT App Setup for Real-Time Generation Telemetry",
-      "Official 25-Year Panel Warranty & PowerCare 5-Yr Care Pack",
+      "Hot-Dip Galvanized Mounting Structures (80+ microns)",
+      "Dual Chemical Earthing Pits (< 2Ω) & Class-II SPD Surge Arrestors",
+      "UV-Resistant DC/AC Cabling in Rigid Conduits",
+      "String Inverter Commissioning & Initial Power Testing",
     ],
-    duration: "5–7 Business Days",
-    highlights: ["DISCOM Testing & Handover", "25-Yr Performance Guarantee", "PowerCare 5-Yr Maintenance"],
+    duration: "2–3 Business Days",
+    highlights: ["Leak-Free Mounting", "Dual Chemical Earthing", "Tier-1 Installation"],
+  },
+  {
+    step: "06",
+    tagline: "DAYS 11–14 • NET-METERING & GRID SYNC",
+    title: "DISCOM Net-Meter Synchronization",
+    icon: PlugZap,
+    image: projectResidentialInverter10kw,
+    desc: "End-to-end liaisoning with APCPDCL, APEPDCL, or TGSPDCL for bi-directional net-meter installation, CEIG electrical safety sanction, and synchronization with IoT mobile monitoring setup.",
+    deliverables: [
+      "Bi-Directional Net-Meter Installation & Utility Seal",
+      "AP/TS DISCOM Electrical Inspectorate (CEIG) Clearance",
+      "IoT Mobile App Setup for Real-Time Solar Generation Telemetry",
+      "Utility Billing Tariff Calibration to Solar Net-Metering",
+    ],
+    duration: "3–4 Business Days",
+    highlights: ["Bi-Directional Net-Meter", "DISCOM Liaisoning", "IoT Generation App"],
+  },
+  {
+    step: "07",
+    tagline: "25 YEARS • POWERCARE LIFETIME SUPPORT",
+    title: "PowerCare 5-Yr Servicing & 25-Yr Support",
+    icon: ShieldCheck,
+    image: projectHybridStorageVilla,
+    desc: "Every system includes our 5-year comprehensive PowerCare maintenance pack: scheduled bi-annual physical audits, FLIR thermal scans, demineralized module washing, 48-hour resolution SLA, and 25-year performance warranties.",
+    deliverables: [
+      "5-Year Free Scheduled On-Site Maintenance Audits",
+      "FLIR Thermal Infrared Camera Hotspot Inspections",
+      "Demineralized Water High-Efficiency Panel Washing",
+      "48-Hour On-Site Resolution SLA Guarantee",
+      "Official 25-Year Linear Power Output Warranty Handover",
+    ],
+    duration: "25-Year Coverage",
+    highlights: ["5-Yr Free Maintenance", "48-Hour On-Site SLA", "25-Yr Warranty"],
   },
 ];
 
@@ -220,7 +292,7 @@ function ProcessPage() {
         </div>
       </section>
 
-      {/* 2. MAIN 4-STEP DETAILED BREAKDOWN */}
+      {/* 2. MAIN 7-STEP DETAILED BREAKDOWN */}
       <section className="container-site pt-8 sm:pt-12 space-y-8 sm:space-y-12">
         {PROCESS_STEPS.map((step, idx) => {
           const Icon = step.icon;

@@ -99,7 +99,7 @@ async function runPrerender() {
           }
 
           // Copy common static root files
-          ['favicon.png', 'logo.png', 'robots.txt'].forEach((f) => {
+          ['favicon.png', 'logo.png', 'robots.txt', 'sitemap.xml', 'googledfef471ef71211f1.html'].forEach((f) => {
             const src = path.join(distDir, f);
             const dst = path.join(__dirname, '..', f);
             if (fs.existsSync(src)) {

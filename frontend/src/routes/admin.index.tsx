@@ -13,6 +13,8 @@ import {
   Sun,
   Zap,
   Phone,
+  PhoneCall,
+  Calendar,
   Mail,
   CheckCircle2,
   X,
@@ -32,6 +34,7 @@ import {
   Check,
 } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
+import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
 import residential from "@/assets/hero-residential.jpg";
 import commercial from "@/assets/hero-commercial.jpg";
@@ -360,6 +363,8 @@ function AdminDashboard() {
   const [serviceCategory, setServiceCategory] = useState<string>("ALL");
   const [projectCategory, setProjectCategory] = useState<string>("ALL");
   const [inquirySearch, setInquirySearch] = useState<string>("");
+  const [inquiryTypeFilter, setInquiryTypeFilter] = useState<"ALL" | "WHATSAPP" | "APPLIED_PLAN" | "DEMO" | "GENERAL">("ALL");
+  const [inquiryStatusFilter, setInquiryStatusFilter] = useState<"ALL" | "New" | "Contacted" | "Completed">("ALL");
   const [quotationSearch, setQuotationSearch] = useState<string>("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -379,6 +384,7 @@ function AdminDashboard() {
 
   const [isQuotationModalOpen, setIsQuotationModalOpen] = useState(false);
   const [viewingQuotation, setViewingQuotation] = useState<AdminQuotation | null>(null);
+  const [viewingInquiry, setViewingInquiry] = useState<AdminInquiry | null>(null);
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -853,13 +859,104 @@ function AdminDashboard() {
       ? projects
       : projects.filter((p) => p.category.toUpperCase() === projectCategory.toUpperCase());
 
-  const filteredInquiries = inquiries.filter(
-    (inq) =>
-      inq.name.toLowerCase().includes(inquirySearch.toLowerCase()) ||
-      inq.phone.includes(inquirySearch) ||
-      inq.service.toLowerCase().includes(inquirySearch.toLowerCase()) ||
-      inq.location.toLowerCase().includes(inquirySearch.toLowerCase())
-  );
+  const getInquirySourceBadge = (inq: AdminInquiry) => {
+    const sUpper = inq.service.toUpperCase();
+    const nUpper = (inq.notes || "").toUpperCase();
+    if (sUpper.includes("WHATSAPP") || nUpper.includes("WHATSAPP")) {
+      return {
+        label: "WhatsApp Quote",
+        bg: "bg-emerald-50 text-emerald-800 border-emerald-300",
+        icon: PhoneCall,
+      };
+    }
+    if (sUpper.includes("APPLIED") || nUpper.includes("APPLIED") || nUpper.includes("APPLIED SOLAR PLAN")) {
+      return {
+        label: "Applied Solar Plan",
+        bg: "bg-orange-50 text-[#D9410E] border-orange-300",
+        icon: CheckCircle2,
+      };
+    }
+    if (inq.id.startsWith("b-") || sUpper.includes("DEMO")) {
+      return {
+        label: "Demo Booking",
+        bg: "bg-sky-50 text-sky-800 border-sky-300",
+        icon: Calendar,
+      };
+    }
+    return {
+      label: "Contact Inquiry",
+      bg: "bg-slate-50 text-slate-700 border-slate-300",
+      icon: MessageSquare,
+    };
+  };
+
+  const whatsappInquiriesCount = inquiries.filter((inq) => {
+    const sUpper = inq.service.toUpperCase();
+    const nUpper = (inq.notes || "").toUpperCase();
+    return sUpper.includes("WHATSAPP") || nUpper.includes("WHATSAPP");
+  }).length;
+
+  const appliedPlanInquiriesCount = inquiries.filter((inq) => {
+    const sUpper = inq.service.toUpperCase();
+    const nUpper = (inq.notes || "").toUpperCase();
+    return sUpper.includes("APPLIED") || nUpper.includes("APPLIED") || nUpper.includes("APPLIED SOLAR PLAN");
+  }).length;
+
+  const demoInquiriesCount = inquiries.filter((inq) => {
+    const sUpper = inq.service.toUpperCase();
+    return inq.id.startsWith("b-") || sUpper.includes("DEMO");
+  }).length;
+
+  const generalInquiriesCount = inquiries.filter((inq) => {
+    const sUpper = inq.service.toUpperCase();
+    const nUpper = (inq.notes || "").toUpperCase();
+    return (
+      !sUpper.includes("WHATSAPP") &&
+      !nUpper.includes("WHATSAPP") &&
+      !sUpper.includes("APPLIED") &&
+      !nUpper.includes("APPLIED") &&
+      !inq.id.startsWith("b-") &&
+      !sUpper.includes("DEMO")
+    );
+  }).length;
+
+  const filteredInquiries = inquiries.filter((inq) => {
+    // 1. Text Search
+    const q = inquirySearch.toLowerCase().trim();
+    const matchesSearch =
+      !q ||
+      inq.name.toLowerCase().includes(q) ||
+      inq.phone.includes(q) ||
+      inq.service.toLowerCase().includes(q) ||
+      inq.location.toLowerCase().includes(q) ||
+      (inq.notes && inq.notes.toLowerCase().includes(q));
+
+    // 2. Status Filter
+    const matchesStatus =
+      inquiryStatusFilter === "ALL" || inq.status === inquiryStatusFilter;
+
+    // 3. Category / Source Filter
+    const sUpper = inq.service.toUpperCase();
+    const nUpper = (inq.notes || "").toUpperCase();
+    let matchesType = true;
+    if (inquiryTypeFilter === "WHATSAPP") {
+      matchesType = sUpper.includes("WHATSAPP") || nUpper.includes("WHATSAPP");
+    } else if (inquiryTypeFilter === "APPLIED_PLAN") {
+      matchesType = sUpper.includes("APPLIED") || nUpper.includes("APPLIED") || nUpper.includes("APPLIED SOLAR PLAN");
+    } else if (inquiryTypeFilter === "DEMO") {
+      matchesType = inq.id.startsWith("b-") || sUpper.includes("DEMO");
+    } else if (inquiryTypeFilter === "GENERAL") {
+      matchesType =
+        !sUpper.includes("WHATSAPP") &&
+        !nUpper.includes("WHATSAPP") &&
+        !sUpper.includes("APPLIED") &&
+        !nUpper.includes("APPLIED") &&
+        !inq.id.startsWith("b-") &&
+        !sUpper.includes("DEMO");
+    }
+
+    return matchesSearch && matchesStatus && matchesType;
+  });
 
   const filteredQuotations = quotations.filter(
     (q) =>
@@ -1765,35 +1862,135 @@ function AdminDashboard() {
 
           {/* TAB 3: INQUIRIES & LEADS */}
           {activeTab === "inquiries" && (
-            <div className="max-w-7xl mx-auto space-y-6">
+            <div className="max-w-7xl mx-auto space-y-5">
               {/* Header Title Banner */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
                 <div>
                   <div className="flex items-center gap-2.5">
                     <span className="inline-flex items-center rounded-md bg-sky-50 border border-sky-200/80 px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wide text-sky-800">
-                      LEADS & INQUIRIES
+                      LEADS &amp; INQUIRIES
                     </span>
                     <h1 className="text-2xl sm:text-3xl font-extrabold text-[#082B4C] tracking-tight">
                       Customer Inquiries
                     </h1>
                   </div>
-                  <p className="mt-1.5 text-xs sm:text-sm text-slate-500">
-                    View and manage consultation inquiries and demonstration requests submitted by customers.
+                  <p className="mt-1 text-xs sm:text-sm text-slate-500">
+                    Real-time customer inquiries from Calculator WhatsApp Quotes, Applied Solar Plans, Demo Bookings &amp; Contact forms.
                   </p>
                 </div>
 
-                <div className="w-full sm:w-auto">
-                  <div className="relative">
+                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                  {/* Status Filter */}
+                  <select
+                    value={inquiryStatusFilter}
+                    onChange={(e) => setInquiryStatusFilter(e.target.value as any)}
+                    className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 shadow-2xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
+                  >
+                    <option value="ALL">All Status ({inquiries.length})</option>
+                    <option value="New">New ({newInquiriesCount})</option>
+                    <option value="Contacted">Contacted</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+
+                  {/* Search Input */}
+                  <div className="relative flex-1 sm:flex-initial">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
                     <input
                       type="text"
-                      placeholder="Search inquiries…"
+                      placeholder="Search inquiries, phone, ref…"
                       value={inquirySearch}
                       onChange={(e) => setInquirySearch(e.target.value)}
-                      className="w-full sm:w-64 rounded-xl border border-slate-200 bg-white pl-9 pr-3.5 py-2 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 shadow-2xs"
+                      className="w-full sm:w-60 rounded-xl border border-slate-200 bg-white pl-9 pr-3.5 py-2 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 shadow-2xs"
                     />
                   </div>
                 </div>
+              </div>
+
+              {/* Source / Category Filter Tabs */}
+              <div className="flex flex-wrap items-center gap-2 border-b border-slate-200/90 pb-3">
+                <button
+                  type="button"
+                  onClick={() => setInquiryTypeFilter("ALL")}
+                  className={cn(
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5",
+                    inquiryTypeFilter === "ALL"
+                      ? "bg-[#082B4C] text-white shadow-xs"
+                      : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300"
+                  )}
+                >
+                  <span>All Inquiries</span>
+                  <span className={cn("px-1.5 py-0.2 rounded-full text-[10px] font-mono", inquiryTypeFilter === "ALL" ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600")}>
+                    {inquiries.length}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setInquiryTypeFilter("WHATSAPP")}
+                  className={cn(
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5",
+                    inquiryTypeFilter === "WHATSAPP"
+                      ? "bg-emerald-600 text-white shadow-xs"
+                      : "bg-white text-slate-600 border border-slate-200 hover:border-emerald-300"
+                  )}
+                >
+                  <PhoneCall className={cn("size-3.5", inquiryTypeFilter === "WHATSAPP" ? "text-white" : "text-emerald-500")} />
+                  <span>WhatsApp Quotes</span>
+                  <span className={cn("px-1.5 py-0.2 rounded-full text-[10px] font-mono", inquiryTypeFilter === "WHATSAPP" ? "bg-white/20 text-white" : "bg-emerald-50 text-emerald-700 font-bold")}>
+                    {whatsappInquiriesCount}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setInquiryTypeFilter("APPLIED_PLAN")}
+                  className={cn(
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5",
+                    inquiryTypeFilter === "APPLIED_PLAN"
+                      ? "bg-[#D9410E] text-white shadow-xs"
+                      : "bg-white text-slate-600 border border-slate-200 hover:border-orange-300"
+                  )}
+                >
+                  <CheckCircle2 className={cn("size-3.5", inquiryTypeFilter === "APPLIED_PLAN" ? "text-white" : "text-[#D9410E]")} />
+                  <span>Applied Solar Plans</span>
+                  <span className={cn("px-1.5 py-0.2 rounded-full text-[10px] font-mono", inquiryTypeFilter === "APPLIED_PLAN" ? "bg-white/20 text-white" : "bg-orange-50 text-orange-700 font-bold")}>
+                    {appliedPlanInquiriesCount}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setInquiryTypeFilter("DEMO")}
+                  className={cn(
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5",
+                    inquiryTypeFilter === "DEMO"
+                      ? "bg-sky-600 text-white shadow-xs"
+                      : "bg-white text-slate-600 border border-slate-200 hover:border-sky-300"
+                  )}
+                >
+                  <Calendar className={cn("size-3.5", inquiryTypeFilter === "DEMO" ? "text-white" : "text-sky-500")} />
+                  <span>Demo Bookings</span>
+                  <span className={cn("px-1.5 py-0.2 rounded-full text-[10px] font-mono", inquiryTypeFilter === "DEMO" ? "bg-white/20 text-white" : "bg-sky-50 text-sky-700 font-bold")}>
+                    {demoInquiriesCount}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setInquiryTypeFilter("GENERAL")}
+                  className={cn(
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5",
+                    inquiryTypeFilter === "GENERAL"
+                      ? "bg-slate-700 text-white shadow-xs"
+                      : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300"
+                  )}
+                >
+                  <MessageSquare className={cn("size-3.5", inquiryTypeFilter === "GENERAL" ? "text-white" : "text-slate-400")} />
+                  <span>Contact Inquiries</span>
+                  <span className={cn("px-1.5 py-0.2 rounded-full text-[10px] font-mono", inquiryTypeFilter === "GENERAL" ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600")}>
+                    {generalInquiriesCount}
+                  </span>
+                </button>
               </div>
 
               {/* Inquiries Desktop Table (Hidden on small mobile) */}
@@ -1802,9 +1999,9 @@ function AdminDashboard() {
                   <table className="w-full text-left text-xs">
                     <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-wider text-[11px]">
                       <tr>
-                        <th className="px-5 py-3.5">Customer Name</th>
+                        <th className="px-5 py-3.5">Customer &amp; Source</th>
                         <th className="px-5 py-3.5">Contact Details</th>
-                        <th className="px-5 py-3.5">Service Requested</th>
+                        <th className="px-5 py-3.5">Service / System</th>
                         <th className="px-5 py-3.5">Location</th>
                         <th className="px-5 py-3.5">Status</th>
                         <th className="px-5 py-3.5 text-right">Actions</th>
@@ -1814,79 +2011,118 @@ function AdminDashboard() {
                       {filteredInquiries.length === 0 ? (
                         <tr>
                           <td colSpan={6} className="px-5 py-8 text-center text-slate-400">
-                            No inquiries found matching your search.
+                            No inquiries found matching your filter criteria.
                           </td>
                         </tr>
                       ) : (
-                        filteredInquiries.map((inq) => (
-                          <tr key={inq.id} className="hover:bg-slate-50/50 transition-colors">
-                            <td className="px-5 py-4 font-bold text-[#082B4C] whitespace-nowrap">
-                              <div>{inq.name}</div>
-                              <div className="text-[10px] font-normal text-slate-400">{inq.date}</div>
-                            </td>
-                            <td className="px-5 py-4 whitespace-nowrap">
-                              <div className="flex items-center gap-1.5 font-semibold text-slate-700">
-                                <Phone className="size-3 text-slate-400" />
-                                <a href={`tel:${inq.phone}`} className="hover:text-primary">
-                                  {inq.phone}
-                                </a>
-                              </div>
-                              <div className="flex items-center gap-1.5 text-slate-500 text-[11px]">
-                                <Mail className="size-3 text-slate-400" />
-                                <a href={`mailto:${inq.email}`} className="hover:text-primary">
-                                  {inq.email}
-                                </a>
-                              </div>
-                            </td>
-                            <td className="px-5 py-4 font-semibold text-slate-700 max-w-[220px]">
-                              {inq.service}
-                            </td>
-                            <td className="px-5 py-4 text-slate-600 whitespace-nowrap">
-                              {inq.location}
-                            </td>
-                            <td className="px-5 py-4 whitespace-nowrap">
-                              <select
-                                value={inq.status}
-                                onChange={(e) =>
-                                  handleUpdateInquiryStatus(
-                                    inq.id,
-                                    e.target.value as "New" | "Contacted" | "Completed"
-                                  )
-                                }
-                                className={`rounded-lg px-2.5 py-1 text-[11px] font-bold border transition-colors cursor-pointer ${
-                                  inq.status === "New"
-                                    ? "bg-amber-50 text-amber-800 border-amber-200"
-                                    : inq.status === "Contacted"
-                                    ? "bg-sky-50 text-sky-800 border-sky-200"
-                                    : "bg-emerald-50 text-emerald-800 border-emerald-200"
-                                }`}
-                              >
-                                <option value="New">New</option>
-                                <option value="Contacted">Contacted</option>
-                                <option value="Completed">Completed</option>
-                              </select>
-                            </td>
-                            <td className="px-5 py-4 text-right whitespace-nowrap">
-                              <div className="flex items-center justify-end gap-1.5">
-                                <a
-                                  href={`tel:${inq.phone}`}
-                                  className="p-1.5 rounded-lg border border-slate-200 text-emerald-600 hover:bg-emerald-50 transition-all"
-                                  title="Call customer"
+                        filteredInquiries.map((inq) => {
+                          const badge = getInquirySourceBadge(inq);
+                          const BadgeIcon = badge.icon;
+                          return (
+                            <tr key={inq.id} className="hover:bg-slate-50/50 transition-colors">
+                              <td className="px-5 py-3.5 font-bold text-[#082B4C] whitespace-nowrap">
+                                <div className="text-sm font-extrabold">{inq.name}</div>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                  <span className={cn("inline-flex items-center gap-1 text-[9.5px] font-extrabold uppercase px-2 py-0.5 rounded-md border", badge.bg)}>
+                                    <BadgeIcon className="size-2.5" />
+                                    <span>{badge.label}</span>
+                                  </span>
+                                  <span className="text-[10px] font-normal text-slate-400">{inq.date}</span>
+                                </div>
+                              </td>
+                              <td className="px-5 py-3.5 whitespace-nowrap">
+                                <div className="flex items-center gap-1.5 font-bold text-slate-800">
+                                  <Phone className="size-3 text-slate-400" />
+                                  <a href={`tel:${inq.phone}`} className="hover:text-primary">
+                                    {inq.phone}
+                                  </a>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-slate-500 text-[11px] mt-0.5">
+                                  <Mail className="size-3 text-slate-400" />
+                                  <a href={`mailto:${inq.email}`} className="hover:text-primary">
+                                    {inq.email}
+                                  </a>
+                                </div>
+                              </td>
+                              <td className="px-5 py-3.5 font-semibold text-slate-700 max-w-[220px]">
+                                <div className="truncate font-bold text-[#082B4C]">{inq.service}</div>
+                                {inq.notes && (
+                                  <div className="text-[10.5px] text-slate-500 truncate mt-0.5">
+                                    {inq.notes}
+                                  </div>
+                                )}
+                              </td>
+                              <td className="px-5 py-3.5 text-slate-600 whitespace-nowrap">
+                                <div className="flex items-center gap-1">
+                                  <MapPin className="size-3 text-amber-500 shrink-0" />
+                                  <span>{inq.location}</span>
+                                </div>
+                              </td>
+                              <td className="px-5 py-3.5 whitespace-nowrap">
+                                <select
+                                  value={inq.status}
+                                  onChange={(e) =>
+                                    handleUpdateInquiryStatus(
+                                      inq.id,
+                                      e.target.value as "New" | "Contacted" | "Completed"
+                                    )
+                                  }
+                                  className={`rounded-lg px-2.5 py-1 text-[11px] font-bold border transition-colors cursor-pointer ${
+                                    inq.status === "New"
+                                      ? "bg-amber-50 text-amber-800 border-amber-200"
+                                      : inq.status === "Contacted"
+                                      ? "bg-sky-50 text-sky-800 border-sky-200"
+                                      : "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                  }`}
                                 >
-                                  <Phone className="size-3.5" />
-                                </a>
-                                <button
-                                  type="button"
-                                  onClick={() => handleDeleteInquiry(inq.id)}
-                                  className="p-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-all cursor-pointer"
-                                  title="Delete inquiry"
-                                >
-                                  <Trash2 className="size-3.5" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
+                                  <option value="New">New</option>
+                                  <option value="Contacted">Contacted</option>
+                                  <option value="Completed">Completed</option>
+                                </select>
+                              </td>
+                              <td className="px-5 py-3.5 text-right whitespace-nowrap">
+                                <div className="flex items-center justify-end gap-1.5">
+                                  {/* View Details */}
+                                  <button
+                                    type="button"
+                                    onClick={() => setViewingInquiry(inq)}
+                                    className="p-1.5 rounded-lg border border-slate-200 text-[#082B4C] hover:bg-slate-100 transition-all cursor-pointer"
+                                    title="View full calculation & lead details"
+                                  >
+                                    <Eye className="size-3.5" />
+                                  </button>
+                                  {/* WhatsApp Customer */}
+                                  <a
+                                    href={`https://wa.me/${inq.phone.replace(/[^0-9]/g, "")}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="p-1.5 rounded-lg border border-emerald-200 text-emerald-600 hover:bg-emerald-50 transition-all cursor-pointer"
+                                    title="Chat on WhatsApp"
+                                  >
+                                    <PhoneCall className="size-3.5" />
+                                  </a>
+                                  {/* Call Customer */}
+                                  <a
+                                    href={`tel:${inq.phone}`}
+                                    className="p-1.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 transition-all"
+                                    title="Call customer"
+                                  >
+                                    <Phone className="size-3.5" />
+                                  </a>
+                                  {/* Delete */}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteInquiry(inq.id)}
+                                    className="p-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-all cursor-pointer"
+                                    title="Delete inquiry"
+                                  >
+                                    <Trash2 className="size-3.5" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
                       )}
                     </tbody>
                   </table>
@@ -1897,31 +2133,209 @@ function AdminDashboard() {
               <div className="md:hidden space-y-3">
                 {filteredInquiries.length === 0 ? (
                   <div className="rounded-2xl border border-slate-200/90 bg-white p-8 text-center text-slate-400 text-xs">
-                    No inquiries found matching your search.
+                    No inquiries found matching your filter criteria.
                   </div>
                 ) : (
-                  filteredInquiries.map((inq) => (
-                    <div key={inq.id} className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-2xs space-y-3">
-                      <div className="flex items-center justify-between gap-2">
-                        <div>
-                          <div className="font-extrabold text-[#082B4C] text-sm">{inq.name}</div>
-                          <div className="text-[10px] text-slate-400">{inq.date} • {inq.location}</div>
+                  filteredInquiries.map((inq) => {
+                    const badge = getInquirySourceBadge(inq);
+                    const BadgeIcon = badge.icon;
+                    return (
+                      <div key={inq.id} className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-2xs space-y-3">
+                        <div className="flex items-center justify-between gap-2">
+                          <div>
+                            <div className="font-extrabold text-[#082B4C] text-sm">{inq.name}</div>
+                            <div className="flex items-center gap-1.5 mt-0.5">
+                              <span className={cn("inline-flex items-center gap-1 text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded-md border", badge.bg)}>
+                                <BadgeIcon className="size-2.5" />
+                                <span>{badge.label}</span>
+                              </span>
+                              <span className="text-[10px] text-slate-400">{inq.date}</span>
+                            </div>
+                          </div>
+                          <select
+                            value={inq.status}
+                            onChange={(e) =>
+                              handleUpdateInquiryStatus(
+                                inq.id,
+                                e.target.value as "New" | "Contacted" | "Completed"
+                              )
+                            }
+                            className={`rounded-lg px-2.5 py-1 text-[11px] font-bold border transition-colors cursor-pointer ${
+                              inq.status === "New"
+                                ? "bg-amber-50 text-amber-800 border-amber-200"
+                                : inq.status === "Contacted"
+                                ? "bg-sky-50 text-sky-800 border-sky-200"
+                                : "bg-emerald-50 text-emerald-800 border-emerald-200"
+                            }`}
+                          >
+                            <option value="New">New</option>
+                            <option value="Contacted">Contacted</option>
+                            <option value="Completed">Completed</option>
+                          </select>
                         </div>
+
+                        <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs font-semibold text-slate-700">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                            Requested System &amp; Location
+                          </span>
+                          <div className="font-bold text-[#082B4C]">{inq.service}</div>
+                          <div className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
+                            <MapPin className="size-3 text-amber-500" />
+                            <span>{inq.location}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-100">
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => setViewingInquiry(inq)}
+                              className="inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg border border-slate-200 bg-white text-[#082B4C] font-bold text-xs"
+                            >
+                              <Eye className="size-3" />
+                              <span>View</span>
+                            </button>
+                            <a
+                              href={`https://wa.me/${inq.phone.replace(/[^0-9]/g, "")}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs"
+                            >
+                              <PhoneCall className="size-3" />
+                              <span>WhatsApp</span>
+                            </a>
+                            <a
+                              href={`tel:${inq.phone}`}
+                              className="inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 font-bold text-xs"
+                            >
+                              <Phone className="size-3" />
+                              <span>Call</span>
+                            </a>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteInquiry(inq.id)}
+                            className="p-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 cursor-pointer"
+                            title="Delete inquiry"
+                          >
+                            <Trash2 className="size-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* VIEW INQUIRY DETAILS MODAL */}
+              {viewingInquiry && (
+                <div
+                  role="dialog"
+                  aria-modal="true"
+                  className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/65 backdrop-blur-xs overflow-y-auto animate-in fade-in duration-200"
+                >
+                  <div className="relative w-full max-w-xl rounded-3xl bg-white border border-slate-200 shadow-2xl p-5 sm:p-7 overflow-hidden my-auto animate-in zoom-in-95 duration-200">
+                    {/* Close button */}
+                    <button
+                      type="button"
+                      onClick={() => setViewingInquiry(null)}
+                      className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                      aria-label="Close"
+                    >
+                      <X className="size-5" />
+                    </button>
+
+                    {/* Modal Header */}
+                    <div className="pr-8 pb-3 border-b border-slate-100">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        {(() => {
+                          const badge = getInquirySourceBadge(viewingInquiry);
+                          const IconComp = badge.icon;
+                          return (
+                            <span className={cn("inline-flex items-center gap-1 text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border", badge.bg)}>
+                              <IconComp className="size-3" />
+                              <span>{badge.label}</span>
+                            </span>
+                          );
+                        })()}
+                        <span className="text-[11px] text-slate-400 font-medium">
+                          {viewingInquiry.date}
+                        </span>
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-black text-[#082B4C]">
+                        {viewingInquiry.name}
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-0.5 font-medium">
+                        {viewingInquiry.service}
+                      </p>
+                    </div>
+
+                    {/* Contact & Location Strip */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-4">
+                      <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                        <span className="text-[10px] font-bold uppercase text-slate-400 block">Phone / WhatsApp</span>
+                        <div className="flex items-center justify-between mt-1">
+                          <span className="text-xs sm:text-sm font-black text-[#082B4C]">{viewingInquiry.phone}</span>
+                          <div className="flex items-center gap-1.5">
+                            <a
+                              href={`tel:${viewingInquiry.phone}`}
+                              className="p-1 rounded-md bg-white border border-slate-200 text-slate-700 hover:text-primary"
+                              title="Call"
+                            >
+                              <Phone className="size-3.5" />
+                            </a>
+                            <a
+                              href={`https://wa.me/${viewingInquiry.phone.replace(/[^0-9]/g, "")}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1 rounded-md bg-emerald-500 text-white hover:bg-emerald-600"
+                              title="Chat on WhatsApp"
+                            >
+                              <PhoneCall className="size-3.5" />
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                        <span className="text-[10px] font-bold uppercase text-slate-400 block">City / Location</span>
+                        <div className="flex items-center gap-1 text-xs sm:text-sm font-bold text-[#082B4C] mt-1">
+                          <MapPin className="size-3.5 text-amber-500 shrink-0" />
+                          <span className="truncate">{viewingInquiry.location}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* System Calculations & Requirements Breakdown */}
+                    <div className="space-y-2">
+                      <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 block">
+                        Full Sizing &amp; Calculation Breakdown
+                      </span>
+                      <div className="p-3.5 rounded-2xl bg-amber-50/40 border border-amber-200/80 text-xs text-slate-700 whitespace-pre-wrap leading-relaxed max-h-48 overflow-y-auto font-mono">
+                        {viewingInquiry.notes || viewingInquiry.service}
+                      </div>
+                    </div>
+
+                    {/* Status Changer & Quick Actions */}
+                    <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                      <div className="flex items-center gap-2 w-full sm:w-auto">
+                        <span className="text-xs font-bold text-slate-600">Status:</span>
                         <select
-                          value={inq.status}
-                          onChange={(e) =>
-                            handleUpdateInquiryStatus(
-                              inq.id,
-                              e.target.value as "New" | "Contacted" | "Completed"
-                            )
-                          }
-                          className={`rounded-lg px-2.5 py-1 text-[11px] font-bold border transition-colors cursor-pointer ${
-                            inq.status === "New"
+                          value={viewingInquiry.status}
+                          onChange={(e) => {
+                            const newStatus = e.target.value as "New" | "Contacted" | "Completed";
+                            handleUpdateInquiryStatus(viewingInquiry.id, newStatus);
+                            setViewingInquiry({ ...viewingInquiry, status: newStatus });
+                          }}
+                          className={cn(
+                            "rounded-lg px-2.5 py-1 text-xs font-bold border transition-colors cursor-pointer",
+                            viewingInquiry.status === "New"
                               ? "bg-amber-50 text-amber-800 border-amber-200"
-                              : inq.status === "Contacted"
+                              : viewingInquiry.status === "Contacted"
                               ? "bg-sky-50 text-sky-800 border-sky-200"
                               : "bg-emerald-50 text-emerald-800 border-emerald-200"
-                          }`}
+                          )}
                         >
                           <option value="New">New</option>
                           <option value="Contacted">Contacted</option>
@@ -1929,44 +2343,28 @@ function AdminDashboard() {
                         </select>
                       </div>
 
-                      <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs font-semibold text-slate-700">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
-                          Requested System
-                        </span>
-                        {inq.service}
-                      </div>
-
-                      <div className="flex items-center justify-between gap-2 pt-1">
-                        <div className="flex items-center gap-2">
-                          <a
-                            href={`tel:${inq.phone}`}
-                            className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs hover:bg-emerald-100 transition-all"
-                          >
-                            <Phone className="size-3" />
-                            <span>Call</span>
-                          </a>
-                          <a
-                            href={`mailto:${inq.email}`}
-                            className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 font-bold text-xs hover:bg-slate-100 transition-all"
-                          >
-                            <Mail className="size-3" />
-                            <span>Email</span>
-                          </a>
-                        </div>
-
+                      <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                        <a
+                          href={`https://wa.me/${viewingInquiry.phone.replace(/[^0-9]/g, "")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs shadow-xs transition-all"
+                        >
+                          <PhoneCall className="size-3.5" />
+                          <span>Chat on WhatsApp</span>
+                        </a>
                         <button
                           type="button"
-                          onClick={() => handleDeleteInquiry(inq.id)}
-                          className="p-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 cursor-pointer"
-                          title="Delete inquiry"
+                          onClick={() => setViewingInquiry(null)}
+                          className="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all cursor-pointer"
                         >
-                          <Trash2 className="size-4" />
+                          Close
                         </button>
                       </div>
                     </div>
-                  ))
-                )}
-              </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </main>

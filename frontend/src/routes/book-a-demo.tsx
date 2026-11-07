@@ -16,18 +16,35 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/book-a-demo")({
   head: () => ({
     meta: [
-      { title: "Get a Quote / Book a Demo — Amaravati Solar Solutions" },
+      { title: "Get a Free Solar Quote & Book Site Inspection — Amaravati Solar Solutions" },
       {
         name: "description",
         content:
-          "Request a site estimate, inquiry proposal or solar consultation with layout diagrams and ROI feasibility.",
+          "Request a free rooftop solar site assessment, personalized 3D solar layout design, and subsidy calculation across Amaravati, Vijayawada, and Guntur. Fast 24-hour proposal: +91 79896 41899.",
       },
-      { property: "og:title", content: "Get a Quote / Book a Demo" },
+      {
+        name: "keywords",
+        content:
+          "get solar quote amaravati, free solar consultation vijayawada, book solar inspection guntur, solar site survey andhra pradesh, solar rooftop proposal",
+      },
+      { property: "og:title", content: "Get a Free Solar Quote & Consultation — Amaravati Solar Solutions" },
       {
         property: "og:description",
         content:
-          "Estimate site proposal, view corporate headquarters and branch office locations on map.",
+          "Get an accurate solar quotation, engineering feasibility analysis, and subsidy calculation for your home or business.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/book-a-demo" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Book Free Solar Site Inspection — Amaravati Solar Solutions" },
+      {
+        name: "twitter:description",
+        content:
+          "Schedule a free site survey with certified solar engineers in Andhra Pradesh.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/book-a-demo" },
     ],
   }),
   component: BookDemoPage,

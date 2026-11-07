@@ -4,24 +4,15 @@ import logo from "@/assets/logo.png";
 export function Preloader() {
   const [progress, setProgress] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
-  const [isMounted, setIsMounted] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return !sessionStorage.getItem("has_seen_preloader");
-  });
+  const [isMounted, setIsMounted] = useState(true);
 
   useEffect(() => {
-    if (!isMounted) return;
-
-    try {
-      sessionStorage.setItem("has_seen_preloader", "true");
-    } catch {}
-
     // Disable body scroll while loading
     document.body.style.overflow = "hidden";
 
-    // Snappy progress animation timeline
+    // Snappy progress animation timeline (smooth 500ms transition)
     const startTime = performance.now();
-    const duration = 500; // 500ms quick entrance on first visit only
+    const duration = 500;
 
     const interval = setInterval(() => {
       const elapsed = performance.now() - startTime;
@@ -36,16 +27,16 @@ export function Preloader() {
           document.body.style.overflow = "";
           setTimeout(() => {
             setIsMounted(false);
-          }, 350);
-        }, 80);
+          }, 400);
+        }, 100);
       }
-    }, 20);
+    }, 16);
 
     return () => {
       clearInterval(interval);
       document.body.style.overflow = "";
     };
-  }, [isMounted]);
+  }, []);
 
   if (!isMounted) return null;
 
@@ -53,32 +44,39 @@ export function Preloader() {
     <div
       id="site-preloader"
       aria-label="Loading Amaravati Solar Solutions"
-      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#041525] transition-all duration-700 ease-out select-none ${
+      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-gradient-to-br from-[#1F0702] via-[#4A1204] to-[#1A0601] transition-all duration-700 ease-out select-none ${
         isExiting ? "opacity-0 scale-105 pointer-events-none" : "opacity-100 scale-100"
       }`}
     >
-      {/* Background ambient lighting effects */}
+      {/* Background ambient lighting effects in Amaravati Brand Orange & Solar Gold */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Golden sun flare - top left */}
-        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-gradient-to-br from-amber-400/20 via-orange-500/15 to-transparent blur-3xl animate-pulse" />
-        {/* Solar sky flare - bottom right */}
-        <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-gradient-to-tl from-sky-400/25 via-blue-600/15 to-transparent blur-3xl" />
-        {/* Subtle grid pattern */}
+        {/* Radiant Golden/Orange Sunburst - Top Left */}
+        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-gradient-to-br from-[#F5A623]/40 via-[#E04F16]/30 to-transparent blur-3xl animate-pulse" />
+        
+        {/* Solar Flare - Bottom Right */}
+        <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-gradient-to-tl from-[#FF7A00]/35 via-[#E04F16]/25 to-transparent blur-3xl" />
+        
+        {/* Central Radial Solar Glow */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="h-[400px] w-[400px] rounded-full bg-[#E04F16]/20 blur-3xl" />
+        </div>
+
+        {/* Subtle Warm Solar Dot Matrix Pattern */}
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.06]"
           style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle at 1px 1px, #F5A623 1px, transparent 0)`,
             backgroundSize: "28px 28px",
           }}
         />
       </div>
 
-      {/* Main card */}
+      {/* Main Content Box */}
       <div className="relative z-10 flex flex-col items-center px-4 text-center max-w-sm w-full">
-        {/* Logo Card with sleek, compact borders */}
-        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-white/95 px-3.5 py-1.5 sm:px-5 sm:py-2 shadow-[0_10px_25px_rgba(0,0,0,0.35)] border border-white/20 transform transition-transform duration-500 hover:scale-[1.02]">
-          {/* Shimmer sweep effect */}
-          <div className="pointer-events-none absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+        {/* Logo Card with sleek warm orange borders and soft glow */}
+        <div className="relative overflow-hidden rounded-2xl bg-white px-5 py-2.5 sm:px-6 sm:py-3 shadow-[0_12px_40px_rgba(224,79,22,0.45)] border border-orange-200/90 transform transition-transform duration-500 hover:scale-[1.02]">
+          {/* Shimmer sweep effect in warm amber */}
+          <div className="pointer-events-none absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-amber-100/50 to-transparent" />
 
           {/* 3D Logo Image */}
           <img
@@ -91,28 +89,28 @@ export function Preloader() {
           />
         </div>
 
-        {/* Progress & Status */}
+        {/* Progress Bar & Status (Brand Orange & Solar Gold) */}
         <div className="mt-6 sm:mt-7 flex flex-col items-center w-full max-w-xs">
           {/* Progress bar container */}
-          <div className="h-1.5 w-full rounded-full bg-white/15 overflow-hidden p-[1px] shadow-inner backdrop-blur">
+          <div className="h-2 w-full rounded-full bg-white/20 overflow-hidden p-[1px] shadow-inner border border-orange-400/35 backdrop-blur-md">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-sky-400 transition-all duration-150 ease-out shadow-[0_0_12px_rgba(245,166,35,0.8)]"
+              className="h-full rounded-full bg-gradient-to-r from-[#F5A623] via-[#E04F16] to-[#FF7A00] transition-all duration-150 ease-out shadow-[0_0_16px_rgba(245,166,35,0.9)]"
               style={{ width: `${progress}%` }}
             />
           </div>
 
           {/* Loading details */}
-          <div className="mt-3 flex w-full items-center justify-between text-xs font-semibold text-white/70">
-            <span className="flex items-center gap-1.5 text-amber-300">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-400 animate-ping" />
+          <div className="mt-3 flex w-full items-center justify-between text-xs font-semibold text-white/90">
+            <span className="flex items-center gap-2 text-amber-300 font-bold">
+              <span className="inline-block h-2 w-2 rounded-full bg-[#E04F16] shadow-[0_0_8px_#E04F16] animate-ping" />
               Powering clean energy...
             </span>
-            <span className="font-mono text-white/90">{progress}%</span>
+            <span className="font-mono font-black text-amber-300 text-sm tracking-wider">{progress}%</span>
           </div>
         </div>
 
         {/* Bottom Tagline */}
-        <p className="mt-6 text-xs tracking-wider text-white/40 uppercase font-medium">
+        <p className="mt-6 text-[11px] tracking-widest text-orange-200/75 uppercase font-bold">
           Clean Energy • Brighter Tomorrow
         </p>
       </div>

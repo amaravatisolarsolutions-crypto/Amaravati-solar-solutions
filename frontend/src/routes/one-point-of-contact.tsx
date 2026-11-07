@@ -34,18 +34,29 @@ import { setupParallaxAndPopAnimation } from "@/lib/parallax-animation";
 export const Route = createFileRoute("/one-point-of-contact")({
   head: () => ({
     meta: [
-      { title: "One Point of Contact — Turnkey Solar EPC Accountability | Amaravati Solar Solutions" },
+      { title: "Dedicated Relationship Manager & Single-Window Accountability | Amaravati Solar" },
       {
         name: "description",
         content:
-          "Experience hassle-free solar adoption with a dedicated project manager. Single-window accountability for surveys, 3D CAD designs, DISCOM liaisoning, and 25-year post-sales care.",
+          "Experience hassle-free solar adoption with a dedicated project manager at Amaravati Solar Solutions. Single-window accountability for surveys, 3D CAD designs, DISCOM liaisoning, and 25-year post-sales care in AP.",
+      },
+      {
+        name: "keywords",
+        content:
+          "dedicated solar project manager, single point contact solar epc, solar customer support ap, turnkey solar engineering vijayawada",
       },
       { property: "og:title", content: "One Point of Contact — Amaravati Solar Solutions" },
       {
-        name: "og:description",
+        property: "og:description",
         content:
           "Zero middlemen. One dedicated solar engineer manages your complete rooftop project across Andhra Pradesh.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/one-point-of-contact" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/one-point-of-contact" },
     ],
   }),
   component: OnePointOfContactPage,

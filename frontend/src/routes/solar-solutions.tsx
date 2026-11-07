@@ -28,18 +28,35 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/solar-solutions")({
   head: () => ({
     meta: [
-      { title: "Our Solar Solutions — Amaravati Solar Solutions" },
+      { title: "Solar Solutions & Systems — On-Grid, Off-Grid, Hybrid | Amaravati Solar Solutions" },
       {
         name: "description",
         content:
-          "Explore On-Grid, Off-Grid, and Hybrid rooftop solar power architectures by Amaravati Solar Solutions. Tailored for homes, commercial complexes, and industries across AP & Telangana.",
+          "Explore On-Grid, Off-Grid, and Hybrid rooftop solar power architectures by Amaravati Solar Solutions. Tailored for homes, commercial complexes, and industries across AP with ₹78,000 PM Surya Ghar subsidy support and 25-year warranty.",
       },
-      { property: "og:title", content: "Our Solar Solutions — Amaravati Solar Solutions" },
+      {
+        name: "keywords",
+        content:
+          "on grid solar system andhra pradesh, off grid solar power, hybrid solar inverter, rooftop solar solutions amaravati, commercial solar systems vijayawada, residential solar panels guntur, solar power plant cost ap",
+      },
+      { property: "og:title", content: "Turnkey Solar Solutions: On-Grid, Off-Grid & Hybrid — Amaravati Solar Solutions" },
       {
         property: "og:description",
         content:
-          "Turnkey rooftop and ground-mounted solar solutions: On-Grid, Off-Grid, and Hybrid systems with subsidy assistance and 25-year warranty.",
+          "Turnkey rooftop and ground-mounted solar solutions: On-Grid, Off-Grid, and Hybrid systems with government subsidy assistance, net metering, and 25-year panel warranty.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/solar-solutions" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Solar Solutions & Systems — Amaravati Solar Solutions" },
+      {
+        name: "twitter:description",
+        content:
+          "High-efficiency solar solutions for residential, commercial & industrial clients across Andhra Pradesh.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/solar-solutions" },
     ],
   }),
   component: SolarSolutionsPage,

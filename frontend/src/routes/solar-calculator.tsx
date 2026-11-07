@@ -14,18 +14,35 @@ import solarWatermark from "@/assets/solar-watermark-bg.jpg";
 export const Route = createFileRoute("/solar-calculator")({
   head: () => ({
     meta: [
-      { title: "Solar Calculation & Subsidy Estimator — Amaravati Solar Solutions" },
+      { title: "Solar Calculator & PM Surya Ghar Subsidy Estimator AP | Amaravati Solar Solutions" },
       {
         name: "description",
         content:
-          "Calculate your rooftop solar capacity, monthly electricity savings, and ₹78,000 PM Surya Ghar DBT subsidy with Amaravati Solar Solutions in Andhra Pradesh.",
+          "Calculate your rooftop solar capacity, monthly electricity savings, and ₹78,000 PM Surya Ghar DBT subsidy with Amaravati Solar Solutions in Andhra Pradesh. Instant solar ROI & unit estimator.",
       },
-      { property: "og:title", content: "Solar Calculation & Subsidy Estimator — Amaravati Solar Solutions" },
+      {
+        name: "keywords",
+        content:
+          "solar calculator andhra pradesh, rooftop solar subsidy calculator ap, pm surya ghar subsidy estimator, solar panel savings calculator, solar kw calculator vijayawada, solar plant cost guntur, solar roi calculator",
+      },
+      { property: "og:title", content: "Instant Solar Calculator & Subsidy Estimator — Amaravati Solar Solutions" },
       {
         property: "og:description",
         content:
-          "Slide your average monthly electricity bill to calculate required kW capacity, rooftop space, and 25-year financial savings.",
+          "Slide your average monthly electricity bill to calculate required kW capacity, rooftop space, and 25-year financial savings with ₹78,000 central subsidy.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/solar-calculator" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Solar Calculator & Subsidy Estimator AP" },
+      {
+        name: "twitter:description",
+        content:
+          "Estimate your monthly solar units, savings, and government subsidy instantly with Amaravati Solar Solutions.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/solar-calculator" },
     ],
   }),
   component: SolarCalculationPage,
@@ -78,7 +95,7 @@ function SolarCalculationPage() {
 
   return (
     <div className="bg-transparent min-h-screen relative">
-      
+
       {/* 1. SLEEK ONE-LINE PAGE HEADER (NAVY BLUE CARD REMOVED) */}
       <section className="relative overflow-hidden bg-gradient-to-r from-orange-50/90 via-white/80 to-amber-50/70 backdrop-blur-md border-b border-orange-200/90 py-3 sm:py-4">
         {/* Subtle Solar Watermark Decoration in Header */}
@@ -116,7 +133,7 @@ function SolarCalculationPage() {
       {/* 2. MAIN INTERACTIVE SOLAR CALCULATOR TOOL */}
       <section className="container-site py-6 sm:py-8 relative z-20 pb-12 sm:pb-16">
         <div className="rounded-2xl sm:rounded-3xl bg-white/95 backdrop-blur-md p-4 sm:p-6 lg:p-8 shadow-xl border border-orange-200/90">
-          
+
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-6 border-b border-orange-100">
             <div>
               <span className="text-xs font-black uppercase tracking-wider text-[#E04F16]">
@@ -134,7 +151,7 @@ function SolarCalculationPage() {
           </div>
 
           {/* Render the full interactive Calculator Component */}
-          <SolarCalculator onApplyPlan={handleApplyPlan} />
+          <SolarCalculator onApplyPlan={handleApplyPlan} hideHeader className="border-none shadow-none p-0 bg-transparent" />
 
         </div>
       </section>

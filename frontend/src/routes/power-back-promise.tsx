@@ -30,18 +30,29 @@ import solarWatermark from "@/assets/solar-watermark-bg.jpg";
 export const Route = createFileRoute("/power-back-promise")({
   head: () => ({
     meta: [
-      { title: "Power Back Promise — Performance Guarantee & ₹6/Unit Compensation | Amaravati Solar Solutions" },
+      { title: "Power Sure Guarantee — ₹7/Unit Generation Compensation | Amaravati Solar Solutions" },
       {
         name: "description",
         content:
-          "Guaranteed solar power generation backed by ₹6/Unit financial compensation if actual output falls below committed benchmarks. 25-year linear performance warranty.",
+          "Guaranteed solar power generation backed by ₹7/Unit financial compensation if actual output falls below committed benchmarks in Andhra Pradesh. 25-year linear performance warranty.",
       },
-      { property: "og:title", content: "Power Back Promise — Amaravati Solar Solutions" },
+      {
+        name: "keywords",
+        content:
+          "solar generation guarantee, solar compensation promise, solar power warranty andhra pradesh, amaravati solar performance warranty",
+      },
+      { property: "og:title", content: "Power Sure — Performance Guarantee | Amaravati Solar Solutions" },
       {
         property: "og:description",
         content:
           "Solar Performance. Financial Assurance. Direct financial credit if solar generation falls below committed benchmarks.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/power-back-promise" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/power-back-promise" },
     ],
   }),
   component: PowerBackPromisePage,
@@ -49,10 +60,10 @@ export const Route = createFileRoute("/power-back-promise")({
 
 const PILLARS = [
   {
-    title: "₹6 / Unit Direct Compensation",
+    title: "₹7 / Unit Direct Compensation",
     badge: "FINANCIAL BACKSTOP",
     icon: IndianRupee,
-    desc: "If your solar system produces less energy than our agreed annual performance benchmark due to system design or component faults, we pay you ₹6 per shortfall unit.",
+    desc: "If your solar system produces less energy than our agreed annual performance benchmark due to system design or component faults, we pay you ₹7 per shortfall unit.",
   },
   {
     title: "Transparent Generation Benchmarks",
@@ -87,26 +98,26 @@ const AUDIT_STEPS = [
   {
     step: "04",
     title: "Annual Performance Audit & Credit",
-    desc: "At the end of every 12-month operational cycle, actual generation is reconciled with the contract benchmark. Any unmitigated shortfall is credited directly at ₹6 per unit.",
+    desc: "At the end of every 12-month operational cycle, actual generation is reconciled with the contract benchmark. Any unmitigated shortfall is credited directly at ₹7 per unit.",
   },
 ];
 
 const FAQS = [
   {
-    q: "Why does Amaravati Solar offer ₹6 / Unit compensation?",
-    a: "We have complete confidence in our 3D shadow modeling, Tier-1 solar hardware, and engineering precision. The Power Back Promise protects your monthly return on investment and guarantees that your financial calculations remain 100% dependable.",
+    q: "Why does Amaravati Solar offer ₹7 / Unit compensation?",
+    a: "We have complete confidence in our 3D shadow modeling, Tier-1 solar hardware, and engineering precision. Power Sure protects your monthly return on investment and guarantees that your financial calculations remain 100% dependable.",
   },
   {
     q: "How is the guaranteed generation benchmark calculated?",
     a: "The benchmark is determined using PVsyst simulation software, taking into account local solar insolation in Andhra Pradesh/Telangana, roof azimuth tilt, ambient temperatures, and seasonal weather patterns.",
   },
   {
-    q: "What conditions apply to the Power Back Promise?",
+    q: "What conditions apply to Power Sure?",
     a: "The system must be operated in accordance with standard guidelines and maintained under our PowerCare program (regular cleaning and bi-annual inspections). Grid outages, force majeure, or customer-induced shading (like new construction) are normalized.",
   },
   {
     q: "Does this cover both residential and commercial solar installations?",
-    a: "Yes! The Power Back Promise is available for eligible residential villas, apartments, commercial office rooftops, and industrial power plants engineered by Amaravati Solar Solutions.",
+    a: "Yes! Power Sure is available for eligible residential villas, apartments, commercial office rooftops, and industrial power plants engineered by Amaravati Solar Solutions.",
   },
 ];
 
@@ -142,17 +153,17 @@ function PowerBackPromisePage() {
           </div>
 
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#082B4C] tracking-tight">
-            Power Back Promise: <span className="text-[#E04F16]">Solar Performance Guaranteed</span>
+            Power Sure: <span className="text-[#E04F16]">Solar Performance Guaranteed</span>
           </h1>
           <p className="mt-2 text-xs sm:text-sm md:text-base text-slate-700 max-w-3xl leading-relaxed font-medium">
-            At Amaravati Solar Solutions, we stand firmly behind our engineering. If your system's annual solar generation falls below our committed benchmark, we provide direct financial compensation at <strong className="text-emerald-700 font-extrabold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">₹6 / Unit</strong>.
+            At Amaravati Solar Solutions, we stand firmly behind our engineering. If your system's annual solar generation falls below our committed benchmark, we provide direct financial compensation at <strong className="text-emerald-700 font-extrabold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">₹7 / Unit</strong>.
           </p>
 
           {/* 4 Feature Badges */}
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="rounded-xl border border-emerald-300/80 bg-white/90 backdrop-blur-sm p-3.5 text-left shadow-[0_4px_16px_rgba(16,185,129,0.08)] hover:shadow-md hover:border-emerald-500 transition-all">
               <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Shortfall Backstop</div>
-              <div className="mt-0.5 text-base sm:text-xl font-black text-emerald-700">₹6 / Unit</div>
+              <div className="mt-0.5 text-base sm:text-xl font-black text-emerald-700">₹7 / Unit</div>
               <div className="text-[10px] text-slate-600 mt-0.5">Direct financial credit</div>
             </div>
 
@@ -177,7 +188,7 @@ function PowerBackPromisePage() {
         </div>
       </section>
 
-      {/* 2. THE 3 CORE PILLARS OF POWER BACK PROMISE */}
+      {/* 2. THE 3 CORE PILLARS OF POWER SURE */}
       <section className="container-site pt-8 sm:pt-12">
         <div className="text-left mb-6 sm:mb-8">
           <span className="inline-block text-[11px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
@@ -231,7 +242,7 @@ function PowerBackPromisePage() {
               TRANSPARENT VERIFICATION
             </span>
             <h2 className="mt-2 text-xl sm:text-2xl md:text-3xl font-black text-[#082B4C] tracking-tight">
-              How the Power Back Promise is Audited
+              How Power Sure is Audited
             </h2>
             <p className="mt-1 text-xs sm:text-sm text-slate-600">
               Clear, empirical data backed by smart bi-directional net-meters and cloud inverter telemetry.
@@ -303,7 +314,7 @@ function PowerBackPromisePage() {
               CLARIFICATIONS
             </span>
             <h2 className="mt-2 text-xl sm:text-2xl md:text-3xl font-black text-[#082B4C] tracking-tight">
-              Frequently Asked Questions About Power Back Promise
+              Frequently Asked Questions About Power Sure
             </h2>
           </div>
 

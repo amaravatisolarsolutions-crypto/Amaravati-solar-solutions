@@ -68,14 +68,55 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Amaravati Solar Solutions" },
-      { name: "description", content: "Smart, reliable and sustainable solar energy solutions for homes, businesses and industries." },
+      { title: "Amaravati Solar Solutions — #1 Rooftop Solar Company in Andhra Pradesh" },
+      {
+        name: "description",
+        content:
+          "Amaravati Solar Solutions is the #1 trusted rooftop solar provider across Amaravati, Vijayawada, Guntur & AP. Premium on-grid, off-grid & hybrid solar systems with ₹78,000 PM Surya Ghar subsidy assistance, 5-year PowerCare warranty, and 25-year panel performance guarantee.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Amaravati Solar Solutions, Amaravati Solar, solar solutions amaravati, solar panels vijayawada, rooftop solar guntur, best solar company andhra pradesh, pm surya ghar subsidy ap, pm surya ghar muft bijli yojana, on grid solar system, off grid solar power, hybrid solar inverter, commercial solar plant andhra pradesh, residential rooftop solar, solar net metering ap, rooftop solar panel price",
+      },
+      { name: "author", content: "Amaravati Solar Solutions" },
+      { name: "publisher", content: "Amaravati Solar Solutions" },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
+      { name: "googlebot", content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" },
+      { name: "bingbot", content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" },
+      { name: "google-site-verification", content: "dfef471ef71211f1" },
+      { name: "geo.region", content: "IN-AP" },
+      { name: "geo.placename", content: "Amaravati, Andhra Pradesh" },
+      { name: "geo.position", content: "16.5131;80.5165" },
+      { name: "ICBM", content: "16.5131, 80.5165" },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Amaravati Solar Solutions" },
+      { property: "og:locale", content: "en_IN" },
+      { property: "og:title", content: "Amaravati Solar Solutions — Clean Energy. Brighter Tomorrow." },
+      {
+        property: "og:description",
+        content:
+          "Smart, reliable, high-efficiency solar energy solutions for homes, businesses, and industries across Andhra Pradesh. Save up to 90% on electricity bills.",
+      },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Amaravati Solar Solutions — Rooftop Solar Systems" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Amaravati Solar Solutions — Rooftop Solar Systems" },
+      {
+        name: "twitter:description",
+        content:
+          "Top-rated rooftop solar installation across Amaravati, Vijayawada, and Guntur. High-efficiency solar panels and government subsidy support.",
+      },
+      { name: "twitter:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
     ],
     links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/" },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" },
@@ -87,10 +128,151 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["SolarEnergyContractor", "LocalBusiness", "Organization"],
+      "@id": "https://amaravatisolarsolutions.com/#organization",
+      "name": "Amaravati Solar Solutions",
+      "alternateName": ["Amaravati Solar", "Amaravati Solar Solutions AP"],
+      "url": "https://amaravatisolarsolutions.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://amaravatisolarsolutions.com/assets/logo-BRdvQGVB.png",
+        "caption": "Amaravati Solar Solutions Logo"
+      },
+      "image": "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg",
+      "description": "Amaravati Solar Solutions is Andhra Pradesh's premier rooftop solar EPC provider. Offering high-efficiency on-grid, off-grid, and hybrid solar installations for residential, commercial, and industrial clients with PM Surya Ghar subsidy support and 5-year PowerCare warranty.",
+      "telephone": "+91 79896 41899",
+      "email": "amaravatisolarsolutions@gmail.com",
+      "priceRange": "₹₹ - ₹₹₹",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Amaravati",
+        "addressRegion": "Andhra Pradesh",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 16.5131,
+        "longitude": 80.5165
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Amaravati" },
+        { "@type": "City", "name": "Vijayawada" },
+        { "@type": "City", "name": "Guntur" },
+        { "@type": "City", "name": "Tenali" },
+        { "@type": "City", "name": "Mangalagiri" },
+        { "@type": "AdministrativeArea", "name": "Andhra Pradesh" },
+        { "@type": "AdministrativeArea", "name": "Telangana" }
+      ],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "10:00",
+          "closes": "19:00"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Solar Energy Solutions & Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "On-Grid Rooftop Solar System Installation",
+              "description": "Grid-tied solar system with net metering for maximum electricity bill reduction up to 90%."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Off-Grid Solar Power Systems with Battery Storage",
+              "description": "Independent battery-backed solar power solutions for continuous 24/7 power during outages."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Hybrid Solar Systems with Smart Energy Management",
+              "description": "Best-of-both-worlds solar setup: export surplus power to the grid and keep battery backup for emergencies."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "PowerCare 5-Year Maintenance & Panel Cleaning",
+              "description": "Comprehensive maintenance, periodic panel cleaning, generation monitoring, and preventive care."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://amaravatisolarsolutions.com/#website",
+      "url": "https://amaravatisolarsolutions.com",
+      "name": "Amaravati Solar Solutions",
+      "publisher": {
+        "@id": "https://amaravatisolarsolutions.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://amaravatisolarsolutions.com/solar-solutions?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "@id": "https://amaravatisolarsolutions.com/#navigation",
+      "name": [
+        "Home",
+        "About Us",
+        "Services",
+        "Solar Solutions",
+        "Solar Calculator",
+        "Projects",
+        "Contact Us",
+        "Book a Demo"
+      ],
+      "url": [
+        "https://amaravatisolarsolutions.com/",
+        "https://amaravatisolarsolutions.com/about",
+        "https://amaravatisolarsolutions.com/services",
+        "https://amaravatisolarsolutions.com/solar-solutions",
+        "https://amaravatisolarsolutions.com/solar-calculator",
+        "https://amaravatisolarsolutions.com/projects",
+        "https://amaravatisolarsolutions.com/contact",
+        "https://amaravatisolarsolutions.com/book-a-demo"
+      ]
+    }
+  ]
+};
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        {/* Google Tag (gtag.js) - Google Analytics & Google Tag Manager */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-M52LL656" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GTM-M52LL656');`,
+          }}
+        />
+        {/* Structured Data (Schema.org) for Google Top Ranking & Rich Sitelinks */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(STRUCTURED_DATA),
+          }}
+        />
         <HeadContent />
       </head>
       <body>

@@ -26,18 +26,35 @@ import solarWatermark from "@/assets/solar-watermark-bg.jpg";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact Us & Solar Consultation — Amaravati Solar Solutions" },
+      { title: "Contact Us — Amaravati Solar Solutions | Vijayawada, Guntur & AP" },
       {
         name: "description",
         content:
-          "Connect with certified solar engineers at Amaravati Solar Solutions in Vijayawada. Book a free rooftop site survey, calculate solar ROI, and apply for PM Surya Ghar subsidies.",
+          "Contact Amaravati Solar Solutions for rooftop solar installation, free site survey, and subsidy assistance in Amaravati, Vijayawada, and Guntur. Call +91 79896 41899 or email amaravatisolarsolutions@gmail.com.",
+      },
+      {
+        name: "keywords",
+        content:
+          "contact amaravati solar solutions, solar company contact number vijayawada, solar phone number guntur, rooftop solar consultation ap, amaravatisolarsolutions gmail com",
       },
       { property: "og:title", content: "Contact Us & Solar Consultation — Amaravati Solar Solutions" },
       {
         property: "og:description",
         content:
-          "Talk to our engineering team in Vijayawada. Free rooftop site audit, 3D shadow analysis, and subsidy assistance across Andhra Pradesh and Telangana.",
+          "Talk to our engineering team in Vijayawada & Amaravati. Free rooftop site audit, 3D shadow analysis, and subsidy assistance across Andhra Pradesh.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/contact" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Contact Amaravati Solar Solutions" },
+      {
+        name: "twitter:description",
+        content:
+          "Connect with rooftop solar experts in Andhra Pradesh. Phone: +91 79896 41899.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/contact" },
     ],
   }),
   component: ContactPage,

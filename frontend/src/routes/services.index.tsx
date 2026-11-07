@@ -53,18 +53,35 @@ export const Route = createFileRoute("/services/")({
   },
   head: () => ({
     meta: [
-      { title: "Residential, Commercial & Industrial Solar Services — Amaravati Solar Solutions" },
+      { title: "Solar EPC Services — Residential, Commercial & Industrial | Amaravati Solar Solutions" },
       {
         name: "description",
         content:
-          "Explore specialized rooftop, commercial, industrial solar systems, PM Surya Ghar subsidies, agricultural solar pumping, and electrical infrastructure across Andhra Pradesh.",
+          "Explore specialized rooftop, commercial, and industrial solar installations, PM Surya Ghar subsidies, agricultural solar pumping, and electrical infrastructure across Andhra Pradesh. Call +91 79896 41899.",
+      },
+      {
+        name: "keywords",
+        content:
+          "solar epc services andhra pradesh, commercial solar installation amaravati, residential solar panels vijayawada, industrial rooftop solar guntur, agricultural solar pump ap, bifacial solar panels, solar net metering services",
       },
       { property: "og:title", content: "Solar Services & Solutions — Amaravati Solar Solutions" },
       {
         property: "og:description",
         content:
-          "Custom solar power systems for homes, businesses, and industrial facilities in Vijayawada, Guntur, and Andhra Pradesh.",
+          "Custom solar power systems for homes, businesses, and industrial facilities in Amaravati, Vijayawada, Guntur, and across Andhra Pradesh.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/services" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Solar EPC Services — Amaravati Solar Solutions" },
+      {
+        name: "twitter:description",
+        content:
+          "Turnkey rooftop solar EPC services for residential, commercial, and industrial rooftops in Andhra Pradesh.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/services" },
     ],
   }),
   component: AllServices,

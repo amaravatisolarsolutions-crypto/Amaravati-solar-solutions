@@ -63,7 +63,6 @@ export const NAV = [
   { label: "About Us", to: "/about" },
   { label: "Services", to: "/services" },
   { label: "Our Solar Solutions", to: "/solar-solutions" },
-  { label: "Solar Calculation", to: "/solar-calculator" },
   { label: "Projects", to: "/projects" },
   { label: "Contact Us", to: "/contact" },
 ] as const;

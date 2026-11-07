@@ -19,18 +19,35 @@ import solarWatermark from "@/assets/solar-watermark-bg.jpg";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Us — Amaravati Solar Solutions" },
+      { title: "About Us — Amaravati Solar Solutions | Andhra Pradesh Solar EPC" },
       {
         name: "description",
         content:
-          "Learn about Amaravati Solar Solutions. We engineer, install, and service high-yield rooftop solar plants across Andhra Pradesh and Telangana with 25-year warranty and subsidy liaisoning.",
+          "Learn about Amaravati Solar Solutions, Andhra Pradesh's premier solar engineering and EPC company. 500+ successful rooftop installations, Tier-1 panels, 25-year warranty, and ₹78,000 PM Surya Ghar subsidy support.",
       },
-      { property: "og:title", content: "About Amaravati Solar Solutions" },
+      {
+        name: "keywords",
+        content:
+          "about amaravati solar solutions, solar company amaravati, solar engineers vijayawada, best solar installer guntur, solar epc contractor andhra pradesh",
+      },
+      { property: "og:title", content: "About Amaravati Solar Solutions — Leading Solar EPC in AP" },
       {
         property: "og:description",
         content:
-          "We don't just install solar. We create a smarter way to power everyday life across Andhra Pradesh and Telangana.",
+          "Engineering high-yield rooftop solar plants across Andhra Pradesh. 25-year panel warranty and DISCOM net metering liaisoning.",
       },
+      { property: "og:url", content: "https://amaravatisolarsolutions.com/about" },
+      { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "About Amaravati Solar Solutions" },
+      {
+        name: "twitter:description",
+        content:
+          "Premier solar rooftop company in Andhra Pradesh. High-efficiency solar panels and government subsidy support.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://amaravatisolarsolutions.com/about" },
     ],
   }),
   component: AboutPage,
