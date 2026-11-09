@@ -33,15 +33,15 @@ function AdminLogin() {
   // Authentication Steps: 'credentials' | 'otp'
   const [step, setStep] = useState<"credentials" | "otp">("credentials");
 
-  // Step 1: Credentials
-  const [identifier, setIdentifier] = useState("amaravatisolarsolutions@gmail.com");
-  const [password, setPassword] = useState("Amaravthi@123");
+  // Step 1: Credentials (Empty by default)
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   // Step 2: OTP Verification
   const [otpDigits, setOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const [sentToEmail, setSentToEmail] = useState("amaravatisolarsolutions@gmail.com");
+  const [sentToEmail, setSentToEmail] = useState("");
   const [resendCooldown, setResendCooldown] = useState(0);
 
   // Loading & Feedback states
@@ -339,7 +339,7 @@ function AdminLogin() {
           {/* STEP 1: CREDENTIALS FORM                                 */}
           {/* ======================================================== */}
           {step === "credentials" && (
-            <form onSubmit={handleCredentialsSubmit} className="mt-6 text-left space-y-4">
+            <form onSubmit={handleCredentialsSubmit} autoComplete="off" className="mt-6 text-left space-y-4">
               <div>
                 <label
                   htmlFor="admin-identifier"
@@ -352,10 +352,10 @@ function AdminLogin() {
                   <input
                     id="admin-identifier"
                     type="text"
-                    autoComplete="username"
+                    autoComplete="off"
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder="amaravatisolarsolutions@gmail.com"
+                    placeholder="Enter email address or username"
                     className="w-full rounded-xl border-2 border-slate-200 bg-slate-50/50 pl-10 pr-3.5 py-3 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:border-[#082B4C] focus:ring-4 focus:ring-[#082B4C]/10 transition-all font-semibold"
                     required
                   />
@@ -374,7 +374,7 @@ function AdminLogin() {
                   <input
                     id="admin-password"
                     type={showPassword ? "text" : "password"}
-                    autoComplete="current-password"
+                    autoComplete="new-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter admin password"

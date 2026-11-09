@@ -66,12 +66,40 @@ if (strpos($uri, '/api/') === 0) {
     http_response_code(200);
     header('Content-Type: application/json; charset=utf-8');
     header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+    header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: SAMEORIGIN');
+    header('X-XSS-Protection: 1; mode=block');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
 
     if ($method === 'OPTIONS') {
         http_response_code(204);
         exit;
+    }
+
+    // Rate Limiting Security Function for Public Form Submissions
+    function checkSubmissionRateLimit($action = 'submit', $maxAttempts = 20, $windowSeconds = 300) {
+        $ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ?? ($_SERVER['HTTP_X_FORWARDED_FOR'] ?? ($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1'));
+        $ip = preg_replace('/[^a-fA-F0-9:.]/', '', $ip);
+        $file = sys_get_temp_dir() . '/rate_' . md5($ip . '_' . $action) . '.json';
+        $now = time();
+        $history = [];
+        if (file_exists($file)) {
+            $data = json_decode(@file_get_contents($file), true);
+            if (is_array($data)) {
+                $history = array_filter($data, function($t) use ($now, $windowSeconds) {
+                    return ($now - $t) < $windowSeconds;
+                });
+            }
+        }
+        if (count($history) >= $maxAttempts) {
+            http_response_code(429);
+            echo json_encode(['success' => false, 'error' => 'Too many requests. Please wait a few minutes before submitting again.']);
+            exit;
+        }
+        $history[] = $now;
+        @file_put_contents($file, json_encode(array_values($history)));
     }
 
     $connInfo = getDatabaseConnection();
@@ -85,38 +113,52 @@ if (strpos($uri, '/api/') === 0) {
     // --- Bookings Endpoint ---
     if ($uri === '/api/bookings' || $uri === '/api/demo-bookings') {
         if ($method === 'POST') {
+            checkSubmissionRateLimit('bookings', 20, 300);
+
             $raw = file_get_contents('php://input');
             $data = json_decode($raw, true) ?: $_POST;
 
-            $reference = 'BK-' . date('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
-            $fullName = trim($data['fullName'] ?? ($data['full_name'] ?? ''));
-            $phone = trim($data['phone'] ?? '');
-            $email = trim($data['email'] ?? '');
-            $customerType = trim($data['customerType'] ?? ($data['customer_type'] ?? 'Residential'));
-            $solution = trim($data['solution'] ?? 'On-Grid Solar');
-            $propertyType = trim($data['propertyType'] ?? ($data['property_type'] ?? 'Independent House'));
-            $city = trim($data['city'] ?? 'Amaravati');
-            $preferredDate = !empty($data['preferredDate'] ?? ($data['preferred_date'] ?? null)) ? date('Y-m-d', strtotime($data['preferredDate'] ?? $data['preferred_date'])) : null;
-            $preferredTime = trim($data['preferredTime'] ?? ($data['preferred_time'] ?? '10:00 AM - 01:00 PM'));
-            $requirements = trim($data['requirements'] ?? '');
-
-            if (!$fullName || !$phone) {
-                http_response_code(400);
+            // Honeypot spam-bot rejection
+            if (!empty($data['_hp']) || !empty($data['website_url_hp']) || !empty($data['honeypot'])) {
                 http_response_code(200);
-            echo json_encode(['success' => false, 'error' => 'Name and phone are required.']);
+                echo json_encode(['success' => true, 'reference' => 'BK-' . date('Ymd') . '-VERIFIED', 'message' => 'Demo booking submitted successfully!']);
                 exit;
             }
 
-            $stmt = $mysqli->prepare("INSERT INTO `demo_bookings` (`reference`, `full_name`, `phone`, `email`, `customer_type`, `solution`, `property_type`, `city`, `preferred_date`, `preferred_time`, `requirements`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')");
-            $stmt->bind_param("sssssssssss", $reference, $fullName, $phone, $email, $customerType, $solution, $propertyType, $city, $preferredDate, $preferredTime, $requirements);
+            $reference = 'BK-' . date('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
+            $fullName = htmlspecialchars(strip_tags(trim($data['fullName'] ?? ($data['full_name'] ?? ''))), ENT_QUOTES, 'UTF-8');
+            $phone = preg_replace('/[^0-9+]/', '', trim($data['phone'] ?? ''));
+            $email = filter_var(trim($data['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+            $customerType = htmlspecialchars(strip_tags(trim($data['customerType'] ?? ($data['customer_type'] ?? 'Residential'))), ENT_QUOTES, 'UTF-8');
+            $solution = htmlspecialchars(strip_tags(trim($data['solution'] ?? 'On-Grid Solar')), ENT_QUOTES, 'UTF-8');
+            $propertyType = htmlspecialchars(strip_tags(trim($data['propertyType'] ?? ($data['property_type'] ?? 'Independent House'))), ENT_QUOTES, 'UTF-8');
+            $city = htmlspecialchars(strip_tags(trim($data['city'] ?? 'Amaravati')), ENT_QUOTES, 'UTF-8');
+            $preferredDate = !empty($data['preferredDate'] ?? ($data['preferred_date'] ?? null)) ? date('Y-m-d', strtotime($data['preferredDate'] ?? $data['preferred_date'])) : null;
+            $preferredTime = htmlspecialchars(strip_tags(trim($data['preferredTime'] ?? ($data['preferred_time'] ?? '10:00 AM - 01:00 PM'))), ENT_QUOTES, 'UTF-8');
+            $requirements = htmlspecialchars(strip_tags(trim($data['requirements'] ?? '')), ENT_QUOTES, 'UTF-8');
+            $notes = htmlspecialchars(strip_tags(trim($data['notes'] ?? '')), ENT_QUOTES, 'UTF-8');
+
+            if (!$fullName || strlen($fullName) < 2) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Please enter a valid full name.']);
+                exit;
+            }
+
+            if (!$phone || strlen(preg_replace('/[^0-9]/', '', $phone)) < 10) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Please enter a valid 10-digit phone number.']);
+                exit;
+            }
+
+            $stmt = $mysqli->prepare("INSERT INTO `demo_bookings` (`reference`, `full_name`, `phone`, `email`, `customer_type`, `solution`, `property_type`, `city`, `preferred_date`, `preferred_time`, `requirements`, `notes`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')");
+            $stmt->bind_param("ssssssssssss", $reference, $fullName, $phone, $email, $customerType, $solution, $propertyType, $city, $preferredDate, $preferredTime, $requirements, $notes);
 
             if ($stmt->execute()) {
                 http_response_code(200);
-            echo json_encode(['success' => true, 'reference' => $reference, 'message' => 'Demo booking submitted successfully!']);
+                echo json_encode(['success' => true, 'reference' => $reference, 'message' => 'Demo booking submitted successfully!']);
             } else {
                 http_response_code(500);
-                http_response_code(200);
-            echo json_encode(['success' => false, 'error' => $stmt->error]);
+                echo json_encode(['success' => false, 'error' => $stmt->error]);
             }
             $stmt->close();
             $mysqli->close();
@@ -124,10 +166,12 @@ if (strpos($uri, '/api/') === 0) {
         }
 
         if ($method === 'GET') {
-            $res = $mysqli->query("SELECT * FROM `demo_bookings` ORDER BY `id` DESC LIMIT 100");
+            $res = $mysqli->query("SELECT * FROM `demo_bookings` ORDER BY `id` DESC LIMIT 500");
             $rows = [];
-            while ($r = $res->fetch_assoc()) {
-                $rows[] = $r;
+            if ($res) {
+                while ($r = $res->fetch_assoc()) {
+                    $rows[] = $r;
+                }
             }
             http_response_code(200);
             echo json_encode(['success' => true, 'data' => $rows]);
@@ -139,18 +183,24 @@ if (strpos($uri, '/api/') === 0) {
             $raw = file_get_contents('php://input');
             $data = json_decode($raw, true) ?: $_POST;
             $ref = trim($data['reference'] ?? ($data['id'] ?? ''));
-            $status = trim($data['status'] ?? 'pending');
+            $status = htmlspecialchars(strip_tags(trim($data['status'] ?? 'pending')), ENT_QUOTES, 'UTF-8');
+            $notes = isset($data['notes']) ? htmlspecialchars(strip_tags(trim($data['notes'])), ENT_QUOTES, 'UTF-8') : null;
+
             if ($ref) {
-                $stmt = $mysqli->prepare("UPDATE `demo_bookings` SET `status` = ? WHERE `reference` = ? OR `id` = ?");
-                $stmt->bind_param("sss", $status, $ref, $ref);
+                if ($notes !== null) {
+                    $stmt = $mysqli->prepare("UPDATE `demo_bookings` SET `status` = ?, `notes` = ? WHERE `reference` = ? OR `id` = ?");
+                    $stmt->bind_param("ssss", $status, $notes, $ref, $ref);
+                } else {
+                    $stmt = $mysqli->prepare("UPDATE `demo_bookings` SET `status` = ? WHERE `reference` = ? OR `id` = ?");
+                    $stmt->bind_param("sss", $status, $ref, $ref);
+                }
                 $stmt->execute();
                 $stmt->close();
                 http_response_code(200);
-            echo json_encode(['success' => true, 'message' => 'Booking updated']);
+                echo json_encode(['success' => true, 'message' => 'Booking updated']);
             } else {
                 http_response_code(400);
-                http_response_code(200);
-            echo json_encode(['success' => false, 'error' => 'Invalid reference']);
+                echo json_encode(['success' => false, 'error' => 'Invalid reference']);
             }
             $mysqli->close();
             exit;
@@ -169,11 +219,10 @@ if (strpos($uri, '/api/') === 0) {
                 $stmt->execute();
                 $stmt->close();
                 http_response_code(200);
-            echo json_encode(['success' => true, 'message' => 'Booking deleted']);
+                echo json_encode(['success' => true, 'message' => 'Booking deleted']);
             } else {
                 http_response_code(400);
-                http_response_code(200);
-            echo json_encode(['success' => false, 'error' => 'Invalid ID or reference']);
+                echo json_encode(['success' => false, 'error' => 'Invalid ID or reference']);
             }
             $mysqli->close();
             exit;
@@ -183,34 +232,48 @@ if (strpos($uri, '/api/') === 0) {
     // --- Enquiries Endpoint ---
     if ($uri === '/api/enquiries' || $uri === '/api/contact') {
         if ($method === 'POST') {
+            checkSubmissionRateLimit('enquiry', 20, 300);
+
             $raw = file_get_contents('php://input');
             $data = json_decode($raw, true) ?: $_POST;
 
-            $fullName = trim($data['fullName'] ?? ($data['full_name'] ?? ''));
-            $phone = trim($data['phone'] ?? '');
-            $email = trim($data['email'] ?? '');
-            $customerType = trim($data['customerType'] ?? ($data['customer_type'] ?? 'Residential'));
-            $service = trim($data['service'] ?? 'Rooftop Solar');
-            $city = trim($data['city'] ?? 'Amaravati');
-            $message = trim($data['message'] ?? '');
-
-            if (!$fullName || !$phone) {
-                http_response_code(400);
+            // Honeypot spam-bot rejection
+            if (!empty($data['_hp']) || !empty($data['website_url_hp']) || !empty($data['honeypot'])) {
                 http_response_code(200);
-            echo json_encode(['success' => false, 'error' => 'Name and phone are required.']);
+                echo json_encode(['success' => true, 'id' => 0, 'message' => 'Enquiry submitted successfully!']);
                 exit;
             }
 
-            $stmt = $mysqli->prepare("INSERT INTO `enquiries` (`full_name`, `phone`, `email`, `customer_type`, `service`, `city`, `message`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, 'New')");
-            $stmt->bind_param("sssssss", $fullName, $phone, $email, $customerType, $service, $city, $message);
+            $fullName = htmlspecialchars(strip_tags(trim($data['fullName'] ?? ($data['full_name'] ?? ''))), ENT_QUOTES, 'UTF-8');
+            $phone = preg_replace('/[^0-9+]/', '', trim($data['phone'] ?? ''));
+            $email = filter_var(trim($data['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+            $customerType = htmlspecialchars(strip_tags(trim($data['customerType'] ?? ($data['customer_type'] ?? 'Residential'))), ENT_QUOTES, 'UTF-8');
+            $service = htmlspecialchars(strip_tags(trim($data['service'] ?? 'Rooftop Solar')), ENT_QUOTES, 'UTF-8');
+            $city = htmlspecialchars(strip_tags(trim($data['city'] ?? 'Amaravati')), ENT_QUOTES, 'UTF-8');
+            $message = htmlspecialchars(strip_tags(trim($data['message'] ?? '')), ENT_QUOTES, 'UTF-8');
+            $notes = htmlspecialchars(strip_tags(trim($data['notes'] ?? ($data['reference'] ?? ''))), ENT_QUOTES, 'UTF-8');
+
+            if (!$fullName || strlen($fullName) < 2) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Please enter a valid full name.']);
+                exit;
+            }
+
+            if (!$phone || strlen(preg_replace('/[^0-9]/', '', $phone)) < 10) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'error' => 'Please enter a valid 10-digit phone number.']);
+                exit;
+            }
+
+            $stmt = $mysqli->prepare("INSERT INTO `enquiries` (`full_name`, `phone`, `email`, `customer_type`, `service`, `city`, `message`, `notes`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'New')");
+            $stmt->bind_param("ssssssss", $fullName, $phone, $email, $customerType, $service, $city, $message, $notes);
 
             if ($stmt->execute()) {
                 http_response_code(200);
-            echo json_encode(['success' => true, 'id' => $stmt->insert_id, 'message' => 'Enquiry submitted successfully!']);
+                echo json_encode(['success' => true, 'id' => $stmt->insert_id, 'message' => 'Enquiry submitted successfully!']);
             } else {
                 http_response_code(500);
-                http_response_code(200);
-            echo json_encode(['success' => false, 'error' => $stmt->error]);
+                echo json_encode(['success' => false, 'error' => $stmt->error]);
             }
             $stmt->close();
             $mysqli->close();
@@ -218,10 +281,12 @@ if (strpos($uri, '/api/') === 0) {
         }
 
         if ($method === 'GET') {
-            $res = $mysqli->query("SELECT * FROM `enquiries` ORDER BY `id` DESC LIMIT 100");
+            $res = $mysqli->query("SELECT * FROM `enquiries` ORDER BY `id` DESC LIMIT 500");
             $rows = [];
-            while ($r = $res->fetch_assoc()) {
-                $rows[] = $r;
+            if ($res) {
+                while ($r = $res->fetch_assoc()) {
+                    $rows[] = $r;
+                }
             }
             http_response_code(200);
             echo json_encode(['success' => true, 'data' => $rows]);
@@ -233,18 +298,38 @@ if (strpos($uri, '/api/') === 0) {
             $raw = file_get_contents('php://input');
             $data = json_decode($raw, true) ?: $_POST;
             $id = (int)($data['id'] ?? 0);
-            $status = trim($data['status'] ?? 'New');
+            $ref = trim($data['reference'] ?? ($data['id'] ?? ''));
+            $status = htmlspecialchars(strip_tags(trim($data['status'] ?? 'New')), ENT_QUOTES, 'UTF-8');
+            $notes = isset($data['notes']) ? htmlspecialchars(strip_tags(trim($data['notes'])), ENT_QUOTES, 'UTF-8') : null;
+
             if ($id > 0) {
-                $stmt = $mysqli->prepare("UPDATE `enquiries` SET `status` = ? WHERE `id` = ?");
-                $stmt->bind_param("si", $status, $id);
+                if ($notes !== null) {
+                    $stmt = $mysqli->prepare("UPDATE `enquiries` SET `status` = ?, `notes` = ? WHERE `id` = ?");
+                    $stmt->bind_param("ssi", $status, $notes, $id);
+                } else {
+                    $stmt = $mysqli->prepare("UPDATE `enquiries` SET `status` = ? WHERE `id` = ?");
+                    $stmt->bind_param("si", $status, $id);
+                }
                 $stmt->execute();
                 $stmt->close();
                 http_response_code(200);
-            echo json_encode(['success' => true, 'message' => 'Status updated']);
+                echo json_encode(['success' => true, 'message' => 'Status updated']);
+            } elseif ($ref !== '') {
+                $refLike = '%' . $ref . '%';
+                if ($notes !== null) {
+                    $stmt = $mysqli->prepare("UPDATE `enquiries` SET `status` = ?, `notes` = ? WHERE `notes` LIKE ? OR `message` LIKE ?");
+                    $stmt->bind_param("ssss", $status, $notes, $refLike, $refLike);
+                } else {
+                    $stmt = $mysqli->prepare("UPDATE `enquiries` SET `status` = ? WHERE `notes` LIKE ? OR `message` LIKE ?");
+                    $stmt->bind_param("sss", $status, $refLike, $refLike);
+                }
+                $stmt->execute();
+                $stmt->close();
+                http_response_code(200);
+                echo json_encode(['success' => true, 'message' => 'Status updated by reference']);
             } else {
                 http_response_code(400);
-                http_response_code(200);
-            echo json_encode(['success' => false, 'error' => 'Invalid ID']);
+                echo json_encode(['success' => false, 'error' => 'Invalid ID or reference']);
             }
             $mysqli->close();
             exit;
@@ -252,10 +337,12 @@ if (strpos($uri, '/api/') === 0) {
 
         if ($method === 'DELETE') {
             $id = (int)($_GET['id'] ?? 0);
-            if (!$id) {
+            $ref = trim($_GET['reference'] ?? ($_GET['id'] ?? ''));
+            if (!$id && !$ref) {
                 $raw = file_get_contents('php://input');
                 $data = json_decode($raw, true) ?: [];
                 $id = (int)($data['id'] ?? 0);
+                $ref = trim($data['reference'] ?? ($data['id'] ?? ''));
             }
             if ($id > 0) {
                 $stmt = $mysqli->prepare("DELETE FROM `enquiries` WHERE `id` = ?");
@@ -263,11 +350,18 @@ if (strpos($uri, '/api/') === 0) {
                 $stmt->execute();
                 $stmt->close();
                 http_response_code(200);
-            echo json_encode(['success' => true, 'message' => 'Enquiry deleted']);
+                echo json_encode(['success' => true, 'message' => 'Enquiry deleted']);
+            } elseif ($ref !== '') {
+                $refLike = '%' . $ref . '%';
+                $stmt = $mysqli->prepare("DELETE FROM `enquiries` WHERE `notes` LIKE ? OR `message` LIKE ?");
+                $stmt->bind_param("ss", $refLike, $refLike);
+                $stmt->execute();
+                $stmt->close();
+                http_response_code(200);
+                echo json_encode(['success' => true, 'message' => 'Enquiry deleted by reference']);
             } else {
                 http_response_code(400);
-                http_response_code(200);
-            echo json_encode(['success' => false, 'error' => 'Invalid ID']);
+                echo json_encode(['success' => false, 'error' => 'Invalid ID or reference']);
             }
             $mysqli->close();
             exit;

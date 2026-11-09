@@ -80,6 +80,7 @@ export type AdminInquiry = {
   date: string;
   status: "New" | "Contacted" | "Completed";
   notes?: string;
+  timestamp?: number;
 };
 
 // Default initial services matching the exact structure from the reference screenshot
@@ -392,6 +393,7 @@ function AdminDashboard() {
   const [viewingInquiry, setViewingInquiry] = useState<AdminInquiry | null>(null);
 
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isRefreshingInquiries, setIsRefreshingInquiries] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Authentication check & initial state hydration
@@ -601,6 +603,7 @@ function AdminDashboard() {
 
   // 4. Fetch Live Inquiries & Bookings from MySQL Database
   const fetchLiveInquiries = async () => {
+    setIsRefreshingInquiries(true);
     try {
       const [enqRes, bookRes] = await Promise.all([
         fetch("/api/enquiries").then((r) => (r.ok ? r.json() : null)).catch(() => null),
@@ -611,6 +614,20 @@ function AdminDashboard() {
 
       if (enqRes?.success && Array.isArray(enqRes.data)) {
         enqRes.data.forEach((r: any) => {
+          const rawMsg = (r.message || "").trim();
+          const rawNotes = (r.notes || "").trim();
+          let combinedNotes = rawMsg;
+          if (rawNotes && !rawMsg.includes(rawNotes)) {
+            combinedNotes = combinedNotes ? `${rawNotes}\n\n${combinedNotes}` : rawNotes;
+          }
+
+          const parsedDate = r.created_at ? new Date(r.created_at) : null;
+          const formattedDate = parsedDate && !isNaN(parsedDate.getTime())
+            ? parsedDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) +
+              ", " +
+              parsedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+            : "Recent";
+
           liveItems.push({
             id: String(r.id),
             name: r.full_name || "Customer",
@@ -618,35 +635,57 @@ function AdminDashboard() {
             email: r.email || "",
             service: r.service || "Solar Enquiry",
             location: r.city || "Amaravati",
-            date: r.created_at ? new Date(r.created_at).toLocaleDateString() + ", " + new Date(r.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recent",
+            date: formattedDate,
             status: (r.status as any) || "New",
-            notes: r.message || "",
+            notes: combinedNotes || "Direct Enquiry",
+            timestamp: parsedDate && !isNaN(parsedDate.getTime()) ? parsedDate.getTime() : parseInt(r.id) || 0,
           });
         });
       }
 
       if (bookRes?.success && Array.isArray(bookRes.data)) {
         bookRes.data.forEach((r: any) => {
+          const detailParts = [
+            r.reference ? `Reference: ${r.reference}` : null,
+            r.property_type ? `Property: ${r.property_type}` : null,
+            r.monthly_bill ? `Monthly Bill: ${r.monthly_bill}` : null,
+            r.preferred_date ? `Preferred Date: ${r.preferred_date}` : null,
+            r.preferred_time ? `Preferred Time: ${r.preferred_time}` : null,
+            r.requirements ? `Requirements: ${r.requirements}` : null,
+            r.notes ? `Notes: ${r.notes}` : null,
+          ].filter(Boolean).join("\n");
+
+          const parsedDate = r.created_at ? new Date(r.created_at) : null;
+          const formattedDate = parsedDate && !isNaN(parsedDate.getTime())
+            ? parsedDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) +
+              ", " +
+              parsedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+            : "Recent";
+
           liveItems.push({
             id: "b-" + (r.reference || r.id),
             name: r.full_name || "Customer",
             phone: r.phone || "",
             email: r.email || "",
-            service: "Demo: " + (r.solution || "Rooftop Solar") + " (" + (r.property_type || "House") + ")",
+            service: "Demo: " + (r.solution || "Rooftop Solar") + (r.property_type ? ` (${r.property_type})` : ""),
             location: (r.city || "Amaravati") + (r.preferred_date ? " [" + r.preferred_date + "]" : ""),
-            date: r.created_at ? new Date(r.created_at).toLocaleDateString() + ", " + new Date(r.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recent",
+            date: formattedDate,
             status: r.status === "completed" ? "Completed" : r.status === "contacted" ? "Contacted" : "New",
-            notes: "Ref: " + (r.reference || "") + (r.requirements ? " | " + r.requirements : ""),
+            notes: detailParts || "Consultation Request",
+            timestamp: parsedDate && !isNaN(parsedDate.getTime()) ? parsedDate.getTime() : parseInt(r.id) || 0,
           });
         });
       }
 
       if (liveItems.length > 0) {
+        liveItems.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
         setInquiries(liveItems);
         try { localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(liveItems)); } catch {}
       }
     } catch (e) {
       console.warn("Could not fetch live enquiries:", e);
+    } finally {
+      setIsRefreshingInquiries(false);
     }
   };
 
@@ -812,7 +851,7 @@ function AdminDashboard() {
   const handleUpdateInquiryStatus = (id: string, status: "New" | "Contacted" | "Completed") => {
     const updated = inquiries.map((inq) => (inq.id === id ? { ...inq, status } : inq));
     setInquiries(updated);
-    localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(updated));
+    try { localStorage.setItem("amaravati_admin_inquiries", JSON.stringify(updated)); } catch {}
     showToast(`Inquiry marked as ${status}`);
 
     // Sync to MySQL
@@ -824,10 +863,12 @@ function AdminDashboard() {
         body: JSON.stringify({ reference: ref, status: status.toLowerCase() }),
       }).catch(() => {});
     } else {
+      const cleanId = id.replace(/^e-/, "");
+      const isNum = /^\d+$/.test(cleanId);
       fetch("/api/enquiries", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: Number(id), status }),
+        body: JSON.stringify(isNum ? { id: Number(cleanId), status } : { reference: cleanId, status }),
       }).catch(() => {});
     }
   };
@@ -840,13 +881,67 @@ function AdminDashboard() {
       showToast("Inquiry deleted.");
 
       // Sync deletion to MySQL
-      if (!id.startsWith("b-")) {
-        fetch(`/api/enquiries?id=${encodeURIComponent(id)}`, { method: "DELETE" }).catch(() => {});
-      } else {
+      if (id.startsWith("b-")) {
         const ref = id.replace(/^b-/, "");
         fetch(`/api/bookings?reference=${encodeURIComponent(ref)}`, { method: "DELETE" }).catch(() => {});
+      } else {
+        const cleanId = id.replace(/^e-/, "");
+        const isNum = /^\d+$/.test(cleanId);
+        fetch(`/api/enquiries?${isNum ? `id=${encodeURIComponent(cleanId)}` : `reference=${encodeURIComponent(cleanId)}`}`, { method: "DELETE" }).catch(() => {});
       }
     }
+  };
+
+  // Export Inquiries as CSV
+  const handleExportInquiriesCSV = () => {
+    if (inquiries.length === 0) {
+      showToast("No inquiries available to export.");
+      return;
+    }
+
+    const headers = [
+      "Inquiry ID",
+      "Date & Time",
+      "Customer Name",
+      "Phone",
+      "Email",
+      "Category / Source",
+      "Service / System",
+      "Location / City",
+      "Status",
+      "Details / Sizing & Notes",
+    ];
+
+    const rows = inquiries.map((inq) => {
+      const badge = getInquirySourceBadge(inq);
+      const safe = (val: string | undefined | null) =>
+        `"${String(val || "").replace(/"/g, '""').replace(/\r?\n/g, " ")}"`;
+
+      return [
+        safe(inq.id),
+        safe(inq.date),
+        safe(inq.name),
+        safe(inq.phone),
+        safe(inq.email),
+        safe(badge.label),
+        safe(inq.service),
+        safe(inq.location),
+        safe(inq.status),
+        safe(inq.notes),
+      ].join(",");
+    });
+
+    const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `Amaravati_Solar_Inquiries_${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${inquiries.length} customer records to CSV!`);
   };
 
   // Filter calculations
@@ -979,67 +1074,88 @@ function AdminDashboard() {
   const newInquiriesCount = inquiries.filter((i) => i.status === "New").length;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-[#344054] flex flex-col antialiased">
-      {/* 1. TOP GLOBAL HEADER */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200/90 shadow-2xs">
-        <div className="px-2.5 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-1.5 sm:gap-4">
+    <div className="h-screen w-full bg-[#f8fafc] text-[#344054] flex flex-col antialiased overflow-hidden">
+      {/* 1. TOP GLOBAL HEADER (PERMANENTLY STICKY & ULTRA-PREMIUM) */}
+      <header className="h-16 shrink-0 sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-[0_2px_10px_rgba(8,43,76,0.04)]">
+        <div className="px-3 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-2 sm:gap-4">
           {/* Left: Mobile hamburger + Admin Portal branding */}
-          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 sm:p-2 rounded-lg text-slate-700 hover:bg-slate-100 cursor-pointer shrink-0"
+              className="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 hover:text-[#082B4C] transition-colors cursor-pointer shrink-0"
               aria-label="Toggle navigation menu"
             >
               <Menu className="size-5" />
             </button>
 
-            <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
-              <div className="h-8 sm:h-9 w-auto flex items-center justify-center rounded-lg bg-slate-50 border border-slate-200 px-2 py-0.5 shrink-0">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <div className="h-9 sm:h-10 w-auto flex items-center justify-center rounded-xl bg-white border border-slate-200/90 shadow-2xs px-2.5 py-1 shrink-0">
                 <img src={logo} alt="Amaravati Solar" className="h-5 sm:h-6 w-auto object-contain" />
               </div>
-              <span className="text-xs sm:text-lg font-black tracking-tight text-[#082B4C] uppercase truncate">
-                ADMIN PORTAL
-              </span>
+              <div className="flex flex-col min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs sm:text-base font-black tracking-tight text-[#082B4C] uppercase truncate">
+                    AMARAVATI SOLAR
+                  </span>
+                  <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30 text-[10px] font-black uppercase tracking-wider text-amber-800">
+                    ADMIN
+                  </span>
+                </div>
+                <div className="hidden md:flex items-center gap-1.5 text-[10px] font-bold text-emerald-600">
+                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>Secure Cloud Node &bull; AP DISCOM Verified</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right: Logged In User, Live Site Button, Sign Out Button */}
-          <div className="flex items-center gap-1.5 sm:gap-3 text-xs shrink-0">
-            <div className="hidden md:flex flex-col text-right leading-tight">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                LOGGED IN
-              </span>
-              <span className="font-extrabold text-[#082B4C] max-w-[200px] truncate">
-                {adminEmail}
-              </span>
+          {/* Right: User Profile, Live Site, Change Password, Logout */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 text-xs shrink-0">
+            {/* User Profile Info Pill */}
+            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80">
+              <div className="size-6 rounded-full bg-gradient-to-tr from-[#082B4C] to-[#154674] text-white flex items-center justify-center font-black text-[10px] shadow-2xs">
+                A
+              </div>
+              <div className="flex flex-col leading-tight text-left">
+                <span className="font-extrabold text-[#082B4C] text-[11px] max-w-[170px] truncate">
+                  {adminEmail}
+                </span>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-amber-600">
+                  SUPER ADMIN
+                </span>
+              </div>
             </div>
 
+            {/* Live Site Shortcut */}
             <Link
               to="/"
               target="_blank"
               title="View Live Site"
-              className="inline-flex items-center justify-center gap-1 sm:gap-1.5 p-2 sm:px-3.5 sm:py-2 rounded-full border border-slate-200 bg-white text-[11px] sm:text-xs font-bold text-[#082B4C] hover:bg-slate-50 hover:border-slate-300 shadow-2xs transition-all active:scale-95 shrink-0"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-[11px] sm:text-xs font-bold text-slate-700 hover:text-[#082B4C] shadow-2xs transition-all active:scale-95 shrink-0"
             >
-              <Eye className="size-3.5 text-slate-600 shrink-0" />
+              <ExternalLink className="size-3.5 text-slate-500 shrink-0" />
               <span className="hidden sm:inline">LIVE SITE</span>
             </Link>
 
+            {/* Change Password Modal Trigger */}
             <button
               type="button"
               onClick={() => setIsPasswordModalOpen(true)}
               title="Change Password"
-              className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full border border-amber-200 bg-amber-50 text-[11px] sm:text-xs font-bold text-amber-800 hover:bg-amber-100 hover:border-amber-300 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-300/80 bg-gradient-to-r from-amber-50 to-amber-100/70 hover:from-amber-100 hover:to-amber-200/80 text-[11px] sm:text-xs font-extrabold text-amber-900 shadow-2xs transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
             >
-              <KeyRound className="size-3.5 text-amber-600 shrink-0" />
-              <span>CHANGE PASSWORD</span>
+              <KeyRound className="size-3.5 text-amber-700 shrink-0" />
+              <span className="hidden sm:inline">CHANGE PASSWORD</span>
+              <span className="sm:hidden">PASSWORD</span>
             </button>
 
+            {/* Logout Trigger */}
             <button
               type="button"
               onClick={handleSignOut}
               title="Sign Out"
-              className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full border border-red-200 bg-red-50 text-[11px] sm:text-xs font-bold text-red-600 hover:bg-red-100 hover:border-red-300 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-[11px] sm:text-xs font-bold text-red-600 hover:text-red-700 shadow-2xs transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
             >
               <LogOut className="size-3.5 text-red-600 shrink-0" />
               <span>LOGOUT</span>
@@ -1056,95 +1172,115 @@ function AdminDashboard() {
         </div>
       )}
 
-      {/* 2. MAIN LAYOUT (Sidebar + Content Panel) */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* SIDEBAR (Desktop) */}
-        <aside className="hidden lg:flex flex-col w-64 bg-[#082B4C] text-white shrink-0 p-4 border-r border-[#082B4C]">
-          {/* Amaravati Panel White Card */}
-          <div className="rounded-2xl bg-white p-3.5 flex items-center gap-3 shadow-sm border border-slate-100 text-[#082B4C]">
-            <div className="h-10 w-auto flex items-center justify-center rounded-xl bg-slate-50 border border-slate-200 px-2.5 py-1 shrink-0">
-              <img src={logo} alt="Logo" className="h-7 w-auto object-contain" />
+      {/* 2. MAIN LAYOUT (STICKY SIDEBAR + INDEPENDENT SCROLLING CONTENT PANEL) */}
+      <div className="flex-1 flex overflow-hidden w-full relative">
+        {/* SIDEBAR (Desktop - 100% Permanently Sticky & Ultra-Premium) */}
+        <aside className="hidden lg:flex flex-col w-64 xl:w-72 bg-gradient-to-b from-[#082B4C] via-[#07243f] to-[#041525] text-white shrink-0 h-full overflow-y-auto p-4 xl:p-5 border-r border-[#082B4C]/20 shadow-md select-none sticky top-0">
+          {/* Top Panel Branding Card */}
+          <div className="rounded-2xl bg-white/10 backdrop-blur-md p-3.5 flex items-center gap-3 shadow-sm border border-white/15 text-white">
+            <div className="h-10 w-auto flex items-center justify-center rounded-xl bg-white px-2 py-1 shrink-0 shadow-2xs">
+              <img src={logo} alt="Logo" className="h-6 w-auto object-contain" />
             </div>
-            <div>
-              <div className="text-sm font-extrabold uppercase tracking-tight text-[#082B4C]">
+            <div className="min-w-0">
+              <div className="text-xs font-black uppercase tracking-wider text-white truncate">
                 AMARAVATI PANEL
               </div>
-              <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-600">
-                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Live Server</span>
+              <div className="flex items-center gap-1.5 text-[10px] font-extrabold text-emerald-400 mt-0.5">
+                <span className="size-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                <span className="truncate">Live Cloud Server</span>
               </div>
             </div>
           </div>
 
           {/* Section Divider */}
-          <div className="mt-8 mb-2 px-3 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-            CONTENT MANAGEMENT
+          <div className="mt-6 mb-2.5 px-3 flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-amber-400" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+              CONTENT MANAGEMENT
+            </span>
           </div>
 
-          {/* Navigation Items */}
+          {/* Navigation Items (Ultra-Premium Active / Inactive States) */}
           <nav className="flex flex-col gap-1.5">
             <button
               type="button"
               onClick={() => setActiveTab("services")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer select-none text-left ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-xs xl:text-sm font-bold transition-all cursor-pointer select-none text-left ${
                 activeTab === "services"
-                  ? "bg-[#F5A623] text-[#082B4C] shadow-md font-extrabold"
-                  : "text-slate-300 hover:text-white hover:bg-white/10"
+                  ? "bg-gradient-to-r from-[#F5A623] to-[#F7B744] text-[#082B4C] shadow-[0_4px_16px_rgba(245,166,35,0.4)] font-black scale-[1.01]"
+                  : "text-slate-300 hover:text-white hover:bg-white/10 hover:translate-x-1"
               }`}
             >
-              <Wrench className="size-5 shrink-0" />
+              <Wrench className="size-4.5 xl:size-5 shrink-0" />
               <span>SERVICES</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab("projects")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer select-none text-left ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-xs xl:text-sm font-bold transition-all cursor-pointer select-none text-left ${
                 activeTab === "projects"
-                  ? "bg-[#F5A623] text-[#082B4C] shadow-md font-extrabold"
-                  : "text-slate-300 hover:text-white hover:bg-white/10"
+                  ? "bg-gradient-to-r from-[#F5A623] to-[#F7B744] text-[#082B4C] shadow-[0_4px_16px_rgba(245,166,35,0.4)] font-black scale-[1.01]"
+                  : "text-slate-300 hover:text-white hover:bg-white/10 hover:translate-x-1"
               }`}
             >
-              <FolderGit2 className="size-5 shrink-0" />
+              <FolderGit2 className="size-4.5 xl:size-5 shrink-0" />
               <span>PROJECTS</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab("quotation")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer select-none text-left ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-xs xl:text-sm font-bold transition-all cursor-pointer select-none text-left ${
                 activeTab === "quotation"
-                  ? "bg-[#F5A623] text-[#082B4C] shadow-md font-extrabold"
-                  : "text-slate-300 hover:text-white hover:bg-white/10"
+                  ? "bg-gradient-to-r from-[#F5A623] to-[#F7B744] text-[#082B4C] shadow-[0_4px_16px_rgba(245,166,35,0.4)] font-black scale-[1.01]"
+                  : "text-slate-300 hover:text-white hover:bg-white/10 hover:translate-x-1"
               }`}
             >
-              <FileText className="size-5 shrink-0" />
+              <FileText className="size-4.5 xl:size-5 shrink-0" />
               <span>QUOTATION</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab("inquiries")}
-              className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer select-none text-left ${
+              className={`flex items-center justify-between px-4 py-3 rounded-2xl text-xs xl:text-sm font-bold transition-all cursor-pointer select-none text-left ${
                 activeTab === "inquiries"
-                  ? "bg-[#F5A623] text-[#082B4C] shadow-md font-extrabold"
-                  : "text-slate-300 hover:text-white hover:bg-white/10"
+                  ? "bg-gradient-to-r from-[#F5A623] to-[#F7B744] text-[#082B4C] shadow-[0_4px_16px_rgba(245,166,35,0.4)] font-black scale-[1.01]"
+                  : "text-slate-300 hover:text-white hover:bg-white/10 hover:translate-x-1"
               }`}
             >
               <div className="flex items-center gap-3">
-                <MessageSquare className="size-5 shrink-0" />
+                <MessageSquare className="size-4.5 xl:size-5 shrink-0" />
                 <span>INQUIRIES</span>
               </div>
               {newInquiriesCount > 0 && (
-                <span className="grid place-items-center rounded-full bg-emerald-500 text-white font-extrabold text-[11px] px-2 py-0.5">
+                <span className="grid place-items-center rounded-full bg-emerald-500 text-white font-black text-[10px] px-2 py-0.5 shadow-xs">
                   {newInquiriesCount}
                 </span>
               )}
             </button>
           </nav>
+
+          {/* Sidebar Bottom Footer Info */}
+          <div className="mt-auto pt-4 border-t border-white/10 space-y-3">
+            <div className="rounded-xl bg-white/5 border border-white/10 p-3 text-[11px] text-slate-300">
+              <div className="flex items-center gap-1.5 text-amber-400 font-extrabold text-[10px] uppercase tracking-wider mb-1">
+                <ShieldCheck className="size-3.5" />
+                <span>Security Status</span>
+              </div>
+              <p className="text-[10px] text-slate-400 leading-relaxed">
+                256-Bit SSL Encrypted Admin Session. Connected to Andhra Pradesh DISCOM Database.
+              </p>
+            </div>
+
+            <div className="text-center text-[10px] text-slate-500 font-medium">
+              Amaravati Solar Solutions &bull; v2.4
+            </div>
+          </div>
         </aside>
 
-        {/* MOBILE DRAWER */}
+        {/* MOBILE DRAWER (Responsive Sticky Navigation) */}
         {mobileMenuOpen && (
           <div className="fixed inset-0 z-50 lg:hidden flex">
             <div
@@ -1258,7 +1394,7 @@ function AdminDashboard() {
                       target="_blank"
                       className="flex-1 text-center py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition-all flex items-center justify-center gap-1.5"
                     >
-                      <Eye className="size-3.5" />
+                      <ExternalLink className="size-3.5" />
                       <span>Live Site</span>
                     </Link>
                     <button
@@ -1287,8 +1423,8 @@ function AdminDashboard() {
           </div>
         )}
 
-        {/* CONTENT PANEL */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        {/* CONTENT PANEL (INDEPENDENT SMOOTH SCROLLING) */}
+        <main className="flex-1 h-full overflow-y-auto p-4 sm:p-6 lg:p-8 xl:p-10 scroll-smooth bg-[#f8fafc]">
           {/* TAB 1: SERVICES PORTFOLIO (Exact Match to User's Example Reference) */}
           {activeTab === "services" && (
             <div className="max-w-7xl mx-auto space-y-6">
@@ -1909,6 +2045,32 @@ function AdminDashboard() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                  {/* Refresh from Database */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      fetchLiveInquiries();
+                      showToast("Refreshing inquiries from database...");
+                    }}
+                    disabled={isRefreshingInquiries}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer shadow-2xs disabled:opacity-60"
+                    title="Refresh from MySQL Database"
+                  >
+                    <RefreshCw className={cn("size-3.5 text-slate-500", isRefreshingInquiries && "animate-spin text-primary")} />
+                    <span className="hidden sm:inline">Refresh</span>
+                  </button>
+
+                  {/* Export to CSV */}
+                  <button
+                    type="button"
+                    onClick={handleExportInquiriesCSV}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-emerald-200 bg-emerald-50 text-xs font-bold text-emerald-800 hover:bg-emerald-100 transition-all cursor-pointer shadow-2xs"
+                    title="Export all inquiries to CSV for Excel"
+                  >
+                    <FileText className="size-3.5 text-emerald-600" />
+                    <span>Export CSV</span>
+                  </button>
+
                   {/* Status Filter */}
                   <select
                     value={inquiryStatusFilter}
@@ -2301,7 +2463,7 @@ function AdminDashboard() {
                     </div>
 
                     {/* Contact & Location Strip */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 my-4">
                       <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
                         <span className="text-[10px] font-bold uppercase text-slate-400 block">Phone / WhatsApp</span>
                         <div className="flex items-center justify-between mt-1">
@@ -2324,6 +2486,20 @@ function AdminDashboard() {
                               <PhoneCall className="size-3.5" />
                             </a>
                           </div>
+                        </div>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                        <span className="text-[10px] font-bold uppercase text-slate-400 block">Email Address</span>
+                        <div className="flex items-center gap-1.5 mt-1 overflow-hidden">
+                          <Mail className="size-3.5 text-slate-400 shrink-0" />
+                          <a
+                            href={`mailto:${viewingInquiry.email}`}
+                            className="text-xs font-bold text-slate-700 hover:text-primary truncate block"
+                            title={viewingInquiry.email}
+                          >
+                            {viewingInquiry.email || "No email"}
+                          </a>
                         </div>
                       </div>
 
