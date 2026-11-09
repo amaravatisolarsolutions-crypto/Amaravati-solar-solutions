@@ -12,7 +12,7 @@ ErrorDocument 404 /index.php
     RewriteBase /
 
     # 1. Pass API requests directly to index.php
-    RewriteRule ^api/ - [L]
+    RewriteRule ^api/(.*)$ index.php [QSA,L]
 
     # 2. If the request matches an existing file or directory, serve directly
     RewriteCond %{REQUEST_FILENAME} -f [OR]

@@ -63,6 +63,7 @@ if ($uri === '/api/init-db' || $uri === '/setup-db.php' || $uri === '/migrate') 
 // 2. API: Live Form Handlers & CRUD Endpoints
 // -------------------------------------------------------------------------
 if (strpos($uri, '/api/') === 0) {
+    http_response_code(200);
     header('Content-Type: application/json; charset=utf-8');
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');

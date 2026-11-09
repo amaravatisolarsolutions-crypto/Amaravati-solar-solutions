@@ -85,7 +85,7 @@ function AdminLogin() {
 
       const data = await res.json().catch(() => ({ success: false, error: "Network response error" }));
 
-      if (res.ok && data.success && data.requireOtp) {
+      if ((res.ok || data.success) && data.requireOtp) {
         setSentToEmail(data.email || "amaravatisolarsolutions@gmail.com");
         setStep("otp");
         setOtp("");
@@ -129,7 +129,7 @@ function AdminLogin() {
 
       const data = await res.json().catch(() => ({ success: false, error: "Network response error" }));
 
-      if (res.ok && data.success) {
+      if ((res.ok || data.success) && data.success) {
         setSuccessMsg("OTP verified successfully! Access granted.");
         try {
           localStorage.setItem("admin_auth", "true");
@@ -173,7 +173,7 @@ function AdminLogin() {
 
       const data = await res.json().catch(() => ({ success: false, error: "Resend failed" }));
 
-      if (res.ok && data.success) {
+      if ((res.ok || data.success) && data.success) {
         setResendCooldown(60);
         setSuccessMsg("A new 6-digit verification code has been sent to " + sentToEmail);
       } else {
