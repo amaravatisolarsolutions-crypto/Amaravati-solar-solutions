@@ -96,7 +96,7 @@ export function SiteFooter() {
           </Link>
 
           <p className="text-xs sm:text-[13px] leading-relaxed text-slate-300 max-w-sm">
-            Smart, reliable, and sustainable solar energy solutions for residential, commercial, and industrial installations across Andhra Pradesh &amp; Telangana.
+            Smart, reliable, and sustainable solar energy solutions for residential, commercial, and industrial installations across Andhra Pradesh &amp; Telangana, and beyond.
           </p>
 
           {/* Trust Badges Pill Row */}

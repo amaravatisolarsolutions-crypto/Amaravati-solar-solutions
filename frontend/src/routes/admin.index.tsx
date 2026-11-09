@@ -2484,7 +2484,7 @@ function AdminDashboard() {
 }
 
 // =========================================================================
-// CHANGE PASSWORD MODAL COMPONENT
+// CHANGE PASSWORD MODAL COMPONENT (INSTANT PASSWORD UPDATE FOR LOGGED-IN ADMIN)
 // =========================================================================
 function ChangePasswordModal({
   isOpen,
@@ -2497,10 +2497,8 @@ function ChangePasswordModal({
   onSuccess: (msg: string) => void;
   adminEmail: string;
 }) {
-  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -2514,20 +2512,15 @@ function ChangePasswordModal({
     setError("");
     setSuccess("");
 
-    const cleanCurrent = currentPassword.trim();
     const cleanNew = newPassword.trim();
     const cleanConfirm = confirmPassword.trim();
 
-    if (!cleanCurrent) {
-      setError("Please enter your current password.");
-      return;
-    }
     if (cleanNew.length < 8) {
       setError("New password must be at least 8 characters long.");
       return;
     }
     if (cleanNew !== cleanConfirm) {
-      setError("New password and confirmation do not match.");
+      setError("New password and Confirm Password do not match.");
       return;
     }
 
@@ -2538,7 +2531,6 @@ function ChangePasswordModal({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          currentPassword: cleanCurrent,
           newPassword: cleanNew,
           confirmPassword: cleanConfirm,
         }),
@@ -2551,15 +2543,14 @@ function ChangePasswordModal({
 
       if ((res.ok || data.success) && data.success) {
         setSuccess(data.message || "Password updated successfully!");
-        onSuccess(data.message || "Password changed successfully!");
-        setCurrentPassword("");
+        onSuccess(data.message || "Password changed successfully! Active immediately.");
         setNewPassword("");
         setConfirmPassword("");
         setTimeout(() => {
           onClose();
-        }, 1200);
+        }, 1100);
       } else {
-        setError(data.error || "Failed to update password. Please verify your current password.");
+        setError(data.error || "Failed to update password. Please try again.");
       }
     } catch (err: any) {
       console.error("Change password error:", err);
@@ -2568,6 +2559,8 @@ function ChangePasswordModal({
       setIsLoading(false);
     }
   };
+
+  const isFormValid = newPassword.trim().length >= 8 && newPassword.trim() === confirmPassword.trim();
 
   return (
     <div
@@ -2607,7 +2600,7 @@ function ChangePasswordModal({
         </div>
 
         {/* Modal Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4.5">
           {error && (
             <div className="rounded-xl bg-red-50 border border-red-200 p-3 text-xs font-semibold text-red-700 flex items-start gap-2">
               <AlertCircle className="size-4 shrink-0 text-red-600 mt-0.5" />
@@ -2622,31 +2615,10 @@ function ChangePasswordModal({
             </div>
           )}
 
-          {/* Current Password Field */}
-          <div>
-            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-              Current Password <span className="text-red-500">*</span>
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
-              <input
-                type={showCurrent ? "text" : "password"}
-                autoComplete="current-password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="Enter current password"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-10 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 focus:border-[#082B4C] transition-all font-mono"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowCurrent(!showCurrent)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
-                aria-label={showCurrent ? "Hide current password" : "Show current password"}
-              >
-                {showCurrent ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-              </button>
-            </div>
+          {/* Helper notice */}
+          <div className="rounded-xl bg-slate-50 border border-slate-200 p-3 flex items-center gap-2 text-xs text-slate-600">
+            <ShieldCheck className="size-4 text-emerald-600 shrink-0" />
+            <span>Enter your new password below. It will update immediately for your next login.</span>
           </div>
 
           {/* New Password Field */}
@@ -2660,11 +2632,15 @@ function ChangePasswordModal({
                 type={showNew ? "text" : "password"}
                 autoComplete="new-password"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={(e) => {
+                  setNewPassword(e.target.value);
+                  setError("");
+                }}
                 placeholder="Enter strong new password"
                 className="w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-10 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 focus:border-[#082B4C] transition-all font-mono"
                 required
                 minLength={8}
+                autoFocus
               />
               <button
                 type="button"
@@ -2676,7 +2652,7 @@ function ChangePasswordModal({
               </button>
             </div>
             <p className="text-[11px] text-slate-400 mt-1">
-              Minimum 8 characters with a mix of letters, numbers, and symbols.
+              Minimum 8 characters with letters, numbers, and symbols.
             </p>
           </div>
 
@@ -2691,7 +2667,10 @@ function ChangePasswordModal({
                 type={showConfirm ? "text" : "password"}
                 autoComplete="new-password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                  setError("");
+                }}
                 placeholder="Re-enter new password"
                 className="w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-10 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 focus:border-[#082B4C] transition-all font-mono"
                 required
@@ -2711,6 +2690,12 @@ function ChangePasswordModal({
                 Passwords do not match
               </p>
             )}
+            {newPassword && confirmPassword && newPassword === confirmPassword && (
+              <p className="text-[11px] text-emerald-600 mt-1 font-semibold flex items-center gap-1">
+                <CheckCircle2 className="size-3 text-emerald-600" />
+                <span>Passwords match</span>
+              </p>
+            )}
           </div>
 
           {/* Actions */}
@@ -2719,19 +2704,19 @@ function ChangePasswordModal({
               type="button"
               onClick={onClose}
               disabled={isLoading}
-              className="px-4 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer shadow-2xs"
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={isLoading || !currentPassword || newPassword.length < 8 || newPassword !== confirmPassword}
-              className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm disabled:opacity-50 cursor-pointer"
+              disabled={isLoading || !isFormValid}
+              className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm hover:shadow-md active:scale-98 disabled:opacity-40 cursor-pointer"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="size-3.5 animate-spin" />
-                  <span>Saving...</span>
+                  <Loader2 className="size-3.5 animate-spin text-amber-400" />
+                  <span>Updating...</span>
                 </>
               ) : (
                 <>

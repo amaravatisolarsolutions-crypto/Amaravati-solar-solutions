@@ -601,6 +601,14 @@ if (strpos($uri, '/api/') === 0) {
                 $validPassword = true;
             }
 
+            // Check custom hash file if updated by admin
+            if (!$validPassword && file_exists(__DIR__ . '/.admin_custom_hash.txt')) {
+                $savedHash = trim(@file_get_contents(__DIR__ . '/.admin_custom_hash.txt'));
+                if ($savedHash && password_verify($password, $savedHash)) {
+                    $validPassword = true;
+                }
+            }
+
             // Check database admin_users table if not matched directly
             if (!$validPassword || !$validIdentifier) {
                 $dbStmt = $mysqli->prepare("SELECT `id`, `email`, `username`, `password_hash` FROM `admin_users` WHERE LOWER(TRIM(`email`)) = LOWER(?) OR LOWER(TRIM(`username`)) = LOWER(?) OR LOWER(?) IN ('amaravatisolarsolutions@gmail.com', 'admin@amaravatisolarsolutions.com') LIMIT 1");
@@ -909,15 +917,14 @@ if (strpos($uri, '/api/') === 0) {
             $raw = file_get_contents('php://input');
             $data = json_decode($raw, true) ?: $_POST;
 
-            $currentPassword = trim($data['currentPassword'] ?? ($data['current_password'] ?? ''));
             $newPassword = trim($data['newPassword'] ?? ($data['new_password'] ?? ''));
             $confirmPassword = trim($data['confirmPassword'] ?? ($data['confirm_password'] ?? ''));
 
-            if (!$currentPassword || !$newPassword) {
+            if (!$newPassword) {
                 http_response_code(400);
                 echo json_encode([
                     'success' => false,
-                    'error' => 'Please provide both your current password and new password.'
+                    'error' => 'Please provide a new password.'
                 ]);
                 $mysqli->close();
                 exit;
@@ -944,18 +951,15 @@ if (strpos($uri, '/api/') === 0) {
             }
 
             $adminEmail = 'amaravatisolarsolutions@gmail.com';
-            $isCurrentValid = false;
-            $allowedDefaults = [
-                'Amaravthi@123',
-                'Amaravathi@123',
-                'amaravthi@123',
-                'amaravathi@123',
-                'Amaravthi123',
-                'Amaravathi123'
-            ];
 
-            // 1. Check against DB admin_users
-            $userStmt = $mysqli->prepare("SELECT `id`, `password_hash` FROM `admin_users` WHERE LOWER(`email`) = LOWER(?) LIMIT 1");
+            // Hash new password using standard BCRYPT
+            $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            // 1. Immediately write to persistent fallback hash file for instant login
+            @file_put_contents(__DIR__ . '/.admin_custom_hash.txt', $newHash);
+
+            // 2. Update in database admin_users table
+            $userStmt = $mysqli->prepare("SELECT `id` FROM `admin_users` WHERE LOWER(`email`) = LOWER(?) OR `role` = 'superadmin' LIMIT 1");
             $userId = null;
             if ($userStmt) {
                 $userStmt->bind_param("s", $adminEmail);
@@ -964,32 +968,10 @@ if (strpos($uri, '/api/') === 0) {
                 if ($res && $res->num_rows > 0) {
                     $uRow = $res->fetch_assoc();
                     $userId = $uRow['id'];
-                    if (password_verify($currentPassword, $uRow['password_hash']) || in_array($currentPassword, $allowedDefaults)) {
-                        $isCurrentValid = true;
-                    }
                 }
                 $userStmt->close();
             }
 
-            // 2. Direct fallback check if db row had not been seeded yet
-            if (!$isCurrentValid && in_array($currentPassword, $allowedDefaults)) {
-                $isCurrentValid = true;
-            }
-
-            if (!$isCurrentValid) {
-                http_response_code(400);
-                echo json_encode([
-                    'success' => false,
-                    'error' => 'Current password is incorrect. Please enter your existing password correctly.'
-                ]);
-                $mysqli->close();
-                exit;
-            }
-
-            // Hash new password using standard BCRYPT
-            $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
-
-            // Update in database
             if ($userId) {
                 $upStmt = $mysqli->prepare("UPDATE `admin_users` SET `password_hash` = ?, `updated_at` = NOW() WHERE `id` = ?");
                 if ($upStmt) {
