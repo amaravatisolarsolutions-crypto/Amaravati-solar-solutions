@@ -141,19 +141,26 @@
     }
   }
 
-  /* User Defined Button Styling: Background #B83A16, Color #FFFFFF, Border-Radius 30px, Hover #A33112 */
-  button:not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([data-accordion]):not(.accordion-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button),
+  /* User Defined Button Styling (Public Website Only): Background #B83A16, Color #FFFFFF, Border-Radius 30px, Hover #A33112 */
+  :not(.admin-portal):not([data-admin]) button:not(.admin-btn):not([data-admin]):not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([data-accordion]):not(.accordion-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button),
+  :not([data-admin] *):not(.admin-portal *) button:not(.admin-btn):not([data-admin]):not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([data-accordion]):not(.accordion-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button),
   .btn-primary,
-  button[type="submit"] {
+  :not([data-admin] *):not(.admin-portal *) button[type="submit"]:not(.admin-btn):not([data-admin]) {
     background-color: #B83A16;
     color: #FFFFFF;
     border-radius: 30px;
   }
 
-  button:not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([data-accordion]):not(.accordion-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button):hover,
+  :not([data-admin] *):not(.admin-portal *) button:not(.admin-btn):not([data-admin]):not([role="tab"]):not([data-unstyled]):not(.unstyled-btn):not([data-accordion]):not(.accordion-btn):not([aria-label*="slide"]):not([aria-label*="menu"]):not([aria-label*="Close"]):not([aria-label*="image"]):not([aria-label*="Day"]):not([data-day]):not(.rdp-button):hover,
   .btn-primary:hover,
-  button[type="submit"]:hover {
+  :not([data-admin] *):not(.admin-portal *) button[type="submit"]:not(.admin-btn):not([data-admin]):hover {
     background-color: #A33112;
+  }
+
+  /* Admin Portal Button Styling & High Contrast */
+  .admin-portal button,
+  [data-admin] button {
+    border-radius: 0.75rem;
   }
 }
 

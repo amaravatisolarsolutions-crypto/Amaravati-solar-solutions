@@ -258,7 +258,7 @@ function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#051829] relative flex flex-col justify-between overflow-hidden selection:bg-[#F59E0B]/30 selection:text-white">
+    <div className="admin-portal min-h-screen bg-[#051829] relative flex flex-col justify-between overflow-hidden selection:bg-[#F59E0B]/30 selection:text-white" data-admin="true">
       {/* Ambient Lighting & Solar Gradients */}
       <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[650px] h-[450px] bg-gradient-to-br from-[#F5A623]/20 via-[#B83A16]/10 to-transparent blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 translate-x-1/2 w-[650px] h-[450px] bg-gradient-to-tl from-[#087FC1]/20 via-[#082B4C]/40 to-transparent blur-3xl pointer-events-none" />

@@ -1074,51 +1074,51 @@ function AdminDashboard() {
   const newInquiriesCount = inquiries.filter((i) => i.status === "New").length;
 
   return (
-    <div className="h-screen w-full bg-[#f8fafc] text-[#344054] flex flex-col antialiased overflow-hidden">
-      {/* 1. TOP GLOBAL HEADER (PERMANENTLY STICKY & ULTRA-PREMIUM) */}
-      <header className="h-16 shrink-0 sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-[0_2px_10px_rgba(8,43,76,0.04)]">
-        <div className="px-3 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-2 sm:gap-4">
+    <div className="admin-portal h-screen w-full bg-[#f8fafc] text-[#344054] flex flex-col antialiased overflow-hidden" data-admin="true">
+      {/* 1. TOP GLOBAL HEADER (100% RESPONSIVE ACROSS ALL DEVICES: MOBILE 320PX, TABLET 768PX, LAPTOPS 13"-18") */}
+      <header className="h-16 shrink-0 sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-[0_2px_10px_rgba(8,43,76,0.04)] select-none">
+        <div className="px-2.5 sm:px-5 lg:px-8 h-full flex items-center justify-between gap-1.5 sm:gap-3">
           {/* Left: Mobile hamburger + Admin Portal branding */}
-          <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 shrink">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 hover:text-[#082B4C] transition-colors cursor-pointer shrink-0"
+              className="lg:hidden p-1.5 sm:p-2 rounded-xl text-slate-700 hover:bg-slate-100 hover:text-[#082B4C] transition-colors cursor-pointer shrink-0"
               aria-label="Toggle navigation menu"
             >
               <Menu className="size-5" />
             </button>
 
-            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <div className="h-9 sm:h-10 w-auto flex items-center justify-center rounded-xl bg-white border border-slate-200/90 shadow-2xs px-2.5 py-1 shrink-0">
-                <img src={logo} alt="Amaravati Solar" className="h-5 sm:h-6 w-auto object-contain" />
+            <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0 shrink">
+              <div className="h-8 sm:h-9 w-auto flex items-center justify-center rounded-xl bg-white border border-slate-200/90 shadow-2xs px-2 py-0.5 shrink-0">
+                <img src={logo} alt="Amaravati Solar" className="h-5 sm:h-6 w-auto object-contain shrink-0" />
               </div>
               <div className="flex flex-col min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs sm:text-base font-black tracking-tight text-[#082B4C] uppercase truncate">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs sm:text-sm lg:text-base font-black tracking-tight text-[#082B4C] uppercase truncate">
                     AMARAVATI SOLAR
                   </span>
-                  <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30 text-[10px] font-black uppercase tracking-wider text-amber-800">
+                  <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-amber-800 shrink-0">
                     ADMIN
                   </span>
                 </div>
-                <div className="hidden md:flex items-center gap-1.5 text-[10px] font-bold text-emerald-600">
-                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Secure Cloud Node &bull; AP DISCOM Verified</span>
+                <div className="hidden xl:flex items-center gap-1.5 text-[10px] font-bold text-emerald-600">
+                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                  <span className="truncate">Secure Cloud Node &bull; AP DISCOM Verified</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Right: User Profile, Live Site, Change Password, Logout */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 text-xs shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 text-xs shrink-0">
             {/* User Profile Info Pill */}
-            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80">
-              <div className="size-6 rounded-full bg-gradient-to-tr from-[#082B4C] to-[#154674] text-white flex items-center justify-center font-black text-[10px] shadow-2xs">
+            <div className="flex items-center gap-2 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 shrink-0" title={`Logged in as ${adminEmail}`}>
+              <div className="size-6 sm:size-7 rounded-full bg-gradient-to-tr from-[#082B4C] to-[#154674] text-white flex items-center justify-center font-black text-[10px] shadow-2xs shrink-0">
                 A
               </div>
-              <div className="flex flex-col leading-tight text-left">
-                <span className="font-extrabold text-[#082B4C] text-[11px] max-w-[170px] truncate">
+              <div className="hidden xl:flex flex-col leading-tight text-left">
+                <span className="font-extrabold text-[#082B4C] text-[11px] max-w-[150px] truncate">
                   {adminEmail}
                 </span>
                 <span className="text-[9px] font-bold uppercase tracking-wider text-amber-600">
@@ -1131,11 +1131,11 @@ function AdminDashboard() {
             <Link
               to="/"
               target="_blank"
-              title="View Live Site"
-              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-[11px] sm:text-xs font-bold text-slate-700 hover:text-[#082B4C] shadow-2xs transition-all active:scale-95 shrink-0"
+              title="View Live Website"
+              className="inline-flex items-center justify-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-[11px] sm:text-xs font-bold text-slate-700 hover:text-[#082B4C] shadow-2xs transition-all active:scale-95 shrink-0"
             >
               <ExternalLink className="size-3.5 text-slate-500 shrink-0" />
-              <span className="hidden sm:inline">LIVE SITE</span>
+              <span className="hidden md:inline">LIVE SITE</span>
             </Link>
 
             {/* Change Password Modal Trigger */}
@@ -1143,11 +1143,11 @@ function AdminDashboard() {
               type="button"
               onClick={() => setIsPasswordModalOpen(true)}
               title="Change Password"
-              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-300/80 bg-gradient-to-r from-amber-50 to-amber-100/70 hover:from-amber-100 hover:to-amber-200/80 text-[11px] sm:text-xs font-extrabold text-amber-900 shadow-2xs transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl border border-amber-300/80 bg-gradient-to-r from-amber-50 to-amber-100/70 hover:from-amber-100 hover:to-amber-200/80 text-[11px] sm:text-xs font-extrabold text-amber-900 shadow-2xs transition-all active:scale-95 cursor-pointer shrink-0"
             >
               <KeyRound className="size-3.5 text-amber-700 shrink-0" />
-              <span className="hidden sm:inline">CHANGE PASSWORD</span>
-              <span className="sm:hidden">PASSWORD</span>
+              <span className="hidden lg:inline">CHANGE PASSWORD</span>
+              <span className="hidden sm:inline lg:hidden">PASSWORD</span>
             </button>
 
             {/* Logout Trigger */}
@@ -1155,10 +1155,10 @@ function AdminDashboard() {
               type="button"
               onClick={handleSignOut}
               title="Sign Out"
-              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-[11px] sm:text-xs font-bold text-red-600 hover:text-red-700 shadow-2xs transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-[11px] sm:text-xs font-bold text-red-600 hover:text-red-700 shadow-2xs transition-all active:scale-95 cursor-pointer shrink-0"
             >
               <LogOut className="size-3.5 text-red-600 shrink-0" />
-              <span>LOGOUT</span>
+              <span className="hidden sm:inline">LOGOUT</span>
             </button>
           </div>
         </div>
@@ -1424,7 +1424,7 @@ function AdminDashboard() {
         )}
 
         {/* CONTENT PANEL (INDEPENDENT SMOOTH SCROLLING) */}
-        <main className="flex-1 h-full overflow-y-auto p-4 sm:p-6 lg:p-8 xl:p-10 scroll-smooth bg-[#f8fafc]">
+        <main className="flex-1 h-full overflow-y-auto p-3 sm:p-6 lg:p-8 xl:p-10 scroll-smooth bg-[#f8fafc]">
           {/* TAB 1: SERVICES PORTFOLIO (Exact Match to User's Example Reference) */}
           {activeTab === "services" && (
             <div className="max-w-7xl mx-auto space-y-6">
@@ -1447,7 +1447,7 @@ function AdminDashboard() {
                 <button
                   type="button"
                   onClick={handleRefreshData}
-                  className="self-start sm:self-auto inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-[#082B4C] shadow-2xs hover:bg-slate-50 hover:border-slate-300 transition-all cursor-pointer active:scale-95"
+                  className="self-start sm:self-auto inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-[#082B4C] shadow-2xs hover:bg-slate-50 hover:border-slate-300 transition-all cursor-pointer active:scale-95 shrink-0"
                 >
                   <RefreshCw className="size-3.5 text-slate-500" />
                   <span>Refresh Data</span>
@@ -1466,22 +1466,22 @@ function AdminDashboard() {
                     setEditingService(null);
                     setIsServiceModalOpen(true);
                   }}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider shadow-sm transition-all active:scale-95 cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white px-5 py-2.5 text-xs sm:text-sm font-bold uppercase tracking-wider shadow-sm transition-all active:scale-95 cursor-pointer shrink-0"
                 >
                   <Plus className="size-4 stroke-[2.5]" />
                   <span>ADD SERVICE</span>
                 </button>
               </div>
 
-              {/* Category Filter Pills (Exact match to reference image) */}
-              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 rounded-2xl border border-slate-200/90 bg-white p-1.5 sm:p-2 shadow-2xs">
+              {/* Category Filter Pills (Exact match to reference image with crisp white text & responsive scroll) */}
+              <div className="flex items-center gap-1.5 sm:gap-2 rounded-2xl border border-slate-200/90 bg-white p-1.5 sm:p-2 shadow-2xs overflow-x-auto no-scrollbar flex-nowrap sm:flex-wrap">
                 <button
                   type="button"
                   onClick={() => setServiceCategory("ALL")}
-                  className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                     serviceCategory === "ALL"
-                      ? "bg-[#082B4C] text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
+                      : "bg-[#B83A16] hover:bg-[#A33112] text-white"
                   }`}
                 >
                   ALL ({services.length})
@@ -1490,10 +1490,10 @@ function AdminDashboard() {
                 <button
                   type="button"
                   onClick={() => setServiceCategory("SOLAR")}
-                  className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                     serviceCategory === "SOLAR"
-                      ? "bg-[#082B4C] text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
+                      : "bg-[#B83A16] hover:bg-[#A33112] text-white"
                   }`}
                 >
                   SOLAR ({solarCount})
@@ -1502,10 +1502,10 @@ function AdminDashboard() {
                 <button
                   type="button"
                   onClick={() => setServiceCategory("ELECTRICAL")}
-                  className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                     serviceCategory === "ELECTRICAL"
-                      ? "bg-[#082B4C] text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
+                      : "bg-[#B83A16] hover:bg-[#A33112] text-white"
                   }`}
                 >
                   ELECTRICAL ({electricalCount})
@@ -1514,10 +1514,10 @@ function AdminDashboard() {
                 <button
                   type="button"
                   onClick={() => setServiceCategory("EV CHARGING")}
-                  className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                     serviceCategory === "EV CHARGING"
-                      ? "bg-[#082B4C] text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
+                      : "bg-[#B83A16] hover:bg-[#A33112] text-white"
                   }`}
                 >
                   EV CHARGING ({evCount})
@@ -1526,10 +1526,10 @@ function AdminDashboard() {
                 <button
                   type="button"
                   onClick={() => setServiceCategory("MAINTENANCE / AMC")}
-                  className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer ${
+                  className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                     serviceCategory === "MAINTENANCE / AMC"
-                      ? "bg-[#082B4C] text-white shadow-xs"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
+                      : "bg-[#B83A16] hover:bg-[#A33112] text-white"
                   }`}
                 >
                   MAINTENANCE / AMC ({maintenanceCount})
@@ -1663,16 +1663,16 @@ function AdminDashboard() {
               </div>
 
               {/* Category Filter Pills */}
-              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 rounded-2xl border border-slate-200/90 bg-white p-1.5 sm:p-2 shadow-2xs">
+              <div className="flex items-center gap-1.5 sm:gap-2 rounded-2xl border border-slate-200/90 bg-white p-1.5 sm:p-2 shadow-2xs overflow-x-auto no-scrollbar flex-nowrap sm:flex-wrap">
                 {["ALL", "RESIDENTIAL", "COMMERCIAL", "INDUSTRIAL"].map((cat) => (
                   <button
                     key={cat}
                     type="button"
                     onClick={() => setProjectCategory(cat)}
-                    className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer ${
+                    className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                       projectCategory === cat
-                        ? "bg-[#082B4C] text-white shadow-xs"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                        ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
+                        : "bg-[#B83A16] hover:bg-[#A33112] text-white"
                     }`}
                   >
                     {cat}
@@ -1818,10 +1818,10 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Quotations Desktop Table (Hidden on small mobile) */}
-              <div className="hidden md:block rounded-2xl border border-slate-200/90 bg-white shadow-2xs overflow-hidden">
+              {/* Quotations Desktop Table (Visible on xl+ screens with min-w-960px to prevent cramped columns) */}
+              <div className="hidden xl:block rounded-2xl border border-slate-200/90 bg-white shadow-2xs overflow-hidden">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
+                  <table className="w-full min-w-[960px] text-left text-xs">
                     <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-wider text-[11px]">
                       <tr>
                         <th className="px-5 py-3.5">Quotation No</th>
@@ -1929,15 +1929,16 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Quotations Mobile Cards View (Phones: below md) */}
-              <div className="md:hidden space-y-3">
+              {/* Quotations Responsive Cards View (Phones: 1-col, Tablets: 2-cols) */}
+              <div className="xl:hidden">
                 {filteredQuotations.length === 0 ? (
                   <div className="rounded-2xl border border-slate-200/90 bg-white p-8 text-center text-slate-400 text-xs">
                     No quotations found matching your query.
                   </div>
                 ) : (
-                  filteredQuotations.map((q) => (
-                    <div key={q.id} className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-2xs space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {filteredQuotations.map((q) => (
+                      <div key={q.id} className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-2xs flex flex-col justify-between gap-3">
                       <div className="flex items-center justify-between gap-2">
                         <span className="font-extrabold text-[#082B4C] bg-slate-100 px-2.5 py-1 rounded-md text-[11px] tracking-wide border border-slate-200">
                           {q.quotationNo}
@@ -2019,9 +2020,10 @@ function AdminDashboard() {
                         </button>
                       </div>
                     </div>
-                  ))
-                )}
-              </div>
+                  ))}
+                </div>
+              )}
+            </div>
             </div>
           )}
 
@@ -2097,13 +2099,13 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Source / Category Filter Tabs */}
-              <div className="flex flex-wrap items-center gap-2 border-b border-slate-200/90 pb-3">
+              {/* Source / Category Filter Tabs (Swipeable on mobile, wrapping on desktop) */}
+              <div className="flex items-center gap-2 border-b border-slate-200/90 pb-3 overflow-x-auto no-scrollbar flex-nowrap sm:flex-wrap">
                 <button
                   type="button"
                   onClick={() => setInquiryTypeFilter("ALL")}
                   className={cn(
-                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5",
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap",
                     inquiryTypeFilter === "ALL"
                       ? "bg-[#082B4C] text-white shadow-xs"
                       : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300"
@@ -2119,7 +2121,7 @@ function AdminDashboard() {
                   type="button"
                   onClick={() => setInquiryTypeFilter("WHATSAPP")}
                   className={cn(
-                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5",
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap",
                     inquiryTypeFilter === "WHATSAPP"
                       ? "bg-emerald-600 text-white shadow-xs"
                       : "bg-white text-slate-600 border border-slate-200 hover:border-emerald-300"
@@ -2136,7 +2138,7 @@ function AdminDashboard() {
                   type="button"
                   onClick={() => setInquiryTypeFilter("APPLIED_PLAN")}
                   className={cn(
-                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5",
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap",
                     inquiryTypeFilter === "APPLIED_PLAN"
                       ? "bg-[#D9410E] text-white shadow-xs"
                       : "bg-white text-slate-600 border border-slate-200 hover:border-orange-300"
@@ -2153,7 +2155,7 @@ function AdminDashboard() {
                   type="button"
                   onClick={() => setInquiryTypeFilter("DEMO")}
                   className={cn(
-                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5",
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap",
                     inquiryTypeFilter === "DEMO"
                       ? "bg-sky-600 text-white shadow-xs"
                       : "bg-white text-slate-600 border border-slate-200 hover:border-sky-300"
@@ -2170,7 +2172,7 @@ function AdminDashboard() {
                   type="button"
                   onClick={() => setInquiryTypeFilter("GENERAL")}
                   className={cn(
-                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5",
+                    "px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap",
                     inquiryTypeFilter === "GENERAL"
                       ? "bg-slate-700 text-white shadow-xs"
                       : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300"
@@ -2184,10 +2186,10 @@ function AdminDashboard() {
                 </button>
               </div>
 
-              {/* Inquiries Desktop Table (Hidden on small mobile) */}
-              <div className="hidden md:block rounded-2xl border border-slate-200/90 bg-white shadow-2xs overflow-hidden">
+              {/* Inquiries Desktop Table (Visible on xl+ screens with min-w-[920px]) */}
+              <div className="hidden xl:block rounded-2xl border border-slate-200/90 bg-white shadow-2xs overflow-hidden">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
+                  <table className="w-full min-w-[920px] text-left text-xs">
                     <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-wider text-[11px]">
                       <tr>
                         <th className="px-5 py-3.5">Customer &amp; Source</th>
@@ -2320,102 +2322,106 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Inquiries Mobile Cards View (Phones: below md) */}
-              <div className="md:hidden space-y-3">
+              {/* Inquiries Responsive Cards View (Phones: 1-col, Tablets: 2-cols) */}
+              <div className="xl:hidden">
                 {filteredInquiries.length === 0 ? (
                   <div className="rounded-2xl border border-slate-200/90 bg-white p-8 text-center text-slate-400 text-xs">
                     No inquiries found matching your filter criteria.
                   </div>
                 ) : (
-                  filteredInquiries.map((inq) => {
-                    const badge = getInquirySourceBadge(inq);
-                    const BadgeIcon = badge.icon;
-                    return (
-                      <div key={inq.id} className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-2xs space-y-3">
-                        <div className="flex items-center justify-between gap-2">
-                          <div>
-                            <div className="font-extrabold text-[#082B4C] text-sm">{inq.name}</div>
-                            <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className={cn("inline-flex items-center gap-1 text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded-md border", badge.bg)}>
-                                <BadgeIcon className="size-2.5" />
-                                <span>{badge.label}</span>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {filteredInquiries.map((inq) => {
+                      const badge = getInquirySourceBadge(inq);
+                      const BadgeIcon = badge.icon;
+                      return (
+                        <div key={inq.id} className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-2xs flex flex-col justify-between gap-3">
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between gap-2">
+                              <div>
+                                <div className="font-extrabold text-[#082B4C] text-sm">{inq.name}</div>
+                                <div className="flex items-center gap-1.5 mt-0.5">
+                                  <span className={cn("inline-flex items-center gap-1 text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded-md border", badge.bg)}>
+                                    <BadgeIcon className="size-2.5" />
+                                    <span>{badge.label}</span>
+                                  </span>
+                                  <span className="text-[10px] text-slate-400">{inq.date}</span>
+                                </div>
+                              </div>
+                              <select
+                                value={inq.status}
+                                onChange={(e) =>
+                                  handleUpdateInquiryStatus(
+                                    inq.id,
+                                    e.target.value as "New" | "Contacted" | "Completed"
+                                  )
+                                }
+                                className={`rounded-lg px-2.5 py-1 text-[11px] font-bold border transition-colors cursor-pointer ${
+                                  inq.status === "New"
+                                    ? "bg-amber-50 text-amber-800 border-amber-200"
+                                    : inq.status === "Contacted"
+                                    ? "bg-sky-50 text-sky-800 border-sky-200"
+                                    : "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                }`}
+                              >
+                                <option value="New">New</option>
+                                <option value="Contacted">Contacted</option>
+                                <option value="Completed">Completed</option>
+                              </select>
+                            </div>
+
+                            <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs font-semibold text-slate-700">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                                Requested System &amp; Location
                               </span>
-                              <span className="text-[10px] text-slate-400">{inq.date}</span>
+                              <div className="font-bold text-[#082B4C]">{inq.service}</div>
+                              <div className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
+                                <MapPin className="size-3 text-amber-500" />
+                                <span>{inq.location}</span>
+                              </div>
                             </div>
                           </div>
-                          <select
-                            value={inq.status}
-                            onChange={(e) =>
-                              handleUpdateInquiryStatus(
-                                inq.id,
-                                e.target.value as "New" | "Contacted" | "Completed"
-                              )
-                            }
-                            className={`rounded-lg px-2.5 py-1 text-[11px] font-bold border transition-colors cursor-pointer ${
-                              inq.status === "New"
-                                ? "bg-amber-50 text-amber-800 border-amber-200"
-                                : inq.status === "Contacted"
-                                ? "bg-sky-50 text-sky-800 border-sky-200"
-                                : "bg-emerald-50 text-emerald-800 border-emerald-200"
-                            }`}
-                          >
-                            <option value="New">New</option>
-                            <option value="Contacted">Contacted</option>
-                            <option value="Completed">Completed</option>
-                          </select>
-                        </div>
 
-                        <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs font-semibold text-slate-700">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
-                            Requested System &amp; Location
-                          </span>
-                          <div className="font-bold text-[#082B4C]">{inq.service}</div>
-                          <div className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
-                            <MapPin className="size-3 text-amber-500" />
-                            <span>{inq.location}</span>
-                          </div>
-                        </div>
+                          <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-100">
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => setViewingInquiry(inq)}
+                                className="inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg border border-slate-200 bg-white text-[#082B4C] font-bold text-xs"
+                              >
+                                <Eye className="size-3" />
+                                <span>View</span>
+                              </button>
+                              <a
+                                href={`https://wa.me/${inq.phone.replace(/[^0-9]/g, "")}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs"
+                              >
+                                <PhoneCall className="size-3" />
+                                <span>WhatsApp</span>
+                              </a>
+                              <a
+                                href={`tel:${inq.phone}`}
+                                className="inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 font-bold text-xs"
+                              >
+                                <Phone className="size-3" />
+                                <span>Call</span>
+                              </a>
+                            </div>
 
-                        <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-100">
-                          <div className="flex items-center gap-1.5">
                             <button
                               type="button"
-                              onClick={() => setViewingInquiry(inq)}
-                              className="inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg border border-slate-200 bg-white text-[#082B4C] font-bold text-xs"
+                              onClick={() => handleDeleteInquiry(inq.id)}
+                              className="p-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 cursor-pointer"
+                              title="Delete inquiry"
                             >
-                              <Eye className="size-3" />
-                              <span>View</span>
+                              <Trash2 className="size-3.5" />
                             </button>
-                            <a
-                              href={`https://wa.me/${inq.phone.replace(/[^0-9]/g, "")}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold text-xs"
-                            >
-                              <PhoneCall className="size-3" />
-                              <span>WhatsApp</span>
-                            </a>
-                            <a
-                              href={`tel:${inq.phone}`}
-                              className="inline-flex items-center gap-1 py-1.5 px-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 font-bold text-xs"
-                            >
-                              <Phone className="size-3" />
-                              <span>Call</span>
-                            </a>
                           </div>
-
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteInquiry(inq.id)}
-                            className="p-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 cursor-pointer"
-                            title="Delete inquiry"
-                          >
-                            <Trash2 className="size-3.5" />
-                          </button>
                         </div>
-                      </div>
-                    );
-                  })
+                      );
+                    })}
+                  </div>
                 )}
               </div>
 
@@ -2424,9 +2430,9 @@ function AdminDashboard() {
                 <div
                   role="dialog"
                   aria-modal="true"
-                  className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/65 backdrop-blur-xs overflow-y-auto animate-in fade-in duration-200"
+                  className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-slate-900/65 backdrop-blur-xs overflow-y-auto animate-in fade-in duration-200"
                 >
-                  <div className="relative w-full max-w-xl rounded-3xl bg-white border border-slate-200 shadow-2xl p-5 sm:p-7 overflow-hidden my-auto animate-in zoom-in-95 duration-200">
+                  <div className="relative w-full max-w-xl rounded-3xl bg-white border border-slate-200 shadow-2xl p-4 sm:p-7 overflow-hidden my-auto animate-in zoom-in-95 duration-200">
                     {/* Close button */}
                     <button
                       type="button"
@@ -2548,12 +2554,12 @@ function AdminDashboard() {
                         </select>
                       </div>
 
-                      <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto justify-end">
                         <a
                           href={`https://wa.me/${viewingInquiry.phone.replace(/[^0-9]/g, "")}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs shadow-xs transition-all"
+                          className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs shadow-xs transition-all w-full sm:w-auto text-center"
                         >
                           <PhoneCall className="size-3.5" />
                           <span>Chat on WhatsApp</span>
@@ -2561,7 +2567,7 @@ function AdminDashboard() {
                         <button
                           type="button"
                           onClick={() => setViewingInquiry(null)}
-                          className="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs transition-all cursor-pointer"
+                          className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-sm text-center"
                         >
                           Close
                         </button>
@@ -2875,19 +2881,19 @@ function ChangePasswordModal({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
             <button
               type="button"
               onClick={onClose}
               disabled={isLoading}
-              className="px-4 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer shadow-2xs"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white text-xs font-extrabold uppercase tracking-wider transition-colors cursor-pointer shadow-sm text-center"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading || !isFormValid}
-              className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm hover:shadow-md active:scale-98 disabled:opacity-40 cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm hover:shadow-md active:scale-98 disabled:opacity-40 cursor-pointer text-center"
             >
               {isLoading ? (
                 <>
@@ -2940,8 +2946,8 @@ function ServiceModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="w-full max-w-lg rounded-2xl bg-white p-4 sm:p-6 shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <h3 className="text-lg font-extrabold text-[#082B4C]">
             {service ? "Edit Service" : "Add New Service"}
@@ -2949,7 +2955,7 @@ function ServiceModal({
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
           >
             <X className="size-5" />
           </button>
@@ -3025,17 +3031,17 @@ function ServiceModal({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-sm cursor-pointer text-center"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white font-bold transition-all shadow-sm"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-sm cursor-pointer text-center"
             >
               Save Service
             </button>
@@ -3089,8 +3095,8 @@ function ProjectModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="w-full max-w-lg rounded-2xl bg-white p-4 sm:p-6 shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <h3 className="text-lg font-extrabold text-[#082B4C]">
             {project ? "Edit Project" : "Add New Project"}
@@ -3098,7 +3104,7 @@ function ProjectModal({
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
           >
             <X className="size-5" />
           </button>
@@ -3182,17 +3188,17 @@ function ProjectModal({
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-sm cursor-pointer text-center"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white font-bold transition-all shadow-sm"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-sm cursor-pointer text-center"
             >
               Save Project
             </button>
@@ -3384,23 +3390,23 @@ function QuotationModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-5 overflow-y-auto">
-      <div className="relative w-full max-w-4xl rounded-2xl bg-white p-5 sm:p-7 shadow-2xl my-6 max-h-[92vh] overflow-y-auto border border-slate-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-2 sm:p-4 md:p-6 overflow-y-auto">
+      <div className="relative w-full max-w-4xl rounded-2xl bg-white p-3.5 sm:p-6 md:p-7 shadow-2xl my-4 sm:my-6 max-h-[94vh] overflow-y-auto border border-slate-200">
         {/* Top Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-200">
-          <div className="flex items-center gap-3">
-            <div className="grid size-9 place-items-center rounded-xl bg-[#082B4C] text-[#F5A623] shadow-xs">
-              <FileText className="size-5" />
+        <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-200">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="grid size-8 sm:size-9 place-items-center rounded-xl bg-[#082B4C] text-[#F5A623] shadow-xs shrink-0">
+              <FileText className="size-4 sm:size-5" />
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-black text-[#082B4C] uppercase tracking-tight">Create Quotation</h2>
-              <p className="text-xs text-slate-500">Enter site survey details, structure specifications, bill corrections, and payment summary</p>
+              <h2 className="text-base sm:text-xl font-black text-[#082B4C] uppercase tracking-tight">Create Quotation</h2>
+              <p className="text-[11px] sm:text-xs text-slate-500 line-clamp-1 sm:line-clamp-none">Enter site survey details, structure specifications, bill corrections, and payment summary</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer transition-colors shrink-0"
           >
             <X className="size-5" />
           </button>
@@ -3504,11 +3510,11 @@ function QuotationModal({
               <h3 className="text-xs font-black uppercase tracking-wider text-[#082B4C]">Site Details</h3>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
               {/* Housing Type */}
               <div>
                 <label className="block text-slate-700 mb-1.5 font-bold">Housing Type</label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2">
                   {(["Independent", "Apartment", "Commercial"] as const).map((type) => (
                     <button
                       key={type}
@@ -3529,7 +3535,7 @@ function QuotationModal({
               {/* Subsidy Type */}
               <div>
                 <label className="block text-slate-700 mb-1.5 font-bold">Subsidy Type</label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
                   {(["Non- Subsidy", "Subsidy National DBT"] as const).map((type) => (
                     <button
                       key={type}
@@ -3645,11 +3651,11 @@ function QuotationModal({
               <h3 className="text-xs font-black uppercase tracking-wider text-[#082B4C]">Structure Details</h3>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
               {/* Roof Type */}
               <div>
                 <label className="block text-slate-700 mb-1.5 font-bold">Roof Type</label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2">
                   {(["Manglore tiles", "Tin shed", "RCC"] as const).map((roof) => (
                     <button
                       key={roof}
@@ -3670,7 +3676,7 @@ function QuotationModal({
               {/* Structure Type */}
               <div>
                 <label className="block text-slate-700 mb-1.5 font-bold">Structure Type</label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2">
                   {(["Pre fab - 4ft", "Pre fab - 6ft", "Pre fab - 8ft"] as const).map((struct) => (
                     <button
                       key={struct}
@@ -3880,10 +3886,11 @@ function QuotationModal({
                   <button
                     type="button"
                     onClick={handleSyncItemsToTotal}
-                    className="text-[10px] text-[#B83A16] hover:underline font-bold cursor-pointer"
+                    className="text-[11px] bg-[#082B4C] hover:bg-[#062038] text-white px-2.5 py-1 rounded-lg font-bold shadow-2xs cursor-pointer inline-flex items-center gap-1.5 transition-all"
                     title="Auto-fill sum from items table"
                   >
-                    Auto-fill items (₹{itemsTotal.toLocaleString("en-IN")})
+                    <Check className="size-3 text-amber-400 stroke-[3]" />
+                    <span>Auto-fill items (₹{itemsTotal.toLocaleString("en-IN")})</span>
                   </button>
                 </div>
                 <input
@@ -4068,18 +4075,18 @@ function QuotationModal({
             )}
           </div>
 
-          {/* Form Submit Footer */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+          {/* Form Submit Footer (Responsive Stacking for Mobile) */}
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-4 border-t border-slate-200">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-600 hover:bg-slate-50 font-bold transition-all cursor-pointer"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-sm cursor-pointer text-center"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#B83A16] hover:bg-[#9a3012] text-white font-extrabold transition-all shadow-md active:scale-95 cursor-pointer uppercase tracking-wider"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#B83A16] hover:bg-[#9a3012] text-white font-extrabold transition-all shadow-md active:scale-95 cursor-pointer uppercase tracking-wider text-center"
             >
               <Check className="size-4 stroke-[3]" />
               <span>Create Quotation</span>
