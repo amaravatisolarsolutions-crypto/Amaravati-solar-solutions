@@ -72,7 +72,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Amaravati Solar Solutions is the #1 trusted rooftop solar provider across Amaravati, Vijayawada, Guntur & AP. Premium on-grid, off-grid & hybrid solar systems with ₹78,000 PM Surya Ghar subsidy assistance, 5-year PowerCare warranty, and 25-year panel performance guarantee.",
+          "Amaravati Solar Solutions is the #1 trusted rooftop solar provider across Amaravati, Vijayawada, Guntur & AP. Premium on-grid, off-grid & hybrid solar systems with ₹78,000 PM Surya Ghar subsidy assistance, 5-year PowerCare warranty. Call: +91 63058 25402.",
       },
       {
         name: "keywords",
@@ -96,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Smart, reliable, high-efficiency solar energy solutions for homes, businesses, and industries across Andhra Pradesh and beyond. Save up to 90% on electricity bills.",
+          "Smart, reliable, high-efficiency solar energy solutions for homes, businesses, and industries across Andhra Pradesh and beyond. Call: +91 63058 25402.",
       },
       { property: "og:url", content: "https://amaravatisolarsolutions.com/" },
       { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
@@ -108,15 +108,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "twitter:description",
         content:
-          "Top-rated rooftop solar installation across Amaravati, Vijayawada, and Guntur. High-efficiency solar panels and government subsidy support.",
+          "Top-rated rooftop solar installation across Amaravati, Vijayawada, and Guntur. High-efficiency solar panels and government subsidy support. Call: +91 63058 25402.",
       },
       { name: "twitter:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
     ],
     links: [
       { rel: "canonical", href: "https://amaravatisolarsolutions.com/" },
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
-      { rel: "apple-touch-icon", href: "/favicon.png" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", type: "image/png", sizes: "48x48", href: "/favicon-48x48.png" },
+      { rel: "icon", type: "image/png", sizes: "96x96", href: "/favicon-96x96.png" },
+      { rel: "icon", type: "image/png", sizes: "192x192", href: "/favicon-192x192.png" },
+      { rel: "icon", type: "image/png", sizes: "512x512", href: "/favicon.png" },
+      { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" },
@@ -139,11 +144,13 @@ const STRUCTURED_DATA = {
       "url": "https://amaravatisolarsolutions.com",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://amaravatisolarsolutions.com/assets/logo-BRdvQGVB.png",
+        "url": "https://amaravatisolarsolutions.com/logo.png",
+        "width": 1016,
+        "height": 307,
         "caption": "Amaravati Solar Solutions Logo"
       },
       "image": "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg",
-      "description": "Amaravati Solar Solutions is Andhra Pradesh's premier rooftop solar EPC provider. Offering high-efficiency on-grid, off-grid, and hybrid solar installations for residential, commercial, and industrial clients with PM Surya Ghar subsidy support and 5-year PowerCare warranty.",
+      "description": "Amaravati Solar Solutions is Andhra Pradesh's premier rooftop solar EPC provider. Offering high-efficiency on-grid, off-grid, and hybrid solar installations for residential, commercial, and industrial clients with PM Surya Ghar subsidy support and 5-year PowerCare warranty. Call: +91 63058 25402.",
       "telephone": "+91 63058 25402",
       "email": "info@amaravatisolarsolutions.com",
       "priceRange": "₹₹ - ₹₹₹",

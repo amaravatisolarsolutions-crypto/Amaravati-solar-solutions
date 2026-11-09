@@ -4,7 +4,7 @@ import {
   Calendar,
   Settings2,
   Home,
-  Headphones,
+  Factory,
 } from "lucide-react";
 
 import heroAmaravatiPanoramic from "@/assets/hero-amaravati-exact-panoramic.jpg";
@@ -71,31 +71,24 @@ export function HeroSection() {
       <div className="container-site relative z-10 py-2.5 sm:py-3 lg:py-2.5 xl:py-4 2xl:py-6 w-full">
         <div className="max-w-2xl lg:max-w-xl xl:max-w-2xl flex flex-col justify-center text-left">
           
-          {/* Eyebrow: — CLEAN ENERGY | BRIGHTER TOMORROW */}
-          <div className="inline-flex items-center gap-2 self-start mb-1 sm:mb-1.5 lg:mb-1 xl:mb-2">
+          {/* Eyebrow: — ENERGY WITHOUT LIMITS. PROGRESS WITHOUT BOUNDARIES. */}
+          <div className="inline-flex items-center gap-2 self-start mb-1.5 sm:mb-2 lg:mb-1.5 xl:mb-2.5">
             <span className="w-5 sm:w-6 h-[2.5px] bg-[#E04F16] rounded-full inline-block" />
-            <span className="text-[10px] sm:text-[11px] xl:text-[12px] font-extrabold uppercase tracking-[0.2em] text-[#082B4C] flex items-center gap-2">
-              <span>CLEAN ENERGY</span>
-              <span className="text-slate-400 font-light">|</span>
-              <span>BRIGHTER TOMORROW</span>
+            <span className="text-[10px] sm:text-[11px] xl:text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#082B4C]">
+              ENERGY WITHOUT LIMITS. PROGRESS WITHOUT BOUNDARIES.
             </span>
           </div>
 
           {/* Monumental 2-Tone Headline */}
-          <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-[28px] xl:text-[38px] 2xl:text-[46px] font-black tracking-tight leading-[1.12] text-[#082B4C]">
-            <span className="block drop-shadow-xs">Harness the Power of the Sun,</span>
+          <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-[30px] xl:text-[40px] 2xl:text-[48px] font-black tracking-tight leading-[1.12] text-[#082B4C]">
+            <span className="block drop-shadow-xs">Turning Sunlight into</span>
             <span className="block mt-0.5 sm:mt-1 text-transparent bg-clip-text bg-gradient-to-r from-[#D9410E] via-[#E04F16] to-[#F97316] drop-shadow-[0_2px_10px_rgba(224,79,22,0.25)]">
-              Power Your Future with Solar
+              Something Greater.
             </span>
           </h1>
 
-          {/* Subtitle */}
-          <p className="mt-1 sm:mt-1.5 lg:mt-1 xl:mt-2 text-xs sm:text-[12.5px] md:text-[13px] xl:text-[14.5px] text-[#082B4C] leading-relaxed font-bold max-w-lg drop-shadow-[0_1px_2px_rgba(255,255,255,0.7)]">
-            Smart, reliable solar solutions for homes and businesses across Andhra Pradesh and beyond.
-          </p>
-
           {/* 2 Action Buttons Side-by-Side */}
-          <div className="mt-2.5 sm:mt-3 lg:mt-2 xl:mt-3.5 flex flex-wrap items-center gap-2 sm:gap-2.5">
+          <div className="mt-3.5 sm:mt-4 lg:mt-3 xl:mt-4 flex flex-wrap items-center gap-2 sm:gap-2.5">
             
             {/* Primary Button: Solid Deep Navy Blue Pill */}
             <Link
@@ -117,7 +110,7 @@ export function HeroSection() {
           </div>
 
           {/* 3 Feature Badges Beneath Buttons */}
-          <div className="mt-2.5 sm:mt-3 lg:mt-2 xl:mt-3.5 pt-2 sm:pt-2.5 border-t border-slate-200/90 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 lg:gap-2 xl:gap-3 max-w-xl">
+          <div className="mt-3 sm:mt-3.5 lg:mt-2.5 xl:mt-3.5 pt-2 sm:pt-2.5 border-t border-slate-200/90 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 lg:gap-2 xl:gap-3 max-w-xl">
             
             {/* Badge 1: End-to-End Solar Support */}
             <div className="flex items-center gap-1.5 sm:gap-2 group">
@@ -143,14 +136,14 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* Badge 3: Installation to After-Sales Service */}
+            {/* Badge 3: Industrial Solar Solutions */}
             <div className="flex items-center gap-1.5 sm:gap-2 group">
               <div className="grid size-6.5 sm:size-7 xl:size-7.5 place-items-center rounded-full bg-amber-100/90 border border-amber-200 text-[#E04F16] shrink-0 shadow-xs group-hover:scale-105 transition-transform">
-                <Headphones className="size-3.5 xl:size-3.5 text-[#E04F16]" />
+                <Factory className="size-3.5 xl:size-3.5 text-[#E04F16]" />
               </div>
               <div className="min-w-0">
                 <span className="block text-[10px] sm:text-[10.5px] xl:text-[11.5px] font-bold text-[#082B4C] leading-snug">
-                  Installation to After-Sales Service
+                  Industrial Solar Solutions
                 </span>
               </div>
             </div>

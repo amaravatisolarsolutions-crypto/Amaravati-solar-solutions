@@ -99,7 +99,21 @@ async function runPrerender() {
           }
 
           // Copy common static root files
-          ['favicon.png', 'logo.png', 'robots.txt', 'sitemap.xml', 'googledfef471ef71211f1.html'].forEach((f) => {
+          [
+            'favicon.ico',
+            'favicon.png',
+            'favicon-48x48.png',
+            'favicon-96x96.png',
+            'favicon-144x144.png',
+            'favicon-192x192.png',
+            'favicon-512x512.png',
+            'apple-touch-icon.png',
+            'site.webmanifest',
+            'logo.png',
+            'robots.txt',
+            'sitemap.xml',
+            'googledfef471ef71211f1.html'
+          ].forEach((f) => {
             const src = path.join(distDir, f);
             const dst = path.join(__dirname, '..', f);
             if (fs.existsSync(src)) {

@@ -65,7 +65,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Amaravati Solar Solutions is the #1 trusted rooftop solar installer in Amaravati, Vijayawada, Guntur & AP. On-grid, off-grid & hybrid solar systems with ₹78,000 PM Surya Ghar subsidy support, 5-year PowerCare, and free site survey. Call +91 63058 25402.",
+          "Smart, reliable and sustainable solar energy solutions for homes, commercial complexes, and industrial installations across Andhra Pradesh and beyond. PM Surya Ghar subsidy support, 5-year PowerCare. Call: +91 63058 25402.",
       },
       {
         name: "keywords",
@@ -76,7 +76,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Smart, reliable and sustainable solar energy solutions for homes, businesses and industries across Amaravati, Vijayawada, and Guntur.",
+          "Smart, reliable and sustainable solar energy solutions for homes, commercial complexes, and industrial installations across Andhra Pradesh and beyond. Call: +91 63058 25402.",
       },
       { property: "og:url", content: "https://amaravatisolarsolutions.com/" },
       { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
@@ -84,7 +84,7 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:description",
         content:
-          "Leading solar rooftop company in Andhra Pradesh. High-efficiency solar panels, PM Surya Ghar subsidy, and 25-year warranty.",
+          "Leading solar rooftop company in Andhra Pradesh. High-efficiency solar panels, PM Surya Ghar subsidy, and 25-year warranty. Call: +91 63058 25402.",
       },
       { name: "twitter:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
     ],

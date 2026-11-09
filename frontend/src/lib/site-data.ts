@@ -535,5 +535,5 @@ export function buildSolarWhatsAppUrl(details: {
   ].filter(Boolean);
 
   const text = encodeURIComponent(lines.join("\n"));
-  return `https://wa.me/917989641899?text=${text}`;
+  return `https://wa.me/916305825402?text=${text}`;
 }

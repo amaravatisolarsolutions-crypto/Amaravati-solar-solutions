@@ -645,7 +645,7 @@ if (strpos($uri, '/api/') === 0) {
 
               <p style="margin: 0; font-size: 12px; color: #94a3b8; line-height: 1.5;">
                 If you did not initiate this request, please contact your administrator immediately.<br>
-                <strong>Amaravati Solar Solutions</strong> &bull; Vijayawada, Andhra Pradesh &bull; +91 79896 41899
+                <strong>Amaravati Solar Solutions</strong> &bull; Vijayawada, Andhra Pradesh &bull; +91 63058 25402
               </p>
             </td>
           </tr>
@@ -945,8 +945,14 @@ header('Cache-Control: no-cache, must-revalidate');
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Amaravati Solar Solutions - Smart, Reliable, Sustainable Energy</title>
-    <meta name="description" content="Smart, reliable and sustainable solar energy solutions for homes, businesses and industries across Amaravati and Andhra Pradesh.">
-    <link rel="icon" type="image/png" href="/favicon.png">
+    <meta name="description" content="Smart, reliable and sustainable solar energy solutions for homes, businesses and industries across Amaravati, Andhra Pradesh and beyond. Call: +91 63058 25402">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
