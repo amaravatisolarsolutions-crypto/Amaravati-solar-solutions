@@ -32,6 +32,11 @@ import {
   IndianRupee,
   ShieldCheck,
   Check,
+  KeyRound,
+  Lock,
+  EyeOff,
+  AlertCircle,
+  Loader2,
 } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { cn } from "@/lib/utils";
@@ -386,6 +391,7 @@ function AdminDashboard() {
   const [viewingQuotation, setViewingQuotation] = useState<AdminQuotation | null>(null);
   const [viewingInquiry, setViewingInquiry] = useState<AdminInquiry | null>(null);
 
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Authentication check & initial state hydration
@@ -1021,6 +1027,16 @@ function AdminDashboard() {
 
             <button
               type="button"
+              onClick={() => setIsPasswordModalOpen(true)}
+              title="Change Password"
+              className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full border border-amber-200 bg-amber-50 text-[11px] sm:text-xs font-bold text-amber-800 hover:bg-amber-100 hover:border-amber-300 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
+            >
+              <KeyRound className="size-3.5 text-amber-600 shrink-0" />
+              <span>CHANGE PASSWORD</span>
+            </button>
+
+            <button
+              type="button"
               onClick={handleSignOut}
               title="Sign Out"
               className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full border border-red-200 bg-red-50 text-[11px] sm:text-xs font-bold text-red-600 hover:bg-red-100 hover:border-red-300 transition-all active:scale-95 cursor-pointer shrink-0 whitespace-nowrap"
@@ -1235,22 +1251,35 @@ function AdminDashboard() {
                   <div className="font-semibold text-slate-500 uppercase tracking-wider text-[10px]">Logged in as</div>
                   <div className="truncate font-bold text-slate-200 mt-0.5">{adminEmail}</div>
                 </div>
-                <div className="flex gap-2">
-                  <Link
-                    to="/"
-                    target="_blank"
-                    className="flex-1 text-center py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition-all flex items-center justify-center gap-1.5"
-                  >
-                    <Eye className="size-3.5" />
-                    <span>Live Site</span>
-                  </Link>
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <Link
+                      to="/"
+                      target="_blank"
+                      className="flex-1 text-center py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <Eye className="size-3.5" />
+                      <span>Live Site</span>
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={handleSignOut}
+                      className="flex-1 py-2 px-3 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <LogOut className="size-3.5" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
                   <button
                     type="button"
-                    onClick={handleSignOut}
-                    className="py-2 px-3 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setIsPasswordModalOpen(true);
+                    }}
+                    className="w-full py-2 px-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
                   >
-                    <LogOut className="size-3.5" />
-                    <span>Logout</span>
+                    <KeyRound className="size-3.5 text-amber-400" />
+                    <span>Change Admin Password</span>
                   </button>
                 </div>
               </div>
@@ -2440,6 +2469,280 @@ function AdminDashboard() {
           onClose={() => setViewingQuotation(null)}
         />
       )}
+
+      {/* 7. CHANGE PASSWORD MODAL */}
+      {isPasswordModalOpen && (
+        <ChangePasswordModal
+          isOpen={isPasswordModalOpen}
+          onClose={() => setIsPasswordModalOpen(false)}
+          onSuccess={(msg) => showToast(msg)}
+          adminEmail={adminEmail}
+        />
+      )}
+    </div>
+  );
+}
+
+// =========================================================================
+// CHANGE PASSWORD MODAL COMPONENT
+// =========================================================================
+function ChangePasswordModal({
+  isOpen,
+  onClose,
+  onSuccess,
+  adminEmail,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: (msg: string) => void;
+  adminEmail: string;
+}) {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    const cleanCurrent = currentPassword.trim();
+    const cleanNew = newPassword.trim();
+    const cleanConfirm = confirmPassword.trim();
+
+    if (!cleanCurrent) {
+      setError("Please enter your current password.");
+      return;
+    }
+    if (cleanNew.length < 8) {
+      setError("New password must be at least 8 characters long.");
+      return;
+    }
+    if (cleanNew !== cleanConfirm) {
+      setError("New password and confirmation do not match.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/admin/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          currentPassword: cleanCurrent,
+          newPassword: cleanNew,
+          confirmPassword: cleanConfirm,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({
+        success: false,
+        error: "Server response error. Please try again.",
+      }));
+
+      if ((res.ok || data.success) && data.success) {
+        setSuccess(data.message || "Password updated successfully!");
+        onSuccess(data.message || "Password changed successfully!");
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        setTimeout(() => {
+          onClose();
+        }, 1200);
+      } else {
+        setError(data.error || "Failed to update password. Please verify your current password.");
+      }
+    } catch (err: any) {
+      console.error("Change password error:", err);
+      setError("Network connection error. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="change-password-modal-title"
+      className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && !isLoading) onClose();
+      }}
+    >
+      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden animate-in zoom-in-95 duration-200">
+        {/* Navy Header */}
+        <div className="bg-[#082B4C] text-white px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="size-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+              <KeyRound className="size-5" />
+            </div>
+            <div className="min-w-0">
+              <h3 id="change-password-modal-title" className="text-base font-extrabold tracking-tight truncate">
+                Change Admin Password
+              </h3>
+              <p className="text-xs text-slate-300 font-medium truncate max-w-[220px]">
+                {adminEmail}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={isLoading}
+            className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            aria-label="Close dialog"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+
+        {/* Modal Form */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {error && (
+            <div className="rounded-xl bg-red-50 border border-red-200 p-3 text-xs font-semibold text-red-700 flex items-start gap-2">
+              <AlertCircle className="size-4 shrink-0 text-red-600 mt-0.5" />
+              <div className="flex-1 leading-relaxed">{error}</div>
+            </div>
+          )}
+
+          {success && (
+            <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-xs font-semibold text-emerald-800 flex items-start gap-2">
+              <CheckCircle2 className="size-4 shrink-0 text-emerald-600 mt-0.5" />
+              <div className="flex-1 leading-relaxed">{success}</div>
+            </div>
+          )}
+
+          {/* Current Password Field */}
+          <div>
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              Current Password <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
+              <input
+                type={showCurrent ? "text" : "password"}
+                autoComplete="current-password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Enter current password"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-10 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 focus:border-[#082B4C] transition-all font-mono"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowCurrent(!showCurrent)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                aria-label={showCurrent ? "Hide current password" : "Show current password"}
+              >
+                {showCurrent ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              </button>
+            </div>
+          </div>
+
+          {/* New Password Field */}
+          <div>
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              New Password (min 8 chars) <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
+              <input
+                type={showNew ? "text" : "password"}
+                autoComplete="new-password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Enter strong new password"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-10 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 focus:border-[#082B4C] transition-all font-mono"
+                required
+                minLength={8}
+              />
+              <button
+                type="button"
+                onClick={() => setShowNew(!showNew)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                aria-label={showNew ? "Hide new password" : "Show new password"}
+              >
+                {showNew ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              </button>
+            </div>
+            <p className="text-[11px] text-slate-400 mt-1">
+              Minimum 8 characters with a mix of letters, numbers, and symbols.
+            </p>
+          </div>
+
+          {/* Confirm New Password Field */}
+          <div>
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              Confirm New Password <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
+              <input
+                type={showConfirm ? "text" : "password"}
+                autoComplete="new-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Re-enter new password"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-10 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 focus:border-[#082B4C] transition-all font-mono"
+                required
+                minLength={8}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirm(!showConfirm)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                aria-label={showConfirm ? "Hide confirm password" : "Show confirm password"}
+              >
+                {showConfirm ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              </button>
+            </div>
+            {newPassword && confirmPassword && newPassword !== confirmPassword && (
+              <p className="text-[11px] text-red-500 mt-1 font-semibold">
+                Passwords do not match
+              </p>
+            )}
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={isLoading}
+              className="px-4 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isLoading || !currentPassword || newPassword.length < 8 || newPassword !== confirmPassword}
+              className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-[#082B4C] hover:bg-[#062038] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm disabled:opacity-50 cursor-pointer"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="size-3.5 animate-spin" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <>
+                  <KeyRound className="size-3.5 text-amber-400" />
+                  <span>Update Password</span>
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

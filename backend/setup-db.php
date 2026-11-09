@@ -313,18 +313,21 @@ function seedInitialData($mysqli) {
     $adminUsername = 'u236567282_Amaravthisolar';
     $adminPasswordHash = password_hash('Amaravthi@123', PASSWORD_DEFAULT);
 
-    $adminCheck = $mysqli->prepare("SELECT id FROM `admin_users` WHERE `email` = ? OR `username` = ?");
+    $adminCheck = $mysqli->prepare("SELECT id, password_hash FROM `admin_users` WHERE `email` = ? OR `username` = ?");
     if ($adminCheck) {
         $adminCheck->bind_param("ss", $adminEmail, $adminUsername);
         $adminCheck->execute();
         $adminRes = $adminCheck->get_result();
         if ($adminRes && $adminRes->num_rows > 0) {
             $row = $adminRes->fetch_assoc();
-            $upStmt = $mysqli->prepare("UPDATE `admin_users` SET `username` = ?, `password_hash` = ?, `role` = 'superadmin' WHERE `id` = ?");
-            if ($upStmt) {
-                $upStmt->bind_param("ssi", $adminUsername, $adminPasswordHash, $row['id']);
-                $upStmt->execute();
-                $upStmt->close();
+            // Preserve customized admin password - only seed default hash if empty/null
+            if (empty($row['password_hash'])) {
+                $upStmt = $mysqli->prepare("UPDATE `admin_users` SET `username` = ?, `password_hash` = ?, `role` = 'superadmin' WHERE `id` = ?");
+                if ($upStmt) {
+                    $upStmt->bind_param("ssi", $adminUsername, $adminPasswordHash, $row['id']);
+                    $upStmt->execute();
+                    $upStmt->close();
+                }
             }
         } else {
             $insStmt = $mysqli->prepare("INSERT INTO `admin_users` (`username`, `email`, `password_hash`, `role`) VALUES (?, ?, ?, 'superadmin')");
