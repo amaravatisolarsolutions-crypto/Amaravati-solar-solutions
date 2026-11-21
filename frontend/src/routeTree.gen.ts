@@ -20,6 +20,7 @@ import { Route as PowerBackPromiseRouteImport } from './routes/power-back-promis
 import { Route as PowercareRouteImport } from './routes/powercare'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProcessRouteImport } from './routes/process'
+import { Route as SalesquotationRouteImport } from './routes/salesquotation'
 import { Route as SolarCalculationRouteImport } from './routes/solar-calculation'
 import { Route as SolarCalculatorRouteImport } from './routes/solar-calculator'
 import { Route as SolarSolutionsRouteImport } from './routes/solar-solutions'
@@ -86,6 +87,11 @@ const ProcessRoute = ProcessRouteImport.update({
   path: '/process',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SalesquotationRoute = SalesquotationRouteImport.update({
+  id: '/salesquotation',
+  path: '/salesquotation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SolarCalculationRoute = SolarCalculationRouteImport.update({
   id: '/solar-calculation',
   path: '/solar-calculation',
@@ -149,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/powercare': typeof PowercareRoute
   '/privacy': typeof PrivacyRoute
   '/process': typeof ProcessRoute
+  '/salesquotation': typeof SalesquotationRoute
   '/solar-calculation': typeof SolarCalculationRoute
   '/solar-calculator': typeof SolarCalculatorRoute
   '/solar-solutions': typeof SolarSolutionsRoute
@@ -172,6 +179,7 @@ export interface FileRoutesByTo {
   '/powercare': typeof PowercareRoute
   '/privacy': typeof PrivacyRoute
   '/process': typeof ProcessRoute
+  '/salesquotation': typeof SalesquotationRoute
   '/solar-calculation': typeof SolarCalculationRoute
   '/solar-calculator': typeof SolarCalculatorRoute
   '/solar-solutions': typeof SolarSolutionsRoute
@@ -196,6 +204,7 @@ export interface FileRoutesById {
   '/powercare': typeof PowercareRoute
   '/privacy': typeof PrivacyRoute
   '/process': typeof ProcessRoute
+  '/salesquotation': typeof SalesquotationRoute
   '/solar-calculation': typeof SolarCalculationRoute
   '/solar-calculator': typeof SolarCalculatorRoute
   '/solar-solutions': typeof SolarSolutionsRoute
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/powercare'
     | '/privacy'
     | '/process'
+    | '/salesquotation'
     | '/solar-calculation'
     | '/solar-calculator'
     | '/solar-solutions'
@@ -244,6 +254,7 @@ export interface FileRouteTypes {
     | '/powercare'
     | '/privacy'
     | '/process'
+    | '/salesquotation'
     | '/solar-calculation'
     | '/solar-calculator'
     | '/solar-solutions'
@@ -267,6 +278,7 @@ export interface FileRouteTypes {
     | '/powercare'
     | '/privacy'
     | '/process'
+    | '/salesquotation'
     | '/solar-calculation'
     | '/solar-calculator'
     | '/solar-solutions'
@@ -291,6 +303,7 @@ export interface RootRouteChildren {
   PowercareRoute: typeof PowercareRoute
   PrivacyRoute: typeof PrivacyRoute
   ProcessRoute: typeof ProcessRoute
+  SalesquotationRoute: typeof SalesquotationRoute
   SolarCalculationRoute: typeof SolarCalculationRoute
   SolarCalculatorRoute: typeof SolarCalculatorRoute
   SolarSolutionsRoute: typeof SolarSolutionsRoute
@@ -382,6 +395,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/salesquotation': {
+      id: '/salesquotation'
+      path: '/salesquotation'
+      fullPath: '/salesquotation'
+      preLoaderRoute: typeof SalesquotationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/solar-calculation': {
       id: '/solar-calculation'
       path: '/solar-calculation'
@@ -467,6 +487,7 @@ const rootRouteChildren: RootRouteChildren = {
   PowercareRoute: PowercareRoute,
   PrivacyRoute: PrivacyRoute,
   ProcessRoute: ProcessRoute,
+  SalesquotationRoute: SalesquotationRoute,
   SolarCalculationRoute: SolarCalculationRoute,
   SolarCalculatorRoute: SolarCalculatorRoute,
   SolarSolutionsRoute: SolarSolutionsRoute,

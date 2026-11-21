@@ -334,7 +334,11 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   const pathname = router.state.location.pathname;
-  const isAdmin = pathname.toLowerCase().startsWith("/admin") || pathname.toLowerCase() === "/login";
+  // Admin pages and the hidden /salesquotation tool render without the public header/footer
+  const isAdmin =
+    pathname.toLowerCase().startsWith("/admin") ||
+    pathname.toLowerCase() === "/login" ||
+    pathname.toLowerCase().startsWith("/salesquotation");
 
   return (
     <QueryClientProvider client={queryClient}>

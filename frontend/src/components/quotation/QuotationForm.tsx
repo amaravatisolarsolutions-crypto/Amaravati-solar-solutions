@@ -129,11 +129,18 @@ export function QuotationModal({
   onClose,
   onSave,
   existingQuotationNos,
+  variant = "modal",
+  saving = false,
 }: {
   onClose: () => void;
   onSave: (data: Omit<AdminQuotation, "id"> & { id?: string | undefined }) => void;
   existingQuotationNos: string[];
+  /** "modal" = popup over the page (admin); "page" = form shown directly on a page (/salesquotation) */
+  variant?: "modal" | "page";
+  /** disables the submit button while the quotation is being saved */
+  saving?: boolean;
 }) {
+  const isPage = variant === "page";
   // Auto-generated, e.g. ASS/2026/1121/001 (updates live if the list refreshes while the form is open)
   const quotationNo = getNextQuotationNo(existingQuotationNos);
   const [customerName, setCustomerName] = useState("");
@@ -312,10 +319,20 @@ export function QuotationModal({
 
   return (
     <div
-      className="admin-portal fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-xs p-2 sm:p-4 md:p-6 overflow-y-auto text-[#344054] text-xs sm:text-sm text-left"
+      className={
+        isPage
+          ? "admin-portal text-[#344054] text-xs sm:text-sm text-left"
+          : "admin-portal fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-xs p-2 sm:p-4 md:p-6 overflow-y-auto text-[#344054] text-xs sm:text-sm text-left"
+      }
       data-admin="true"
     >
-      <div className="relative w-full max-w-4xl rounded-2xl bg-white p-3.5 sm:p-6 md:p-7 shadow-2xl my-4 sm:my-6 max-h-[94vh] overflow-y-auto border border-slate-200">
+      <div
+        className={
+          isPage
+            ? "relative w-full max-w-4xl mx-auto rounded-2xl bg-white p-3.5 sm:p-6 md:p-7 shadow-sm border border-slate-200"
+            : "relative w-full max-w-4xl rounded-2xl bg-white p-3.5 sm:p-6 md:p-7 shadow-2xl my-4 sm:my-6 max-h-[94vh] overflow-y-auto border border-slate-200"
+        }
+      >
         {/* Top Header */}
         <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-slate-200">
           <div className="flex items-center gap-2.5 sm:gap-3">
@@ -327,13 +344,16 @@ export function QuotationModal({
               <p className="text-[11px] sm:text-xs text-slate-500 line-clamp-1 sm:line-clamp-none">Enter site survey details, structure specifications, bill corrections, and payment summary</p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer transition-colors shrink-0"
-          >
-            <X className="size-5" />
-          </button>
+          {!isPage && (
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close form"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer transition-colors shrink-0"
+            >
+              <X className="size-5" />
+            </button>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="mt-5 space-y-6 text-xs font-semibold">
@@ -938,14 +958,15 @@ export function QuotationModal({
               onClick={onClose}
               className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-sm cursor-pointer text-center"
             >
-              Cancel
+              {isPage ? "Clear Form" : "Cancel"}
             </button>
             <button
               type="submit"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#B83A16] hover:bg-[#9a3012] text-white font-extrabold transition-all shadow-md active:scale-95 cursor-pointer uppercase tracking-wider text-center"
+              disabled={saving}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#B83A16] hover:bg-[#9a3012] text-white font-extrabold transition-all shadow-md active:scale-95 cursor-pointer uppercase tracking-wider text-center disabled:opacity-60 disabled:cursor-wait"
             >
               <Check className="size-4 stroke-[3]" />
-              <span>Create Quotation</span>
+              <span>{saving ? "Saving…" : "Create Quotation"}</span>
             </button>
           </div>
         </form>

@@ -11,6 +11,10 @@ ErrorDocument 404 /index.php
     RewriteEngine On
     RewriteBase /
 
+    # 0. Hidden sales page: any capitalisation (/Salesquotation, /SALESQUOTATION) -> /salesquotation/
+    RewriteCond %{REQUEST_URI} !^/salesquotation/?$
+    RewriteRule ^salesquotation/?$ /salesquotation/ [NC,R=301,L]
+
     # 1. Pass API requests directly to index.php
     RewriteRule ^api/(.*)$ index.php [QSA,L]
 

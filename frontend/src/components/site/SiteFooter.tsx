@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { COMPANY } from "@/lib/site-data";
-import { FooterQuotationButton } from "@/components/quotation/FooterQuotationButton";
 
 const SOCIAL_LINKS = [
   {
@@ -398,7 +397,6 @@ export function SiteFooter() {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            <FooterQuotationButton />
             <Link to="/privacy" onClick={scrollToTop} className="hover:text-[#E04F16] transition-colors">
               Privacy Policy
             </Link>

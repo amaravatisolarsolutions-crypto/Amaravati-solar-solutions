@@ -21,7 +21,8 @@ const routes = [
   '/privacy',
   '/terms',
   '/admin',
-  '/admin/login'
+  '/admin/login',
+  '/salesquotation'
 ];
 
 function copyFolderRecursiveSync(source, target) {
