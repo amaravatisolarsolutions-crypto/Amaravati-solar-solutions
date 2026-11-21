@@ -384,6 +384,10 @@ function AdminDashboard() {
   const [inquiryTypeFilter, setInquiryTypeFilter] = useState<"ALL" | "WHATSAPP" | "APPLIED_PLAN" | "DEMO" | "GENERAL">("ALL");
   const [inquiryStatusFilter, setInquiryStatusFilter] = useState<"ALL" | "New" | "Contacted" | "Completed">("ALL");
   const [quotationSearch, setQuotationSearch] = useState<string>("");
+  const [quotationStatusFilter, setQuotationStatusFilter] = useState<"All" | "Pending" | "Sent" | "Approved">("All");
+  const [quotationDateFrom, setQuotationDateFrom] = useState<string>("");
+  const [quotationDateTo, setQuotationDateTo] = useState<string>("");
+  const [isRefreshingQuotations, setIsRefreshingQuotations] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Data states
@@ -551,6 +555,16 @@ function AdminDashboard() {
   };
 
   // 3. Fetch Live Quotations from MySQL Database
+  // Keep the quotation list live: refresh from the database every 30s while the tab is open
+  useEffect(() => {
+    if (activeTab !== "quotation") return;
+    const t = window.setInterval(() => {
+      if (document.visibilityState === "visible") fetchLiveQuotations();
+    }, 30000);
+    return () => window.clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
+
   const fetchLiveQuotations = async () => {
     try {
       const res = await fetch("/api/quotations").then((r) => (r.ok ? r.json() : null)).catch(() => null);
@@ -1076,17 +1090,43 @@ function AdminDashboard() {
     return matchesSearch && matchesStatus && matchesType;
   });
 
-  const filteredQuotations = quotations.filter(
-    (q) =>
-      q.quotationNo.toLowerCase().includes(quotationSearch.toLowerCase()) ||
-      q.customerName.toLowerCase().includes(quotationSearch.toLowerCase()) ||
-      q.customerPhone.includes(quotationSearch) ||
-      q.systemCapacity.toLowerCase().includes(quotationSearch.toLowerCase()) ||
-      (q.housingType && q.housingType.toLowerCase().includes(quotationSearch.toLowerCase())) ||
-      (q.discom && q.discom.toLowerCase().includes(quotationSearch.toLowerCase())) ||
-      (q.cluster && q.cluster.toLowerCase().includes(quotationSearch.toLowerCase())) ||
-      (q.roofType && q.roofType.toLowerCase().includes(quotationSearch.toLowerCase()))
-  );
+  const qSearch = quotationSearch.trim().toLowerCase();
+  const qSearchDigits = qSearch.replace(/\D/g, "");
+  const filteredQuotations = quotations.filter((q) => {
+    const matchesSearch =
+      !qSearch ||
+      [q.quotationNo, q.customerName, q.customerAddress, q.systemCapacity, q.discom, q.cluster].some((v) =>
+        (v || "").toLowerCase().includes(qSearch)
+      ) ||
+      (qSearchDigits.length >= 3 && (q.customerPhone || "").replace(/\D/g, "").includes(qSearchDigits));
+    const matchesStatus = quotationStatusFilter === "All" || q.status === quotationStatusFilter;
+    const iso = quoteDateToIso(q.date);
+    const matchesFrom = !quotationDateFrom || (!!iso && iso >= quotationDateFrom);
+    const matchesTo = !quotationDateTo || (!!iso && iso <= quotationDateTo);
+    return matchesSearch && matchesStatus && matchesFrom && matchesTo;
+  });
+  const hasQuotationFilters = !!qSearch || quotationStatusFilter !== "All" || !!quotationDateFrom || !!quotationDateTo;
+  const clearQuotationFilters = () => {
+    setQuotationSearch("");
+    setQuotationStatusFilter("All");
+    setQuotationDateFrom("");
+    setQuotationDateTo("");
+  };
+  const applyQuotationDatePreset = (preset: "today" | "7d" | "30d" | "month") => {
+    const now = new Date();
+    const to = toLocalIso(now);
+    const from = new Date(now);
+    if (preset === "7d") from.setDate(from.getDate() - 6);
+    if (preset === "30d") from.setDate(from.getDate() - 29);
+    if (preset === "month") from.setDate(1);
+    setQuotationDateFrom(toLocalIso(from));
+    setQuotationDateTo(to);
+  };
+  const refreshQuotations = async () => {
+    setIsRefreshingQuotations(true);
+    await fetchLiveQuotations();
+    setIsRefreshingQuotations(false);
+  };
 
   const newInquiriesCount = inquiries.filter((i) => i.status === "New").length;
 
@@ -1792,22 +1832,22 @@ function AdminDashboard() {
                   </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
-                  <div className="relative flex-1 sm:w-64">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
-                    <input
-                      type="text"
-                      placeholder="Search quotations…"
-                      value={quotationSearch}
-                      onChange={(e) => setQuotationSearch(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-3.5 py-2 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 shadow-2xs"
-                    />
-                  </div>
+                <div className="flex items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+                  <button
+                    type="button"
+                    onClick={refreshQuotations}
+                    disabled={isRefreshingQuotations}
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer shadow-2xs disabled:opacity-60 shrink-0"
+                    title="Refresh from database"
+                  >
+                    <RefreshCw className={cn("size-3.5 text-slate-500", isRefreshingQuotations && "animate-spin text-[#B83A16]")} />
+                    <span className="hidden sm:inline">Refresh</span>
+                  </button>
 
                   <button
                     type="button"
                     onClick={() => setIsQuotationModalOpen(true)}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#B83A16] hover:bg-[#9a3012] text-white px-4 py-2.5 sm:py-2 text-xs sm:text-sm font-bold uppercase tracking-wider shadow-sm transition-all active:scale-95 cursor-pointer shrink-0"
+                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-[#B83A16] hover:bg-[#9a3012] text-white px-4 py-2.5 sm:py-2 text-xs sm:text-sm font-bold uppercase tracking-wider shadow-sm transition-all active:scale-95 cursor-pointer shrink-0"
                   >
                     <Plus className="size-4 stroke-[2.5]" />
                     <span>CREATE QUOTATION</span>
@@ -1835,122 +1875,231 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Quotations Desktop Table (Visible on xl+ screens with min-w-960px to prevent cramped columns) */}
+              {/* Search & Filters (instant, no submit needed) */}
+              <div className="rounded-2xl border border-slate-200/90 bg-white p-3 sm:p-4 shadow-2xs space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,0.8fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_auto] gap-2.5 items-end">
+                  <div className="sm:col-span-2 xl:col-span-1">
+                    <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Search</label>
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
+                      <input
+                        type="text"
+                        placeholder="Name, phone, quotation no, address…"
+                        value={quotationSearch}
+                        onChange={(e) => setQuotationSearch(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-8 py-2 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
+                      />
+                      {quotationSearch && (
+                        <button
+                          type="button"
+                          onClick={() => setQuotationSearch("")}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 rounded text-slate-400 hover:text-slate-700 cursor-pointer"
+                          title="Clear search"
+                        >
+                          <X className="size-3.5" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Status</label>
+                    <select
+                      value={quotationStatusFilter}
+                      onChange={(e) => setQuotationStatusFilter(e.target.value as "All" | "Pending" | "Sent" | "Approved")}
+                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 cursor-pointer"
+                    >
+                      <option value="All">All Status</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Sent">Sent</option>
+                      <option value="Approved">Approved</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">From Date</label>
+                    <input
+                      type="date"
+                      value={quotationDateFrom}
+                      max={quotationDateTo || undefined}
+                      onChange={(e) => setQuotationDateFrom(e.target.value)}
+                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 cursor-pointer"
+                      onKeyDown={(e) => { if (e.key !== "Tab") e.preventDefault(); }}
+                      onClick={(e) => (e.currentTarget as HTMLInputElement).showPicker?.()}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">To Date</label>
+                    <input
+                      type="date"
+                      value={quotationDateTo}
+                      min={quotationDateFrom || undefined}
+                      onChange={(e) => setQuotationDateTo(e.target.value)}
+                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 cursor-pointer"
+                      onKeyDown={(e) => { if (e.key !== "Tab") e.preventDefault(); }}
+                      onClick={(e) => (e.currentTarget as HTMLInputElement).showPicker?.()}
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={clearQuotationFilters}
+                    disabled={!hasQuotationFilters}
+                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    <X className="size-3.5" />
+                    <span>Clear</span>
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <Calendar className="size-3.5 text-slate-400" />
+                    {([
+                      ["today", "Today"],
+                      ["7d", "Last 7 Days"],
+                      ["30d", "Last 30 Days"],
+                      ["month", "This Month"],
+                    ] as const).map(([key, label]) => (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => applyQuotationDatePreset(key)}
+                        className="px-2.5 py-1 rounded-full border border-slate-200 bg-white text-[11px] font-bold text-slate-600 hover:border-[#B83A16] hover:text-[#B83A16] transition-all cursor-pointer"
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <span className="text-[11px] font-semibold text-slate-500">
+                    Showing <strong className="text-[#082B4C]">{filteredQuotations.length}</strong> of {quotations.length} quotations
+                  </span>
+                </div>
+              </div>
+
+              {/* Quotations Table — fits laptop screens (13"+) without horizontal scroll */}
               <div className="hidden xl:block rounded-2xl border border-slate-200/90 bg-white shadow-2xs overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full min-w-[960px] text-left text-xs">
-                    <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-wider text-[11px]">
+                <table className="w-full table-fixed text-left text-xs">
+                  <colgroup>
+                    <col className="w-[15%]" />
+                    <col className="w-[24%]" />
+                    <col className="w-[15%]" />
+                    <col className="w-[19%]" />
+                    <col className="w-[13%]" />
+                    <col className="w-[14%]" />
+                  </colgroup>
+                  <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-wider text-[10px]">
+                    <tr>
+                      <th className="px-3 py-3">Quotation</th>
+                      <th className="px-3 py-3">Customer</th>
+                      <th className="px-3 py-3">System</th>
+                      <th className="px-3 py-3">Amount</th>
+                      <th className="px-3 py-3">Status</th>
+                      <th className="px-3 py-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {filteredQuotations.length === 0 ? (
                       <tr>
-                        <th className="px-5 py-3.5">Quotation No</th>
-                        <th className="px-5 py-3.5">Customer Details</th>
-                        <th className="px-5 py-3.5">Site & Structure</th>
-                        <th className="px-5 py-3.5">Payment Summary</th>
-                        <th className="px-5 py-3.5">Valid Upto</th>
-                        <th className="px-5 py-3.5">Status</th>
-                        <th className="px-5 py-3.5 text-right">Actions</th>
+                        <td colSpan={6} className="px-5 py-12 text-center text-slate-400">
+                          No quotations found for the selected filters.
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {filteredQuotations.length === 0 ? (
-                        <tr>
-                          <td colSpan={7} className="px-5 py-12 text-center text-slate-400">
-                            No quotations found matching your query.
+                    ) : (
+                      filteredQuotations.map((q) => (
+                        <tr key={q.id} className="hover:bg-slate-50/60 transition-colors align-top">
+                          <td className="px-3 py-3">
+                            <span className="inline-block max-w-full truncate font-extrabold text-[#082B4C] bg-slate-100 px-2 py-0.5 rounded-md text-[11px] border border-slate-200">
+                              {q.quotationNo}
+                            </span>
+                            <div className="text-[10px] text-slate-500 mt-1 font-semibold">{q.date}</div>
+                            <div className="text-[10px] text-slate-400">Valid: {q.validUpto}</div>
                           </td>
-                        </tr>
-                      ) : (
-                        filteredQuotations.map((q) => (
-                          <tr key={q.id} className="hover:bg-slate-50/60 transition-colors">
-                            <td className="px-5 py-4 whitespace-nowrap">
-                              <span className="font-extrabold text-[#082B4C] bg-slate-100 px-2.5 py-1 rounded-md text-[11px] tracking-wide border border-slate-200">
-                                {q.quotationNo}
-                              </span>
-                              <div className="text-[10px] text-slate-400 mt-1 font-medium">{q.date}</div>
-                            </td>
-                            <td className="px-5 py-4">
-                              <div className="font-extrabold text-slate-800 text-sm">{q.customerName}</div>
-                              <div className="text-slate-500 text-[11px] mt-0.5">{q.customerPhone}</div>
-                              <div className="text-slate-400 text-[10px] truncate max-w-xs">{q.customerAddress}</div>
-                            </td>
-                            <td className="px-5 py-4">
-                              <div className="flex flex-wrap gap-1.5 items-center">
-                                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
-                                  {q.systemCapacity}
-                                </span>
-                                <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-sky-50 text-sky-800 border border-sky-200">
-                                  {q.housingType || "Independent"} • {q.noOfFloors || "G+1"}
-                                </span>
-                              </div>
-                              <div className="text-[10px] text-slate-500 mt-1">
-                                {q.roofType || "RCC"} • {q.structureType || "Pre fab"} {q.discom ? `• ${q.discom}` : ""}
-                              </div>
-                            </td>
-                            <td className="px-5 py-4 whitespace-nowrap">
-                              <div className="font-black text-[#082B4C] text-sm">
-                                Final: ₹{(q.finalPrice || q.totalAmount || 0).toLocaleString("en-IN")}
-                              </div>
-                              <div className="text-[10px] text-emerald-700 font-semibold">
-                                Subsidy: ₹{(q.subsidyAmount || 0).toLocaleString("en-IN")}
-                              </div>
-                              <div className="text-[10px] text-slate-600 font-bold">
-                                Hand: ₹{(q.fromHand || 0).toLocaleString("en-IN")} <span className="text-[9px] font-normal text-slate-400">({q.paymentMode || "Direct"})</span>
-                              </div>
-                            </td>
-                            <td className="px-5 py-4 whitespace-nowrap text-slate-600 font-semibold text-[11px]">
-                              {q.validUpto}
-                            </td>
-                            <td className="px-5 py-4 whitespace-nowrap">
-                              <select
-                                value={q.status}
-                                onChange={(e) =>
-                                  handleUpdateQuotationStatus(q.id, e.target.value as "Pending" | "Sent" | "Approved")
-                                }
-                                className={`text-[11px] font-extrabold rounded-lg px-2.5 py-1 border transition-all cursor-pointer ${
+                          <td className="px-3 py-3 min-w-0">
+                            <div className="font-extrabold text-slate-800 text-sm truncate" title={q.customerName}>{q.customerName}</div>
+                            <div className="text-slate-600 text-[11px] mt-0.5 truncate">{q.customerPhone}</div>
+                            <div className="text-slate-400 text-[10px] truncate" title={q.customerAddress}>{q.customerAddress}</div>
+                          </td>
+                          <td className="px-3 py-3">
+                            <div className="font-extrabold text-[#B83A16] text-[13px]">
+                              {q.projectSize || q.systemCapacity.replace(/\s*On-Grid Rooftop$/i, "")}
+                            </div>
+                            <div className="text-[10px] text-slate-500 truncate">{q.moduleType || "On-Grid Rooftop"}</div>
+                            <div className="text-[10px] font-semibold text-emerald-700 truncate">
+                              {q.subsidyType === "Non- Subsidy" ? "Non-Subsidy" : "DBT Subsidy"}
+                            </div>
+                          </td>
+                          <td className="px-3 py-3">
+                            <div className="font-black text-[#082B4C] text-[13px]">
+                              ₹{(q.finalPrice || q.totalAmount || 0).toLocaleString("en-IN")}
+                            </div>
+                            <div className="text-[10px] text-emerald-700 font-semibold">
+                              Subsidy ₹{(q.subsidyAmount || 0).toLocaleString("en-IN")}
+                            </div>
+                            <div className="text-[10px] text-slate-700 font-bold">
+                              Hand ₹{(q.fromHand || 0).toLocaleString("en-IN")}
+                            </div>
+                          </td>
+                          <td className="px-3 py-3">
+                            <select
+                              value={q.status}
+                              onChange={(e) =>
+                                handleUpdateQuotationStatus(q.id, e.target.value as "Pending" | "Sent" | "Approved")
+                              }
+                              className={`w-full text-[11px] font-extrabold rounded-lg px-2 py-1 border transition-all cursor-pointer ${
                                   q.status === "Approved"
                                     ? "bg-emerald-50 text-emerald-800 border-emerald-200"
                                     : q.status === "Sent"
                                     ? "bg-sky-50 text-sky-800 border-sky-200"
                                     : "bg-amber-50 text-amber-800 border-amber-200"
                                 }`}
+                            >
+                              <option value="Pending">Pending</option>
+                              <option value="Sent">Sent</option>
+                              <option value="Approved">Approved</option>
+                            </select>
+                          </td>
+                          <td className="px-3 py-3">
+                            <div className="flex items-center justify-end gap-1">
+                              <button
+                                type="button"
+                                onClick={() => setViewingQuotation(q)}
+                                className="p-1.5 rounded-lg border border-slate-200 text-[#082B4C] hover:bg-slate-50 transition-all cursor-pointer"
+                                title="View quotation"
                               >
-                                <option value="Pending">Pending</option>
-                                <option value="Sent">Sent</option>
-                                <option value="Approved">Approved</option>
-                              </select>
-                            </td>
-                            <td className="px-5 py-4 text-right whitespace-nowrap">
-                              <div className="flex items-center justify-end gap-1.5">
-                                <button
-                                  type="button"
-                                  onClick={() => setViewingQuotation(q)}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[#082B4C] bg-white text-[#082B4C] hover:bg-slate-50 transition-all font-bold text-[11px] cursor-pointer shadow-2xs"
-                                  title="View and Print Quotation"
-                                >
-                                  <Printer className="size-3.5 text-[#B83A16]" />
-                                  <span>View / Print</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleDeleteQuotation(q.id, q.quotationNo)}
-                                  className="p-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-all cursor-pointer"
-                                  title="Delete quotation"
-                                >
-                                  <Trash2 className="size-3.5" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                                <Eye className="size-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => openQuotationPdf(q)}
+                                className="p-1.5 rounded-lg border border-[#B83A16] bg-[#B83A16] text-white hover:bg-[#9a3012] transition-all cursor-pointer"
+                                title="Print / Download PDF"
+                              >
+                                <Printer className="size-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteQuotation(q.id, q.quotationNo)}
+                                className="p-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-all cursor-pointer"
+                                title="Delete quotation"
+                              >
+                                <Trash2 className="size-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
 
               {/* Quotations Responsive Cards View (Phones: 1-col, Tablets: 2-cols) */}
               <div className="xl:hidden">
                 {filteredQuotations.length === 0 ? (
                   <div className="rounded-2xl border border-slate-200/90 bg-white p-8 text-center text-slate-400 text-xs">
-                    No quotations found matching your query.
+                    No quotations found for the selected filters.
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2018,14 +2167,27 @@ function AdminDashboard() {
                         </div>
                       </div>
 
+                      <div className="flex items-center justify-between text-[10px] text-slate-500 font-semibold">
+                        <span>Date: {q.date}</span>
+                        <span>Valid: {q.validUpto}</span>
+                      </div>
+
                       <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
                         <button
                           type="button"
                           onClick={() => setViewingQuotation(q)}
-                          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border border-[#082B4C] bg-[#082B4C] text-white hover:bg-[#062038] font-bold text-xs shadow-2xs cursor-pointer active:scale-95 transition-all"
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border border-[#082B4C] bg-white text-[#082B4C] hover:bg-slate-50 font-bold text-xs shadow-2xs cursor-pointer active:scale-95 transition-all"
                         >
-                          <Printer className="size-3.5 text-[#F5A623]" />
-                          <span>View & Print</span>
+                          <Eye className="size-3.5" />
+                          <span>View</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => openQuotationPdf(q)}
+                          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#B83A16] text-white hover:bg-[#9a3012] font-bold text-xs shadow-2xs cursor-pointer active:scale-95 transition-all"
+                        >
+                          <Printer className="size-3.5" />
+                          <span>PDF</span>
                         </button>
                         <button
                           type="button"
@@ -4026,6 +4188,28 @@ function QuotationModal({
       </div>
     </div>
   );
+}
+
+// Date helpers for quotation filters ("21 Nov 2026" or ISO → "2026-11-21")
+function toLocalIso(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+const MONTH_INDEX: Record<string, number> = {
+  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+};
+function quoteDateToIso(value: string | undefined): string {
+  const v = (value || "").trim();
+  if (!v) return "";
+  const iso = /^(\d{4})-(\d{2})-(\d{2})/.exec(v);
+  if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
+  const dmy = /^(\d{1,2})[\s-]+([A-Za-z]{3})[A-Za-z]*[\s-]+(\d{4})$/.exec(v);
+  if (dmy) {
+    const [, day = "", mon = "", year = ""] = dmy;
+    const m = MONTH_INDEX[mon.toLowerCase()];
+    if (m !== undefined) return `${year}-${String(m + 1).padStart(2, "0")}-${day.padStart(2, "0")}`;
+  }
+  const t = new Date(v);
+  return isNaN(t.getTime()) ? "" : toLocalIso(t);
 }
 
 // Opens the professional A4 quotation in a new tab (Print / Save as PDF)
