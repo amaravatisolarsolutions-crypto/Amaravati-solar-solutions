@@ -734,6 +734,9 @@ function AdminDashboard() {
     setQuotations(updated);
     try { localStorage.setItem("amaravati_admin_quotations", JSON.stringify(updated)); } catch {}
     setIsQuotationModalOpen(false);
+    // Show the new quotation immediately and open the printable A4 PDF (runs inside the submit click, so no popup block)
+    setViewingQuotation(newQuot);
+    openQuotationPdf(newQuot);
 
     // Save to MySQL
     try {
@@ -3311,59 +3314,18 @@ function QuotationModal({
         : "";
   const paymentValid = !totalError && !discountError && !subsidyError;
 
-  // Toggle for equipment line items breakdown
-  const [showLineItems, setShowLineItems] = useState(false);
-  const [items, setItems] = useState<AdminQuotationItem[]>([
-    { id: "1", description: "Solar Panel (Topcon Mono PERC)", specification: "550W / 610W High Efficiency", qty: 6, unitPrice: 18500, amount: 111000 },
-    { id: "2", description: "Solar Inverter", specification: "Single Phase On-Grid with WiFi Monitoring", qty: 1, unitPrice: 38000, amount: 38000 },
-    { id: "3", description: "Mounting Structure", specification: "Galvanized Iron (GI Elevated Rooftop)", qty: 1, unitPrice: 16000, amount: 16000 },
-    { id: "4", description: "AC/DC Distribution Box & Cabling", specification: "SPD, MCBs, Earthing Kit & Accessories", qty: 1, unitPrice: 14000, amount: 14000 },
-    { id: "5", description: "Installation, Liaison & Commissioning", specification: "Testing, DISCOM Net-metering setup", qty: 1, unitPrice: 12000, amount: 12000 },
-  ]);
-
-  const itemsSubtotal = items.reduce((sum, item) => sum + (item.amount || 0), 0);
-  const gstAmount = Math.round(itemsSubtotal * 0.14);
-  const itemsTotal = itemsSubtotal + gstAmount;
+  // Scope of supply (bill of materials) printed on the quotation — derived from the form, no per-item prices
+  const items: AdminQuotationItem[] = [
+    { id: "1", description: "Solar PV Modules", specification: `${moduleType} high-efficiency modules`, qty: Number(noOfModules) || 0, unitPrice: 0, amount: 0 },
+    { id: "2", description: "On-Grid Solar Inverter", specification: `${sanctionedPhase}, ${projectSizeKw} kW class with WiFi monitoring`, qty: 1, unitPrice: 0, amount: 0 },
+    { id: "3", description: "Module Mounting Structure", specification: `${structureType} GI elevated structure for ${roofType} roof`, qty: 1, unitPrice: 0, amount: 0 },
+    { id: "4", description: "ACDB / DCDB, Cabling & Earthing", specification: "SPD, MCBs, DC/AC cables, earthing kit & lightning arrestor", qty: 1, unitPrice: 0, amount: 0 },
+    { id: "5", description: "Installation, Net-metering & Commissioning", specification: `${discom} liaison, net-meter & subsidy portal assistance`, qty: 1, unitPrice: 0, amount: 0 },
+  ];
 
   const handleSubsidyTypeSelect = (type: "Non- Subsidy" | "Subsidy National DBT") => {
     setSubsidyType(type);
     if (type === "Non- Subsidy") setSubsidyAmount("");
-  };
-
-  const handleUpdateItem = (
-    id: string,
-    field: "description" | "specification" | "qty" | "unitPrice",
-    val: string | number
-  ) => {
-    setItems((prev) =>
-      prev.map((item) => {
-        if (item.id !== id) return item;
-        const updated = { ...item, [field]: val };
-        if (field === "qty" || field === "unitPrice") {
-          const qty = field === "qty" ? Number(val) || 0 : item.qty;
-          const unitPrice = field === "unitPrice" ? Number(val) || 0 : item.unitPrice;
-          updated.amount = qty * unitPrice;
-        }
-        return updated;
-      })
-    );
-  };
-
-  const handleAddItem = () => {
-    const newItem: AdminQuotationItem = {
-      id: String(Date.now()),
-      description: "Additional Solar Component / Accessory",
-      specification: "Standard Approved Specification",
-      qty: 1,
-      unitPrice: 5000,
-      amount: 5000,
-    };
-    setItems([...items, newItem]);
-  };
-
-  const handleRemoveItem = (id: string) => {
-    if (items.length <= 1) return;
-    setItems(items.filter((item) => item.id !== id));
   };
 
   const phoneDigits = customerPhone.replace(/^\+91\s*/, "").replace(/\D/g, "");
@@ -3397,8 +3359,8 @@ function QuotationModal({
       customerAddress: customerAddress || "Vijayawada, Andhra Pradesh",
       systemCapacity,
       items,
-      subtotal: itemsSubtotal,
-      gstAmount,
+      subtotal: finalPrice,
+      gstAmount: 0,
       totalAmount: finalPrice,
       terms: [
         "Price valid for 15 days from issuance date.",
@@ -4043,123 +4005,6 @@ function QuotationModal({
             </div>
           </div>
 
-          {/* 5. LINE ITEMS (COLLAPSIBLE BUILDER) */}
-          <div className="rounded-xl border border-slate-200 bg-white shadow-2xs overflow-hidden">
-            <button
-              type="button"
-              onClick={() => setShowLineItems(!showLineItems)}
-              className="w-full flex items-center justify-between p-3.5 bg-slate-50 hover:bg-slate-100 transition-colors text-left cursor-pointer"
-            >
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold uppercase tracking-wider text-[#082B4C] text-xs">
-                  Equipment Line Items & Specifications
-                </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">
-                  {items.length} items • ₹{itemsTotal.toLocaleString("en-IN")}
-                </span>
-              </div>
-              <span className="text-xs font-bold text-[#B83A16] hover:underline">
-                {showLineItems ? "Hide Line Items ▲" : "View / Customize Line Items ▼"}
-              </span>
-            </button>
-
-            {showLineItems && (
-              <div className="p-4 space-y-3 border-t border-slate-200">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] text-slate-500">Configure itemized equipment for the printable quotation</span>
-                  <button
-                    type="button"
-                    onClick={handleAddItem}
-                    className="inline-flex items-center gap-1 text-[11px] font-bold text-[#B83A16] hover:underline cursor-pointer"
-                  >
-                    <Plus className="size-3.5" />
-                    <span>Add Item</span>
-                  </button>
-                </div>
-
-                <div className="space-y-2.5">
-                  {items.map((item, idx) => (
-                    <div
-                      key={item.id}
-                      className="bg-slate-50/70 p-3 rounded-xl border border-slate-200 space-y-2 sm:space-y-0 sm:grid sm:grid-cols-12 sm:gap-2 sm:items-center"
-                    >
-                      <div className="flex items-center justify-between sm:justify-center sm:col-span-1">
-                        <span className="text-[11px] font-bold text-slate-500">#{idx + 1}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveItem(item.id)}
-                          disabled={items.length <= 1}
-                          className="sm:hidden text-slate-400 hover:text-red-500 disabled:opacity-30 p-1 cursor-pointer"
-                        >
-                          <Trash2 className="size-4 text-red-500" />
-                        </button>
-                      </div>
-
-                      <div className="sm:col-span-4">
-                        <input
-                          type="text"
-                          placeholder="Description"
-                          value={item.description}
-                          onChange={(e) => handleUpdateItem(item.id, "description", e.target.value)}
-                          className="w-full border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-800 bg-white"
-                        />
-                      </div>
-
-                      <div className="sm:col-span-3">
-                        <input
-                          type="text"
-                          placeholder="Specification"
-                          value={item.specification}
-                          onChange={(e) => handleUpdateItem(item.id, "specification", e.target.value)}
-                          className="w-full border border-slate-200 rounded-lg px-2.5 py-1 text-xs text-slate-600 bg-white"
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 sm:contents">
-                        <div className="sm:col-span-1">
-                          <input
-                            type="number"
-                            min={1}
-                            value={item.qty}
-                            onChange={(e) => handleUpdateItem(item.id, "qty", e.target.value)}
-                            className="w-full border border-slate-200 rounded-lg px-2 py-1 text-xs text-center font-bold bg-white"
-                          />
-                        </div>
-                        <div className="sm:col-span-2">
-                          <input
-                            type="number"
-                            min={0}
-                            step={100}
-                            value={item.unitPrice}
-                            onChange={(e) => handleUpdateItem(item.id, "unitPrice", e.target.value)}
-                            className="w-full border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-bold text-right bg-white"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="hidden sm:block sm:col-span-1 text-right">
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveItem(item.id)}
-                          disabled={items.length <= 1}
-                          className="text-slate-400 hover:text-red-500 disabled:opacity-30 cursor-pointer p-1"
-                        >
-                          <Trash2 className="size-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="p-3 bg-slate-50 rounded-xl text-right text-xs space-y-1">
-                  <div>Subtotal: ₹{itemsSubtotal.toLocaleString("en-IN")}</div>
-                  <div>GST (14% EPC): ₹{gstAmount.toLocaleString("en-IN")}</div>
-                  <div className="font-extrabold text-[#082B4C]">Calculated Items Total: ₹{itemsTotal.toLocaleString("en-IN")}</div>
-                </div>
-              </div>
-            )}
-          </div>
-
           {/* Form Submit Footer (Responsive Stacking for Mobile) */}
           <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-4 border-t border-slate-200">
             <button
@@ -4183,6 +4028,16 @@ function QuotationModal({
   );
 }
 
+// Opens the professional A4 quotation in a new tab (Print / Save as PDF)
+function openQuotationPdf(quotation: AdminQuotation) {
+  const w = window.open("", "_blank");
+  if (!w) return false;
+  w.document.open();
+  w.document.write(buildQuotationPrintHtml(quotation, new URL(logo, window.location.origin).href));
+  w.document.close();
+  return true;
+}
+
 // Modal Component for Viewing and Printing Official Quotation (Panel 3 Match + Full Survey Data)
 function QuotationViewModal({
   quotation,
@@ -4191,16 +4046,7 @@ function QuotationViewModal({
   quotation: AdminQuotation;
   onClose: () => void;
 }) {
-  const handlePrint = () => {
-    const w = window.open("", "_blank");
-    if (!w) {
-      window.print();
-      return;
-    }
-    w.document.open();
-    w.document.write(buildQuotationPrintHtml(quotation, new URL(logo, window.location.origin).href));
-    w.document.close();
-  };
+  const handlePrint = () => openQuotationPdf(quotation);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-2 sm:p-4 overflow-y-auto">
@@ -4358,8 +4204,12 @@ function QuotationViewModal({
                   <th className="px-3 sm:px-4 py-3">Description</th>
                   <th className="px-3 sm:px-4 py-3">Specification</th>
                   <th className="px-3 sm:px-4 py-3 text-center w-14">Qty</th>
-                  <th className="px-3 sm:px-4 py-3 text-right">Unit Price</th>
-                  <th className="px-3 sm:px-4 py-3 text-right">Amount</th>
+                  {quotation.items.some((it) => Number(it.amount) > 0) && (
+                    <>
+                      <th className="px-3 sm:px-4 py-3 text-right">Unit Price</th>
+                      <th className="px-3 sm:px-4 py-3 text-right">Amount</th>
+                    </>
+                  )}
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
@@ -4369,12 +4219,16 @@ function QuotationViewModal({
                     <td className="px-3 sm:px-4 py-2.5 sm:py-3 font-extrabold text-slate-800">{item.description}</td>
                     <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-slate-600 text-[11px]">{item.specification}</td>
                     <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-center font-bold text-slate-700">{item.qty}</td>
-                    <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-right font-semibold text-slate-700">
-                      ₹{item.unitPrice.toLocaleString("en-IN")}
-                    </td>
-                    <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-right font-extrabold text-[#082B4C]">
-                      ₹{item.amount.toLocaleString("en-IN")}
-                    </td>
+                    {quotation.items.some((it) => Number(it.amount) > 0) && (
+                      <>
+                        <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-right font-semibold text-slate-700">
+                          ₹{item.unitPrice.toLocaleString("en-IN")}
+                        </td>
+                        <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-right font-extrabold text-[#082B4C]">
+                          ₹{item.amount.toLocaleString("en-IN")}
+                        </td>
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>

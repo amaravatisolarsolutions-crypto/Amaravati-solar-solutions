@@ -44,17 +44,21 @@ export function buildQuotationPrintHtml(q: any, logoUrl: string): string {
   const items: any[] = q.items || [];
   const terms: string[] = q.terms || [];
 
+  // New quotations list scope of supply only (no per-item prices); older ones may still carry prices
+  const showPrices = items.some((it) => Number(it.amount) > 0);
   const rows = items
     .map(
       (it, i) => `<tr>
         <td class="c">${i + 1}</td>
         <td><b>${e(it.description)}</b><div class="muted">${e(it.specification)}</div></td>
         <td class="c">${e(it.qty)}</td>
-        <td class="r">${inr(it.unitPrice)}</td>
-        <td class="r"><b>${inr(it.amount)}</b></td>
+        ${showPrices ? `<td class="r">${inr(it.unitPrice)}</td><td class="r"><b>${inr(it.amount)}</b></td>` : ""}
       </tr>`
     )
     .join("");
+  const itemsHead = showPrices
+    ? `<th class="c" style="width:10mm">#</th><th>Description &amp; Specification</th><th class="c" style="width:14mm">Qty</th><th class="r" style="width:28mm">Unit Price</th><th class="r" style="width:30mm">Amount</th>`
+    : `<th class="c" style="width:10mm">#</th><th>Scope of Supply &mdash; Description &amp; Specification</th><th class="c" style="width:20mm">Qty</th>`;
 
   const kv = (k: string, v: unknown) => `<tr><td class="k">${k}</td><td class="v">${e(v)}</td></tr>`;
 
@@ -181,7 +185,7 @@ export function buildQuotationPrintHtml(q: any, logoUrl: string): string {
     </div>
 
     <table class="items">
-      <thead><tr><th class="c" style="width:10mm">#</th><th>Description &amp; Specification</th><th class="c" style="width:14mm">Qty</th><th class="r" style="width:28mm">Unit Price</th><th class="r" style="width:30mm">Amount</th></tr></thead>
+      <thead><tr>${itemsHead}</tr></thead>
       <tbody>${rows}</tbody>
     </table>
 
