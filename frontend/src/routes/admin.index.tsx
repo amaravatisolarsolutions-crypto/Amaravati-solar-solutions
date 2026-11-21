@@ -41,7 +41,7 @@ import {
 import { useEffect, useState, type FormEvent } from "react";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
-import { buildQuotationPrintHtml } from "@/lib/quotationPrint";
+import { buildQuotationPrintHtml, numberToIndianWords } from "@/lib/quotationPrint";
 import residential from "@/assets/hero-residential.jpg";
 import commercial from "@/assets/hero-commercial.jpg";
 import industrial from "@/assets/hero-industrial.jpg";
@@ -4267,77 +4267,66 @@ function QuotationViewModal({
             </div>
           </div>
 
-          {/* Itemized Cost Table */}
-          <div className="overflow-x-auto rounded-xl border border-slate-200 my-4">
-            <table className="w-full min-w-[520px] text-left text-xs">
-              <thead className="bg-[#082B4C] text-white font-extrabold uppercase text-[10px] sm:text-[11px] tracking-wider">
-                <tr>
-                  <th className="px-3 sm:px-4 py-3 text-center w-12">S.No</th>
-                  <th className="px-3 sm:px-4 py-3">Description</th>
-                  <th className="px-3 sm:px-4 py-3">Specification</th>
-                  <th className="px-3 sm:px-4 py-3 text-center w-14">Qty</th>
-                  {quotation.items.some((it) => Number(it.amount) > 0) && (
-                    <>
-                      <th className="px-3 sm:px-4 py-3 text-right">Unit Price</th>
-                      <th className="px-3 sm:px-4 py-3 text-right">Amount</th>
-                    </>
-                  )}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200">
-                {quotation.items.map((item, index) => (
-                  <tr key={item.id} className={index % 2 === 1 ? "bg-slate-50/70" : "bg-white"}>
-                    <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-center font-bold text-slate-400">{index + 1}</td>
-                    <td className="px-3 sm:px-4 py-2.5 sm:py-3 font-extrabold text-slate-800">{item.description}</td>
-                    <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-slate-600 text-[11px]">{item.specification}</td>
-                    <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-center font-bold text-slate-700">{item.qty}</td>
-                    {quotation.items.some((it) => Number(it.amount) > 0) && (
-                      <>
-                        <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-right font-semibold text-slate-700">
-                          ₹{item.unitPrice.toLocaleString("en-IN")}
-                        </td>
-                        <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-right font-extrabold text-[#082B4C]">
-                          ₹{item.amount.toLocaleString("en-IN")}
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Payment & Subsidy Summary Card */}
-          <div className="flex justify-end mt-4">
-            <div className="w-full sm:w-80 bg-slate-50 border-2 border-[#082B4C] rounded-2xl p-4 space-y-2 text-xs shadow-xs">
-              <div className="flex justify-between items-center text-slate-600 font-semibold">
-                <span>Mode of Payment:</span>
-                <span className="font-extrabold text-[#082B4C] uppercase bg-white px-2 py-0.5 rounded border border-slate-200">{quotation.paymentMode || "Direct"}</span>
-              </div>
-              <div className="flex justify-between text-slate-600 font-semibold">
-                <span>Total System Price:</span>
-                <span className="text-slate-900 font-bold">₹{(quotation.totalPrice || quotation.totalAmount).toLocaleString("en-IN")}</span>
-              </div>
-              {(quotation.discount || 0) > 0 && (
-                <div className="flex justify-between text-emerald-700 font-semibold">
-                  <span>Special Discount:</span>
-                  <span className="font-bold">-₹{(quotation.discount || 0).toLocaleString("en-IN")}</span>
+          {/* Investment Summary (same layout as the A4 PDF) */}
+          {(() => {
+            const total = quotation.totalPrice || quotation.totalAmount || 0;
+            const discount = quotation.discount || 0;
+            const finalPrice = quotation.finalPrice || quotation.totalAmount || 0;
+            const subsidy = quotation.subsidyAmount || 0;
+            const fromHand = quotation.fromHand || Math.max(0, finalPrice - subsidy);
+            return (
+              <div className="my-5 rounded-xl border border-orange-200 overflow-hidden">
+                <div className="flex items-center justify-between gap-2 bg-[#E8590C] text-white px-4 sm:px-5 py-2.5">
+                  <span className="text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.14em]">Investment Summary</span>
+                  <span className="text-[10px] sm:text-[11px] font-bold rounded-full border border-white/40 bg-white/15 px-2.5 py-0.5">
+                    Payment Mode: {quotation.paymentMode || "Direct"}
+                  </span>
                 </div>
-              )}
-              <div className="flex justify-between font-extrabold text-slate-900 pt-1 border-t border-slate-200">
-                <span>Final Price:</span>
-                <span>₹{(quotation.finalPrice || quotation.totalAmount).toLocaleString("en-IN")}</span>
+                <div className="grid grid-cols-1 sm:grid-cols-[1.15fr_1fr]">
+                  <div className="px-4 sm:px-5 py-3 text-xs sm:text-sm">
+                    <div className="flex items-baseline justify-between gap-3 py-2.5 border-b border-dashed border-orange-100">
+                      <span className="text-slate-600">
+                        Total System Price
+                        <span className="block text-[10px] text-slate-400">Supply, installation &amp; commissioning</span>
+                      </span>
+                      <span className="font-bold text-slate-900">₹{total.toLocaleString("en-IN")}</span>
+                    </div>
+                    {discount > 0 && (
+                      <div className="flex items-baseline justify-between gap-3 py-2.5 border-b border-dashed border-orange-100 text-emerald-700">
+                        <span>Special Discount</span>
+                        <span className="font-bold">− ₹{discount.toLocaleString("en-IN")}</span>
+                      </div>
+                    )}
+                    <div className="flex items-baseline justify-between gap-3 py-2.5 border-t-2 border-slate-900 mt-1 font-extrabold text-slate-900">
+                      <span>Final Price</span>
+                      <span>₹{finalPrice.toLocaleString("en-IN")}</span>
+                    </div>
+                    {subsidy > 0 && (
+                      <div className="flex items-baseline justify-between gap-3 py-2.5 border-t border-dashed border-orange-100 text-emerald-700">
+                        <span>
+                          Govt. DBT Subsidy
+                          <span className="block text-[10px] text-slate-400">PM Surya Ghar – National DBT</span>
+                        </span>
+                        <span className="font-bold">− ₹{subsidy.toLocaleString("en-IN")}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="bg-gradient-to-br from-[#E8590C] to-[#F59E0B] text-white px-5 py-5 flex flex-col justify-center">
+                    <span className="text-[10px] font-extrabold uppercase tracking-[0.14em] opacity-90">Net Investment (From the Hand)</span>
+                    <span className="text-3xl sm:text-4xl font-black tracking-tight my-1.5">₹{fromHand.toLocaleString("en-IN")}</span>
+                    <span className="text-[11px] font-semibold border-t border-white/40 pt-2 leading-snug">
+                      Rupees {numberToIndianWords(fromHand)} Only
+                    </span>
+                  </div>
+                </div>
+                {subsidy > 0 && (
+                  <div className="bg-orange-50 border-t border-orange-200 px-4 sm:px-5 py-2 text-[10px] sm:text-[11px] text-orange-900">
+                    Govt. subsidy is credited directly to the customer&apos;s bank account after commissioning &amp; DISCOM inspection.
+                  </div>
+                )}
               </div>
-              <div className="flex justify-between text-emerald-700 font-bold">
-                <span>Govt. DBT Subsidy:</span>
-                <span>-₹{(quotation.subsidyAmount || 0).toLocaleString("en-IN")}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm font-black text-[#082B4C] pt-2 border-t-2 border-[#082B4C]">
-                <span>From the Hand:</span>
-                <span className="text-[#B83A16] text-base">₹{(quotation.fromHand || (quotation.finalPrice || quotation.totalAmount) - (quotation.subsidyAmount || 0)).toLocaleString("en-IN")}</span>
-              </div>
-            </div>
-          </div>
+            );
+          })()}
 
           {/* Terms and Conditions */}
           <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-slate-200">

@@ -41,24 +41,7 @@ export function buildQuotationPrintHtml(q: any, logoUrl: string): string {
   const subsidy = q.subsidyAmount || 0;
   const fromHand = q.fromHand || finalPrice - subsidy;
   const overhang = q.overhangPossibility === "Yes" ? `Yes (${q.overhangSide || "South"} side)` : "No";
-  const items: any[] = q.items || [];
   const terms: string[] = q.terms || [];
-
-  // New quotations list scope of supply only (no per-item prices); older ones may still carry prices
-  const showPrices = items.some((it) => Number(it.amount) > 0);
-  const rows = items
-    .map(
-      (it, i) => `<tr>
-        <td class="c">${i + 1}</td>
-        <td><b>${e(it.description)}</b><div class="muted">${e(it.specification)}</div></td>
-        <td class="c">${e(it.qty)}</td>
-        ${showPrices ? `<td class="r">${inr(it.unitPrice)}</td><td class="r"><b>${inr(it.amount)}</b></td>` : ""}
-      </tr>`
-    )
-    .join("");
-  const itemsHead = showPrices
-    ? `<th class="c" style="width:10mm">#</th><th>Description &amp; Specification</th><th class="c" style="width:14mm">Qty</th><th class="r" style="width:28mm">Unit Price</th><th class="r" style="width:30mm">Amount</th>`
-    : `<th class="c" style="width:10mm">#</th><th>Scope of Supply &mdash; Description &amp; Specification</th><th class="c" style="width:20mm">Qty</th>`;
 
   const kv = (k: string, v: unknown) => `<tr><td class="k">${k}</td><td class="v">${e(v)}</td></tr>`;
 
@@ -95,20 +78,24 @@ export function buildQuotationPrintHtml(q: any, logoUrl: string): string {
   .kv { width: 100%; border-collapse: collapse; }
   .kv td { padding: .8mm 0; border-bottom: 1px dashed #f1f5f9; font-size: 10px; }
   .kv .k { color: #6b7280; } .kv .v { text-align: right; font-weight: 700; color: #111827; }
-  table.items { width: 100%; border-collapse: collapse; margin-top: 5mm; }
-  .items th { background: #E8590C; color: #fff; font-size: 9.5px; letter-spacing: .8px; text-transform: uppercase; padding: 2.2mm 3mm; text-align: left; }
-  .items td { padding: 2mm 3mm; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
-  .items tr:nth-child(even) td { background: #fffbf5; }
-  .c { text-align: center !important; } .r { text-align: right !important; }
-  .muted { color: #6b7280; font-size: 9.5px; margin-top: .5mm; }
-  .sumwrap { display: grid; grid-template-columns: 1fr 78mm; gap: 6mm; margin-top: 5mm; align-items: start; }
-  .words { font-size: 10px; color: #4b5563; }
-  .words b { display: block; color: #111827; font-size: 11px; margin-top: 1mm; }
-  .sum { border: 1px solid #fed7aa; border-radius: 6px; overflow: hidden; }
-  .sum .row { display: flex; justify-content: space-between; padding: 1.8mm 4mm; border-bottom: 1px solid #ffedd5; }
-  .sum .row.g { color: #15803d; font-weight: 600; }
-  .sum .row.b { font-weight: 800; }
-  .sum .grand { background: #E8590C; color: #fff; font-weight: 800; font-size: 14px; padding: 3mm 4mm; display: flex; justify-content: space-between; }
+  .invest { margin-top: 6mm; border: 1px solid #fed7aa; border-radius: 8px; overflow: hidden; }
+  .inv-head { display: flex; justify-content: space-between; align-items: center; background: #E8590C; color: #fff; padding: 2.6mm 5mm; }
+  .inv-head .t { font-size: 11px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; }
+  .inv-head .m { font-size: 9.5px; font-weight: 700; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); padding: .7mm 2.5mm; border-radius: 20px; letter-spacing: .5px; }
+  .inv-body { display: grid; grid-template-columns: 1.15fr 1fr; }
+  .inv-rows { padding: 3mm 5mm; }
+  .inv-row { display: flex; justify-content: space-between; align-items: baseline; padding: 2.4mm 0; border-bottom: 1px dashed #fde3cc; font-size: 12px; color: #374151; }
+  .inv-row:last-child { border-bottom: 0; }
+  .inv-row .v { font-weight: 700; color: #111827; }
+  .inv-row.g, .inv-row.g .v { color: #15803d; }
+  .inv-row.b { font-weight: 800; color: #111827; border-top: 1.5px solid #111827; border-bottom-style: solid; margin-top: 1mm; }
+  .inv-row.b .v { font-size: 13px; }
+  .inv-row small { display: block; font-size: 9px; color: #6b7280; font-weight: 500; margin-top: .4mm; }
+  .inv-net { background: linear-gradient(135deg, #E8590C 0%, #F59E0B 100%); color: #fff; padding: 5mm 6mm; display: flex; flex-direction: column; justify-content: center; }
+  .inv-net .l { font-size: 9.5px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; opacity: .92; }
+  .inv-net .a { font-size: 30px; font-weight: 800; letter-spacing: .5px; margin: 1.5mm 0 2mm; line-height: 1.1; }
+  .inv-net .w { font-size: 10px; font-weight: 600; line-height: 1.45; border-top: 1px solid rgba(255,255,255,.4); padding-top: 2mm; }
+  .inv-note { background: #fff7ed; border-top: 1px solid #fed7aa; padding: 2.4mm 5mm; font-size: 9.5px; color: #7c2d12; }
   .sec { margin-top: 6mm; }
   .sec h3 { font-size: 11px; letter-spacing: 1.2px; color: #E8590C; text-transform: uppercase; margin: 0 0 2mm; padding-bottom: 1.5mm; border-bottom: 1px solid #fed7aa; }
   ol { margin: 0; padding-left: 5mm; line-height: 1.7; color: #374151; }
@@ -184,24 +171,25 @@ export function buildQuotationPrintHtml(q: any, logoUrl: string): string {
       </table></div>
     </div>
 
-    <table class="items">
-      <thead><tr>${itemsHead}</tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-
-    <div class="sumwrap">
-      <div class="words">
-        Net amount payable by customer (in words):
-        <b>Rupees ${numberToIndianWords(fromHand)} Only</b>
-        ${subsidy > 0 ? `<div style="margin-top:4mm">Govt. subsidy (PM Surya Ghar &ndash; National DBT) is credited directly to the customer&#39;s bank account after commissioning &amp; DISCOM inspection.</div>` : ""}
+    <div class="invest">
+      <div class="inv-head">
+        <span class="t">Investment Summary</span>
+        <span class="m">Payment Mode: ${e(q.paymentMode || "Direct")}</span>
       </div>
-      <div class="sum">
-        <div class="row"><span>Total System Price</span><span>${inr(total)}</span></div>
-        ${discount > 0 ? `<div class="row g"><span>Special Discount</span><span>- ${inr(discount)}</span></div>` : ""}
-        <div class="row b"><span>Final Price</span><span>${inr(finalPrice)}</span></div>
-        ${subsidy > 0 ? `<div class="row g"><span>Govt. DBT Subsidy</span><span>- ${inr(subsidy)}</span></div>` : ""}
-        <div class="grand"><span>Net Investment</span><span>${inr(fromHand)}</span></div>
+      <div class="inv-body">
+        <div class="inv-rows">
+          <div class="inv-row"><span>Total System Price<small>Supply, installation &amp; commissioning</small></span><span class="v">${inr(total)}</span></div>
+          ${discount > 0 ? `<div class="inv-row g"><span>Special Discount</span><span class="v">&minus; ${inr(discount)}</span></div>` : ""}
+          <div class="inv-row b"><span>Final Price</span><span class="v">${inr(finalPrice)}</span></div>
+          ${subsidy > 0 ? `<div class="inv-row g"><span>Govt. DBT Subsidy<small>PM Surya Ghar &ndash; National DBT</small></span><span class="v">&minus; ${inr(subsidy)}</span></div>` : ""}
+        </div>
+        <div class="inv-net">
+          <span class="l">Net Investment (From the Hand)</span>
+          <span class="a">${inr(fromHand)}</span>
+          <span class="w">Rupees ${numberToIndianWords(fromHand)} Only</span>
+        </div>
       </div>
+      ${subsidy > 0 ? `<div class="inv-note">Govt. subsidy is credited directly to the customer&#39;s bank account after commissioning &amp; DISCOM inspection.</div>` : ""}
     </div>
   </div>
   <div class="foot"><span><b>Amaravati Solar Solutions</b> &mdash; Clean &bull; Sustainable &bull; Reliable Energy</span><span>Page 1 of 2</span></div>
