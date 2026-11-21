@@ -319,12 +319,15 @@ export function SiteFooter() {
               </div>
               <div>
                 <span className="text-[10px] uppercase font-bold text-slate-400 block">Phone Support (24/7)</span>
-                <a
-                  href={`tel:${COMPANY.phone.replace(/[^0-9+]/g, "")}`}
-                  className="font-bold text-white hover:text-[#E04F16] transition-colors text-sm"
-                >
-                  {COMPANY.phone}
-                </a>
+                {COMPANY.phones.map((p) => (
+                  <a
+                    key={p}
+                    href={`tel:${p.replace(/[^0-9+]/g, "")}`}
+                    className="block font-bold text-white hover:text-[#E04F16] transition-colors text-sm"
+                  >
+                    {p}
+                  </a>
+                ))}
               </div>
             </div>
 

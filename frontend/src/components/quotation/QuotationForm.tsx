@@ -271,7 +271,7 @@ export function QuotationModal({
         "Includes complete system supply, structure fabrication, installation, and commissioning.",
         `Comprehensive AMC: ${amc === "Included" ? "5 years included" : "Available on request"}.`,
         "Complete assistance with DISCOM net-metering approvals and National DBT subsidy portal.",
-        `Payment Mode: ${paymentMode}.`,
+        "Payment Mode: Direct or EMI.",
       ],
       status: "Pending",
 

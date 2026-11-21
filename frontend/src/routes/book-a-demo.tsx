@@ -20,7 +20,7 @@ export const Route = createFileRoute("/book-a-demo")({
       {
         name: "description",
         content:
-          "Request a free rooftop solar site assessment, personalized 3D solar layout design, and subsidy calculation across Amaravati, Vijayawada, and Guntur. Fast 24-hour proposal: +91 63058 25402.",
+          "Request a free rooftop solar site assessment, personalized 3D solar layout design, and subsidy calculation across Amaravati, Vijayawada, and Guntur. Fast 24-hour proposal: +91 96768 88487 / +91 96768 88407.",
       },
       {
         name: "keywords",

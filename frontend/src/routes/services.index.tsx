@@ -57,7 +57,7 @@ export const Route = createFileRoute("/services/")({
       {
         name: "description",
         content:
-          "Explore specialized rooftop, commercial, and industrial solar installations, PM Surya Ghar subsidies, agricultural solar pumping, and electrical infrastructure across Andhra Pradesh. Call +91 63058 25402.",
+          "Explore specialized rooftop, commercial, and industrial solar installations, PM Surya Ghar subsidies, agricultural solar pumping, and electrical infrastructure across Andhra Pradesh. Call +91 96768 88487 / +91 96768 88407.",
       },
       {
         name: "keywords",
@@ -608,10 +608,10 @@ function AllServices() {
                     </Link>
                   </Button>
                   <a
-                    href="tel:+916305825402"
+                    href="tel:+919676888487"
                     className="inline-flex items-center gap-1.5 rounded-[30px] border border-slate-300 bg-white px-3 py-1 text-xs font-bold text-[#082B4C] hover:bg-slate-50 transition-colors shadow-2xs h-7 sm:h-8"
                   >
-                    <Phone className="size-3 text-primary" /> Call: +91 63058 25402
+                    <Phone className="size-3 text-primary" /> Call: +91 96768 88487
                   </a>
                 </div>
               </div>

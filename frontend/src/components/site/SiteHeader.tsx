@@ -144,13 +144,12 @@ export function SiteHeader() {
               <span>info@amaravatisolarsolutions.com</span>
             </a>
             <span className="text-white/40 text-[8px] sm:text-xs">|</span>
-            <a
-              href="tel:+916305825402"
-              className="flex items-center gap-1 text-white/95 hover:text-white hover:underline transition-colors font-bold"
-            >
+            <span className="flex items-center gap-1 text-white/95 font-bold">
               <Phone className="size-2.5 sm:size-3 text-amber-200 shrink-0" />
-              <span>+91 63058 25402</span>
-            </a>
+              <a href="tel:+919676888487" className="hover:text-white hover:underline transition-colors">+91 96768 88487</a>
+              <span className="text-white/50">/</span>
+              <a href="tel:+919676888407" className="hover:text-white hover:underline transition-colors">+91 96768 88407</a>
+            </span>
           </div>
 
           {/* Right: Operational Hours & Social Icons */}

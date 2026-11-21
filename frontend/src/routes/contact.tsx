@@ -30,7 +30,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Contact Amaravati Solar Solutions for rooftop solar installation, free site survey, and subsidy assistance in Amaravati, Vijayawada, and Guntur. Call +91 63058 25402 or email sales@amaravatisolarsolutions.com, info@amaravatisolarsolutions.com.",
+          "Contact Amaravati Solar Solutions for rooftop solar installation, free site survey, and subsidy assistance in Amaravati, Vijayawada, and Guntur. Call +91 96768 88487 / +91 96768 88407 or email sales@amaravatisolarsolutions.com, info@amaravatisolarsolutions.com.",
       },
       {
         name: "keywords",
@@ -50,7 +50,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "twitter:description",
         content:
-          "Connect with rooftop solar experts in Andhra Pradesh. Phone: +91 63058 25402.",
+          "Connect with rooftop solar experts in Andhra Pradesh. Phone: +91 96768 88487 / +91 96768 88407.",
       },
     ],
     links: [
@@ -63,7 +63,7 @@ export const Route = createFileRoute("/contact")({
 const CONTACT_FAQS = [
   {
     q: "How quickly will an engineer respond after I submit an enquiry?",
-    a: "Our Vijayawada technical desk reviews incoming requests within 2 to 4 business hours. If you need immediate assistance, call us directly at +91 63058 25402 or WhatsApp us.",
+    a: "Our Vijayawada technical desk reviews incoming requests within 2 to 4 business hours. If you need immediate assistance, call us directly at +91 96768 88487 / +91 96768 88407 or WhatsApp us.",
   },
   {
     q: "Is the rooftop site survey and feasibility report really free?",
@@ -162,7 +162,11 @@ function ContactPage() {
                 Direct Engineering Helpline
               </span>
               <h2 className="text-lg font-black text-[#082B4C] mt-0.5 group-hover:text-[#B83A16] transition-colors">
-                {COMPANY.phone}
+                {COMPANY.phones.map((p) => (
+                  <a key={p} href={`tel:${p.replace(/[^0-9+]/g, "")}`} className="block hover:underline">
+                    {p}
+                  </a>
+                ))}
               </h2>
               <p className="mt-1.5 text-xs text-slate-600 leading-relaxed">
                 Speak directly with an experienced rooftop solar engineer for fast technical advice and quotes.

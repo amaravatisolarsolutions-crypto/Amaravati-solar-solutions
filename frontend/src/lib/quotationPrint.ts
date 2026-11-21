@@ -118,7 +118,7 @@ export function buildQuotationPrintHtml(q: any, logoUrl: string): string {
         <h1>AMARAVATI SOLAR SOLUTIONS</h1>
         Roof Top Solar EPC &bull; On-Grid &bull; Off-Grid &bull; Hybrid<br/>
         74-12/1-12/5, Electricity Colony, 9th Line, Opp. Auto Nagar Gate,<br/>Patamata, Vijayawada &ndash; 520010, Andhra Pradesh<br/>
-        +91 63058 25402 &nbsp;|&nbsp; sales@amaravatisolarsolutions.com
+        +91 96768 88487 / +91 96768 88407 &nbsp;|&nbsp; sales@amaravatisolarsolutions.com
       </div>
     </div>
 
@@ -204,7 +204,7 @@ export function buildQuotationPrintHtml(q: any, logoUrl: string): string {
     </div>
 
     <div class="sec"><h3>Terms &amp; Conditions</h3>
-      <ol>${terms.map((t) => `<li>${e(/^Payment Mode:/i.test(t) ? `Payment Mode: ${q.paymentMode || "Direct"}.` : t)}</li>`).join("")}</ol>
+      <ol>${terms.map((t) => `<li>${e(/^Payment Mode:/i.test(t) ? "Payment Mode: Direct or EMI." : t)}</li>`).join("")}</ol>
     </div>
 
     <div class="sec"><h3>Payment Schedule</h3>

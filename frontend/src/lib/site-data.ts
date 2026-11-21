@@ -43,7 +43,7 @@ export const COMPANY = {
     mapEmbed: "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3646.442703416024!2d80.66318177514476!3d16.486878684255043!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTbCsDI5JzEyLjgiTiA4MMKwMzknNTYuNyJF!5e1!3m2!1sen!2sin!4v1794067599327!5m2!1sen!2sin",
     mapsUrl: "https://www.google.com/maps?q=16.4868787,80.6657567",
   },
-  phones: ["+91 63058 25402"],
+  phones: ["+91 96768 88487", "+91 96768 88407"],
   emails: [
     { label: "Sales & Inquiries", email: "sales@amaravatisolarsolutions.com" },
     { label: "General Information", email: "info@amaravatisolarsolutions.com" },
@@ -52,9 +52,9 @@ export const COMPANY = {
   operationalHours: {
     weekdays: "Monday – Saturday: 10:00 AM – 7:00 PM",
   },
-  phone: "+91 63058 25402",
-  phoneAlt: "+91 63058 25402",
-  whatsapp: "+91 63058 25402",
+  phone: "+91 96768 88487",
+  phoneAlt: "+91 96768 88407",
+  whatsapp: "+91 96768 88487",
   email: "info@amaravatisolarsolutions.com",
   salesEmail: "sales@amaravatisolarsolutions.com",
   supportEmail: "support@amaravatisolarsolutions.com",
@@ -535,5 +535,5 @@ export function buildSolarWhatsAppUrl(details: {
   ].filter(Boolean);
 
   const text = encodeURIComponent(lines.join("\n"));
-  return `https://wa.me/916305825402?text=${text}`;
+  return `https://wa.me/919676888487?text=${text}`;
 }

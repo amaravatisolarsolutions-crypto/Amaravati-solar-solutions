@@ -325,11 +325,11 @@ function PowerCarePage() {
                 <Link to="/book-a-demo">Schedule Free Solar Health Check</Link>
               </Button>
               <a
-                href="tel:+916305825402"
+                href="tel:+919676888487"
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-[#082B4C] hover:text-[#E04F16] transition-colors"
               >
                 <Phone className="size-3.5 text-[#E04F16]" />
-                <span>Call Care Helpline: +91 63058 25402</span>
+                <span>Call Care Helpline: +91 96768 88487</span>
               </a>
             </div>
           </div>

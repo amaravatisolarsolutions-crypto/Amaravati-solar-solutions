@@ -65,7 +65,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Smart, reliable and sustainable solar energy solutions for homes, commercial complexes, and industrial installations across Andhra Pradesh and beyond. PM Surya Ghar subsidy support, 5-year PowerCare. Call: +91 63058 25402.",
+          "Smart, reliable and sustainable solar energy solutions for homes, commercial complexes, and industrial installations across Andhra Pradesh and beyond. PM Surya Ghar subsidy support, 5-year PowerCare. Call: +91 96768 88487 / +91 96768 88407.",
       },
       {
         name: "keywords",
@@ -76,7 +76,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Smart, reliable and sustainable solar energy solutions for homes, commercial complexes, and industrial installations across Andhra Pradesh and beyond. Call: +91 63058 25402.",
+          "Smart, reliable and sustainable solar energy solutions for homes, commercial complexes, and industrial installations across Andhra Pradesh and beyond. Call: +91 96768 88487 / +91 96768 88407.",
       },
       { property: "og:url", content: "https://amaravatisolarsolutions.com/" },
       { property: "og:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
@@ -84,7 +84,7 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:description",
         content:
-          "Leading solar rooftop company in Andhra Pradesh. High-efficiency solar panels, PM Surya Ghar subsidy, and 25-year warranty. Call: +91 63058 25402.",
+          "Leading solar rooftop company in Andhra Pradesh. High-efficiency solar panels, PM Surya Ghar subsidy, and 25-year warranty. Call: +91 96768 88487 / +91 96768 88407.",
       },
       { name: "twitter:image", content: "https://amaravatisolarsolutions.com/assets/hero-amaravati-exact-panoramic.jpg" },
     ],
@@ -1321,11 +1321,11 @@ function Index() {
                 <ArrowRight className="size-3.5" />
               </Link>
               <a
-                href="tel:+916305825402"
+                href="tel:+919676888487"
                 className="inline-flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 px-4 py-2.5 text-xs sm:text-sm font-bold text-white transition-all active:scale-95"
               >
                 <Phone className="size-3.5 text-amber-300" />
-                <span>+91 63058 25402</span>
+                <span>+91 96768 88487</span>
               </a>
             </div>
           </div>
@@ -1655,11 +1655,11 @@ function Index() {
                 <ArrowRight className="size-3.5" />
               </Link>
               <a
-                href="tel:+916305825402"
+                href="tel:+919676888487"
                 className="inline-flex items-center gap-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/25 px-4 py-2.5 text-xs sm:text-sm font-bold text-white transition-all active:scale-95"
               >
                 <Phone className="size-3.5 text-amber-300" />
-                <span>Call +91 63058 25402</span>
+                <span>Call +91 96768 88487</span>
               </a>
             </div>
           </div>

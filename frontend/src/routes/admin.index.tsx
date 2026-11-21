@@ -1163,9 +1163,9 @@ function AdminDashboard() {
 
       {/* 2. MAIN LAYOUT (STICKY SIDEBAR + INDEPENDENT SCROLLING CONTENT PANEL) */}
       <div className="flex-1 flex overflow-hidden w-full relative">
-        {/* SIDEBAR (Desktop) — clean white with brand-orange active state */}
-        <aside className="hidden lg:flex flex-col w-60 xl:w-64 bg-white border-r border-slate-200 shrink-0 h-full overflow-y-auto select-none">
-          <div className="px-6 pt-6 pb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">Menu</div>
+        {/* SIDEBAR (Desktop) — brand orange, black text, active item = white with navy border */}
+        <aside className="hidden lg:flex flex-col w-60 xl:w-64 bg-[#E8590C] border-r border-[#c94a08] shrink-0 h-full overflow-y-auto select-none">
+          <div className="px-6 pt-6 pb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-black/60">Menu</div>
           <nav className="flex flex-col gap-1 px-3">
             {ADMIN_NAV.map(({ key, label, Icon }) => {
               const active = activeTab === key;
@@ -1178,15 +1178,15 @@ function AdminDashboard() {
                   }}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-left transition-colors cursor-pointer",
-                    active ? "bg-orange-50 text-[#B83A16]" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg border-2 text-sm font-semibold text-left transition-colors cursor-pointer",
+                    active ? "bg-white border-[#082B4C] text-black font-bold shadow-sm" : "border-transparent text-black hover:bg-black/10"
                   )}
                 >
-                  <span className={cn("absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full", active ? "bg-[#E8590C]" : "bg-transparent")} />
-                  <Icon className={cn("size-[18px] shrink-0", active ? "text-[#E8590C]" : "text-slate-400 group-hover:text-slate-600")} />
+                  
+                  <Icon className={cn("size-[18px] shrink-0", active ? "text-[#082B4C]" : "text-black/80 group-hover:text-black")} />
                   <span className="flex-1">{label}</span>
                   {key === "inquiries" && newInquiriesCount > 0 && (
-                    <span className="min-w-5 h-5 px-1.5 grid place-items-center rounded-full bg-[#E8590C] text-white text-[10px] font-bold">
+                    <span className="min-w-5 h-5 px-1.5 grid place-items-center rounded-full bg-[#082B4C] text-white text-[10px] font-bold">
                       {newInquiriesCount}
                     </span>
                   )}
@@ -1195,14 +1195,14 @@ function AdminDashboard() {
             })}
           </nav>
 
-          <div className="mt-auto p-3 border-t border-slate-100">
+          <div className="mt-auto p-3 border-t border-black/10">
             <div className="flex items-center gap-2.5 px-2 py-2">
-                  <div className="size-8 rounded-full bg-[#E8590C] text-white grid place-items-center text-xs font-bold shrink-0">
+                  <div className="size-8 rounded-full bg-white text-[#E8590C] grid place-items-center text-xs font-bold shrink-0">
                     {(adminEmail || "A").charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0">
-                    <div className="text-xs font-semibold text-slate-800 truncate" title={adminEmail}>{adminEmail}</div>
-                    <div className="text-[10px] font-medium text-slate-400">Administrator</div>
+                    <div className="text-xs font-semibold text-black truncate" title={adminEmail}>{adminEmail}</div>
+                    <div className="text-[10px] font-medium text-black/60">Administrator</div>
                   </div>
                 </div>
           </div>
@@ -1215,20 +1215,20 @@ function AdminDashboard() {
               className="fixed inset-0 bg-slate-900/50 animate-in fade-in duration-200"
               onClick={() => setMobileMenuOpen(false)}
             />
-            <div className="relative w-72 max-w-[85vw] h-full bg-white flex flex-col z-10 shadow-2xl animate-in slide-in-from-left duration-200">
-              <div className="h-16 px-4 flex items-center justify-between border-b border-slate-200 shrink-0">
-                <img src={logo} alt="Amaravati Solar Solutions" className="h-8 w-auto object-contain" />
+            <div className="relative w-72 max-w-[85vw] h-full bg-[#E8590C] flex flex-col z-10 shadow-2xl animate-in slide-in-from-left duration-200">
+              <div className="h-16 px-4 flex items-center justify-between border-b border-black/10 shrink-0">
+                <span className="rounded-lg bg-white px-2 py-1"><img src={logo} alt="Amaravati Solar Solutions" className="h-7 w-auto object-contain" /></span>
                 <button
                   type="button"
                   aria-label="Close menu"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900 cursor-pointer"
+                  className="p-2 rounded-lg text-black hover:bg-black/10 cursor-pointer"
                 >
                   <X className="size-5" />
                 </button>
               </div>
 
-              <div className="px-6 pt-5 pb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">Menu</div>
+              <div className="px-6 pt-5 pb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-black/60">Menu</div>
               <nav className="flex flex-col gap-1 px-3">
                 {ADMIN_NAV.map(({ key, label, Icon }) => {
                   const active = activeTab === key;
@@ -1242,15 +1242,15 @@ function AdminDashboard() {
                         }}
                         aria-current={active ? "page" : undefined}
                         className={cn(
-                          "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-left transition-colors cursor-pointer",
-                          active ? "bg-orange-50 text-[#B83A16]" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                          "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg border-2 text-sm font-semibold text-left transition-colors cursor-pointer",
+                          active ? "bg-white border-[#082B4C] text-black font-bold shadow-sm" : "border-transparent text-black hover:bg-black/10"
                         )}
                       >
-                        <span className={cn("absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full", active ? "bg-[#E8590C]" : "bg-transparent")} />
-                        <Icon className={cn("size-[18px] shrink-0", active ? "text-[#E8590C]" : "text-slate-400 group-hover:text-slate-600")} />
+                        
+                        <Icon className={cn("size-[18px] shrink-0", active ? "text-[#082B4C]" : "text-black/80 group-hover:text-black")} />
                         <span className="flex-1">{label}</span>
                         {key === "inquiries" && newInquiriesCount > 0 && (
-                          <span className="min-w-5 h-5 px-1.5 grid place-items-center rounded-full bg-[#E8590C] text-white text-[10px] font-bold">
+                          <span className="min-w-5 h-5 px-1.5 grid place-items-center rounded-full bg-[#082B4C] text-white text-[10px] font-bold">
                             {newInquiriesCount}
                           </span>
                         )}
@@ -1259,21 +1259,21 @@ function AdminDashboard() {
                 })}
               </nav>
 
-              <div className="mt-auto p-3 border-t border-slate-100 space-y-2">
+              <div className="mt-auto p-3 border-t border-black/10 space-y-2">
                 <div className="flex items-center gap-2.5 px-2 py-2">
-                  <div className="size-8 rounded-full bg-[#E8590C] text-white grid place-items-center text-xs font-bold shrink-0">
+                  <div className="size-8 rounded-full bg-white text-[#E8590C] grid place-items-center text-xs font-bold shrink-0">
                     {(adminEmail || "A").charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0">
-                    <div className="text-xs font-semibold text-slate-800 truncate" title={adminEmail}>{adminEmail}</div>
-                    <div className="text-[10px] font-medium text-slate-400">Administrator</div>
+                    <div className="text-xs font-semibold text-black truncate" title={adminEmail}>{adminEmail}</div>
+                    <div className="text-[10px] font-medium text-black/60">Administrator</div>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <Link
                     to="/"
                     target="_blank"
-                    className="inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                    className="inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-[#082B4C]/30 bg-white text-xs font-semibold text-[#082B4C] hover:bg-slate-50"
                   >
                     <ExternalLink className="size-3.5" />
                     <span>Live Site</span>
@@ -1284,7 +1284,7 @@ function AdminDashboard() {
                       setMobileMenuOpen(false);
                       setIsPasswordModalOpen(true);
                     }}
-                    className="inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer"
+                    className="inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-[#082B4C]/30 bg-white text-xs font-semibold text-[#082B4C] hover:bg-slate-50 cursor-pointer"
                   >
                     <KeyRound className="size-3.5" />
                     <span>Password</span>
@@ -1293,7 +1293,7 @@ function AdminDashboard() {
                 <button
                   type="button"
                   onClick={handleSignOut}
-                  className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-red-200 text-xs font-semibold text-red-600 hover:bg-red-50 cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-red-200 bg-white text-xs font-semibold text-red-600 hover:bg-red-50 cursor-pointer"
                 >
                   <LogOut className="size-3.5" />
                   <span>Logout</span>
@@ -3314,7 +3314,7 @@ function QuotationViewModal({
                 </p>
                 <div className="text-[10px] sm:text-[11px] text-slate-600 mt-1.5 space-y-0.5 leading-tight">
                   <p>74-12/1-12/5, Electricity Colony, 9th Line, opp to Auto Nagar gate, Patamata, Vijayawada – 520010</p>
-                  <p>Contact / WhatsApp: +91 63058 25402 | Mon - Sat: 10:00AM - 7:00PM</p>
+                  <p>Contact / WhatsApp: +91 96768 88487 / +91 96768 88407 | Mon - Sat: 10:00AM - 7:00PM</p>
                   <p>Email: sales@amaravatisolarsolutions.com | info@amaravatisolarsolutions.com</p>
                 </div>
               </div>
@@ -3484,7 +3484,7 @@ function QuotationViewModal({
             </h3>
             <ol className="list-decimal list-inside text-[10px] sm:text-[11px] text-slate-600 space-y-1">
               {quotation.terms.map((term, i) => (
-                <li key={i}>{/^Payment Mode:/i.test(term) ? `Payment Mode: ${quotation.paymentMode || "Direct"}.` : term}</li>
+                <li key={i}>{/^Payment Mode:/i.test(term) ? "Payment Mode: Direct or EMI." : term}</li>
               ))}
             </ol>
           </div>

@@ -18,9 +18,9 @@ export function FloatingContactButtons() {
   const [showCallModal, setShowCallModal] = useState(false);
 
   // Exact same primary number for both Call and WhatsApp
-  const primaryNumber = COMPANY.phone || "+91 63058 25402";
+  const primaryNumber = COMPANY.phone || "+91 96768 88487";
   const cleanPhone = primaryNumber.replace(/[^0-9+]/g, "");
-  const cleanWhatsapp = cleanPhone.replace("+", ""); // "916305825402"
+  const cleanWhatsapp = cleanPhone.replace("+", ""); // "919676888487"
 
   const whatsappUrl = `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(
     "Hello Amaravati Solar Solutions, I am interested in solar rooftop systems. Please share more details."
@@ -102,11 +102,11 @@ export function FloatingContactButtons() {
                   {primaryNumber}
                 </a>
                 <a
-                  href="tel:+919966496500"
+                  href="tel:+919676888407"
                   className="w-full rounded-full border border-slate-200 bg-white py-2.5 text-center text-sm font-bold text-navy shadow-sm transition-all hover:bg-slate-50 active:scale-98 flex items-center justify-center gap-2"
                 >
                   <PhoneCallIcon className="size-4 text-slate-600" />
-                  +91 99664 96500
+                  +91 96768 88407
                 </a>
               </div>
 

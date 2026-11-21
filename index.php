@@ -1070,7 +1070,7 @@ if (strpos($uri, '/api/') === 0) {
               <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0;" />
               <p style="margin: 0; font-size: 12px; color: #94a3b8; line-height: 1.5;">
                 If you did not make this change, please contact your administrator immediately.<br>
-                <strong>Amaravati Solar Solutions</strong> &bull; Vijayawada, Andhra Pradesh &bull; +91 63058 25402
+                <strong>Amaravati Solar Solutions</strong> &bull; Vijayawada, Andhra Pradesh &bull; +91 96768 88487 / +91 96768 88407
               </p>
             </td>
           </tr>
@@ -1201,7 +1201,7 @@ header('Cache-Control: no-cache, must-revalidate');
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Amaravati Solar Solutions - Smart, Reliable, Sustainable Energy</title>
-    <meta name="description" content="Smart, reliable and sustainable solar energy solutions for homes, businesses and industries across Amaravati, Andhra Pradesh and beyond. Call: +91 63058 25402">
+    <meta name="description" content="Smart, reliable and sustainable solar energy solutions for homes, businesses and industries across Amaravati, Andhra Pradesh and beyond. Call: +91 96768 88487 / +91 96768 88407">
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
