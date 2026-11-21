@@ -3224,7 +3224,6 @@ function QuotationModal({
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("+91 ");
   const [customerAddress, setCustomerAddress] = useState("");
-  const [systemCapacity, setSystemCapacity] = useState("3.66 kW On-Grid Rooftop");
 
   // Format today's date & valid upto (15 days from now)
   const todayStr = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
@@ -3261,6 +3260,9 @@ function QuotationModal({
   const [overhangPossibility, setOverhangPossibility] = useState<"Yes" | "No">("No");
   const [overhangSide, setOverhangSide] = useState<"North" | "South" | "East" | "West" | "">("");
   const [amc, setAmc] = useState<"Included" | "Not Included">("Included");
+
+  // System capacity auto-derived from module count (610W panels), e.g. 6 × 610W = 3.66 kW
+  const systemCapacity = `${(((Number(noOfModules) || 0) * 610) / 1000).toFixed(2).replace(/\.?0+$/, "")} kW On-Grid Rooftop`;
 
   // 3. Bill Corrections
   const [loadChange, setLoadChange] = useState<"Yes" | "No">("No");
@@ -3517,19 +3519,7 @@ function QuotationModal({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              <div>
-                <label className="block text-slate-700 mb-1 font-bold">Proposed System Capacity & Type</label>
-                <input
-                  type="text"
-                  required
-                  value={systemCapacity}
-                  onChange={(e) => setSystemCapacity(e.target.value)}
-                  placeholder="e.g. 3.66 kW On-Grid Rooftop"
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
-                />
-              </div>
-
+            <div className="grid grid-cols-1 gap-3.5">
               <div>
                 <label className="block text-slate-700 mb-1 font-bold">Site / Installation Address</label>
                 <input
