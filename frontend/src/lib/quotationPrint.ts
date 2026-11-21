@@ -216,7 +216,7 @@ export function buildQuotationPrintHtml(q: any, logoUrl: string): string {
     </div>
 
     <div class="sec"><h3>Terms &amp; Conditions</h3>
-      <ol>${terms.map((t) => `<li>${e(t)}</li>`).join("")}</ol>
+      <ol>${terms.map((t) => `<li>${e(/^Payment Mode:/i.test(t) ? `Payment Mode: ${q.paymentMode || "Direct"}.` : t)}</li>`).join("")}</ol>
     </div>
 
     <div class="sec"><h3>Payment Schedule</h3>
@@ -229,8 +229,8 @@ export function buildQuotationPrintHtml(q: any, logoUrl: string): string {
 
     <div class="sec"><h3>Warranty</h3>
       <ol>
-        <li>Solar modules: 25 years performance warranty (as per manufacturer).</li>
-        <li>Inverter: as per manufacturer warranty (typically 5&ndash;10 years).</li>
+        <li>Solar modules: 25 to 30 years performance warranty (as per manufacturer).</li>
+        <li>Inverter: as per manufacturer warranty (typically 7&ndash;10 years).</li>
         <li>Installation workmanship &amp; structure: 5 years.</li>
       </ol>
     </div>

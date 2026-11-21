@@ -3409,7 +3409,7 @@ function QuotationModal({
         "Includes complete system supply, structure fabrication, installation, and commissioning.",
         `Comprehensive AMC: ${amc === "Included" ? "5 years included" : "Available on request"}.`,
         "Complete assistance with DISCOM net-metering approvals and National DBT subsidy portal.",
-        `Payment Mode: ${paymentMode}. Standard Terms: 50% advance, balance after installation.`,
+        `Payment Mode: ${paymentMode}.`,
       ],
       status: "Pending",
 
@@ -4346,7 +4346,7 @@ function QuotationViewModal({
             </h3>
             <ol className="list-decimal list-inside text-[10px] sm:text-[11px] text-slate-600 space-y-1">
               {quotation.terms.map((term, i) => (
-                <li key={i}>{term}</li>
+                <li key={i}>{/^Payment Mode:/i.test(term) ? `Payment Mode: ${quotation.paymentMode || "Direct"}.` : term}</li>
               ))}
             </ol>
           </div>
