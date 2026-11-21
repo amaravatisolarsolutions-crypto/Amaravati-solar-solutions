@@ -41,6 +41,7 @@ import {
 import { useEffect, useState, type FormEvent } from "react";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
+import { buildQuotationPrintHtml } from "@/lib/quotationPrint";
 import residential from "@/assets/hero-residential.jpg";
 import commercial from "@/assets/hero-commercial.jpg";
 import industrial from "@/assets/hero-industrial.jpg";
@@ -3330,9 +3331,24 @@ function QuotationModal({
     setTotalPrice(itemsTotal);
   };
 
+  const phoneDigits = customerPhone.replace(/^\+91\s*/, "").replace(/\D/g, "");
+  const phoneValid = /^[6-9]\d{9}$/.test(phoneDigits);
+  const [phoneTouched, setPhoneTouched] = useState(false);
+  const [nameTouched, setNameTouched] = useState(false);
+  const nameValid = /^[A-Za-z][A-Za-z .']{1,}$/.test(customerName.trim());
+
+  const handlePhoneChange = (val: string) => {
+    // Allow only digits after the fixed +91 prefix, max 10 digits
+    const digits = val.replace(/^\+91\s*/, "").replace(/\D/g, "").slice(0, 10);
+    const formatted = digits.length > 5 ? `${digits.slice(0, 5)} ${digits.slice(5)}` : digits;
+    setCustomerPhone(`+91 ${formatted}`);
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!customerName.trim() || !customerPhone.trim()) return;
+    setPhoneTouched(true);
+    setNameTouched(true);
+    if (!nameValid || !phoneValid) return;
 
     const resolvedFloors = noOfFloors === "Other" ? (customFloors.trim() || "Ground") : noOfFloors;
 
@@ -3458,22 +3474,32 @@ function QuotationModal({
                   type="text"
                   required
                   value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
+                  onChange={(e) => setCustomerName(e.target.value.replace(/[^A-Za-z .']/g, ""))}
+                  onBlur={() => setNameTouched(true)}
+                  maxLength={60}
                   placeholder="e.g. K. Satyanarayana"
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
+                  className={`w-full rounded-xl border px-3.5 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 ${nameTouched && !nameValid ? "border-red-500" : "border-slate-300"}`}
                 />
+                {nameTouched && !nameValid && (
+                  <p className="mt-1 text-[11px] font-semibold text-red-600">Enter a valid name (letters only, min 2 characters)</p>
+                )}
               </div>
 
               <div>
                 <label className="block text-slate-700 mb-1 font-bold">Contact Phone Number *</label>
                 <input
-                  type="text"
+                  type="tel"
+                  inputMode="numeric"
                   required
                   value={customerPhone}
-                  onChange={(e) => setCustomerPhone(e.target.value)}
-                  placeholder="e.g. +91 98480 33445"
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
+                  onChange={(e) => handlePhoneChange(e.target.value)}
+                  onBlur={() => setPhoneTouched(true)}
+                  placeholder="+91 98480 33445"
+                  className={`w-full rounded-xl border px-3.5 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 ${phoneTouched && !phoneValid ? "border-red-500" : "border-slate-300"}`}
                 />
+                {phoneTouched && !phoneValid && (
+                  <p className="mt-1 text-[11px] font-semibold text-red-600">Enter a valid 10-digit mobile number starting with 6-9</p>
+                )}
               </div>
             </div>
 
@@ -4107,7 +4133,14 @@ function QuotationViewModal({
   onClose: () => void;
 }) {
   const handlePrint = () => {
-    window.print();
+    const w = window.open("", "_blank");
+    if (!w) {
+      window.print();
+      return;
+    }
+    w.document.open();
+    w.document.write(buildQuotationPrintHtml(quotation, new URL(logo, window.location.origin).href));
+    w.document.close();
   };
 
   return (
