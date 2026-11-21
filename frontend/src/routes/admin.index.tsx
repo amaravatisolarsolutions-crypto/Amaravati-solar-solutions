@@ -3287,13 +3287,29 @@ function QuotationModal({
 
   // 4. Payment Summary
   const [paymentMode, setPaymentMode] = useState<"Direct" | "EMI">("Direct");
-  const [totalPrice, setTotalPrice] = useState<number>(217740);
-  const [discount, setDiscount] = useState<number>(7740);
-  const [subsidyAmount, setSubsidyAmount] = useState<number>(78000);
+  // Admin enters these manually (digits only)
+  const [totalPrice, setTotalPrice] = useState<string>("");
+  const [discount, setDiscount] = useState<string>("");
+  const [subsidyAmount, setSubsidyAmount] = useState<string>("");
+  const [paymentTouched, setPaymentTouched] = useState(false);
+  const onlyDigits = (v: string) => v.replace(/\D/g, "").replace(/^0+(?=\d)/, "").slice(0, 9);
 
-  // Auto-calculated fields
-  const finalPrice = Math.max(0, (Number(totalPrice) || 0) - (Number(discount) || 0));
-  const fromHand = Math.max(0, finalPrice - (Number(subsidyAmount) || 0));
+  // Calculated fields
+  const totalNum = Number(totalPrice) || 0;
+  const discountNum = Number(discount) || 0;
+  const subsidyNum = subsidyType === "Non- Subsidy" ? 0 : Number(subsidyAmount) || 0;
+  const finalPrice = Math.max(0, totalNum - discountNum);
+  const fromHand = Math.max(0, finalPrice - subsidyNum);
+
+  const totalError = totalNum <= 0 ? "Enter the total price" : "";
+  const discountError = discountNum > totalNum ? "Discount cannot be more than total price" : "";
+  const subsidyError =
+    subsidyType === "Subsidy National DBT" && subsidyAmount === ""
+      ? "Enter the subsidy amount"
+      : subsidyNum > finalPrice
+        ? "Subsidy cannot be more than final price"
+        : "";
+  const paymentValid = !totalError && !discountError && !subsidyError;
 
   // Toggle for equipment line items breakdown
   const [showLineItems, setShowLineItems] = useState(false);
@@ -3311,11 +3327,7 @@ function QuotationModal({
 
   const handleSubsidyTypeSelect = (type: "Non- Subsidy" | "Subsidy National DBT") => {
     setSubsidyType(type);
-    if (type === "Non- Subsidy") {
-      setSubsidyAmount(0);
-    } else {
-      setSubsidyAmount(78000);
-    }
+    if (type === "Non- Subsidy") setSubsidyAmount("");
   };
 
   const handleUpdateItem = (
@@ -3354,10 +3366,6 @@ function QuotationModal({
     setItems(items.filter((item) => item.id !== id));
   };
 
-  const handleSyncItemsToTotal = () => {
-    setTotalPrice(itemsTotal);
-  };
-
   const phoneDigits = customerPhone.replace(/^\+91\s*/, "").replace(/\D/g, "");
   const phoneValid = /^[6-9]\d{9}$/.test(phoneDigits);
   const [phoneTouched, setPhoneTouched] = useState(false);
@@ -3375,7 +3383,8 @@ function QuotationModal({
     e.preventDefault();
     setPhoneTouched(true);
     setNameTouched(true);
-    if (!nameValid || !phoneValid || !validUpto) return;
+    setPaymentTouched(true);
+    if (!nameValid || !phoneValid || !validUpto || !paymentValid) return;
 
     const resolvedFloors = noOfFloors === "Other" ? (customFloors.trim() || "Ground") : noOfFloors;
 
@@ -3390,7 +3399,7 @@ function QuotationModal({
       items,
       subtotal: itemsSubtotal,
       gstAmount,
-      totalAmount: finalPrice || itemsTotal,
+      totalAmount: finalPrice,
       terms: [
         "Price valid for 15 days from issuance date.",
         "Includes complete system supply, structure fabrication, installation, and commissioning.",
@@ -3426,11 +3435,11 @@ function QuotationModal({
 
       // Payment Summary
       paymentMode,
-      totalPrice: Number(totalPrice) || itemsTotal,
-      discount: Number(discount) || 0,
-      finalPrice: finalPrice || itemsTotal,
-      subsidyAmount: Number(subsidyAmount) || 0,
-      fromHand: fromHand,
+      totalPrice: totalNum,
+      discount: discountNum,
+      finalPrice,
+      subsidyAmount: subsidyNum,
+      fromHand,
     });
   };
 
@@ -3963,38 +3972,33 @@ function QuotationModal({
             {/* Price Breakdown Fields */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
               <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="text-slate-700 font-bold">Total Price (₹)</label>
-                  <button
-                    type="button"
-                    onClick={handleSyncItemsToTotal}
-                    className="text-[11px] bg-[#082B4C] hover:bg-[#062038] text-white px-2.5 py-1 rounded-lg font-bold shadow-2xs cursor-pointer inline-flex items-center gap-1.5 transition-all"
-                    title="Auto-fill sum from items table"
-                  >
-                    <Check className="size-3 text-amber-400 stroke-[3]" />
-                    <span>Auto-fill items (₹{itemsTotal.toLocaleString("en-IN")})</span>
-                  </button>
-                </div>
+                <label className="block text-slate-700 mb-1 font-bold">Total Price (₹) *</label>
                 <input
-                  type="number"
-                  min={0}
-                  step={100}
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
                   value={totalPrice}
-                  onChange={(e) => setTotalPrice(Number(e.target.value) || 0)}
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
+                  onChange={(e) => setTotalPrice(onlyDigits(e.target.value))}
+                  onBlur={() => setPaymentTouched(true)}
+                  placeholder="Enter total price"
+                  className={`w-full rounded-xl border px-3.5 py-2 text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 ${paymentTouched && totalError ? "border-red-500" : "border-slate-300"}`}
                 />
+                {paymentTouched && totalError && <p className="mt-1 text-[11px] font-semibold text-red-600">{totalError}</p>}
               </div>
 
               <div>
                 <label className="block text-slate-700 mb-1 font-bold">Discount (₹)</label>
                 <input
-                  type="number"
-                  min={0}
-                  step={100}
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
                   value={discount}
-                  onChange={(e) => setDiscount(Number(e.target.value) || 0)}
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
+                  onChange={(e) => setDiscount(onlyDigits(e.target.value))}
+                  onBlur={() => setPaymentTouched(true)}
+                  placeholder="0"
+                  className={`w-full rounded-xl border px-3.5 py-2 text-slate-800 font-bold focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 ${paymentTouched && discountError ? "border-red-500" : "border-slate-300"}`}
                 />
+                {paymentTouched && discountError && <p className="mt-1 text-[11px] font-semibold text-red-600">{discountError}</p>}
               </div>
 
               <div className="rounded-xl bg-slate-50 border border-slate-200 p-2.5 flex flex-col justify-center">
@@ -4005,22 +4009,21 @@ function QuotationModal({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
               <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="text-slate-700 font-bold">Subsidy Amount (₹)</label>
-                  {subsidyType === "Subsidy National DBT" && (
-                    <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">
-                      National DBT: ₹78,000
-                    </span>
-                  )}
-                </div>
+                <label className="block text-slate-700 mb-1 font-bold">
+                  Subsidy Amount (₹) {subsidyType === "Subsidy National DBT" ? "*" : <span className="text-slate-400 font-normal">(Non-Subsidy)</span>}
+                </label>
                 <input
-                  type="number"
-                  min={0}
-                  step={500}
-                  value={subsidyAmount}
-                  onChange={(e) => setSubsidyAmount(Number(e.target.value) || 0)}
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-emerald-700 font-bold focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  disabled={subsidyType === "Non- Subsidy"}
+                  value={subsidyType === "Non- Subsidy" ? "0" : subsidyAmount}
+                  onChange={(e) => setSubsidyAmount(onlyDigits(e.target.value))}
+                  onBlur={() => setPaymentTouched(true)}
+                  placeholder="Enter subsidy amount"
+                  className={`w-full rounded-xl border px-3.5 py-2 text-emerald-700 font-bold focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed ${paymentTouched && subsidyError ? "border-red-500" : "border-slate-300"}`}
                 />
+                {paymentTouched && subsidyError && <p className="mt-1 text-[11px] font-semibold text-red-600">{subsidyError}</p>}
               </div>
 
               {/* From the Hand Highlight Box */}

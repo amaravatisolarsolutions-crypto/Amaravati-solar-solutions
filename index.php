@@ -556,6 +556,13 @@ if (strpos($uri, '/api/') === 0) {
             $subsidyType = trim($data['subsidyType'] ?? ($data['subsidy_type'] ?? ''));
             $itemsJson = is_array($data['items'] ?? null) ? json_encode($data['items']) : ($data['items_json'] ?? '[]');
 
+            // Payment summary: admin enters total, discount, subsidy manually; server computes the rest
+            $payTotal = max(0, (float)($data['totalPrice'] ?? 0));
+            $payDiscount = min($payTotal, max(0, (float)($data['discount'] ?? 0)));
+            $payFinal = $payTotal - $payDiscount;
+            $paySubsidy = min($payFinal, max(0, (float)($data['subsidyAmount'] ?? ($data['subsidy_amount'] ?? 0))));
+            $payFromHand = $payFinal - $paySubsidy;
+
             $siteDetails = [
                 'noOfFloors' => $data['noOfFloors'] ?? '',
                 'sanctionedPhase' => $data['sanctionedPhase'] ?? '',
@@ -574,18 +581,18 @@ if (strpos($uri, '/api/') === 0) {
                 'phaseChange' => $data['phaseChange'] ?? '',
                 'nameChange' => $data['nameChange'] ?? '',
                 'paymentMode' => $data['paymentMode'] ?? '',
-                'totalPrice' => $data['totalPrice'] ?? 0,
-                'discount' => $data['discount'] ?? 0,
-                'finalPrice' => $data['finalPrice'] ?? 0,
+                'totalPrice' => $payTotal,
+                'discount' => $payDiscount,
+                'finalPrice' => $payFinal,
                 'terms' => $data['terms'] ?? []
             ];
             $siteDetailsJson = json_encode($siteDetails);
 
             $subtotal = (float)($data['subtotal'] ?? 0);
             $gstAmount = (float)($data['gstAmount'] ?? ($data['gst_amount'] ?? 0));
-            $totalAmount = (float)($data['totalAmount'] ?? ($data['total_amount'] ?? 0));
-            $subsidyAmount = (float)($data['subsidyAmount'] ?? ($data['subsidy_amount'] ?? 0));
-            $fromHand = (float)($data['fromHand'] ?? ($data['from_hand'] ?? 0));
+            $totalAmount = $payTotal > 0 ? $payFinal : (float)($data['totalAmount'] ?? ($data['total_amount'] ?? 0));
+            $subsidyAmount = $paySubsidy;
+            $fromHand = $payTotal > 0 ? $payFromHand : (float)($data['fromHand'] ?? ($data['from_hand'] ?? 0));
             $status = trim($data['status'] ?? 'Pending');
 
             $stmt = $mysqli->prepare("INSERT INTO `quotations` (`id`, `quotation_no`, `date`, `valid_upto`, `customer_name`, `customer_phone`, `customer_address`, `system_capacity`, `housing_type`, `subsidy_type`, `items_json`, `site_details_json`, `subtotal`, `gst_amount`, `total_amount`, `subsidy_amount`, `from_hand`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `customer_name` = VALUES(`customer_name`), `customer_phone` = VALUES(`customer_phone`), `customer_address` = VALUES(`customer_address`), `system_capacity` = VALUES(`system_capacity`), `housing_type` = VALUES(`housing_type`), `subsidy_type` = VALUES(`subsidy_type`), `items_json` = VALUES(`items_json`), `site_details_json` = VALUES(`site_details_json`), `subtotal` = VALUES(`subtotal`), `gst_amount` = VALUES(`gst_amount`), `total_amount` = VALUES(`total_amount`), `subsidy_amount` = VALUES(`subsidy_amount`), `from_hand` = VALUES(`from_hand`), `status` = VALUES(`status`), `date` = VALUES(`date`), `valid_upto` = VALUES(`valid_upto`)");
