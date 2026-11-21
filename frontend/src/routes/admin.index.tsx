@@ -760,21 +760,36 @@ function AdminDashboard() {
     setQuotations(updated);
     try { localStorage.setItem("amaravati_admin_quotations", JSON.stringify(updated)); } catch {}
     setIsQuotationModalOpen(false);
-    // Show the new quotation immediately and open the printable A4 PDF (runs inside the submit click, so no popup block)
     setViewingQuotation(newQuot);
-    openQuotationPdf(newQuot);
 
-    // Save to MySQL
+    // Open the PDF tab right away (inside the submit click, so the browser does not block it),
+    // then fill it after the server confirms the final quotation number.
+    const pdfWindow = window.open("", "_blank");
     try {
-      await fetch("/api/quotations", {
+      pdfWindow?.document.write(
+        '<p style="font-family:Segoe UI,Arial,sans-serif;padding:40px;color:#555">Preparing quotation&hellip;</p>'
+      );
+    } catch {}
+
+    let savedQuot = newQuot;
+    try {
+      const res = await fetch("/api/quotations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newQuot),
       });
+      const json = await res.json().catch(() => null);
+      const serverNo: string | undefined = json?.success ? json.quotation_no : undefined;
+      if (serverNo && serverNo !== newQuot.quotationNo) {
+        savedQuot = { ...newQuot, quotationNo: serverNo };
+        setQuotations((prev) => prev.map((q) => (q.id === targetId ? savedQuot : q)));
+        setViewingQuotation(savedQuot);
+      }
       fetchLiveQuotations();
     } catch (err) {
       console.warn("Failed to persist quotation to MySQL:", err);
     }
+    openQuotationPdf(savedQuot, pdfWindow);
   };
 
   const handleDeleteQuotation = async (id: string, quotationNo: string) => {
@@ -2700,6 +2715,7 @@ function AdminDashboard() {
         <QuotationModal
           onClose={() => setIsQuotationModalOpen(false)}
           onSave={handleSaveQuotation}
+          existingQuotationNos={quotations.map((q) => q.quotationNo)}
         />
       )}
 
@@ -3272,13 +3288,14 @@ function ProjectModal({
 function QuotationModal({
   onClose,
   onSave,
+  existingQuotationNos,
 }: {
   onClose: () => void;
   onSave: (data: Omit<AdminQuotation, "id"> & { id?: string | undefined }) => void;
+  existingQuotationNos: string[];
 }) {
-  const [quotationNo, setQuotationNo] = useState(
-    () => `ASS/${new Date().getFullYear()}/${String(Math.floor(100 + Math.random() * 900))}`
-  );
+  // Auto-generated, e.g. ASS/2026/1121/001 (updates live if the list refreshes while the form is open)
+  const quotationNo = getNextQuotationNo(existingQuotationNos);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("+91 ");
   const [customerAddress, setCustomerAddress] = useState("");
@@ -3477,10 +3494,11 @@ function QuotationModal({
               <label className="block text-slate-600 mb-1 font-bold">Quotation No</label>
               <input
                 type="text"
-                required
+                readOnly
+                tabIndex={-1}
                 value={quotationNo}
-                onChange={(e) => setQuotationNo(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-slate-800 bg-white font-mono font-bold"
+                title="Auto-generated: ASS / Year / MonthDay / Number of the day"
+                className="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-[#B83A16] bg-orange-50/60 font-mono font-bold cursor-not-allowed"
               />
             </div>
             <div>
@@ -4101,13 +4119,25 @@ function quoteDateToIso(value: string | undefined): string {
 }
 
 // Opens the professional A4 quotation in a new tab (Print / Save as PDF)
-function openQuotationPdf(quotation: AdminQuotation) {
-  const w = window.open("", "_blank");
+function openQuotationPdf(quotation: AdminQuotation, existingWindow?: Window | null) {
+  const w = existingWindow && !existingWindow.closed ? existingWindow : window.open("", "_blank");
   if (!w) return false;
   w.document.open();
   w.document.write(buildQuotationPrintHtml(quotation, new URL(logo, window.location.origin).href));
   w.document.close();
   return true;
+}
+
+// Quotation number: ASS/YYYY/MMDD/NNN — sequence restarts at 001 every day (server confirms the final number)
+function getNextQuotationNo(existingNos: string[], now: Date = new Date()) {
+  const prefix = `ASS/${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}/`;
+  let max = 0;
+  for (const no of existingNos) {
+    if (!no || !no.startsWith(prefix)) continue;
+    const suffix = no.slice(prefix.length);
+    if (/^\d+$/.test(suffix)) max = Math.max(max, Number(suffix));
+  }
+  return `${prefix}${String(max + 1).padStart(3, "0")}`;
 }
 
 // Modal Component for Viewing and Printing Official Quotation (Panel 3 Match + Full Survey Data)

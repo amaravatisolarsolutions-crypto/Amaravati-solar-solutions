@@ -545,7 +545,38 @@ if (strpos($uri, '/api/') === 0) {
             $data = json_decode($raw, true) ?: $_POST;
 
             $id = trim($data['id'] ?? ('quot-' . time()));
-            $quotNo = trim($data['quotationNo'] ?? ($data['quotation_no'] ?? ('QT-' . date('Ymd') . '-' . substr(bin2hex(random_bytes(2)), 0, 4))));
+            $quotNo = trim($data['quotationNo'] ?? ($data['quotation_no'] ?? ''));
+
+            // Quotation numbering: ASS/YYYY/MMDD/NNN — the 3-digit sequence restarts every day.
+            // For a NEW quotation the server assigns the next free number for that day so numbers never clash.
+            $isNewQuotation = true;
+            $escId = $mysqli->real_escape_string($id);
+            $existsRes = $mysqli->query("SELECT 1 FROM `quotations` WHERE `id` = '" . $escId . "' LIMIT 1");
+            if ($existsRes && $existsRes->num_rows > 0) {
+                $isNewQuotation = false;
+            }
+            if ($isNewQuotation) {
+                if (preg_match('#^(ASS/\d{4}/\d{4}/)\d+$#', $quotNo, $qm)) {
+                    $qPrefix = $qm[1]; // keep the admin's local date (IST) sent by the form
+                } else {
+                    $nowIst = new DateTime('now', new DateTimeZone('Asia/Kolkata'));
+                    $qPrefix = 'ASS/' . $nowIst->format('Y') . '/' . $nowIst->format('md') . '/';
+                }
+                $maxSeq = 0;
+                $likePrefix = $mysqli->real_escape_string(addcslashes($qPrefix, '%_\\'));
+                $seqRes = $mysqli->query("SELECT `quotation_no` FROM `quotations` WHERE `quotation_no` LIKE '" . $likePrefix . "%'");
+                if ($seqRes) {
+                    while ($seqRow = $seqRes->fetch_assoc()) {
+                        $suffix = substr($seqRow['quotation_no'], strlen($qPrefix));
+                        if (ctype_digit($suffix)) {
+                            $maxSeq = max($maxSeq, (int)$suffix);
+                        }
+                    }
+                }
+                $quotNo = $qPrefix . str_pad((string)($maxSeq + 1), 3, '0', STR_PAD_LEFT);
+            } elseif ($quotNo === '') {
+                $quotNo = 'ASS/' . date('Y') . '/' . date('md') . '/' . substr(bin2hex(random_bytes(2)), 0, 3);
+            }
             $date = trim($data['date'] ?? date('Y-m-d'));
             $validUpto = trim($data['validUpto'] ?? ($data['valid_upto'] ?? date('Y-m-d', strtotime('+15 days'))));
             $customerName = trim($data['customerName'] ?? ($data['customer_name'] ?? ''));
