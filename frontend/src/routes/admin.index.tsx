@@ -555,6 +555,18 @@ function AdminDashboard() {
   };
 
   // 3. Fetch Live Quotations from MySQL Database
+  // Remember the open tab in the URL (#quotation etc.) so a page refresh stays on the same section
+  useEffect(() => {
+    const fromHash = window.location.hash.replace("#", "");
+    if (ADMIN_NAV.some((n) => n.key === fromHash)) setActiveTab(fromHash as typeof activeTab);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (window.location.hash !== `#${activeTab}`) {
+      window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}#${activeTab}`);
+    }
+  }, [activeTab]);
+
   // Keep the quotation list live: refresh from the database every 30s while the tab is open
   useEffect(() => {
     if (activeTab !== "quotation") return;
@@ -1133,7 +1145,7 @@ function AdminDashboard() {
   return (
     <div className="admin-portal h-screen w-full bg-[#f8fafc] text-[#344054] flex flex-col antialiased overflow-hidden" data-admin="true">
       {/* 1. TOP GLOBAL HEADER (100% RESPONSIVE ACROSS ALL DEVICES: MOBILE 320PX, TABLET 768PX, LAPTOPS 13"-18") */}
-      <header className="h-16 shrink-0 sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-[0_2px_10px_rgba(8,43,76,0.04)] select-none">
+      <header className="h-16 shrink-0 sticky top-0 z-40 bg-white border-b border-slate-200 select-none">
         <div className="px-2.5 sm:px-5 lg:px-8 h-full flex items-center justify-between gap-1.5 sm:gap-3">
           {/* Left: Mobile hamburger + Admin Portal branding */}
           <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 shrink">
@@ -1146,41 +1158,19 @@ function AdminDashboard() {
               <Menu className="size-5" />
             </button>
 
-            <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0 shrink">
-              <div className="h-8 sm:h-9 w-auto flex items-center justify-center rounded-xl bg-white border border-slate-200/90 shadow-2xs px-2 py-0.5 shrink-0">
-                <img src={logo} alt="Amaravati Solar" className="h-5 sm:h-6 w-auto object-contain shrink-0" />
-              </div>
-              <div className="flex flex-col min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs sm:text-sm lg:text-base font-black tracking-tight text-[#082B4C] uppercase truncate">
-                    AMARAVATI SOLAR
-                  </span>
-                  <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-amber-800 shrink-0">
-                    ADMIN
-                  </span>
-                </div>
-                <div className="hidden xl:flex items-center gap-1.5 text-[10px] font-bold text-emerald-600">
-                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                  <span className="truncate">Secure Cloud Node &bull; AP DISCOM Verified</span>
-                </div>
-              </div>
+            <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 shrink">
+              <img src={logo} alt="Amaravati Solar Solutions" className="h-8 sm:h-9 w-auto object-contain shrink-0" />
+              <span className="hidden sm:block h-6 w-px bg-slate-200 shrink-0" />
+              <span className="hidden sm:inline text-sm font-semibold text-slate-700 truncate">Admin Panel</span>
             </div>
           </div>
 
           {/* Right: User Profile, Live Site, Change Password, Logout */}
           <div className="flex items-center gap-1 sm:gap-2 text-xs shrink-0">
             {/* User Profile Info Pill */}
-            <div className="flex items-center gap-2 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 shrink-0" title={`Logged in as ${adminEmail}`}>
-              <div className="size-6 sm:size-7 rounded-full bg-gradient-to-tr from-[#082B4C] to-[#154674] text-white flex items-center justify-center font-black text-[10px] shadow-2xs shrink-0">
-                A
-              </div>
-              <div className="hidden xl:flex flex-col leading-tight text-left">
-                <span className="font-extrabold text-[#082B4C] text-[11px] max-w-[150px] truncate">
-                  {adminEmail}
-                </span>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-amber-600">
-                  SUPER ADMIN
-                </span>
+            <div className="hidden sm:flex lg:hidden items-center shrink-0" title={`Logged in as ${adminEmail}`}>
+              <div className="size-8 rounded-full bg-[#E8590C] text-white grid place-items-center text-xs font-bold">
+                {(adminEmail || "A").charAt(0).toUpperCase()}
               </div>
             </div>
 
@@ -1189,10 +1179,10 @@ function AdminDashboard() {
               to="/"
               target="_blank"
               title="View Live Website"
-              className="inline-flex items-center justify-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-[11px] sm:text-xs font-bold text-slate-700 hover:text-[#082B4C] shadow-2xs transition-all active:scale-95 shrink-0"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shrink-0"
             >
               <ExternalLink className="size-3.5 text-slate-500 shrink-0" />
-              <span className="hidden md:inline">LIVE SITE</span>
+              <span className="hidden md:inline">Live Site</span>
             </Link>
 
             {/* Change Password Modal Trigger */}
@@ -1200,11 +1190,10 @@ function AdminDashboard() {
               type="button"
               onClick={() => setIsPasswordModalOpen(true)}
               title="Change Password"
-              className="inline-flex items-center justify-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl border border-amber-300/80 bg-gradient-to-r from-amber-50 to-amber-100/70 hover:from-amber-100 hover:to-amber-200/80 text-[11px] sm:text-xs font-extrabold text-amber-900 shadow-2xs transition-all active:scale-95 cursor-pointer shrink-0"
+              className="hidden sm:inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors cursor-pointer shrink-0"
             >
-              <KeyRound className="size-3.5 text-amber-700 shrink-0" />
-              <span className="hidden lg:inline">CHANGE PASSWORD</span>
-              <span className="hidden sm:inline lg:hidden">PASSWORD</span>
+              <KeyRound className="size-3.5 text-slate-500 shrink-0" />
+              <span className="hidden lg:inline">Change Password</span>
             </button>
 
             {/* Logout Trigger */}
@@ -1212,10 +1201,10 @@ function AdminDashboard() {
               type="button"
               onClick={handleSignOut}
               title="Sign Out"
-              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-[11px] sm:text-xs font-bold text-red-600 hover:text-red-700 shadow-2xs transition-all active:scale-95 cursor-pointer shrink-0"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg border border-red-200 bg-white hover:bg-red-50 text-xs font-semibold text-red-600 transition-colors cursor-pointer shrink-0"
             >
-              <LogOut className="size-3.5 text-red-600 shrink-0" />
-              <span className="hidden sm:inline">LOGOUT</span>
+              <LogOut className="size-3.5 shrink-0" />
+              <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         </div>
@@ -1231,250 +1220,141 @@ function AdminDashboard() {
 
       {/* 2. MAIN LAYOUT (STICKY SIDEBAR + INDEPENDENT SCROLLING CONTENT PANEL) */}
       <div className="flex-1 flex overflow-hidden w-full relative">
-        {/* SIDEBAR (Desktop - 100% Permanently Sticky & Ultra-Premium) */}
-        <aside className="hidden lg:flex flex-col w-64 xl:w-72 bg-gradient-to-b from-[#082B4C] via-[#07243f] to-[#041525] text-white shrink-0 h-full overflow-y-auto p-4 xl:p-5 border-r border-[#082B4C]/20 shadow-md select-none sticky top-0">
-          {/* Top Panel Branding Card */}
-          <div className="rounded-2xl bg-white/10 backdrop-blur-md p-3.5 flex items-center gap-3 shadow-sm border border-white/15 text-white">
-            <div className="h-10 w-auto flex items-center justify-center rounded-xl bg-white px-2 py-1 shrink-0 shadow-2xs">
-              <img src={logo} alt="Logo" className="h-6 w-auto object-contain" />
-            </div>
-            <div className="min-w-0">
-              <div className="text-xs font-black uppercase tracking-wider text-white truncate">
-                AMARAVATI PANEL
-              </div>
-              <div className="flex items-center gap-1.5 text-[10px] font-extrabold text-emerald-400 mt-0.5">
-                <span className="size-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                <span className="truncate">Live Cloud Server</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Section Divider */}
-          <div className="mt-6 mb-2.5 px-3 flex items-center gap-2">
-            <span className="size-1.5 rounded-full bg-amber-400" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-              CONTENT MANAGEMENT
-            </span>
-          </div>
-
-          {/* Navigation Items (Ultra-Premium Active / Inactive States) */}
-          <nav className="flex flex-col gap-1.5">
-            <button
-              type="button"
-              onClick={() => setActiveTab("services")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-xs xl:text-sm font-bold transition-all cursor-pointer select-none text-left ${
-                activeTab === "services"
-                  ? "bg-gradient-to-r from-[#F5A623] to-[#F7B744] text-[#082B4C] shadow-[0_4px_16px_rgba(245,166,35,0.4)] font-black scale-[1.01]"
-                  : "text-slate-300 hover:text-white hover:bg-white/10 hover:translate-x-1"
-              }`}
-            >
-              <Wrench className="size-4.5 xl:size-5 shrink-0" />
-              <span>SERVICES</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveTab("projects")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-xs xl:text-sm font-bold transition-all cursor-pointer select-none text-left ${
-                activeTab === "projects"
-                  ? "bg-gradient-to-r from-[#F5A623] to-[#F7B744] text-[#082B4C] shadow-[0_4px_16px_rgba(245,166,35,0.4)] font-black scale-[1.01]"
-                  : "text-slate-300 hover:text-white hover:bg-white/10 hover:translate-x-1"
-              }`}
-            >
-              <FolderGit2 className="size-4.5 xl:size-5 shrink-0" />
-              <span>PROJECTS</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveTab("quotation")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-xs xl:text-sm font-bold transition-all cursor-pointer select-none text-left ${
-                activeTab === "quotation"
-                  ? "bg-gradient-to-r from-[#F5A623] to-[#F7B744] text-[#082B4C] shadow-[0_4px_16px_rgba(245,166,35,0.4)] font-black scale-[1.01]"
-                  : "text-slate-300 hover:text-white hover:bg-white/10 hover:translate-x-1"
-              }`}
-            >
-              <FileText className="size-4.5 xl:size-5 shrink-0" />
-              <span>QUOTATION</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveTab("inquiries")}
-              className={`flex items-center justify-between px-4 py-3 rounded-2xl text-xs xl:text-sm font-bold transition-all cursor-pointer select-none text-left ${
-                activeTab === "inquiries"
-                  ? "bg-gradient-to-r from-[#F5A623] to-[#F7B744] text-[#082B4C] shadow-[0_4px_16px_rgba(245,166,35,0.4)] font-black scale-[1.01]"
-                  : "text-slate-300 hover:text-white hover:bg-white/10 hover:translate-x-1"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <MessageSquare className="size-4.5 xl:size-5 shrink-0" />
-                <span>INQUIRIES</span>
-              </div>
-              {newInquiriesCount > 0 && (
-                <span className="grid place-items-center rounded-full bg-emerald-500 text-white font-black text-[10px] px-2 py-0.5 shadow-xs">
-                  {newInquiriesCount}
-                </span>
-              )}
-            </button>
+        {/* SIDEBAR (Desktop) — clean white with brand-orange active state */}
+        <aside className="hidden lg:flex flex-col w-60 xl:w-64 bg-white border-r border-slate-200 shrink-0 h-full overflow-y-auto select-none">
+          <div className="px-6 pt-6 pb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">Menu</div>
+          <nav className="flex flex-col gap-1 px-3">
+            {ADMIN_NAV.map(({ key, label, Icon }) => {
+              const active = activeTab === key;
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => {
+                    setActiveTab(key);
+                  }}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-left transition-colors cursor-pointer",
+                    active ? "bg-orange-50 text-[#B83A16]" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  )}
+                >
+                  <span className={cn("absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full", active ? "bg-[#E8590C]" : "bg-transparent")} />
+                  <Icon className={cn("size-[18px] shrink-0", active ? "text-[#E8590C]" : "text-slate-400 group-hover:text-slate-600")} />
+                  <span className="flex-1">{label}</span>
+                  {key === "inquiries" && newInquiriesCount > 0 && (
+                    <span className="min-w-5 h-5 px-1.5 grid place-items-center rounded-full bg-[#E8590C] text-white text-[10px] font-bold">
+                      {newInquiriesCount}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </nav>
 
-          {/* Sidebar Bottom Footer Info */}
-          <div className="mt-auto pt-4 border-t border-white/10 space-y-3">
-            <div className="rounded-xl bg-white/5 border border-white/10 p-3 text-[11px] text-slate-300">
-              <div className="flex items-center gap-1.5 text-amber-400 font-extrabold text-[10px] uppercase tracking-wider mb-1">
-                <ShieldCheck className="size-3.5" />
-                <span>Security Status</span>
-              </div>
-              <p className="text-[10px] text-slate-400 leading-relaxed">
-                256-Bit SSL Encrypted Admin Session. Connected to Andhra Pradesh DISCOM Database.
-              </p>
-            </div>
-
-            <div className="text-center text-[10px] text-slate-500 font-medium">
-              Amaravati Solar Solutions &bull; v2.4
-            </div>
+          <div className="mt-auto p-3 border-t border-slate-100">
+            <div className="flex items-center gap-2.5 px-2 py-2">
+                  <div className="size-8 rounded-full bg-[#E8590C] text-white grid place-items-center text-xs font-bold shrink-0">
+                    {(adminEmail || "A").charAt(0).toUpperCase()}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-semibold text-slate-800 truncate" title={adminEmail}>{adminEmail}</div>
+                    <div className="text-[10px] font-medium text-slate-400">Administrator</div>
+                  </div>
+                </div>
           </div>
         </aside>
 
-        {/* MOBILE DRAWER (Responsive Sticky Navigation) */}
+        {/* MOBILE / TABLET DRAWER */}
         {mobileMenuOpen && (
           <div className="fixed inset-0 z-50 lg:hidden flex">
             <div
-              className="fixed inset-0 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+              className="fixed inset-0 bg-slate-900/50 animate-in fade-in duration-200"
               onClick={() => setMobileMenuOpen(false)}
             />
-            <div className="relative w-72 max-w-[85vw] h-full bg-[#082B4C] text-white p-5 flex flex-col justify-between z-10 shadow-2xl animate-in slide-in-from-left duration-200">
-              <div>
-                <div className="flex items-center justify-between pb-4 border-b border-white/10">
-                  <div className="flex items-center gap-2">
-                    <img src={logo} alt="Logo" className="h-6 w-auto" />
-                    <span className="font-extrabold text-sm uppercase">AMARAVATI PANEL</span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-1 rounded-lg text-slate-300 hover:text-white cursor-pointer"
-                  >
-                    <X className="size-5" />
-                  </button>
-                </div>
-
-                <div className="mt-6 mb-2 px-1 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-                  CONTENT MANAGEMENT
-                </div>
-
-                <nav className="flex flex-col gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab("services");
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold ${
-                      activeTab === "services"
-                        ? "bg-[#F5A623] text-[#082B4C] font-extrabold shadow-sm"
-                        : "text-slate-300 hover:bg-white/10"
-                    }`}
-                  >
-                    <Wrench className="size-5" />
-                    <span>SERVICES</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab("projects");
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold ${
-                      activeTab === "projects"
-                        ? "bg-[#F5A623] text-[#082B4C] font-extrabold shadow-sm"
-                        : "text-slate-300 hover:bg-white/10"
-                    }`}
-                  >
-                    <FolderGit2 className="size-5" />
-                    <span>PROJECTS</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab("quotation");
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold ${
-                      activeTab === "quotation"
-                        ? "bg-[#F5A623] text-[#082B4C] font-extrabold shadow-sm"
-                        : "text-slate-300 hover:bg-white/10"
-                    }`}
-                  >
-                    <FileText className="size-5" />
-                    <span>QUOTATION</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab("inquiries");
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold ${
-                      activeTab === "inquiries"
-                        ? "bg-[#F5A623] text-[#082B4C] font-extrabold shadow-sm"
-                        : "text-slate-300 hover:bg-white/10"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <MessageSquare className="size-5" />
-                      <span>INQUIRIES</span>
-                    </div>
-                    {newInquiriesCount > 0 && (
-                      <span className="rounded-full bg-emerald-500 text-white font-extrabold text-[11px] px-2 py-0.5">
-                        {newInquiriesCount}
-                      </span>
-                    )}
-                  </button>
-                </nav>
+            <div className="relative w-72 max-w-[85vw] h-full bg-white flex flex-col z-10 shadow-2xl animate-in slide-in-from-left duration-200">
+              <div className="h-16 px-4 flex items-center justify-between border-b border-slate-200 shrink-0">
+                <img src={logo} alt="Amaravati Solar Solutions" className="h-8 w-auto object-contain" />
+                <button
+                  type="button"
+                  aria-label="Close menu"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900 cursor-pointer"
+                >
+                  <X className="size-5" />
+                </button>
               </div>
 
-              {/* Mobile Drawer Bottom Info */}
-              <div className="pt-4 border-t border-white/10 space-y-3">
-                <div className="text-[11px] text-slate-400">
-                  <div className="font-semibold text-slate-500 uppercase tracking-wider text-[10px]">Logged in as</div>
-                  <div className="truncate font-bold text-slate-200 mt-0.5">{adminEmail}</div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="flex gap-2">
-                    <Link
-                      to="/"
-                      target="_blank"
-                      className="flex-1 text-center py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition-all flex items-center justify-center gap-1.5"
-                    >
-                      <ExternalLink className="size-3.5" />
-                      <span>Live Site</span>
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={handleSignOut}
-                      className="flex-1 py-2 px-3 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
-                    >
-                      <LogOut className="size-3.5" />
-                      <span>Logout</span>
-                    </button>
+              <div className="px-6 pt-5 pb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">Menu</div>
+              <nav className="flex flex-col gap-1 px-3">
+                {ADMIN_NAV.map(({ key, label, Icon }) => {
+                  const active = activeTab === key;
+                  return (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => {
+                          setActiveTab(key);
+                          setMobileMenuOpen(false);
+                        }}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          "group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-left transition-colors cursor-pointer",
+                          active ? "bg-orange-50 text-[#B83A16]" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                        )}
+                      >
+                        <span className={cn("absolute left-0 top-2 bottom-2 w-[3px] rounded-r-full", active ? "bg-[#E8590C]" : "bg-transparent")} />
+                        <Icon className={cn("size-[18px] shrink-0", active ? "text-[#E8590C]" : "text-slate-400 group-hover:text-slate-600")} />
+                        <span className="flex-1">{label}</span>
+                        {key === "inquiries" && newInquiriesCount > 0 && (
+                          <span className="min-w-5 h-5 px-1.5 grid place-items-center rounded-full bg-[#E8590C] text-white text-[10px] font-bold">
+                            {newInquiriesCount}
+                          </span>
+                        )}
+                      </button>
+                  );
+                })}
+              </nav>
+
+              <div className="mt-auto p-3 border-t border-slate-100 space-y-2">
+                <div className="flex items-center gap-2.5 px-2 py-2">
+                  <div className="size-8 rounded-full bg-[#E8590C] text-white grid place-items-center text-xs font-bold shrink-0">
+                    {(adminEmail || "A").charAt(0).toUpperCase()}
                   </div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-semibold text-slate-800 truncate" title={adminEmail}>{adminEmail}</div>
+                    <div className="text-[10px] font-medium text-slate-400">Administrator</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Link
+                    to="/"
+                    target="_blank"
+                    className="inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                  >
+                    <ExternalLink className="size-3.5" />
+                    <span>Live Site</span>
+                  </Link>
                   <button
                     type="button"
                     onClick={() => {
                       setMobileMenuOpen(false);
                       setIsPasswordModalOpen(true);
                     }}
-                    className="w-full py-2 px-3 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                    className="inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer"
                   >
-                    <KeyRound className="size-3.5 text-amber-400" />
-                    <span>Change Admin Password</span>
+                    <KeyRound className="size-3.5" />
+                    <span>Password</span>
                   </button>
                 </div>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-red-200 text-xs font-semibold text-red-600 hover:bg-red-50 cursor-pointer"
+                >
+                  <LogOut className="size-3.5" />
+                  <span>Logout</span>
+                </button>
               </div>
             </div>
           </div>
@@ -1486,9 +1366,9 @@ function AdminDashboard() {
           {activeTab === "services" && (
             <div className="max-w-7xl mx-auto space-y-6">
               {/* Header Title Banner */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+              <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-2">
                 <div>
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                     <span className="inline-flex items-center rounded-md bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wide text-emerald-800">
                       CONTENT PANEL
                     </span>
@@ -1537,8 +1417,8 @@ function AdminDashboard() {
                   onClick={() => setServiceCategory("ALL")}
                   className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                     serviceCategory === "ALL"
-                      ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
-                      : "bg-[#B83A16] hover:bg-[#A33112] text-white"
+                      ? "bg-[#B83A16] border border-[#B83A16] text-white shadow-xs"
+                      : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                   }`}
                 >
                   ALL ({services.length})
@@ -1549,8 +1429,8 @@ function AdminDashboard() {
                   onClick={() => setServiceCategory("SOLAR")}
                   className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                     serviceCategory === "SOLAR"
-                      ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
-                      : "bg-[#B83A16] hover:bg-[#A33112] text-white"
+                      ? "bg-[#B83A16] border border-[#B83A16] text-white shadow-xs"
+                      : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                   }`}
                 >
                   SOLAR ({solarCount})
@@ -1561,8 +1441,8 @@ function AdminDashboard() {
                   onClick={() => setServiceCategory("ELECTRICAL")}
                   className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                     serviceCategory === "ELECTRICAL"
-                      ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
-                      : "bg-[#B83A16] hover:bg-[#A33112] text-white"
+                      ? "bg-[#B83A16] border border-[#B83A16] text-white shadow-xs"
+                      : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                   }`}
                 >
                   ELECTRICAL ({electricalCount})
@@ -1573,8 +1453,8 @@ function AdminDashboard() {
                   onClick={() => setServiceCategory("EV CHARGING")}
                   className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                     serviceCategory === "EV CHARGING"
-                      ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
-                      : "bg-[#B83A16] hover:bg-[#A33112] text-white"
+                      ? "bg-[#B83A16] border border-[#B83A16] text-white shadow-xs"
+                      : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                   }`}
                 >
                   EV CHARGING ({evCount})
@@ -1585,8 +1465,8 @@ function AdminDashboard() {
                   onClick={() => setServiceCategory("MAINTENANCE / AMC")}
                   className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                     serviceCategory === "MAINTENANCE / AMC"
-                      ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
-                      : "bg-[#B83A16] hover:bg-[#A33112] text-white"
+                      ? "bg-[#B83A16] border border-[#B83A16] text-white shadow-xs"
+                      : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                   }`}
                 >
                   MAINTENANCE / AMC ({maintenanceCount})
@@ -1675,9 +1555,9 @@ function AdminDashboard() {
           {activeTab === "projects" && (
             <div className="max-w-7xl mx-auto space-y-6">
               {/* Header Title Banner */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+              <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-2">
                 <div>
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                     <span className="inline-flex items-center rounded-md bg-amber-50 border border-amber-200/80 px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wide text-amber-800">
                       CONTENT PANEL
                     </span>
@@ -1728,8 +1608,8 @@ function AdminDashboard() {
                     onClick={() => setProjectCategory(cat)}
                     className={`rounded-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                       projectCategory === cat
-                        ? "bg-[#082B4C] text-white shadow-xs scale-[1.02]"
-                        : "bg-[#B83A16] hover:bg-[#A33112] text-white"
+                        ? "bg-[#B83A16] border border-[#B83A16] text-white shadow-xs"
+                        : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                     }`}
                   >
                     {cat}
@@ -1817,9 +1697,9 @@ function AdminDashboard() {
           {activeTab === "quotation" && (
             <div className="max-w-7xl mx-auto space-y-6">
               {/* Header Title Banner */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+              <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-2">
                 <div>
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                     <span className="inline-flex items-center rounded-md bg-amber-50 border border-amber-200/80 px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wide text-amber-900">
                       QUOTATION PORTFOLIO
                     </span>
@@ -1828,7 +1708,7 @@ function AdminDashboard() {
                     </h1>
                   </div>
                   <p className="mt-1.5 text-xs sm:text-sm text-slate-500">
-                    Generate, customize, and print official rooftop solar estimates (White + Navy + Orange format).
+                    Create, track and share rooftop solar quotations with your customers.
                   </p>
                 </div>
 
@@ -1877,8 +1757,8 @@ function AdminDashboard() {
 
               {/* Search & Filters (instant, no submit needed) */}
               <div className="rounded-2xl border border-slate-200/90 bg-white p-3 sm:p-4 shadow-2xs space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,0.8fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_auto] gap-2.5 items-end">
-                  <div className="sm:col-span-2 xl:col-span-1">
+                <div className="flex flex-wrap items-end gap-2.5">
+                  <div className="w-full md:w-auto md:flex-1 md:min-w-[240px]">
                     <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Search</label>
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" />
@@ -1887,7 +1767,7 @@ function AdminDashboard() {
                         placeholder="Name, phone, quotation no, address…"
                         value={quotationSearch}
                         onChange={(e) => setQuotationSearch(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 bg-white pl-9 pr-8 py-2 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
+                        className="w-full h-9 rounded-xl border border-slate-200 bg-white pl-9 pr-8 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
                       />
                       {quotationSearch && (
                         <button
@@ -1902,12 +1782,12 @@ function AdminDashboard() {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="w-full sm:w-[calc(33.333%-7px)] md:w-36">
                     <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">Status</label>
                     <select
                       value={quotationStatusFilter}
                       onChange={(e) => setQuotationStatusFilter(e.target.value as "All" | "Pending" | "Sent" | "Approved")}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 cursor-pointer"
+                      className="w-full h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 cursor-pointer"
                     >
                       <option value="All">All Status</option>
                       <option value="Pending">Pending</option>
@@ -1916,27 +1796,27 @@ function AdminDashboard() {
                     </select>
                   </div>
 
-                  <div>
+                  <div className="w-[calc(50%-5px)] sm:w-[calc(33.333%-7px)] md:w-40">
                     <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">From Date</label>
                     <input
                       type="date"
                       value={quotationDateFrom}
                       max={quotationDateTo || undefined}
                       onChange={(e) => setQuotationDateFrom(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 cursor-pointer"
+                      className="w-full h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 cursor-pointer"
                       onKeyDown={(e) => { if (e.key !== "Tab") e.preventDefault(); }}
                       onClick={(e) => (e.currentTarget as HTMLInputElement).showPicker?.()}
                     />
                   </div>
 
-                  <div>
+                  <div className="w-[calc(50%-5px)] sm:w-[calc(33.333%-7px)] md:w-40">
                     <label className="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">To Date</label>
                     <input
                       type="date"
                       value={quotationDateTo}
                       min={quotationDateFrom || undefined}
                       onChange={(e) => setQuotationDateTo(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 cursor-pointer"
+                      className="w-full h-9 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 cursor-pointer"
                       onKeyDown={(e) => { if (e.key !== "Tab") e.preventDefault(); }}
                       onClick={(e) => (e.currentTarget as HTMLInputElement).showPicker?.()}
                     />
@@ -1946,7 +1826,7 @@ function AdminDashboard() {
                     type="button"
                     onClick={clearQuotationFilters}
                     disabled={!hasQuotationFilters}
-                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="w-full md:w-auto h-9 inline-flex items-center justify-center gap-1.5 px-3.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     <X className="size-3.5" />
                     <span>Clear</span>
@@ -2210,9 +2090,9 @@ function AdminDashboard() {
           {activeTab === "inquiries" && (
             <div className="max-w-7xl mx-auto space-y-5">
               {/* Header Title Banner */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
+              <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-1">
                 <div>
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                     <span className="inline-flex items-center rounded-md bg-sky-50 border border-sky-200/80 px-2.5 py-0.5 text-[11px] font-extrabold uppercase tracking-wide text-sky-800">
                       LEADS &amp; INQUIRIES
                     </span>
@@ -4189,6 +4069,14 @@ function QuotationModal({
     </div>
   );
 }
+
+// Admin sidebar navigation
+const ADMIN_NAV = [
+  { key: "services", label: "Services", Icon: Wrench },
+  { key: "projects", label: "Projects", Icon: FolderGit2 },
+  { key: "quotation", label: "Quotations", Icon: FileText },
+  { key: "inquiries", label: "Inquiries", Icon: MessageSquare },
+] as const;
 
 // Date helpers for quotation filters ("21 Nov 2026" or ISO → "2026-11-21")
 function toLocalIso(d: Date) {
