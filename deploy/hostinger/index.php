@@ -605,6 +605,7 @@ if (strpos($uri, '/api/') === 0) {
                 'noOfModules' => $data['noOfModules'] ?? 0,
                 'moduleType' => $data['moduleType'] ?? '',
                 'projectSize' => $data['projectSize'] ?? '',
+                'salesPerson' => substr(trim((string)($data['salesPerson'] ?? '')), 0, 60),
                 'overhangPossibility' => $data['overhangPossibility'] ?? '',
                 'overhangSide' => $data['overhangSide'] ?? '',
                 'amc' => $data['amc'] ?? '',
