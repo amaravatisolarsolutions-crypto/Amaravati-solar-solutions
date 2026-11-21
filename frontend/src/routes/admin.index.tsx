@@ -212,6 +212,15 @@ export type AdminQuotationItem = {
   amount: number;
 };
 
+// Solar module types and kW-per-module factor used for Project Size
+const MODULE_TYPES = [
+  { label: "545Wp-Monoperc", kw: 0.54 },
+  { label: "575Wp-Monoperc", kw: 0.57 },
+  { label: "610Wp-Topcon", kw: 0.61 },
+  { label: "625Wp-Topcon", kw: 0.62 },
+] as const;
+type ModuleType = (typeof MODULE_TYPES)[number]["label"];
+
 export type AdminQuotation = {
   id: string;
   quotationNo: string;
@@ -241,6 +250,8 @@ export type AdminQuotation = {
   roofType: "Manglore tiles" | "Tin shed" | "RCC";
   structureType: "Pre fab - 4ft" | "Pre fab - 6ft" | "Pre fab - 8ft";
   noOfModules: number | string;
+  moduleType?: string;
+  projectSize?: string;
   overhangPossibility: "Yes" | "No";
   overhangSide?: "North" | "South" | "East" | "West" | "";
   amc: "Included" | "Not Included";
@@ -574,6 +585,8 @@ function AdminDashboard() {
             roofType: siteDetails.roofType || "RCC",
             structureType: siteDetails.structureType || "Pre fab - 6ft",
             noOfModules: siteDetails.noOfModules || 6,
+            moduleType: siteDetails.moduleType || "",
+            projectSize: siteDetails.projectSize || "",
             overhangPossibility: siteDetails.overhangPossibility || "No",
             overhangSide: siteDetails.overhangSide || "",
             amc: siteDetails.amc || "Included",
@@ -3261,8 +3274,11 @@ function QuotationModal({
   const [overhangSide, setOverhangSide] = useState<"North" | "South" | "East" | "West" | "">("");
   const [amc, setAmc] = useState<"Included" | "Not Included">("Included");
 
-  // System capacity auto-derived from module count (610W panels), e.g. 6 × 610W = 3.66 kW
-  const systemCapacity = `${(((Number(noOfModules) || 0) * 610) / 1000).toFixed(2).replace(/\.?0+$/, "")} kW On-Grid Rooftop`;
+  // Module type → kW per module; Project Size = modules × factor
+  const [moduleType, setModuleType] = useState<ModuleType>("610Wp-Topcon");
+  const moduleFactor = MODULE_TYPES.find((m) => m.label === moduleType)?.kw ?? 0.61;
+  const projectSizeKw = Number(((Number(noOfModules) || 0) * moduleFactor).toFixed(2));
+  const systemCapacity = `${projectSizeKw} kW On-Grid Rooftop`;
 
   // 3. Bill Corrections
   const [loadChange, setLoadChange] = useState<"Yes" | "No">("No");
@@ -3397,6 +3413,8 @@ function QuotationModal({
       roofType,
       structureType,
       noOfModules,
+      moduleType,
+      projectSize: `${projectSizeKw} kW`,
       overhangPossibility,
       overhangSide: overhangPossibility === "Yes" ? overhangSide : "",
       amc,
@@ -3726,18 +3744,52 @@ function QuotationModal({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {/* Module Type */}
+              <div>
+                <label className="block text-slate-700 mb-1.5 font-bold">Module Type</label>
+                <select
+                  value={moduleType}
+                  onChange={(e) => setModuleType(e.target.value as ModuleType)}
+                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20 cursor-pointer"
+                >
+                  {MODULE_TYPES.map((m) => (
+                    <option key={m.label} value={m.label}>
+                      {m.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {/* No of Modules */}
               <div>
                 <label className="block text-slate-700 mb-1.5 font-bold">No of Modules</label>
                 <input
                   type="number"
                   min={1}
+                  step={1}
                   value={noOfModules}
-                  onChange={(e) => setNoOfModules(e.target.value)}
+                  onChange={(e) => setNoOfModules(e.target.value.replace(/\D/g, ""))}
                   placeholder="e.g. 6 / 8 / 10"
                   className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#082B4C]/20"
                 />
               </div>
+
+              {/* Project Size (auto-calculated) */}
+              <div>
+                <label className="block text-slate-700 mb-1.5 font-bold">
+                  Project Size <span className="text-slate-400 font-normal">(auto)</span>
+                </label>
+                <input
+                  type="text"
+                  readOnly
+                  tabIndex={-1}
+                  value={`${projectSizeKw} kW`}
+                  className="w-full rounded-xl border border-orange-200 bg-orange-50 px-3.5 py-2 font-extrabold text-[#B83A16] cursor-not-allowed"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
               {/* Overhang Possibility */}
               <div>
@@ -4266,7 +4318,13 @@ function QuotationViewModal({
               </span>
               <div><span className="text-slate-500">Roof Type:</span> <strong className="text-slate-800">{quotation.roofType || "RCC"}</strong></div>
               <div><span className="text-slate-500">Structure Type:</span> <strong className="text-slate-800">{quotation.structureType || "Pre fab - 6ft"}</strong></div>
+              {quotation.moduleType && (
+                <div><span className="text-slate-500">Module Type:</span> <strong className="text-slate-800">{quotation.moduleType}</strong></div>
+              )}
               <div><span className="text-slate-500">No of Modules:</span> <strong className="text-slate-800">{quotation.noOfModules || 6} Panels</strong></div>
+              {quotation.projectSize && (
+                <div><span className="text-slate-500">Project Size:</span> <strong className="text-[#B83A16]">{quotation.projectSize}</strong></div>
+              )}
               <div>
                 <span className="text-slate-500">Overhang:</span>{" "}
                 <strong className="text-slate-800">

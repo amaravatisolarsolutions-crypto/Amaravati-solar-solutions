@@ -166,7 +166,9 @@ export function buildQuotationPrintHtml(q: any, logoUrl: string): string {
       <div class="box"><h3>Structure &amp; Technical</h3><table class="kv">
         ${kv("Roof Type", q.roofType || "RCC")}
         ${kv("Structure", q.structureType || "Pre fab - 6ft")}
+        ${q.moduleType ? kv("Module Type", q.moduleType) : ""}
         ${kv("No. of Modules", `${q.noOfModules || 6} Panels`)}
+        ${q.projectSize ? kv("Project Size", q.projectSize) : ""}
         ${kv("Overhang", overhang)}
         ${kv("AMC", q.amc || "Included")}
       </table></div>

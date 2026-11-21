@@ -565,6 +565,8 @@ if (strpos($uri, '/api/') === 0) {
                 'roofType' => $data['roofType'] ?? '',
                 'structureType' => $data['structureType'] ?? '',
                 'noOfModules' => $data['noOfModules'] ?? 0,
+                'moduleType' => $data['moduleType'] ?? '',
+                'projectSize' => $data['projectSize'] ?? '',
                 'overhangPossibility' => $data['overhangPossibility'] ?? '',
                 'overhangSide' => $data['overhangSide'] ?? '',
                 'amc' => $data['amc'] ?? '',
