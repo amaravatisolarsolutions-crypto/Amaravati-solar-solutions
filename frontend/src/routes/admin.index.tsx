@@ -3228,12 +3228,21 @@ function QuotationModal({
 
   // Format today's date & valid upto (15 days from now)
   const todayStr = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
+  // Local YYYY-MM-DD (for the native date picker)
+  const toIsoLocal = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const todayIso = toIsoLocal(new Date());
   const futureDate = new Date();
   futureDate.setDate(futureDate.getDate() + 15);
-  const validUptoStr = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(futureDate);
 
   const [date] = useState(todayStr);
-  const [validUpto, setValidUpto] = useState(validUptoStr);
+  const [validUptoIso, setValidUptoIso] = useState(() => toIsoLocal(futureDate));
+  // Display format saved & printed on the quotation, e.g. "06 Dec 2026"
+  const validUpto = (() => {
+    const [y, m, d] = validUptoIso.split("-").map(Number);
+    if (!y || !m || !d) return "";
+    return new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(y, m - 1, d));
+  })();
 
   // 1. Site Details
   const [housingType, setHousingType] = useState<"Independent" | "Apartment" | "Commercial">("Independent");
@@ -3348,7 +3357,7 @@ function QuotationModal({
     e.preventDefault();
     setPhoneTouched(true);
     setNameTouched(true);
-    if (!nameValid || !phoneValid) return;
+    if (!nameValid || !phoneValid || !validUpto) return;
 
     const resolvedFloors = noOfFloors === "Other" ? (customFloors.trim() || "Ground") : noOfFloors;
 
@@ -3453,11 +3462,16 @@ function QuotationModal({
             <div>
               <label className="block text-slate-600 mb-1 font-bold">Valid Upto</label>
               <input
-                type="text"
+                type="date"
                 required
-                value={validUpto}
-                onChange={(e) => setValidUpto(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-slate-800 bg-white"
+                min={todayIso}
+                value={validUptoIso}
+                onChange={(e) => setValidUptoIso(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key !== "Tab") e.preventDefault();
+                }}
+                onClick={(e) => (e.currentTarget as HTMLInputElement).showPicker?.()}
+                className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-slate-800 bg-white cursor-pointer"
               />
             </div>
           </div>
