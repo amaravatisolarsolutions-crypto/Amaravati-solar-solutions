@@ -731,101 +731,19 @@ if (strpos($uri, '/api/') === 0) {
                 exit;
             }
 
-            // Credentials verified! Generate a 6-digit numeric OTP
-            $otp = strval(random_int(100000, 999999));
-
-            // Clean up older OTPs for this email
-            $cleanStmt = $mysqli->prepare("DELETE FROM `admin_otps` WHERE `email` = ? OR `expires_at` < NOW()");
-            if ($cleanStmt) {
-                $cleanStmt->bind_param("s", $normalizedEmail);
-                $cleanStmt->execute();
-                $cleanStmt->close();
-            }
-
-            // Store new OTP with 10 minutes expiry
-            $insStmt = $mysqli->prepare("INSERT INTO `admin_otps` (`email`, `otp`, `expires_at`) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE))");
-            if ($insStmt) {
-                $insStmt->bind_param("ss", $normalizedEmail, $otp);
-                $insStmt->execute();
-                $insStmt->close();
-            }
-
-            // Save last OTP to temporary file as fallback for testing
-            @file_put_contents(__DIR__ . '/.last_otp.txt', json_encode([
-                'otp' => $otp,
-                'email' => $normalizedEmail,
-                'generated_at' => date('c'),
-                'expires_at' => date('c', time() + 600)
-            ]));
-
-            // Send branded HTML email via PHP mail()
-            $subject = "Amaravati Solar Solutions - Admin Login Verification OTP: {$otp}";
-            $message = '
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 24px; margin: 0;">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <td align="center">
-        <table width="560" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0;">
-          <tr>
-            <td style="background-color: #082B4C; padding: 28px 32px; text-align: center;">
-              <h1 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;">AMARAVATI SOLAR SOLUTIONS</h1>
-              <p style="color: #F59E0B; margin: 6px 0 0 0; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Admin Portal Security Verification</p>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 36px 32px; color: #1e293b;">
-              <h2 style="margin: 0 0 12px 0; font-size: 18px; color: #082B4C;">Your Login Verification Code</h2>
-              <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #475569;">
-                A sign-in request was made for the Amaravati Solar Solutions Admin Portal. Please use the verification code below to complete your login:
-              </p>
-              
-              <div style="background-color: #f8fafc; border: 2px dashed #082B4C; border-radius: 12px; padding: 20px; text-align: center; margin: 24px 0;">
-                <span style="font-size: 38px; font-weight: 800; letter-spacing: 10px; color: #082B4C; font-family: \'Courier New\', Courier, monospace;">' . $otp . '</span>
-              </div>
-
-              <p style="margin: 0 0 8px 0; font-size: 13px; color: #64748b; text-align: center;">
-                ⏱ This verification code is valid for <strong>10 minutes</strong>. Never share this code with anyone.
-              </p>
-
-              <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0;" />
-
-              <p style="margin: 0; font-size: 12px; color: #94a3b8; line-height: 1.5;">
-                If you did not initiate this request, please contact your administrator immediately.<br>
-                <strong>Amaravati Solar Solutions</strong> &bull; Vijayawada, Andhra Pradesh &bull; +91 63058 25402
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>';
-
-            $headers = [
-                'MIME-Version: 1.0',
-                'Content-type: text/html; charset=UTF-8',
-                'From: Amaravati Solar Solutions <noreply@amaravatisolarsolutions.com>',
-                'Reply-To: amaravatisolarsolutions@gmail.com',
-                'X-Mailer: PHP/' . phpversion()
-            ];
-
-            $mailSent = @mail($normalizedEmail, $subject, $message, implode("\r\n", $headers), "-f info@amaravatisolarsolutions.com");
-            if (!$mailSent) {
-                $mailSent = @mail($normalizedEmail, $subject, $message, implode("\r\n", $headers));
-            }
+            // Credentials verified! Direct secure login without OTP
+            $sessionToken = bin2hex(random_bytes(32));
 
             http_response_code(200);
             echo json_encode([
                 'success' => true,
-                'requireOtp' => true,
-                'email' => $normalizedEmail,
-                'message' => 'Verification code sent to ' . $normalizedEmail,
-                'mail_dispatched' => (bool)$mailSent,
-                'expires_in' => 600
+                'token' => $sessionToken,
+                'message' => 'Login successful! Redirecting to Admin Portal...',
+                'admin' => [
+                    'email' => $normalizedEmail,
+                    'username' => 'u236567282_Amaravthisolar',
+                    'role' => 'superadmin'
+                ]
             ]);
             $mysqli->close();
             exit;
